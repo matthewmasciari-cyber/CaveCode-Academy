@@ -527,14 +527,15 @@
         color: var(--danger); background: rgba(255, 85, 85, .16);
         text-decoration: underline; text-decoration-thickness: 2px;
     }
-    .character-current { color: var(--text); background: var(--accent-border); animation: pulse 1s infinite; }
-    .character-pending { color: var(--text-dim); }
+    .character-current { color: var(--code-text); background: var(--accent-border); animation: pulse 1s infinite; }
+    .character-pending { color: var(--code-muted); }
     .space-mark { display: inline-block; min-width: .55em; }
-    .newline-mark { color: var(--text-dim); font-size: 12px; }
+    .newline-mark { color: var(--code-muted); font-size: 12px; }
 
     textarea {
         display: block; width: 100%; min-height: 180px; padding: 18px;
-        color: var(--text); background: var(--code-bg); border: 0; outline: none;
+        color: var(--code-text); background: var(--code-bg); border: 0; outline: none;
+        caret-color: var(--accent);
         resize: vertical; font: 17px/1.55 Consolas, Monaco, monospace; tab-size: 4;
     }
     .typing-stats {
@@ -654,6 +655,60 @@
         .learn-grid { grid-template-columns: 1fr; }
         .lesson-main { padding: 20px 12px; }
     }
+
+    /* Persistent dark-surface contrast */
+    .mastery-ring,
+    .stage-tab.active,
+    .lesson-button.active,
+    .prediction-options button.correct {
+        color: var(--accent-soft);
+    }
+
+    .mastery-ring span,
+    .lesson-button.active .lesson-copy small {
+        color: var(--accent-soft);
+        opacity: .82;
+    }
+
+    .lesson-button.complete:not(.active) {
+        color: var(--accent);
+    }
+
+    .reference-example,
+    .revealed-target,
+    .terminal,
+    .character-guide {
+        color: var(--dark-panel-text);
+    }
+
+    .reference-example > span,
+    .revealed-target > span,
+    .terminal-title,
+    .typing-guide .editor-bar,
+    .code-editor .editor-bar {
+        color: var(--dark-panel-muted);
+    }
+
+    .typing-guide .editor-bar,
+    .code-editor .editor-bar {
+        background: var(--code-bg);
+        border-color: var(--border-strong);
+    }
+
+    .character-current,
+    textarea {
+        color: var(--code-text);
+    }
+
+    .character-pending,
+    .newline-mark {
+        color: var(--code-muted);
+    }
+
+    textarea {
+        caret-color: var(--accent);
+    }
+
 </style>
 
 @code {

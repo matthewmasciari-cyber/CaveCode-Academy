@@ -20,6 +20,9 @@
     --accent-glow: rgba(115, 229, 155, .85);
     --code-bg: #080d13;
     --code-text: #f0ce76;
+    --dark-panel-text: #eef4f8;
+    --dark-panel-muted: #aab7c4;
+    --code-muted: #9aabba;
     --warning-surface: #302718;
     --warning-border: #64542e;
     --warning-accent: #d8ae4c;
