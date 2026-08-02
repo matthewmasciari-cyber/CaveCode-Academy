@@ -1,0 +1,1893 @@
+@page "/"
+@using System.Text.RegularExpressions
+@using System.Linq
+
+<PageTitle>CaveCode Academy</PageTitle>
+
+<div class="academy">
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark">C#</span>
+            <div>
+                <h1>CaveCode</h1>
+                <p>Learn C# by building one cave game.</p>
+            </div>
+        </div>
+
+        <section class="course-progress">
+            <div class="row-between">
+                <span>Course progress</span>
+                <strong>@CourseProgress%</strong>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: @(CourseProgress)%"></div>
+            </div>
+            <small>@CompletedModuleCount / @Lessons.Count modules complete</small>
+        </section>
+
+        <div class="lesson-list">
+            @{
+                string? lastChapter = null;
+            }
+
+            @for (int index = 0; index < Lessons.Count; index++)
+            {
+                int lessonIndex = index;
+                Lesson lesson = Lessons[index];
+                bool unlocked = IsLessonUnlocked(index);
+                bool active = index == CurrentModuleIndex;
+
+                if (lesson.Chapter != lastChapter)
+                {
+                    lastChapter = lesson.Chapter;
+                    <h2>@lesson.Chapter</h2>
+                }
+
+                <button type="button"
+                        class="lesson-button @(active ? "active" : "") @(ModuleCompleted[index] ? "complete" : "")"
+                        disabled="@(!unlocked)"
+                        @onclick="() => SelectLesson(lessonIndex)">
+                    <span class="lesson-number">
+                        @(ModuleCompleted[index] ? "✓" : unlocked ? (index + 1).ToString() : "🔒")
+                    </span>
+                    <span class="lesson-copy">
+                        <strong>@lesson.Title</strong>
+                        <small>@ModuleMastery(index)% mastery</small>
+                    </span>
+                </button>
+            }
+        </div>
+    </aside>
+
+    <main class="lesson-main">
+        <header class="lesson-header">
+            <div>
+                <p class="eyebrow">MODULE @(CurrentModuleIndex + 1) OF @Lessons.Count · @CurrentLesson.Topic.ToUpperInvariant()</p>
+                <h2>@CurrentLesson.Title</h2>
+                <p>@CurrentLesson.Teaching</p>
+            </div>
+            <div class="mastery-ring">
+                <strong>@ModuleMastery(CurrentModuleIndex)%</strong>
+                <span>mastery</span>
+            </div>
+        </header>
+
+        <nav class="stage-tabs" aria-label="Training stages">
+            @foreach (TrainingStage stage in Enum.GetValues<TrainingStage>())
+            {
+                TrainingStage selectedStage = stage;
+                bool unlocked = IsStageUnlocked(stage);
+
+                <button type="button"
+                        class="stage-tab @(CurrentStage == stage ? "active" : "") @(IsStageComplete(stage) ? "done" : "")"
+                        disabled="@(!unlocked)"
+                        @onclick="() => SelectStage(selectedStage)">
+                    <span>@((int)stage + 1)</span>
+                    @StageLabel(stage)
+                </button>
+            }
+        </nav>
+
+        <section class="stage-card">
+            <div class="stage-heading">
+                <div>
+                    <p class="eyebrow">STAGE @((int)CurrentStage + 1) · @StageLabel(CurrentStage).ToUpperInvariant()</p>
+                    <h3>@StageHeading(CurrentStage)</h3>
+                </div>
+                <span class="support-badge">@SupportLabel(CurrentStage)</span>
+            </div>
+
+            @if (CurrentStage == TrainingStage.Learn)
+            {
+                <div class="learn-grid">
+                    <div>
+                        <h4>Understand the idea</h4>
+                        <p>@CurrentLesson.Teaching</p>
+
+                        <div class="reference-example">
+                            <span>Reference example</span>
+                            <pre><code>@CurrentLesson.ExampleCode</code></pre>
+                        </div>
+
+                        <div class="concept-points">
+                            @foreach (string point in ConceptPoints(CurrentLesson))
+                            {
+                                <div><span>•</span><p>@point</p></div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="memory-aid">
+                        <span class="mini-label">Visual memory aid</span>
+                        <div class="flow">
+                            <div>CODE</div><span>→</span><div>STATE</div><span>→</span><div>GAME</div>
+                        </div>
+                        <p>@CurrentLesson.PreviewMessage</p>
+                    </div>
+                </div>
+
+                <button type="button" class="primary" @onclick="CompleteLearnStage">
+                    Begin guided typing →
+                </button>
+            }
+            else if (CurrentStage == TrainingStage.Predict)
+            {
+                <div class="prediction-card">
+                    <h4>Predict before running</h4>
+                    <p>@CurrentLesson.PredictionQuestion</p>
+
+                    <div class="prediction-options">
+                        @for (int index = 0; index < CurrentLesson.PredictionOptions.Length; index++)
+                        {
+                            int optionIndex = index;
+                            string option = CurrentLesson.PredictionOptions[index];
+
+                            <button type="button"
+                                    class="@PredictionClass(index)"
+                                    @onclick="() => SelectPrediction(optionIndex)">
+                                <span>@((char)('A' + index))</span>
+                                @option
+                            </button>
+                        }
+                    </div>
+
+                    @if (SelectedPrediction.HasValue)
+                    {
+                        <div class="feedback @(StagePassed ? "success" : "error")">
+                            @Feedback
+                        </div>
+                    }
+                </div>
+
+                @if (StagePassed)
+                {
+                    <button type="button" class="primary" @onclick="AdvanceStage">
+                        Continue to debugging →
+                    </button>
+                }
+            }
+            else if (CurrentStage == TrainingStage.Complete)
+            {
+                <div class="completion-panel">
+                    <div class="completion-icon">✓</div>
+                    <h3>Module mastery reached</h3>
+                    <p>You practiced the concept through explanation, copying, completion, prediction, debugging, recall, and transfer.</p>
+
+                    <div class="completion-summary">
+                        <div><span>Concept</span><strong>@CurrentLesson.Topic</strong></div>
+                        <div><span>Core code</span><code>@CurrentLesson.TargetCode</code></div>
+                        <div><span>Game result</span><strong>@CurrentLesson.PreviewMessage</strong></div>
+                    </div>
+
+                    <button type="button" class="primary" @onclick="FinishModule">
+                        @(CurrentModuleIndex == Lessons.Count - 1 ? "Finish the course" : "Complete module and unlock next →")
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="exercise-intro">
+                    <h4>@ExerciseTitle(CurrentStage)</h4>
+                    <p>@ExercisePrompt(CurrentStage)</p>
+                </div>
+
+                @if (CurrentStage == TrainingStage.Debug)
+                {
+                    <div class="compiler-note">
+                        <strong>Compiler clue</strong>
+                        <p>@CurrentLesson.DebugPrompt</p>
+                    </div>
+                }
+
+                @if (ShowTargetGuide)
+                {
+                    <div class="typing-guide">
+                        <div class="editor-bar">
+                            <span>Target.cs</span>
+                            <span>FOLLOW ALONG</span>
+                        </div>
+                        <div class="character-guide">
+                            @for (int index = 0; index < CurrentExpectedCode.Length; index++)
+                            {
+                                char character = CurrentExpectedCode[index];
+                                string cssClass = GetCharacterClass(index);
+
+                                if (character == '\n')
+                                {
+                                    <span class="@cssClass newline-mark">↵</span><br />
+                                }
+                                else if (character == ' ')
+                                {
+                                    <span class="@cssClass space-mark">&nbsp;</span>
+                                }
+                                else
+                                {
+                                    <span class="@cssClass">@character</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                else if (HintVisible)
+                {
+                    <div class="revealed-target">
+                        <span>Hint target</span>
+                        <pre><code>@CurrentExpectedCode</code></pre>
+                    </div>
+                }
+
+                <div class="code-editor">
+                    <div class="editor-bar">
+                        <span>PlayerTraining.cs</span>
+                        <span>C#</span>
+                    </div>
+
+                    <textarea @bind="StudentCode"
+                              @bind:event="oninput"
+                              spellcheck="false"
+                              aria-label="C# practice editor"></textarea>
+
+                    <div class="typing-stats">
+                        <div><span>Characters</span><strong>@StudentCode.Length / @CurrentExpectedCode.Length</strong></div>
+                        <div><span>Accuracy</span><strong>@Accuracy%</strong></div>
+                        <div><span>Errors</span><strong>@ErrorCount</strong></div>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button type="button" class="primary" @onclick="CheckCode">Check code</button>
+                    <button type="button" class="secondary" @onclick="ShowHint">Hint</button>
+                    <button type="button" class="secondary" @onclick="ResetStage">Reset</button>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Feedback))
+                {
+                    <div class="feedback @(StagePassed ? "success" : "error")">
+                        @Feedback
+                    </div>
+                }
+
+                @if (StagePassed)
+                {
+                    <button type="button" class="primary continue-button" @onclick="AdvanceStage">
+                        Continue to @NextStageLabel() →
+                    </button>
+                }
+            }
+        </section>
+    </main>
+
+    <aside class="preview-panel">
+        <header class="preview-header">
+            <div>
+                <p class="eyebrow">GROWING GAME PREVIEW</p>
+                <h2>Cave Explorer</h2>
+            </div>
+            <span class="live">LIVE</span>
+        </header>
+
+        <div class="cave-map">
+            @for (int index = 0; index < Preview.Rocks; index++)
+            {
+                <div class="rock" style="@RockStyle(index)"></div>
+            }
+
+            @if (Preview.Slimes > 0)
+            {
+                <div class="slime">
+                    <span>@Preview.SlimeHealth</span>
+                </div>
+            }
+
+            <div class="player" style="@PlayerStyle()">M</div>
+        </div>
+
+        <div class="preview-stats">
+            <div><span>Name</span><strong>@Preview.Name</strong></div>
+            <div><span>Health</span><strong>@Preview.Health / 100</strong></div>
+            <div><span>Stone</span><strong>@Preview.Stone</strong></div>
+            <div><span>Pickaxe</span><strong>@(Preview.HasPickaxe ? "Equipped" : "—")</strong></div>
+            <div><span>Speed</span><strong>@Preview.Speed.ToString("0.##")</strong></div>
+            <div><span>Position</span><strong>@Preview.X, @Preview.Y</strong></div>
+        </div>
+
+        <div class="health-track">
+            <div class="health-fill" style="width: @(Math.Clamp(Preview.Health, 0, 100))%"></div>
+        </div>
+
+        <section class="inventory-card">
+            <span>Inventory</span>
+            <strong>@Preview.Inventory</strong>
+        </section>
+
+        <section class="terminal">
+            <div class="terminal-title">
+                <span>LEARNING TERMINAL</span>
+                <span>READ ONLY</span>
+            </div>
+            <p>[ACADEMY] Module @(CurrentModuleIndex + 1) loaded.</p>
+            <p>[STAGE] @StageLabel(CurrentStage) training active.</p>
+            <p>[@(StagePassed ? "PASS" : "READY")] @(StagePassed ? CurrentLesson.PreviewMessage : Preview.Status)</p>
+        </section>
+    </aside>
+</div>
+
+<style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #080d12; }
+    button, textarea { font: inherit; }
+
+    .academy {
+        display: grid;
+        grid-template-columns: 280px minmax(520px, 1fr) 360px;
+        min-height: 100vh;
+        color: #edf5f0;
+        background: #0b1118;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .sidebar {
+        padding: 20px 14px;
+        overflow-y: auto;
+        background: #101822;
+        border-right: 1px solid #273443;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 18px; }
+    .brand-mark {
+        display: grid; width: 46px; height: 46px; place-items: center;
+        color: #07130c; background: #73e59b; border-radius: 11px; font-weight: 900;
+    }
+    .brand h1 { margin: 0; font-size: 21px; }
+    .brand p { margin: 3px 0 0; color: #8996a3; font-size: 12px; line-height: 1.4; }
+
+    .course-progress {
+        padding: 15px; margin-bottom: 18px; background: #17212c;
+        border: 1px solid #2a3847; border-radius: 11px;
+    }
+    .row-between { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+    .progress-track, .health-track {
+        height: 9px; margin: 10px 0 8px; overflow: hidden;
+        background: #273340; border-radius: 99px;
+    }
+    .progress-fill, .health-fill { height: 100%; background: #73e59b; transition: width .25s ease; }
+    .course-progress small { color: #84919e; }
+
+    .lesson-list h2 {
+        margin: 20px 8px 8px; color: #83919e; font-size: 11px;
+        letter-spacing: .9px; text-transform: uppercase;
+    }
+    .lesson-button {
+        display: flex; width: 100%; align-items: center; gap: 10px;
+        padding: 10px; margin-bottom: 6px; color: #dce6df;
+        text-align: left; background: transparent; border: 1px solid transparent;
+        border-radius: 9px; cursor: pointer;
+    }
+    .lesson-button:hover:not(:disabled) { background: #18232e; }
+    .lesson-button.active { background: #193126; border-color: #44845b; }
+    .lesson-button.complete { color: #bdf4cf; }
+    .lesson-button:disabled { color: #65717d; cursor: not-allowed; opacity: .62; }
+    .lesson-number {
+        display: grid; flex: 0 0 31px; height: 31px; place-items: center;
+        background: #263442; border-radius: 8px; font-size: 12px;
+    }
+    .lesson-button.active .lesson-number, .lesson-button.complete .lesson-number {
+        color: #092014; background: #73e59b;
+    }
+    .lesson-copy { min-width: 0; }
+    .lesson-copy strong, .lesson-copy small { display: block; }
+    .lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+    .lesson-copy small { margin-top: 3px; color: #81909d; font-size: 10px; }
+
+    .lesson-main { padding: 28px; overflow-y: auto; }
+    .lesson-header {
+        display: flex; justify-content: space-between; gap: 24px;
+        max-width: 950px; margin: 0 auto;
+    }
+    .lesson-header h2 { margin: 0 0 7px; font-size: 28px; }
+    .lesson-header > div:first-child > p:last-child {
+        max-width: 760px; margin: 0; color: #a6b3be; line-height: 1.55;
+    }
+    .eyebrow {
+        margin: 0 0 6px; color: #73e59b; font-size: 11px;
+        font-weight: 850; letter-spacing: 1px;
+    }
+    .mastery-ring {
+        display: grid; flex: 0 0 86px; height: 86px; place-items: center;
+        align-content: center; background: #14251d; border: 2px solid #3d7c54; border-radius: 50%;
+    }
+    .mastery-ring strong { font-size: 18px; }
+    .mastery-ring span { color: #91a29a; font-size: 10px; }
+
+    .stage-tabs {
+        display: grid; grid-template-columns: repeat(8, minmax(70px, 1fr));
+        max-width: 950px; margin: 23px auto 0; overflow: hidden;
+        border: 1px solid #293746; border-radius: 11px;
+    }
+    .stage-tab {
+        min-height: 57px; padding: 8px 5px; color: #8d9aa6;
+        background: #111a24; border: 0; border-right: 1px solid #293746;
+        cursor: pointer; font-size: 11px;
+    }
+    .stage-tab:last-child { border-right: 0; }
+    .stage-tab span {
+        display: grid; width: 21px; height: 21px; margin: 0 auto 4px;
+        place-items: center; background: #263341; border-radius: 50%; font-size: 10px;
+    }
+    .stage-tab.active { color: #e8f7ed; background: #193126; }
+    .stage-tab.active span, .stage-tab.done span { color: #0b2114; background: #73e59b; }
+    .stage-tab:disabled { opacity: .38; cursor: not-allowed; }
+
+    .stage-card {
+        max-width: 950px; min-height: 560px; padding: 23px;
+        margin: 18px auto 0; background: #121b25;
+        border: 1px solid #293746; border-radius: 13px;
+    }
+    .stage-heading { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+    .stage-heading h3 { margin: 0; font-size: 21px; }
+    .support-badge {
+        padding: 7px 10px; color: #e4d598; background: #302817;
+        border: 1px solid #64542e; border-radius: 99px; font-size: 10px; font-weight: 800;
+    }
+
+    .learn-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 18px; margin: 23px 0; }
+    .learn-grid h4, .exercise-intro h4, .prediction-card h4 { margin: 0 0 8px; font-size: 17px; }
+    .learn-grid p, .exercise-intro p, .prediction-card p { color: #a7b4bf; line-height: 1.6; }
+    .reference-example, .revealed-target {
+        padding: 15px; margin: 16px 0; background: #090f15;
+        border: 1px solid #263442; border-radius: 9px;
+    }
+    .reference-example > span, .revealed-target > span, .mini-label {
+        color: #81909c; font-size: 10px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase;
+    }
+    pre { margin: 10px 0 0; overflow: auto; white-space: pre-wrap; }
+    code { color: #f0ce76; font-family: Consolas, Monaco, monospace; }
+    .concept-points div { display: flex; gap: 9px; }
+    .concept-points span { color: #73e59b; }
+    .concept-points p { margin: 5px 0; }
+    .memory-aid {
+        padding: 18px; background: #17222c; border: 1px solid #2b3a49; border-radius: 11px;
+    }
+    .flow { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 20px 0; }
+    .flow div { padding: 11px 9px; background: #0d151d; border-radius: 7px; font-size: 11px; font-weight: 800; }
+    .flow span { color: #73e59b; }
+
+    .exercise-intro { margin: 22px 0 14px; }
+    .compiler-note {
+        padding: 13px 15px; margin-bottom: 13px; color: #e8d59c;
+        background: #302718; border-left: 4px solid #d8ae4c;
+    }
+    .compiler-note p { margin: 5px 0 0; color: #c5b991; }
+
+    .typing-guide, .code-editor {
+        margin-top: 14px; overflow: hidden; background: #080d13;
+        border: 1px solid #344352; border-radius: 10px;
+    }
+    .editor-bar {
+        display: flex; justify-content: space-between; padding: 9px 13px;
+        color: #82909d; background: #111923; border-bottom: 1px solid #283645;
+        font-size: 10px; font-weight: 800; letter-spacing: .7px;
+    }
+    .character-guide {
+        min-height: 76px; padding: 18px; white-space: pre-wrap;
+        font: 18px/1.55 Consolas, Monaco, monospace;
+    }
+    .character-correct { color: #73e59b; }
+    .character-wrong {
+        color: #ff7979; background: rgba(255, 85, 85, .16);
+        text-decoration: underline; text-decoration-thickness: 2px;
+    }
+    .character-current { color: #fff; background: #3c684d; animation: pulse 1s infinite; }
+    .character-pending { color: #566370; }
+    .space-mark { display: inline-block; min-width: .55em; }
+    .newline-mark { color: #60717e; font-size: 12px; }
+
+    textarea {
+        display: block; width: 100%; min-height: 180px; padding: 18px;
+        color: #eff6f1; background: #0b1219; border: 0; outline: none;
+        resize: vertical; font: 17px/1.55 Consolas, Monaco, monospace; tab-size: 4;
+    }
+    .typing-stats {
+        display: grid; grid-template-columns: repeat(3, 1fr); padding: 11px;
+        background: #111923; border-top: 1px solid #283645;
+    }
+    .typing-stats div { text-align: center; }
+    .typing-stats span, .typing-stats strong { display: block; }
+    .typing-stats span { color: #7e8b97; font-size: 9px; text-transform: uppercase; }
+    .typing-stats strong { margin-top: 3px; }
+
+    .action-row { display: flex; gap: 9px; margin-top: 14px; }
+    .primary, .secondary {
+        padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 750;
+    }
+    .primary { color: #07140c; background: #73e59b; border: 0; }
+    .primary:hover { background: #8cf0ad; }
+    .secondary { color: #dfe8e2; background: #202c38; border: 1px solid #3a495a; }
+    .continue-button { margin-top: 13px; }
+    .feedback { padding: 13px 15px; margin-top: 14px; border-radius: 8px; }
+    .feedback.success { color: #dffff0; background: #173025; border: 1px solid #43815a; }
+    .feedback.error { color: #ffd9d9; background: #351d22; border: 1px solid #744049; }
+
+    .prediction-card { margin-top: 23px; }
+    .prediction-options { display: grid; gap: 9px; margin: 16px 0; }
+    .prediction-options button {
+        display: flex; align-items: center; gap: 11px; padding: 12px;
+        color: #e0e8e3; text-align: left; background: #17222d;
+        border: 1px solid #2d3b4a; border-radius: 8px; cursor: pointer;
+    }
+    .prediction-options button span {
+        display: grid; width: 27px; height: 27px; place-items: center;
+        background: #253442; border-radius: 6px; font-weight: 800;
+    }
+    .prediction-options button.selected { border-color: #6b7e8d; }
+    .prediction-options button.correct { background: #173025; border-color: #4b9868; }
+    .prediction-options button.wrong { background: #351d22; border-color: #7b414b; }
+
+    .completion-panel { max-width: 720px; margin: 36px auto 0; text-align: center; }
+    .completion-icon {
+        display: grid; width: 72px; height: 72px; margin: 0 auto 14px;
+        place-items: center; color: #082013; background: #73e59b;
+        border-radius: 50%; font-size: 33px; font-weight: 900;
+    }
+    .completion-panel > p { color: #9fadb8; line-height: 1.6; }
+    .completion-summary {
+        display: grid; gap: 8px; padding: 16px; margin: 20px 0;
+        text-align: left; background: #0d141b; border: 1px solid #293746; border-radius: 10px;
+    }
+    .completion-summary div { display: grid; grid-template-columns: 100px 1fr; gap: 12px; }
+    .completion-summary span { color: #7f8d99; }
+
+    .preview-panel {
+        padding: 23px 18px; background: #0e161e; border-left: 1px solid #273443;
+    }
+    .preview-header { display: flex; justify-content: space-between; align-items: center; }
+    .preview-header h2 { margin: 0; font-size: 20px; }
+    .live {
+        padding: 5px 8px; color: #73e59b; background: #173025;
+        border: 1px solid #3e7652; border-radius: 5px; font-size: 10px; font-weight: 850;
+    }
+    .cave-map {
+        position: relative; height: 310px; margin-top: 18px; overflow: hidden;
+        background-color: #292331;
+        background-image:
+            linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+        background-size: 34px 34px; border: 5px solid #594a38; border-radius: 10px;
+        box-shadow: inset 0 0 42px #050608;
+    }
+    .player, .slime, .rock { position: absolute; }
+    .player {
+        display: grid; width: 30px; height: 30px; place-items: center;
+        color: #0a2013; background: #73e59b; border: 2px solid #e8ffef;
+        border-radius: 8px; box-shadow: 0 0 14px rgba(115,229,155,.85); font-weight: 900;
+        transition: left .25s, top .25s;
+    }
+    .rock {
+        width: 31px; height: 31px; background: #78717f; border: 2px solid #a29baa;
+        border-radius: 42% 55% 40% 49%; box-shadow: inset -4px -5px rgba(0,0,0,.18);
+    }
+    .slime {
+        right: 47px; bottom: 52px; display: grid; width: 38px; height: 30px;
+        place-items: center; color: #092013; background: #78d58b;
+        border: 2px solid #caffd3; border-radius: 50% 50% 40% 40%;
+        font-size: 10px; font-weight: 900;
+    }
+    .preview-stats {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 13px;
+    }
+    .preview-stats div, .inventory-card {
+        padding: 11px; background: #151f29; border: 1px solid #2b3948; border-radius: 8px;
+    }
+    .preview-stats span, .preview-stats strong, .inventory-card span, .inventory-card strong { display: block; }
+    .preview-stats span, .inventory-card span { color: #7f8e9a; font-size: 9px; text-transform: uppercase; }
+    .preview-stats strong, .inventory-card strong { margin-top: 4px; }
+    .health-track { margin: 10px 0; }
+    .inventory-card { margin-top: 9px; }
+    .terminal {
+        min-height: 155px; padding: 13px; margin-top: 14px;
+        color: #8ce3a8; background: #070c10; border: 1px solid #263442;
+        border-radius: 9px; font: 11px/1.55 Consolas, Monaco, monospace;
+    }
+    .terminal-title { display: flex; justify-content: space-between; color: #667682; font-size: 9px; }
+    .terminal p { margin: 8px 0 0; }
+
+    @@keyframes pulse { 50% { background: #4d835f; } }
+
+    @@media (max-width: 1250px) {
+        .academy { grid-template-columns: 250px 1fr; }
+        .preview-panel { grid-column: 1 / -1; border-top: 1px solid #273443; border-left: 0; }
+    }
+    @@media (max-width: 850px) {
+        .academy { display: block; }
+        .sidebar { max-height: 460px; }
+        .stage-tabs { grid-template-columns: repeat(4, 1fr); }
+        .learn-grid { grid-template-columns: 1fr; }
+        .lesson-main { padding: 20px 12px; }
+    }
+</style>
+
+@code {
+    private enum TrainingStage
+    {
+        Learn,
+        Guided,
+        Fill,
+        Predict,
+        Debug,
+        Recall,
+        Transfer,
+        Complete
+    }
+
+    private sealed record Lesson(
+        string Chapter,
+        string Topic,
+        string Title,
+        string Teaching,
+        string ExampleCode,
+        string TargetCode,
+        string FillStarter,
+        string PredictionQuestion,
+        string[] PredictionOptions,
+        int PredictionCorrect,
+        string PredictionExplanation,
+        string BrokenCode,
+        string DebugPrompt,
+        string RecallPrompt,
+        string TransferPrompt,
+        string TransferCode,
+        string PreviewMessage
+    );
+
+    private sealed class PreviewState
+    {
+        public string Name { get; set; } = "—";
+        public int Health { get; set; }
+        public int Stone { get; set; }
+        public bool HasPickaxe { get; set; }
+        public double Speed { get; set; }
+        public int X { get; set; } = 1;
+        public int Y { get; set; } = 1;
+        public int Rocks { get; set; }
+        public int Slimes { get; set; }
+        public int SlimeHealth { get; set; }
+        public string Inventory { get; set; } = "Empty";
+        public string Status { get; set; } = "Complete the current training stage.";
+    }
+
+    private static readonly List<Lesson> Lessons = new()
+    {
+        new Lesson(
+            "Chapter 1 · Foundations",
+            "Variables",
+            "Store Player Health",
+            "A variable is a named container. The int type stores whole numbers, which makes it a good fit for health.",
+            "int torchCount = 4;",
+            "int playerHealth = 100;",
+            "int playerHealth = ___;",
+            "Which part tells C# to store a whole number?",
+            new[] { "int", "playerHealth", "100", ";" },
+            0,
+            "int is the data type for whole numbers.",
+            "int playerHealth = \"100\";",
+            "The value is inside quotation marks, which makes it text instead of a number.",
+            "From memory, create playerHealth with a starting value of 100.",
+            "Create enemyHealth as a whole number starting at 30.",
+            "int enemyHealth = 30;",
+            "The player now begins with 100 health."
+        ),
+        new Lesson(
+            "Chapter 1 · Foundations",
+            "Variables",
+            "Count Collected Stone",
+            "Use another int when the game must remember a count. Good variable names describe exactly what is being counted.",
+            "int berryCount = 2;",
+            "int stoneCount = 0;",
+            "int stoneCount = ___;",
+            "Why does stoneCount start at 0?",
+            new[] { "No stone has been collected yet", "0 means text", "Every int must start at 0", "It creates a comment" },
+            0,
+            "A new player has not collected stone yet, so the starting count is zero.",
+            "int stoneCount = 0",
+            "Every C# statement needs a semicolon at the end.",
+            "From memory, create stoneCount and start it at zero.",
+            "Create torchCount and start it at 4.",
+            "int torchCount = 4;",
+            "The stone counter is now part of the game state."
+        ),
+        new Lesson(
+            "Chapter 1 · Foundations",
+            "Text",
+            "Store the Player Name",
+            "The string type stores text. Text values must be surrounded by double quotation marks.",
+            "string caveName = \"Deep Hollow\";",
+            "string playerName = \"Miner\";",
+            "string playerName = \"___\";",
+            "Which marks make Miner a string value?",
+            new[] { "Double quotation marks", "Parentheses", "Braces", "A semicolon" },
+            0,
+            "Double quotation marks tell C# that \"Miner\" is text.",
+            "string playerName = Miner;",
+            "Miner needs quotation marks because it is text, not another variable name.",
+            "From memory, store the player name \"Miner\".",
+            "Create worldName with the text \"Deep Hollow\".",
+            "string worldName = \"Deep Hollow\";",
+            "The explorer now has a visible name."
+        ),
+        new Lesson(
+            "Chapter 1 · Foundations",
+            "Booleans",
+            "Remember Whether a Pickaxe Exists",
+            "A bool stores one of two values: true or false. Booleans are useful for yes-or-no game state.",
+            "bool doorOpen = false;",
+            "bool hasPickaxe = true;",
+            "bool hasPickaxe = ___;",
+            "What values can a bool store?",
+            new[] { "true or false", "Any whole number", "Only text", "A list of items" },
+            0,
+            "A bool represents a yes-or-no state with true or false.",
+            "bool hasPickaxe = \"true\";",
+            "true is a Boolean keyword, so it should not have quotation marks.",
+            "From memory, record that the player has a pickaxe.",
+            "Create doorOpen and set it to false.",
+            "bool doorOpen = false;",
+            "The player can now carry a pickaxe state."
+        ),
+        new Lesson(
+            "Chapter 1 · Foundations",
+            "Decimals",
+            "Store Movement Speed",
+            "The double type stores numbers with decimal places. Movement speed often needs more precision than a whole number.",
+            "double attackDelay = 0.75;",
+            "double moveSpeed = 2.5;",
+            "double moveSpeed = ___;",
+            "Why use double instead of int?",
+            new[] { "The value contains a decimal", "The value is text", "The value is true", "The name is long" },
+            0,
+            "An int cannot represent 2.5, but a double can.",
+            "int moveSpeed = 2.5;",
+            "The variable is declared as int even though the value contains a decimal.",
+            "From memory, create moveSpeed with the value 2.5.",
+            "Create attackCooldown with the value 0.75.",
+            "double attackCooldown = 0.75;",
+            "Movement speed is now represented with decimal precision."
+        ),
+        new Lesson(
+            "Chapter 1 · Foundations",
+            "Assignment",
+            "Change an Existing Value",
+            "After a variable exists, assign a new value without writing the data type again.",
+            "int health = 100;\nhealth = 80;",
+            "playerHealth = 80;",
+            "playerHealth = ___;",
+            "Why is int omitted here?",
+            new[] { "playerHealth was already declared", "int is optional everywhere", "80 is text", "The line is a comment" },
+            0,
+            "The variable already has a type, so this line only changes its value.",
+            "int playerHealth = 100;\nint playerHealth = 80;",
+            "The second line incorrectly declares the same local variable again.",
+            "From memory, change playerHealth to 80.",
+            "Change stoneCount to 12.",
+            "stoneCount = 12;",
+            "The preview can now show changing health."
+        ),
+        new Lesson(
+            "Chapter 1 · Foundations",
+            "Operators",
+            "Add Collected Resources",
+            "The += operator adds a value to a variable and stores the new result back in the same variable.",
+            "coinCount += 2;",
+            "stoneCount += 3;",
+            "stoneCount __ 3;",
+            "What does += do?",
+            new[] { "Adds and stores the result", "Compares two values", "Creates a string", "Ends a method" },
+            0,
+            "stoneCount += 3 is a shorter form of stoneCount = stoneCount + 3.",
+            "stoneCount =+ 3;",
+            "The operator is reversed. Compound addition is written +=, not =+.",
+            "From memory, add 3 to stoneCount.",
+            "Subtract 10 from playerHealth with compound assignment.",
+            "playerHealth -= 10;",
+            "Collected stone can now increase."
+        ),
+        new Lesson(
+            "Chapter 1 · Foundations",
+            "Challenge",
+            "Foundation Challenge",
+            "Combine several variable types to describe the player with health, resources, a name, and equipment.",
+            "int health = 100;\nstring name = \"Miner\";\nbool ready = true;",
+            "int playerHealth = 100;\nint stoneCount = 0;\nstring playerName = \"Miner\";\nbool hasPickaxe = true;",
+            "int playerHealth = ___;\nint stoneCount = ___;\nstring playerName = \"___\";\nbool hasPickaxe = ___;",
+            "Which variable stores a yes-or-no state?",
+            new[] { "hasPickaxe", "playerHealth", "stoneCount", "playerName" },
+            0,
+            "hasPickaxe uses bool, which stores true or false.",
+            "int playerHealth = 100\nint stoneCount = \"0\";\nstring playerName = Miner;\nbool hasPickaxe = \"true\";",
+            "Repair the missing semicolon and the incorrect types or quotation marks.",
+            "Rebuild all four player variables from memory.",
+            "Create enemyHealth, enemyName, and enemyActive with sensible starting values.",
+            "int enemyHealth = 30;\nstring enemyName = \"Slime\";\nbool enemyActive = true;",
+            "The complete foundation state is ready."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions",
+            "Comparison",
+            "Compare Player Health",
+            "Comparison operators produce a bool. The > operator asks whether the value on the left is greater than the value on the right.",
+            "bool hasStone = stoneCount > 0;",
+            "bool isAlive = playerHealth > 0;",
+            "bool isAlive = playerHealth __ 0;",
+            "What is the result type of playerHealth > 0?",
+            new[] { "bool", "int", "string", "double" },
+            0,
+            "Comparisons answer true or false, so their result is a bool.",
+            "bool isAlive = playerHealth = 0;",
+            "A single equals sign assigns a value. Use > to test whether health is above zero.",
+            "Create isAlive by checking whether playerHealth is greater than zero.",
+            "Create hasStone by checking whether stoneCount is greater than zero.",
+            "bool hasStone = stoneCount > 0;",
+            "The game can now determine whether the player is alive."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions",
+            "Equality",
+            "Check the Pickaxe State",
+            "The == operator compares two values. It is different from =, which assigns a value.",
+            "bool atExit = playerX == 9;",
+            "bool canMine = hasPickaxe == true;",
+            "bool canMine = hasPickaxe __ true;",
+            "Which operator compares for equality?",
+            new[] { "==", "=", "+=", "!=" },
+            0,
+            "Use == to compare values without changing them.",
+            "bool canMine = hasPickaxe = true;",
+            "The line assigns true instead of comparing. Replace = with ==.",
+            "Create canMine by comparing hasPickaxe with true.",
+            "Create isEmpty by checking whether stoneCount equals zero.",
+            "bool isEmpty = stoneCount == 0;",
+            "Mining permission can now depend on equipment."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions",
+            "If statements",
+            "Run Code Only When Allowed",
+            "An if statement runs its block only when the condition inside parentheses is true.",
+            "if (doorOpen)\n{\n    Console.WriteLine(\"Enter\");\n}",
+            "if (canMine)\n{\n    stoneCount += 1;\n}",
+            "if (___)\n{\n    stoneCount += 1;\n}",
+            "When does the code inside an if block run?",
+            new[] { "When its condition is true", "Every frame", "Only when the condition is false", "Before variables exist" },
+            0,
+            "The condition controls whether the block executes.",
+            "if canMine\n{\n    stoneCount += 1;\n}",
+            "An if condition must be placed inside parentheses.",
+            "Write an if statement that adds one stone when canMine is true.",
+            "Write an if statement that subtracts 10 health when touchingLava is true.",
+            "if (touchingLava)\n{\n    playerHealth -= 10;\n}",
+            "The game can now make a conditional mining decision."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions",
+            "Else",
+            "Provide a Fallback Path",
+            "An else block runs when the preceding if condition is false.",
+            "if (isAlive)\n{\n    status = \"Exploring\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
+            "if (hasPickaxe)\n{\n    status = \"Ready to mine\";\n}\nelse\n{\n    status = \"Find a pickaxe\";\n}",
+            "if (hasPickaxe)\n{\n    status = \"Ready to mine\";\n}\n___\n{\n    status = \"Find a pickaxe\";\n}",
+            "When does else run?",
+            new[] { "When the if condition is false", "When the if condition is true", "Before the if block", "Only inside a loop" },
+            0,
+            "else provides the alternative path when the if condition fails.",
+            "if (hasPickaxe)\n{\n    status = \"Ready\";\n}\nif\n{\n    status = \"Find a pickaxe\";\n}",
+            "The fallback block should use else, not a second if without a condition.",
+            "Write the pickaxe if/else decision from memory.",
+            "Show Safe when isAlive is true, otherwise show Defeated.",
+            "if (isAlive)\n{\n    status = \"Safe\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
+            "The game now has a fallback path."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions",
+            "Else if",
+            "Create Multiple Health States",
+            "Use else if to test another condition when the first condition is false.",
+            "if (score >= 100)\n{\n    rank = \"Gold\";\n}\nelse if (score >= 50)\n{\n    rank = \"Silver\";\n}",
+            "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse if (playerHealth > 0)\n{\n    status = \"Hurt\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
+            "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse if (playerHealth __ 0)\n{\n    status = \"Hurt\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
+            "Why is the Hurt condition checked second?",
+            new[] { "Healthy players were already handled", "else if always runs first", "Health is text", "The final else requires it" },
+            0,
+            "Once the first condition succeeds, the remaining branches are skipped.",
+            "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse (playerHealth > 0)\n{\n    status = \"Hurt\";\n}",
+            "A conditional fallback branch is written else if, not else followed by parentheses.",
+            "Recreate the Healthy, Hurt, and Defeated branches.",
+            "Create Full, Low, and Empty states for torchCount.",
+            "if (torchCount >= 5)\n{\n    status = \"Full\";\n}\nelse if (torchCount > 0)\n{\n    status = \"Low\";\n}\nelse\n{\n    status = \"Empty\";\n}",
+            "Health can now produce three distinct states."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions",
+            "Logical AND",
+            "Require Two Conditions",
+            "The && operator means AND. Both conditions must be true for the complete expression to be true.",
+            "bool canOpen = hasKey && atDoor;",
+            "bool safeToMine = hasPickaxe && isAlive;",
+            "bool safeToMine = hasPickaxe __ isAlive;",
+            "When is A && B true?",
+            new[] { "Only when both are true", "When either one is true", "Only when both are false", "Whenever A is a number" },
+            0,
+            "AND requires every connected condition to be true.",
+            "bool safeToMine = hasPickaxe & isAlive;",
+            "Boolean AND uses two ampersands: &&.",
+            "Create safeToMine using hasPickaxe AND isAlive.",
+            "Create canEnter using hasKey AND doorOpen.",
+            "bool canEnter = hasKey && doorOpen;",
+            "Mining can now require both equipment and survival."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions",
+            "Logical OR",
+            "Allow Either Condition",
+            "The || operator means OR. The expression is true when at least one connected condition is true.",
+            "bool canHeal = hasPotion || nearCampfire;",
+            "bool hasLight = hasTorch || nearCore;",
+            "bool hasLight = hasTorch __ nearCore;",
+            "When is A || B true?",
+            new[] { "When at least one is true", "Only when both are true", "Only when both are false", "Never" },
+            0,
+            "OR accepts either condition, including the case where both are true.",
+            "bool hasLight = hasTorch | nearCore;",
+            "Boolean OR uses two vertical bars: ||.",
+            "Create hasLight using hasTorch OR nearCore.",
+            "Create canHeal using hasPotion OR nearCampfire.",
+            "bool canHeal = hasPotion || nearCampfire;",
+            "The game can accept alternate ways to satisfy a rule."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions",
+            "Challenge",
+            "Decision Challenge: Mining Permission",
+            "Combine comparisons, logical operators, and an if/else statement to create a complete rule.",
+            "bool allowed = hasTool && energy > 0;\nif (allowed)\n{\n    status = \"Working\";\n}",
+            "bool canMine = hasPickaxe && playerHealth > 0;\nif (canMine)\n{\n    stoneCount += 1;\n}\nelse\n{\n    status = \"Mining blocked\";\n}",
+            "bool canMine = hasPickaxe __ playerHealth > 0;\nif (___)\n{\n    stoneCount += 1;\n}\nelse\n{\n    status = \"Mining blocked\";\n}",
+            "Which two requirements are combined?",
+            new[] { "A pickaxe and positive health", "Stone and a name", "Speed and a string", "Two else blocks" },
+            0,
+            "The rule requires hasPickaxe to be true and health to remain above zero.",
+            "bool canMine = hasPickaxe || playerHealth = 0;\nif canMine\n{\n    stoneCount += 1\n}",
+            "Repair the logical operator, comparison, parentheses, and missing semicolon.",
+            "Rebuild the complete mining permission rule.",
+            "Create canFight from hasWeapon and playerHealth > 0, then set status accordingly.",
+            "bool canFight = hasWeapon && playerHealth > 0;\nif (canFight)\n{\n    status = \"Battle ready\";\n}\nelse\n{\n    status = \"Cannot fight\";\n}",
+            "The first complete gameplay rule is active."
+        ),
+        new Lesson(
+            "Chapter 3 · Methods and Movement",
+            "Methods",
+            "Create a Reusable Method",
+            "A method gives a named block of code one job. Calling the method runs that job.",
+            "void ShowMap()\n{\n    Console.WriteLine(\"Map opened\");\n}",
+            "void ShowMessage()\n{\n    Console.WriteLine(\"Ready!\");\n}",
+            "void ShowMessage()\n{\n    Console.WriteLine(___);\n}",
+            "What does void mean here?",
+            new[] { "The method returns no value", "The method is empty forever", "The method stores text", "The method is private" },
+            0,
+            "void means the method performs work without returning a result.",
+            "void ShowMessage\n{\n    Console.WriteLine(\"Ready!\");\n}",
+            "A method declaration needs parentheses after its name.",
+            "Write ShowMessage from memory.",
+            "Create ShowInventory that prints \"Inventory opened\".",
+            "void ShowInventory()\n{\n    Console.WriteLine(\"Inventory opened\");\n}",
+            "The project now contains a reusable method."
+        ),
+        new Lesson(
+            "Chapter 3 · Methods and Movement",
+            "Parameters",
+            "Pass Information Into a Method",
+            "A parameter is an input variable declared inside a method's parentheses.",
+            "void Heal(int amount)\n{\n    playerHealth += amount;\n}",
+            "void AddStone(int amount)\n{\n    stoneCount += amount;\n}",
+            "void AddStone(int ___)\n{\n    stoneCount += ___;\n}",
+            "What is amount inside AddStone?",
+            new[] { "A parameter", "A class", "A string literal", "A loop" },
+            0,
+            "The caller supplies a value, and the method receives it through the amount parameter.",
+            "void AddStone(amount)\n{\n    stoneCount += amount;\n}",
+            "A parameter declaration needs a data type before its name.",
+            "Write AddStone with an int amount parameter.",
+            "Create TakeDamage with an int amount parameter.",
+            "void TakeDamage(int amount)\n{\n    playerHealth -= amount;\n}",
+            "Methods can now receive values."
+        ),
+        new Lesson(
+            "Chapter 3 · Methods and Movement",
+            "Return values",
+            "Return a Result",
+            "A method with a non-void return type sends a value back to the code that called it.",
+            "int Double(int value)\n{\n    return value * 2;\n}",
+            "bool IsAlive(int health)\n{\n    return health > 0;\n}",
+            "bool IsAlive(int health)\n{\n    return health __ 0;\n}",
+            "What type must IsAlive return?",
+            new[] { "bool", "int", "string", "void" },
+            0,
+            "The method declaration begins with bool, so every return path must provide true or false.",
+            "bool IsAlive(int health)\n{\n    health > 0;\n}",
+            "The comparison is calculated but never returned. Add the return keyword.",
+            "Write IsAlive from memory.",
+            "Create HasStone that returns whether count is greater than zero.",
+            "bool HasStone(int count)\n{\n    return count > 0;\n}",
+            "Game rules can now return answers."
+        ),
+        new Lesson(
+            "Chapter 3 · Methods and Movement",
+            "Coordinates",
+            "Track Horizontal Position",
+            "A grid position uses coordinates. X usually controls left and right movement.",
+            "int enemyX = 5;",
+            "int playerX = 1;",
+            "int playerX = ___;",
+            "Which direction usually changes X?",
+            new[] { "Left and right", "Up and down", "Health and damage", "Text and numbers" },
+            0,
+            "Increasing or decreasing X moves horizontally across a grid.",
+            "string playerX = 1;",
+            "Coordinates are whole numbers here, so playerX should use int.",
+            "Create playerX starting at 1.",
+            "Create enemyX starting at 5.",
+            "int enemyX = 5;",
+            "The player now has a horizontal grid coordinate."
+        ),
+        new Lesson(
+            "Chapter 3 · Methods and Movement",
+            "Coordinates",
+            "Track Vertical Position",
+            "Y usually controls up and down movement on a two-dimensional grid.",
+            "int enemyY = 3;",
+            "int playerY = 1;",
+            "int playerY = ___;",
+            "Which direction usually changes Y?",
+            new[] { "Up and down", "Left and right", "Inventory size", "Player name" },
+            0,
+            "Y identifies the vertical row on the map.",
+            "double playerY = \"1\";",
+            "The coordinate should be an int, and the number should not be in quotation marks.",
+            "Create playerY starting at 1.",
+            "Create enemyY starting at 3.",
+            "int enemyY = 3;",
+            "The player now has a complete grid position."
+        ),
+        new Lesson(
+            "Chapter 3 · Methods and Movement",
+            "Movement",
+            "Move One Tile Right",
+            "Moving right on a grid usually increases X by one.",
+            "void MoveLeft()\n{\n    playerX--;\n}",
+            "void MoveRight()\n{\n    playerX++;\n}",
+            "void MoveRight()\n{\n    playerX___;\n}",
+            "What does playerX++ do?",
+            new[] { "Adds one to playerX", "Subtracts one", "Sets X to zero", "Compares X" },
+            0,
+            "The ++ operator increases a numeric variable by one.",
+            "void MoveRight()\n{\n    playerX--;\n}",
+            "The method is moving in the wrong direction. Right should increase X.",
+            "Write MoveRight from memory.",
+            "Create MoveDown by increasing playerY.",
+            "void MoveDown()\n{\n    playerY++;\n}",
+            "The player can move horizontally."
+        ),
+        new Lesson(
+            "Chapter 3 · Methods and Movement",
+            "Boundaries",
+            "Keep the Player Inside the Cave",
+            "A boundary check prevents movement when the next position would leave the map.",
+            "if (playerX > 0)\n{\n    playerX--;\n}",
+            "if (playerX < 9)\n{\n    playerX++;\n}",
+            "if (playerX __ 9)\n{\n    playerX++;\n}",
+            "Why compare playerX with 9?",
+            new[] { "9 is the last allowed column", "9 is player health", "Every map has 9 rocks", "It creates a loop" },
+            0,
+            "The check allows movement only while X is below the rightmost column.",
+            "if (playerX > 9)\n{\n    playerX++;\n}",
+            "The comparison points the wrong way. Movement is allowed while X is less than 9.",
+            "Write the right boundary check from memory.",
+            "Prevent upward movement unless playerY is greater than zero.",
+            "if (playerY > 0)\n{\n    playerY--;\n}",
+            "Movement now respects a map boundary."
+        ),
+        new Lesson(
+            "Chapter 3 · Methods and Movement",
+            "Challenge",
+            "Movement Challenge: WASD",
+            "Combine a parameter, if/else-if branches, and coordinate changes to interpret keyboard commands.",
+            "void Move(string key)\n{\n    if (key == \"d\")\n    {\n        playerX++;\n    }\n}",
+            "void Move(string key)\n{\n    if (key == \"w\")\n    {\n        playerY--;\n    }\n    else if (key == \"s\")\n    {\n        playerY++;\n    }\n    else if (key == \"a\")\n    {\n        playerX--;\n    }\n    else if (key == \"d\")\n    {\n        playerX++;\n    }\n}",
+            "void Move(string key)\n{\n    if (key == \"w\")\n    {\n        playerY___;\n    }\n    else if (key == \"s\")\n    {\n        playerY___;\n    }\n    else if (key == \"a\")\n    {\n        playerX___;\n    }\n    else if (key == \"d\")\n    {\n        playerX___;\n    }\n}",
+            "Which coordinate changes for W and S?",
+            new[] { "playerY", "playerX", "playerHealth", "stoneCount" },
+            0,
+            "W and S move vertically, so they modify Y.",
+            "void Move(string key)\n{\n    if (key = \"w\")\n    {\n        playerX++;\n    }\n}",
+            "Repair the equality operator and change the correct coordinate in the correct direction.",
+            "Rebuild the complete WASD movement method.",
+            "Create a two-direction MoveEnemy method using left and right commands.",
+            "void MoveEnemy(string key)\n{\n    if (key == \"a\")\n    {\n        enemyX--;\n    }\n    else if (key == \"d\")\n    {\n        enemyX++;\n    }\n}",
+            "The movement system now understands WASD-style commands."
+        ),
+        new Lesson(
+            "Chapter 4 · Collections and World",
+            "Arrays",
+            "Create a Fixed Inventory",
+            "An array stores several values of the same type. Its size is fixed after creation.",
+            "int[] damageValues = { 5, 10, 15 };",
+            "string[] inventory = { \"Stone\", \"Wood\" };",
+            "string[] inventory = { \"___\", \"___\" };",
+            "What does [] indicate?",
+            new[] { "An array", "A method", "A comment", "A bool" },
+            0,
+            "Square brackets after a type indicate an array of that type.",
+            "string inventory = { \"Stone\", \"Wood\" };",
+            "The declaration needs [] because it stores multiple string values.",
+            "Create the Stone and Wood inventory array from memory.",
+            "Create an int array containing 5, 10, and 15.",
+            "int[] damageValues = { 5, 10, 15 };",
+            "The preview now has a basic inventory."
+        ),
+        new Lesson(
+            "Chapter 4 · Collections and World",
+            "Lists",
+            "Create a Flexible Rock List",
+            "A List can grow and shrink while the game runs, making it useful for world objects.",
+            "List<string> enemies = new();",
+            "List<string> rocks = new();",
+            "List<string> rocks = ___;",
+            "Why use a List for rocks?",
+            new[] { "Rocks can be added and removed", "A List stores only one item", "Lists cannot change", "It automatically mines rocks" },
+            0,
+            "A List supports adding and removing elements during play.",
+            "List rocks = new();",
+            "A generic List needs the element type inside angle brackets.",
+            "Create an empty List of string values named rocks.",
+            "Create an empty List of string values named enemies.",
+            "List<string> enemies = new();",
+            "The cave can now track a flexible collection of rocks."
+        ),
+        new Lesson(
+            "Chapter 4 · Collections and World",
+            "List methods",
+            "Add a Rock",
+            "The Add method appends one new element to a List.",
+            "enemies.Add(\"Slime\");",
+            "rocks.Add(\"Tin\");",
+            "rocks.___(\"Tin\");",
+            "What changes after Add runs?",
+            new[] { "The List contains one more item", "The List is deleted", "Every item changes type", "The method returns health" },
+            0,
+            "Add appends the supplied value to the collection.",
+            "rocks.Add(Tin);",
+            "Tin is text, so it needs quotation marks.",
+            "Add \"Tin\" to rocks from memory.",
+            "Add \"Slime\" to enemies.",
+            "enemies.Add(\"Slime\");",
+            "A new rock can be inserted into the world collection."
+        ),
+        new Lesson(
+            "Chapter 4 · Collections and World",
+            "List methods",
+            "Remove a Mined Rock",
+            "The Remove method deletes the first matching value from a List.",
+            "enemies.Remove(\"Slime\");",
+            "rocks.Remove(\"Stone\");",
+            "rocks.___(\"Stone\");",
+            "What should happen after a rock is mined?",
+            new[] { "Remove it from the rock list", "Add a duplicate", "Change it to a bool", "Rename the player" },
+            0,
+            "Removing the collected rock keeps the world state accurate.",
+            "rocks.Delete(\"Stone\");",
+            "List<T> uses Remove, not Delete, to remove a matching value.",
+            "Remove \"Stone\" from rocks from memory.",
+            "Remove \"Slime\" from enemies.",
+            "enemies.Remove(\"Slime\");",
+            "Mined rocks can now disappear from the collection."
+        ),
+        new Lesson(
+            "Chapter 4 · Collections and World",
+            "Foreach loops",
+            "Visit Every Rock",
+            "A foreach loop runs once for every element in a collection.",
+            "foreach (string enemy in enemies)\n{\n    Console.WriteLine(enemy);\n}",
+            "foreach (string rock in rocks)\n{\n    Console.WriteLine(rock);\n}",
+            "foreach (string ___ in rocks)\n{\n    Console.WriteLine(___);\n}",
+            "How many times does the loop run?",
+            new[] { "Once per item in rocks", "Exactly once", "Forever", "Only when rocks is text" },
+            0,
+            "foreach automatically visits each element in the collection.",
+            "foreach (rocks)\n{\n    Console.WriteLine(rock);\n}",
+            "The loop header needs an element type and a temporary variable name.",
+            "Write the rock foreach loop from memory.",
+            "Print every enemy in enemies.",
+            "foreach (string enemy in enemies)\n{\n    Console.WriteLine(enemy);\n}",
+            "The renderer can now visit every rock."
+        ),
+        new Lesson(
+            "Chapter 4 · Collections and World",
+            "For loops",
+            "Repeat With an Index",
+            "A for loop combines a starting value, a continuation condition, and an update.",
+            "for (int i = 0; i < 3; i++)\n{\n    Console.WriteLine(i);\n}",
+            "for (int i = 0; i < rocks.Count; i++)\n{\n    Console.WriteLine(rocks[i]);\n}",
+            "for (int i = 0; i < rocks.___; i++)\n{\n    Console.WriteLine(rocks[i]);\n}",
+            "What does i++ do after each pass?",
+            new[] { "Increases i by one", "Resets i to zero", "Adds a rock", "Ends the program" },
+            0,
+            "The index advances so the loop can visit the next element.",
+            "for (int i = 0; i > rocks.Count; i++)\n{\n    Console.WriteLine(rocks[i]);\n}",
+            "Starting at zero, i must remain less than Count to enter the loop.",
+            "Write the indexed rock loop from memory.",
+            "Print every inventory item with a for loop.",
+            "for (int i = 0; i < inventory.Length; i++)\n{\n    Console.WriteLine(inventory[i]);\n}",
+            "Indexed repetition is now available."
+        ),
+        new Lesson(
+            "Chapter 4 · Collections and World",
+            "2D arrays",
+            "Create the Cave Grid",
+            "A two-dimensional array stores values in rows and columns. It can represent a tile map.",
+            "int[,] room = new int[4, 6];",
+            "int[,] cave = new int[8, 10];",
+            "int[,] cave = new int[___, ___];",
+            "What do 8 and 10 represent?",
+            new[] { "Rows and columns", "Health and stone", "Two strings", "Method parameters only" },
+            0,
+            "The dimensions define the grid's height and width.",
+            "int[] cave = new int[8, 10];",
+            "A two-dimensional array needs a comma inside both bracket pairs.",
+            "Create the 8 by 10 cave grid from memory.",
+            "Create a 4 by 6 room grid.",
+            "int[,] room = new int[4, 6];",
+            "The world now has an explicit tile grid."
+        ),
+        new Lesson(
+            "Chapter 4 · Collections and World",
+            "Challenge",
+            "World Challenge: Mine a Rock",
+            "Combine a List check, removal, and resource reward into one reusable method.",
+            "void Collect(string item)\n{\n    if (items.Contains(item))\n    {\n        items.Remove(item);\n    }\n}",
+            "void MineRock(string rock)\n{\n    if (rocks.Contains(rock))\n    {\n        rocks.Remove(rock);\n        stoneCount++;\n    }\n}",
+            "void MineRock(string rock)\n{\n    if (rocks.___(rock))\n    {\n        rocks.___(rock);\n        stoneCount___;\n    }\n}",
+            "Why call Contains before Remove?",
+            new[] { "To verify the rock exists", "To create a new List", "To change the player name", "To start a loop" },
+            0,
+            "The check prevents rewarding a rock that was not present.",
+            "void MineRock(string rock)\n{\n    if (rocks.Contains(rock))\n    {\n        rocks.Add(rock);\n        stoneCount--;\n    }\n}",
+            "Mining should remove the rock and increase the collected resource count.",
+            "Rebuild MineRock from memory.",
+            "Create DefeatEnemy that removes an enemy and adds one coin.",
+            "void DefeatEnemy(string enemy)\n{\n    if (enemies.Contains(enemy))\n    {\n        enemies.Remove(enemy);\n        coinCount++;\n    }\n}",
+            "The world collection and inventory reward now work together."
+        ),
+        new Lesson(
+            "Chapter 5 · Objects and Combat",
+            "Classes",
+            "Define a Player Class",
+            "A class is a blueprint for objects. It groups related data and behavior under one type.",
+            "class Item\n{\n}",
+            "class Player\n{\n}",
+            "class ___\n{\n}",
+            "What is a class?",
+            new[] { "A blueprint for objects", "One specific object", "A comparison operator", "A comment" },
+            0,
+            "The class describes what future Player objects can contain and do.",
+            "Player class\n{\n}",
+            "C# class declarations begin with the class keyword followed by the type name.",
+            "Define an empty Player class from memory.",
+            "Define an empty Slime class.",
+            "class Slime\n{\n}",
+            "The player now has an object-oriented blueprint."
+        ),
+        new Lesson(
+            "Chapter 5 · Objects and Combat",
+            "Properties",
+            "Add Player Properties",
+            "Properties expose data on an object. Auto-properties use get and set to read and change values.",
+            "public int Value { get; set; }",
+            "class Player\n{\n    public string Name { get; set; }\n    public int Health { get; set; }\n}",
+            "class Player\n{\n    public string ___ { get; set; }\n    public int ___ { get; set; }\n}",
+            "What does get allow?",
+            new[] { "Reading the property", "Deleting the class", "Starting a loop", "Comparing strings" },
+            0,
+            "get returns the property's current value; set allows assignment.",
+            "class Player\n{\n    string Name\n    int Health\n}",
+            "Add public auto-property syntax, including braces, get, set, and semicolons.",
+            "Add Name and Health properties to Player.",
+            "Create a Slime class with an int Health property.",
+            "class Slime\n{\n    public int Health { get; set; }\n}",
+            "Player objects can now carry name and health properties."
+        ),
+        new Lesson(
+            "Chapter 5 · Objects and Combat",
+            "Constructors",
+            "Initialize New Players",
+            "A constructor runs when an object is created. It usually assigns required starting values.",
+            "public Item(string name)\n{\n    Name = name;\n}",
+            "public Player(string name)\n{\n    Name = name;\n    Health = 100;\n}",
+            "public Player(string ___)\n{\n    Name = ___;\n    Health = ___;\n}",
+            "When does a constructor run?",
+            new[] { "When a new object is created", "Only when a loop ends", "Whenever health changes", "Before the class exists" },
+            0,
+            "The new expression invokes the matching constructor.",
+            "public void Player(string name)\n{\n    Name = name;\n    Health = 100;\n}",
+            "Constructors have no return type, not even void.",
+            "Write the Player constructor from memory.",
+            "Create a Slime constructor that sets Health to 30.",
+            "public Slime()\n{\n    Health = 30;\n}",
+            "New players can now initialize themselves."
+        ),
+        new Lesson(
+            "Chapter 5 · Objects and Combat",
+            "Objects",
+            "Create a Player Object",
+            "The new keyword creates an object from a class blueprint and calls its constructor.",
+            "Item potion = new Item(\"Potion\");",
+            "Player miner = new Player(\"Miner\");",
+            "Player miner = new Player(\"___\");",
+            "What does new do?",
+            new[] { "Creates an object", "Compares two objects", "Ends a class", "Starts a comment" },
+            0,
+            "new allocates and initializes an instance of the class.",
+            "Player miner = Player(\"Miner\");",
+            "Object construction requires the new keyword before the constructor call.",
+            "Create a Player object named miner with the name \"Miner\".",
+            "Create a Slime object named slime.",
+            "Slime slime = new Slime();",
+            "A real Player instance is now spawned."
+        ),
+        new Lesson(
+            "Chapter 5 · Objects and Combat",
+            "Enemy state",
+            "Create Slime Health",
+            "Enemies can use the same variable and property patterns as the player.",
+            "int batHealth = 20;",
+            "int slimeHealth = 30;",
+            "int slimeHealth = ___;",
+            "Why is slimeHealth an int?",
+            new[] { "Health is represented as a whole number", "Slime is text", "Health is always true", "int creates an object" },
+            0,
+            "Whole-number hit points are naturally represented with int.",
+            "bool slimeHealth = 30;",
+            "A bool cannot store 30. Use int.",
+            "Create slimeHealth starting at 30.",
+            "Create bossHealth starting at 200.",
+            "int bossHealth = 200;",
+            "A slime enemy now has health."
+        ),
+        new Lesson(
+            "Chapter 5 · Objects and Combat",
+            "Damage",
+            "Deal Damage",
+            "A damage method subtracts an amount while keeping the operation reusable.",
+            "void HurtPlayer(int damage)\n{\n    playerHealth -= damage;\n}",
+            "void DamageSlime(int damage)\n{\n    slimeHealth -= damage;\n}",
+            "void DamageSlime(int ___)\n{\n    slimeHealth -= ___;\n}",
+            "What happens when DamageSlime(10) runs?",
+            new[] { "slimeHealth decreases by 10", "slimeHealth becomes 10", "The slime name changes", "A List is created" },
+            0,
+            "Compound subtraction removes the supplied damage amount from current health.",
+            "void DamageSlime(int damage)\n{\n    slimeHealth += damage;\n}",
+            "Damage should subtract health, not add it.",
+            "Write DamageSlime from memory.",
+            "Create HealPlayer that adds an amount to playerHealth.",
+            "void HealPlayer(int amount)\n{\n    playerHealth += amount;\n}",
+            "The combat system can now reduce enemy health."
+        ),
+        new Lesson(
+            "Chapter 5 · Objects and Combat",
+            "Item objects",
+            "Model an Inventory Item",
+            "A small class can group an item's name and quantity into one meaningful object.",
+            "class Resource\n{\n    public string Name { get; set; }\n    public int Amount { get; set; }\n}",
+            "class Item\n{\n    public string Name { get; set; }\n    public int Quantity { get; set; }\n}",
+            "class Item\n{\n    public string ___ { get; set; }\n    public int ___ { get; set; }\n}",
+            "Why group Name and Quantity?",
+            new[] { "They describe one item together", "Classes can hold only one value", "It prevents all methods", "It changes int into string" },
+            0,
+            "The object keeps related item data together.",
+            "class Item\n{\n    public Name string { get; set; }\n    public Quantity int { get; set; }\n}",
+            "In property declarations, the data type comes before the property name.",
+            "Create the Item class with Name and Quantity.",
+            "Create a Weapon class with Name and Damage properties.",
+            "class Weapon\n{\n    public string Name { get; set; }\n    public int Damage { get; set; }\n}",
+            "Inventory entries can now become structured objects."
+        ),
+        new Lesson(
+            "Chapter 5 · Objects and Combat",
+            "Final challenge",
+            "Final Challenge: Defeat the Slime",
+            "Combine variables, a method, a condition, and rewards into a small combat result.",
+            "void Attack(int damage)\n{\n    enemyHealth -= damage;\n    if (enemyHealth <= 0)\n    {\n        coinCount += 1;\n    }\n}",
+            "void AttackSlime(int damage)\n{\n    slimeHealth -= damage;\n    if (slimeHealth <= 0)\n    {\n        stoneCount += 5;\n        status = \"Slime defeated\";\n    }\n}",
+            "void AttackSlime(int ___)\n{\n    slimeHealth -= ___;\n    if (slimeHealth __ 0)\n    {\n        stoneCount += ___;\n        status = \"___\";\n    }\n}",
+            "When is the reward granted?",
+            new[] { "When slimeHealth is zero or lower", "Every time the method is declared", "Only while the slime has full health", "Before damage is applied" },
+            0,
+            "The <= comparison detects defeat after damage has been subtracted.",
+            "void AttackSlime(int damage)\n{\n    slimeHealth += damage;\n    if (slimeHealth >= 0)\n    {\n        stoneCount -= 5;\n    }\n}",
+            "Repair the damage direction, defeat comparison, and reward direction.",
+            "Rebuild AttackSlime from memory.",
+            "Create AttackBoss that grants 20 coins when bossHealth reaches zero or less.",
+            "void AttackBoss(int damage)\n{\n    bossHealth -= damage;\n    if (bossHealth <= 0)\n    {\n        coinCount += 20;\n        status = \"Boss defeated\";\n    }\n}",
+            "The course ends with a complete combat-and-reward rule."
+        )
+    };
+
+    private int CurrentModuleIndex;
+    private TrainingStage CurrentStage = TrainingStage.Learn;
+    private int[] HighestCompletedStage = Array.Empty<int>();
+    private bool[] ModuleCompleted = Array.Empty<bool>();
+
+    private string StudentCode = "";
+    private string Feedback = "";
+    private bool HintVisible;
+    private bool StagePassed;
+    private int? SelectedPrediction;
+
+    private Lesson CurrentLesson => Lessons[CurrentModuleIndex];
+
+    protected override void OnInitialized()
+    {
+        HighestCompletedStage = Enumerable.Repeat(-1, Lessons.Count).ToArray();
+        ModuleCompleted = new bool[Lessons.Count];
+        PrepareStage();
+    }
+
+    private int CompletedModuleCount => ModuleCompleted.Count(completed => completed);
+
+    private int CourseProgress =>
+        Lessons.Count == 0 ? 0 : CompletedModuleCount * 100 / Lessons.Count;
+
+    private int ModuleMastery(int index)
+    {
+        if (ModuleCompleted[index])
+        {
+            return 100;
+        }
+
+        int completedStages = HighestCompletedStage[index] + 1;
+        return Math.Clamp(completedStages * 100 / 8, 0, 100);
+    }
+
+    private bool IsLessonUnlocked(int index) =>
+        index == 0 || ModuleCompleted[index - 1];
+
+    private bool IsStageUnlocked(TrainingStage stage)
+    {
+        if (ModuleCompleted[CurrentModuleIndex])
+        {
+            return true;
+        }
+
+        return (int)stage <= HighestCompletedStage[CurrentModuleIndex] + 1;
+    }
+
+    private bool IsStageComplete(TrainingStage stage) =>
+        ModuleCompleted[CurrentModuleIndex] ||
+        (int)stage <= HighestCompletedStage[CurrentModuleIndex];
+
+    private void SelectLesson(int index)
+    {
+        if (!IsLessonUnlocked(index))
+        {
+            return;
+        }
+
+        CurrentModuleIndex = index;
+        CurrentStage = ModuleCompleted[index]
+            ? TrainingStage.Complete
+            : (TrainingStage)Math.Clamp(HighestCompletedStage[index] + 1, 0, 7);
+
+        PrepareStage();
+    }
+
+    private void SelectStage(TrainingStage stage)
+    {
+        if (!IsStageUnlocked(stage))
+        {
+            return;
+        }
+
+        CurrentStage = stage;
+        PrepareStage();
+    }
+
+    private void PrepareStage()
+    {
+        Feedback = "";
+        HintVisible = false;
+        SelectedPrediction = null;
+
+        bool alreadyComplete =
+            ModuleCompleted[CurrentModuleIndex] ||
+            (int)CurrentStage <= HighestCompletedStage[CurrentModuleIndex];
+
+        StagePassed = alreadyComplete;
+
+        StudentCode = CurrentStage switch
+        {
+            TrainingStage.Guided => alreadyComplete ? CurrentLesson.TargetCode : "",
+            TrainingStage.Fill => alreadyComplete ? CurrentLesson.TargetCode : CurrentLesson.FillStarter,
+            TrainingStage.Debug => alreadyComplete ? CurrentLesson.TargetCode : CurrentLesson.BrokenCode,
+            TrainingStage.Recall => alreadyComplete ? CurrentLesson.TargetCode : "",
+            TrainingStage.Transfer => alreadyComplete ? CurrentLesson.TransferCode : "",
+            _ => ""
+        };
+    }
+
+    private string CurrentExpectedCode => CurrentStage switch
+    {
+        TrainingStage.Guided => CurrentLesson.TargetCode,
+        TrainingStage.Fill => CurrentLesson.TargetCode,
+        TrainingStage.Debug => CurrentLesson.TargetCode,
+        TrainingStage.Recall => CurrentLesson.TargetCode,
+        TrainingStage.Transfer => CurrentLesson.TransferCode,
+        _ => ""
+    };
+
+    private bool ShowTargetGuide =>
+        CurrentStage is TrainingStage.Guided or TrainingStage.Fill;
+
+    private int ErrorCount
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(CurrentExpectedCode))
+            {
+                return 0;
+            }
+
+            int errors = 0;
+
+            for (int index = 0; index < StudentCode.Length; index++)
+            {
+                if (index >= CurrentExpectedCode.Length ||
+                    StudentCode[index] != CurrentExpectedCode[index])
+                {
+                    errors++;
+                }
+            }
+
+            return errors;
+        }
+    }
+
+    private int Accuracy
+    {
+        get
+        {
+            if (StudentCode.Length == 0)
+            {
+                return 0;
+            }
+
+            int correct = Math.Max(0, StudentCode.Length - ErrorCount);
+            return correct * 100 / StudentCode.Length;
+        }
+    }
+
+    private string GetCharacterClass(int index)
+    {
+        if (index >= StudentCode.Length)
+        {
+            return index == StudentCode.Length
+                ? "character-current"
+                : "character-pending";
+        }
+
+        return StudentCode[index] == CurrentExpectedCode[index]
+            ? "character-correct"
+            : "character-wrong";
+    }
+
+    private void CompleteLearnStage()
+    {
+        MarkStageComplete();
+        AdvanceStage();
+    }
+
+    private void CheckCode()
+    {
+        HintVisible = false;
+
+        if (CodesMatch(StudentCode, CurrentExpectedCode))
+        {
+            StagePassed = true;
+            Feedback = CurrentStage switch
+            {
+                TrainingStage.Debug => "Correct repair. The broken code now matches the intended C#.",
+                TrainingStage.Recall => "Correct recall. You rebuilt the code without the visible guide.",
+                TrainingStage.Transfer => "Correct transfer. You applied the concept to a new situation.",
+                _ => "Correct. Every required part of the code is present."
+            };
+        }
+        else
+        {
+            StagePassed = false;
+            Feedback = CurrentStage switch
+            {
+                TrainingStage.Debug => "The bug is not fully repaired yet. Use the compiler clue and inspect each token.",
+                TrainingStage.Recall => "Not yet. Rebuild the same structure from memory, or reveal the hint.",
+                TrainingStage.Transfer => "The new scenario is close, but the code does not match the requested result.",
+                _ => "Not quite. Red characters differ from the target code."
+            };
+        }
+    }
+
+    private static bool CodesMatch(string actual, string expected)
+    {
+        string Normalize(string code) =>
+            Regex.Replace(code.Replace("\r\n", "\n").Trim(), @"\s+", " ");
+
+        return Normalize(actual) == Normalize(expected);
+    }
+
+    private void SelectPrediction(int index)
+    {
+        SelectedPrediction = index;
+
+        if (index == CurrentLesson.PredictionCorrect)
+        {
+            StagePassed = true;
+            Feedback = "Correct. " + CurrentLesson.PredictionExplanation;
+        }
+        else
+        {
+            StagePassed = false;
+            Feedback = "Not quite. Think about the exact C# rule demonstrated in the example.";
+        }
+    }
+
+    private string PredictionClass(int index)
+    {
+        if (!SelectedPrediction.HasValue)
+        {
+            return "";
+        }
+
+        if (index == CurrentLesson.PredictionCorrect)
+        {
+            return "correct";
+        }
+
+        return index == SelectedPrediction.Value ? "wrong" : "";
+    }
+
+    private void ShowHint()
+    {
+        HintVisible = true;
+    }
+
+    private void ResetStage()
+    {
+        PrepareStage();
+    }
+
+    private void AdvanceStage()
+    {
+        MarkStageComplete();
+
+        if ((int)CurrentStage < (int)TrainingStage.Complete)
+        {
+            CurrentStage = (TrainingStage)((int)CurrentStage + 1);
+            PrepareStage();
+        }
+    }
+
+    private void MarkStageComplete()
+    {
+        HighestCompletedStage[CurrentModuleIndex] = Math.Max(
+            HighestCompletedStage[CurrentModuleIndex],
+            (int)CurrentStage
+        );
+    }
+
+    private void FinishModule()
+    {
+        HighestCompletedStage[CurrentModuleIndex] = 7;
+        ModuleCompleted[CurrentModuleIndex] = true;
+
+        if (CurrentModuleIndex < Lessons.Count - 1)
+        {
+            CurrentModuleIndex++;
+            CurrentStage = TrainingStage.Learn;
+            PrepareStage();
+        }
+        else
+        {
+            Feedback = "Course complete. You built the full foundation from variables through combat.";
+            StagePassed = true;
+        }
+    }
+
+    private string StageLabel(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Learn => "Learn",
+        TrainingStage.Guided => "Guided",
+        TrainingStage.Fill => "Fill",
+        TrainingStage.Predict => "Predict",
+        TrainingStage.Debug => "Debug",
+        TrainingStage.Recall => "Recall",
+        TrainingStage.Transfer => "Transfer",
+        TrainingStage.Complete => "Complete",
+        _ => ""
+    };
+
+    private string StageHeading(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Learn => "Understand the idea before typing it",
+        TrainingStage.Guided => "Follow the code character by character",
+        TrainingStage.Fill => "Complete the missing pieces",
+        TrainingStage.Predict => "Decide what the code means",
+        TrainingStage.Debug => "Repair code that would fail or behave incorrectly",
+        TrainingStage.Recall => "Rebuild the core pattern from memory",
+        TrainingStage.Transfer => "Use the same idea in a new game situation",
+        TrainingStage.Complete => "Lock in the module",
+        _ => ""
+    };
+
+    private string SupportLabel(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Learn => "Full support",
+        TrainingStage.Guided => "Visible target",
+        TrainingStage.Fill => "Partial code",
+        TrainingStage.Predict => "No typing",
+        TrainingStage.Debug => "Compiler clue",
+        TrainingStage.Recall => "Target hidden",
+        TrainingStage.Transfer => "New context",
+        TrainingStage.Complete => "Mastery",
+        _ => ""
+    };
+
+    private string ExerciseTitle(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Guided => "Type the highlighted code exactly",
+        TrainingStage.Fill => "Replace the blanks",
+        TrainingStage.Debug => "Fix the broken code",
+        TrainingStage.Recall => "Write it without the target",
+        TrainingStage.Transfer => "Apply the pattern somewhere new",
+        _ => ""
+    };
+
+    private string ExercisePrompt(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Guided => "The target remains visible. Correct characters turn green and incorrect characters turn red.",
+        TrainingStage.Fill => "The editor begins with missing pieces. Replace every blank so the line becomes valid C#.",
+        TrainingStage.Debug => CurrentLesson.DebugPrompt,
+        TrainingStage.Recall => CurrentLesson.RecallPrompt,
+        TrainingStage.Transfer => CurrentLesson.TransferPrompt,
+        _ => ""
+    };
+
+    private string NextStageLabel()
+    {
+        TrainingStage next = (int)CurrentStage < (int)TrainingStage.Complete
+            ? (TrainingStage)((int)CurrentStage + 1)
+            : TrainingStage.Complete;
+
+        return StageLabel(next).ToLowerInvariant();
+    }
+
+    private IEnumerable<string> ConceptPoints(Lesson lesson)
+    {
+        yield return "Read the declaration from left to right: type, name, assignment, value, ending.";
+        yield return "C# is case-sensitive, so capitalization is part of the code.";
+        yield return "The game preview applies this module's result after you pass a stage.";
+    }
+
+    private PreviewState Preview
+    {
+        get
+        {
+            PreviewState state = new();
+
+            for (int index = 0; index < Lessons.Count; index++)
+            {
+                if (ModuleCompleted[index])
+                {
+                    ApplyPreviewEffect(state, index + 1);
+                }
+            }
+
+            if (!ModuleCompleted[CurrentModuleIndex] && StagePassed)
+            {
+                ApplyPreviewEffect(state, CurrentModuleIndex + 1);
+            }
+
+            return state;
+        }
+    }
+
+    private static void ApplyPreviewEffect(PreviewState state, int module)
+    {
+        switch (module)
+        {
+            case 1: state.Health = 100; break;
+            case 2: state.Stone = 0; break;
+            case 3: state.Name = "Miner"; break;
+            case 4: state.HasPickaxe = true; break;
+            case 5: state.Speed = 2.5; break;
+            case 6: state.Health = 80; break;
+            case 7: state.Stone += 3; break;
+            case 8:
+                state.Name = "Miner"; state.Health = 100; state.Stone = 0;
+                state.HasPickaxe = true; state.Speed = 2.5;
+                break;
+            case 9: state.Status = "Alive-state comparison ready."; break;
+            case 10: state.Status = "Pickaxe equality check ready."; break;
+            case 11: state.Stone += 1; break;
+            case 12: state.Status = state.HasPickaxe ? "Ready to mine." : "Find a pickaxe."; break;
+            case 13: state.Status = state.Health >= 75 ? "Healthy" : state.Health > 0 ? "Hurt" : "Defeated"; break;
+            case 14: state.Status = "Both mining requirements are checked."; break;
+            case 15: state.Status = "Alternate light sources are supported."; break;
+            case 16: state.Stone += 1; state.Status = "Mining permission rule passed."; break;
+            case 17: state.Status = "Reusable method created."; break;
+            case 18: state.Stone += 2; break;
+            case 19: state.Status = "Methods can return game-rule results."; break;
+            case 20: state.X = 2; break;
+            case 21: state.Y = 2; break;
+            case 22: state.X = 3; break;
+            case 23: state.Status = "Map boundary protected."; break;
+            case 24: state.X = 4; state.Y = 3; state.Status = "WASD movement ready."; break;
+            case 25: state.Inventory = "Stone, Wood"; break;
+            case 26: state.Rocks = 3; break;
+            case 27: state.Rocks = 4; break;
+            case 28: state.Rocks = 3; state.Stone += 1; break;
+            case 29: state.Status = "Every rock can be visited."; break;
+            case 30: state.Status = "Indexed world loop ready."; break;
+            case 31: state.Rocks = 6; break;
+            case 32: state.Rocks = 3; state.Stone += 3; state.Status = "Rock mining method active."; break;
+            case 33: state.Status = "Player class blueprint created."; break;
+            case 34: state.Status = "Player properties added."; break;
+            case 35: state.Name = "Miner"; state.Health = 100; break;
+            case 36: state.Name = "Miner"; state.Status = "Player object spawned."; break;
+            case 37: state.Slimes = 1; state.SlimeHealth = 30; break;
+            case 38: state.Slimes = 1; state.SlimeHealth = 20; break;
+            case 39: state.Inventory = "Stone, Copper, Potion"; break;
+            case 40:
+                state.Slimes = 0; state.SlimeHealth = 0; state.Stone += 5;
+                state.Status = "Slime defeated. Final reward collected.";
+                break;
+        }
+    }
+
+    private string PlayerStyle() =>
+        $"left:{18 + Math.Clamp(Preview.X, 0, 9) * 30}px; top:{18 + Math.Clamp(Preview.Y, 0, 7) * 30}px;";
+
+    private static string RockStyle(int index)
+    {
+        (int x, int y)[] positions =
+        {
+            (1, 1), (6, 1), (3, 4), (8, 5), (2, 7), (7, 3), (5, 6), (9, 2)
+        };
+
+        (int x, int y) = positions[index % positions.Length];
+        return $"left:{18 + x * 30}px; top:{18 + y * 30}px;";
+    }
+}
