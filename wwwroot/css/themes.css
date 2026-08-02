@@ -1,0 +1,149 @@
+:root {
+    --bg: #0b1118;
+    --bg-deep: #080d12;
+    --surface: #101822;
+    --surface-soft: #121b25;
+    --surface-raised: #17212c;
+    --surface-strong: #263442;
+    --surface-hover: #18232e;
+    --border: #293746;
+    --border-strong: #3a495a;
+    --text: #edf5f0;
+    --text-muted: #8996a3;
+    --text-dim: #65717d;
+    --accent: #73e59b;
+    --accent-hover: #8cf0ad;
+    --accent-soft: #dffff0;
+    --accent-contrast: #07140c;
+    --accent-surface: #193126;
+    --accent-border: #44845b;
+    --accent-glow: rgba(115, 229, 155, .85);
+    --code-bg: #080d13;
+    --code-text: #f0ce76;
+    --warning-surface: #302718;
+    --warning-border: #64542e;
+    --warning-accent: #d8ae4c;
+    --warning-text: #e8d59c;
+    --warning-muted: #c5b991;
+    --danger: #ff7979;
+    --danger-text: #ffd9d9;
+    --danger-surface: #351d22;
+    --danger-border: #744049;
+    --shadow: rgba(0, 0, 0, .28);
+    --base-font-size: 16px;
+}
+
+html[data-theme="midnight-crystal"] {
+    --accent: #66e3ff;
+    --accent-hover: #94ecff;
+    --accent-soft: #dffaff;
+    --accent-contrast: #06151a;
+    --accent-surface: #102d3b;
+    --accent-border: #2c7b98;
+    --accent-glow: rgba(102, 227, 255, .78);
+    --code-text: #c9a8ff;
+}
+
+html[data-theme="light-workshop"] {
+    --accent: #66a9ff;
+    --accent-hover: #8bbfff;
+    --accent-soft: #e4efff;
+    --accent-contrast: #071423;
+    --accent-surface: #17304e;
+    --accent-border: #3d72ad;
+    --accent-glow: rgba(102, 169, 255, .72);
+    --code-text: #ffc966;
+}
+
+html[data-theme="high-contrast"] {
+    --accent: #ffe600;
+    --accent-hover: #fff071;
+    --accent-soft: #fffbd1;
+    --accent-contrast: #000;
+    --accent-surface: #302d00;
+    --accent-border: #ffe600;
+    --accent-glow: rgba(255, 230, 0, .8);
+    --border: #8c8c8c;
+    --border-strong: #fff;
+    --text-muted: #d3d3d3;
+    --text-dim: #aaa;
+    --code-text: #fff071;
+}
+
+html[data-theme="ember-cave"] {
+    --accent: #ff9b54;
+    --accent-hover: #ffb27c;
+    --accent-soft: #ffe6d4;
+    --accent-contrast: #1c0c03;
+    --accent-surface: #3b2014;
+    --accent-border: #9d5232;
+    --accent-glow: rgba(255, 155, 84, .76);
+    --code-text: #ffd66b;
+}
+
+html[data-mode="light"] {
+    --bg: #edf1f4;
+    --bg-deep: #e3e8ec;
+    --surface: #ffffff;
+    --surface-soft: #f4f6f8;
+    --surface-raised: #e9eef2;
+    --surface-strong: #dce3e8;
+    --surface-hover: #e1e8ed;
+    --border: #c7d0d7;
+    --border-strong: #98a8b4;
+    --text: #172029;
+    --text-muted: #53616d;
+    --text-dim: #73808b;
+    --code-bg: #111820;
+    --shadow: rgba(37, 48, 58, .14);
+}
+
+html[data-mode="light"][data-theme="high-contrast"] {
+    --bg: #fff;
+    --bg-deep: #f2f2f2;
+    --surface: #fff;
+    --surface-soft: #f4f4f4;
+    --surface-raised: #e6e6e6;
+    --surface-strong: #d4d4d4;
+    --surface-hover: #ededed;
+    --border: #111;
+    --border-strong: #000;
+    --text: #000;
+    --text-muted: #222;
+    --text-dim: #444;
+}
+
+html[data-text-size="large"] { --base-font-size: 18px; }
+html[data-text-size="extra-large"] { --base-font-size: 20px; }
+
+html, body { min-height: 100%; background: var(--bg); }
+html { font-size: var(--base-font-size); }
+body { margin: 0; color: var(--text); transition: background-color .2s ease, color .2s ease; }
+a { color: var(--accent); }
+button, a, input, textarea { outline-color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Theme the existing authentication component without changing its account logic. */
+.auth-card { background: var(--surface-raised) !important; border-color: var(--border) !important; }
+.auth-card p, .auth-status, .signed-in-user small { color: var(--text-muted) !important; }
+.github-button { color: var(--accent-contrast) !important; background: var(--accent) !important; }
+.signout-button { color: var(--text) !important; background: var(--surface-strong) !important; border-color: var(--border-strong) !important; }
+.signed-in-user img { border-color: var(--accent) !important; }
+
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+    }
+}

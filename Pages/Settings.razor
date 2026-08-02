@@ -1,0 +1,200 @@
+@page "/settings"
+@inject ThemeService ThemeService
+
+<PageTitle>Appearance Settings · CaveCode Academy</PageTitle>
+
+<div class="settings-page">
+    <header class="settings-header">
+        <NavLink href="/">← Academy home</NavLink>
+        <div>
+            <p class="eyebrow">USER SETTINGS</p>
+            <h1>Appearance & accessibility</h1>
+            <p>Choose a comfortable viewing style. Changes preview instantly and save in this browser.</p>
+        </div>
+    </header>
+
+    @if (!Ready)
+    {
+        <div class="loading-card">Loading appearance settings…</div>
+    }
+    else
+    {
+        <main class="settings-layout">
+            <section class="settings-panel">
+                <div class="setting-heading">
+                    <div><span>01</span><h2>Color theme</h2></div>
+                    <p>Changes accent colors and the overall visual identity.</p>
+                </div>
+                <div class="theme-grid">
+                    @foreach (ThemeChoice theme in Themes)
+                    {
+                        <button type="button" class="theme-choice @(Preferences.Theme == theme.Id ? "selected" : "")" style="--preview-bg:@theme.Background; --preview-surface:@theme.Surface; --preview-accent:@theme.Accent" aria-pressed="@(Preferences.Theme == theme.Id)" @onclick="() => SelectTheme(theme.Id)">
+                            <span class="theme-preview"><i></i><i></i><i></i></span>
+                            <strong>@theme.Name</strong>
+                            <small>@theme.Description</small>
+                        </button>
+                    }
+                </div>
+            </section>
+
+            <section class="settings-panel">
+                <div class="setting-heading">
+                    <div><span>02</span><h2>Appearance mode</h2></div>
+                    <p>Use a dark interface, a light interface, or match the device.</p>
+                </div>
+                <div class="segmented-control">
+                    @foreach (ModeChoice mode in Modes)
+                    {
+                        <button type="button" class="@(Preferences.Mode == mode.Id ? "selected" : "")" aria-pressed="@(Preferences.Mode == mode.Id)" @onclick="() => SelectMode(mode.Id)">
+                            <span>@mode.Icon</span>@mode.Name
+                        </button>
+                    }
+                </div>
+            </section>
+
+            <section class="settings-panel">
+                <div class="setting-heading">
+                    <div><span>03</span><h2>Text size</h2></div>
+                    <p>Increase interface text without changing browser zoom.</p>
+                </div>
+                <div class="segmented-control text-sizes">
+                    @foreach (TextSizeChoice size in TextSizes)
+                    {
+                        <button type="button" class="@(Preferences.TextSize == size.Id ? "selected" : "")" aria-pressed="@(Preferences.TextSize == size.Id)" @onclick="() => SelectTextSize(size.Id)">
+                            <span style="font-size:@size.PreviewSize">Aa</span>@size.Name
+                        </button>
+                    }
+                </div>
+            </section>
+
+            <section class="settings-panel compact-panel">
+                <div class="setting-heading">
+                    <div><span>04</span><h2>Motion</h2></div>
+                    <p>Reduce transitions, pulsing indicators, and interface animation.</p>
+                </div>
+                <label class="toggle-row">
+                    <span><strong>Reduce animations</strong><small>Recommended for motion sensitivity or lower-powered devices.</small></span>
+                    <input type="checkbox" checked="@Preferences.ReducedMotion" @onchange="ToggleReducedMotion" />
+                    <i aria-hidden="true"></i>
+                </label>
+            </section>
+
+            <div class="settings-footer">
+                <span>@SaveMessage</span>
+                <button type="button" @onclick="ResetSettings">Reset appearance settings</button>
+            </div>
+        </main>
+    }
+</div>
+
+<style>
+    .settings-page { min-height: 100vh; padding: 40px 18px 70px; color: var(--text); background: radial-gradient(circle at 15% 0%, var(--accent-surface), transparent 30%), var(--bg); font-family: Inter, system-ui, sans-serif; }
+    .settings-header, .settings-layout { width: min(980px, 100%); margin: 0 auto; }
+    .settings-header > a { display: inline-block; margin-bottom: 28px; color: var(--text-muted); text-decoration: none; font-size: 12px; font-weight: 800; }
+    .settings-header > a:hover { color: var(--accent); }
+    .settings-header h1 { margin: 0; font-size: clamp(34px, 5vw, 54px); letter-spacing: -1.5px; }
+    .settings-header > div > p:last-child { max-width: 650px; margin: 13px 0 0; color: var(--text-muted); line-height: 1.6; }
+    .eyebrow { margin: 0 0 7px; color: var(--accent); font-size: 10px; font-weight: 900; letter-spacing: 1.2px; }
+    .settings-layout { display: grid; gap: 16px; margin-top: 36px; }
+    .settings-panel, .loading-card { padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 15px; box-shadow: 0 16px 60px var(--shadow); }
+    .loading-card { width: min(980px, 100%); margin: 36px auto 0; color: var(--text-muted); }
+    .setting-heading { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+    .setting-heading > div { display: flex; align-items: center; gap: 10px; }
+    .setting-heading > div > span { display: grid; width: 28px; height: 28px; place-items: center; color: var(--accent-contrast); background: var(--accent); border-radius: 8px; font-size: 10px; font-weight: 900; }
+    .setting-heading h2 { margin: 0; font-size: 20px; }
+    .setting-heading > p { max-width: 430px; margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.5; text-align: right; }
+    .theme-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .theme-choice { padding: 10px; color: var(--text); text-align: left; background: var(--surface-soft); border: 1px solid var(--border); border-radius: 11px; cursor: pointer; }
+    .theme-choice:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+    .theme-choice.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-surface); }
+    .theme-choice strong, .theme-choice small { display: block; }
+    .theme-choice strong { margin-top: 10px; font-size: 12px; }
+    .theme-choice small { margin-top: 4px; color: var(--text-muted); font-size: 9px; line-height: 1.4; }
+    .theme-preview { position: relative; display: block; height: 76px; overflow: hidden; background: var(--preview-bg); border-radius: 8px; }
+    .theme-preview i { position: absolute; display: block; background: var(--preview-surface); border-radius: 4px; }
+    .theme-preview i:nth-child(1) { inset: 9px 34px 9px 9px; }
+    .theme-preview i:nth-child(2) { right: 9px; top: 9px; width: 18px; height: 28px; background: var(--preview-accent); }
+    .theme-preview i:nth-child(3) { right: 9px; bottom: 9px; width: 18px; height: 22px; }
+    .segmented-control { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .segmented-control button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; color: var(--text-muted); background: var(--surface-soft); border: 1px solid var(--border); border-radius: 9px; cursor: pointer; font-weight: 800; }
+    .segmented-control button:hover { color: var(--text); background: var(--surface-hover); }
+    .segmented-control button.selected { color: var(--accent-soft); background: var(--accent-surface); border-color: var(--accent-border); }
+    .text-sizes { grid-template-columns: repeat(3, 1fr); }
+    .compact-panel { display: grid; grid-template-columns: 1fr; }
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 15px; background: var(--surface-soft); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; }
+    .toggle-row > span strong, .toggle-row > span small { display: block; }
+    .toggle-row > span small { margin-top: 4px; color: var(--text-muted); font-size: 10px; }
+    .toggle-row input { position: absolute; opacity: 0; pointer-events: none; }
+    .toggle-row i { position: relative; flex: 0 0 48px; height: 27px; background: var(--surface-strong); border: 1px solid var(--border-strong); border-radius: 99px; transition: .2s; }
+    .toggle-row i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 19px; height: 19px; background: var(--text-muted); border-radius: 50%; transition: .2s; }
+    .toggle-row input:checked + i { background: var(--accent-surface); border-color: var(--accent-border); }
+    .toggle-row input:checked + i::after { left: 24px; background: var(--accent); }
+    .settings-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 6px 2px; color: var(--text-muted); font-size: 11px; }
+    .settings-footer button { padding: 9px 12px; color: var(--text-muted); background: transparent; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+    .settings-footer button:hover { color: var(--text); border-color: var(--danger-border); }
+    @@media (max-width: 780px) { .theme-grid { grid-template-columns: repeat(2, 1fr); } .setting-heading { display: block; } .setting-heading > p { margin-top: 10px; text-align: left; } }
+    @@media (max-width: 520px) { .settings-page { padding-inline: 10px; } .settings-panel { padding: 17px; } .theme-grid, .segmented-control { grid-template-columns: 1fr; } .settings-footer { align-items: stretch; flex-direction: column; } }
+</style>
+
+@code {
+    private ThemePreferences Preferences = new();
+    private bool Ready;
+    private string SaveMessage = "Changes save automatically.";
+
+    private static readonly ThemeChoice[] Themes =
+    {
+        new("cave-classic", "Cave Classic", "Emerald and torch gold.", "#0b1118", "#17212c", "#73e59b"),
+        new("midnight-crystal", "Midnight Crystal", "Cyan and violet crystal light.", "#080b16", "#14182b", "#66e3ff"),
+        new("light-workshop", "Workshop", "Blue plans and warm amber.", "#10151d", "#1c2632", "#66a9ff"),
+        new("high-contrast", "High Contrast", "Maximum separation and focus.", "#000000", "#101010", "#ffe600"),
+        new("ember-cave", "Ember Cave", "Orange torchlight and red stone.", "#140d0a", "#241711", "#ff9b54")
+    };
+
+    private static readonly ModeChoice[] Modes =
+    {
+        new("dark", "Dark", "☾"),
+        new("light", "Light", "☀"),
+        new("system", "Follow device", "◐")
+    };
+
+    private static readonly TextSizeChoice[] TextSizes =
+    {
+        new("normal", "Normal", "15px"),
+        new("large", "Large", "18px"),
+        new("extra-large", "Extra large", "21px")
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        Preferences = await ThemeService.GetPreferencesAsync();
+        Ready = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task SelectTheme(string theme) => Update(await ThemeService.SetThemeAsync(theme));
+    private async Task SelectMode(string mode) => Update(await ThemeService.SetModeAsync(mode));
+    private async Task SelectTextSize(string size) => Update(await ThemeService.SetTextSizeAsync(size));
+
+    private async Task ToggleReducedMotion(ChangeEventArgs args)
+    {
+        bool enabled = args.Value is bool value ? value : bool.TryParse(args.Value?.ToString(), out bool parsed) && parsed;
+        Update(await ThemeService.SetReducedMotionAsync(enabled));
+    }
+
+    private async Task ResetSettings()
+    {
+        Update(await ThemeService.ResetAsync());
+        SaveMessage = "Appearance settings reset.";
+    }
+
+    private void Update(ThemePreferences preferences)
+    {
+        Preferences = preferences;
+        SaveMessage = "Saved in this browser.";
+    }
+
+    private sealed record ThemeChoice(string Id, string Name, string Description, string Background, string Surface, string Accent);
+    private sealed record ModeChoice(string Id, string Name, string Icon);
+    private sealed record TextSizeChoice(string Id, string Name, string PreviewSize);
+}
