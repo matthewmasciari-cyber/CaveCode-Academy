@@ -1,35 +1,172 @@
 @page "/settings"
+@using System.Linq
 @inject ThemeService ThemeService
+@inject ProfileService ProfileService
+@inject AchievementService AchievementService
 
-<PageTitle>Appearance Settings · CaveCode Academy</PageTitle>
+<PageTitle>User Settings · CaveCode Academy</PageTitle>
 
 <div class="settings-page">
     <header class="settings-header">
         <NavLink href="/">← Academy home</NavLink>
+
         <div>
             <p class="eyebrow">USER SETTINGS</p>
-            <h1>Appearance & accessibility</h1>
-            <p>Choose a comfortable viewing style. Changes preview instantly and save in this browser.</p>
+            <h1>Appearance, accessibility, and profile</h1>
+            <p>
+                Choose a comfortable viewing style and personalize how your
+                CaveCode account appears. Changes save in this browser.
+            </p>
         </div>
     </header>
 
     @if (!Ready)
     {
-        <div class="loading-card">Loading appearance settings…</div>
+        <div class="loading-card">Loading user settings…</div>
     }
     else
     {
         <main class="settings-layout">
+            <section class="settings-panel profile-panel">
+                <div class="setting-heading">
+                    <div>
+                        <span>01</span>
+                        <h2>Profile customization</h2>
+                    </div>
+
+                    <p>
+                        Choose the name, title, emblem, and achievement shown
+                        in your CaveCode account area.
+                    </p>
+                </div>
+
+                <div class="profile-grid">
+                    <div class="profile-editor">
+                        <label class="field-label">
+                            <span>Display name</span>
+                            <input type="text"
+                                   maxlength="24"
+                                   value="@Profile.DisplayName"
+                                   placeholder="Use account name"
+                                   @oninput="UpdateDisplayName" />
+                            <small>
+                                Leave blank to use your Google or GitHub name.
+                            </small>
+                        </label>
+
+                        <label class="field-label">
+                            <span>Title</span>
+                            <select value="@Profile.Title"
+                                    @onchange="UpdateTitle">
+                                @foreach (TitleUnlockOption option in TitleOptions)
+                                {
+                                    <option value="@option.Title"
+                                            disabled="@(!option.Unlocked)">
+                                        @(option.Unlocked
+                                            ? option.Title
+                                            : $"🔒 {option.Title} — {option.Requirement}")
+                                    </option>
+                                }
+                            </select>
+                        </label>
+
+                        <label class="field-label">
+                            <span>Featured achievement</span>
+                            <select value="@Profile.FeaturedAchievement"
+                                    @onchange="UpdateAchievement">
+                                @foreach (AchievementFeatureOption option in AchievementOptions)
+                                {
+                                    <option value="@option.Name"
+                                            disabled="@(!option.Unlocked)">
+                                        @(option.Unlocked
+                                            ? option.Name
+                                            : $"🔒 {option.Name} — {option.Requirement}")
+                                    </option>
+                                }
+                            </select>
+                        </label>
+
+                        <div class="field-label">
+                            <span>Emblem</span>
+
+                            <div class="emblem-grid">
+                                @foreach (EmblemChoice emblem in Emblems)
+                                {
+                                    <button type="button"
+                                            class="emblem-choice @(Profile.Emblem == emblem.Id ? "selected" : "")"
+                                            aria-pressed="@(Profile.Emblem == emblem.Id)"
+                                            @onclick="() => SelectEmblem(emblem.Id)">
+                                        <strong>@emblem.Symbol</strong>
+                                        <small>@emblem.Name</small>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="profile-preview"
+                           aria-label="Profile preview">
+                        <p>PROFILE PREVIEW</p>
+
+                        <div class="preview-identity">
+                            <span class="preview-emblem">
+                                @SelectedEmblem.Symbol
+                            </span>
+
+                            <div>
+                                <strong>@PreviewDisplayName</strong>
+                                <small>@Profile.Title</small>
+                            </div>
+                        </div>
+
+                        <div class="preview-achievement">
+                            <span>◆</span>
+                            <div>
+                                <small>FEATURED ACHIEVEMENT</small>
+                                <strong>
+                                    @Profile.FeaturedAchievement
+                                </strong>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="panel-footer">
+                    <span>@ProfileSaveMessage</span>
+
+                    <button type="button"
+                            @onclick="ResetProfile">
+                        Reset profile
+                    </button>
+                </div>
+            </section>
+
             <section class="settings-panel">
                 <div class="setting-heading">
-                    <div><span>01</span><h2>Color theme</h2></div>
-                    <p>Changes accent colors and the overall visual identity.</p>
+                    <div>
+                        <span>02</span>
+                        <h2>Color theme</h2>
+                    </div>
+
+                    <p>
+                        Changes accent colors and the overall visual identity.
+                    </p>
                 </div>
+
                 <div class="theme-grid">
                     @foreach (ThemeChoice theme in Themes)
                     {
-                        <button type="button" class="theme-choice @(Preferences.Theme == theme.Id ? "selected" : "")" style="--preview-bg:@theme.Background; --preview-surface:@theme.Surface; --preview-accent:@theme.Accent" aria-pressed="@(Preferences.Theme == theme.Id)" @onclick="() => SelectTheme(theme.Id)">
-                            <span class="theme-preview"><i></i><i></i><i></i></span>
+                        <button type="button"
+                                class="theme-choice @(Preferences.Theme == theme.Id ? "selected" : "")"
+                                style="--preview-bg:@theme.Background; --preview-surface:@theme.Surface; --preview-accent:@theme.Accent"
+                                aria-pressed="@(Preferences.Theme == theme.Id)"
+                                @onclick="() => SelectTheme(theme.Id)">
+                            <span class="theme-preview">
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </span>
+
                             <strong>@theme.Name</strong>
                             <small>@theme.Description</small>
                         </button>
@@ -39,14 +176,26 @@
 
             <section class="settings-panel">
                 <div class="setting-heading">
-                    <div><span>02</span><h2>Appearance mode</h2></div>
-                    <p>Use a dark interface, a light interface, or match the device.</p>
+                    <div>
+                        <span>03</span>
+                        <h2>Appearance mode</h2>
+                    </div>
+
+                    <p>
+                        Use a dark interface, a light interface, or match the
+                        device.
+                    </p>
                 </div>
+
                 <div class="segmented-control">
                     @foreach (ModeChoice mode in Modes)
                     {
-                        <button type="button" class="@(Preferences.Mode == mode.Id ? "selected" : "")" aria-pressed="@(Preferences.Mode == mode.Id)" @onclick="() => SelectMode(mode.Id)">
-                            <span>@mode.Icon</span>@mode.Name
+                        <button type="button"
+                                class="@(Preferences.Mode == mode.Id ? "selected" : "")"
+                                aria-pressed="@(Preferences.Mode == mode.Id)"
+                                @onclick="() => SelectMode(mode.Id)">
+                            <span>@mode.Icon</span>
+                            @mode.Name
                         </button>
                     }
                 </div>
@@ -54,14 +203,28 @@
 
             <section class="settings-panel">
                 <div class="setting-heading">
-                    <div><span>03</span><h2>Text size</h2></div>
-                    <p>Increase interface text without changing browser zoom.</p>
+                    <div>
+                        <span>04</span>
+                        <h2>Text size</h2>
+                    </div>
+
+                    <p>
+                        Increase interface text without changing browser zoom.
+                    </p>
                 </div>
+
                 <div class="segmented-control text-sizes">
                     @foreach (TextSizeChoice size in TextSizes)
                     {
-                        <button type="button" class="@(Preferences.TextSize == size.Id ? "selected" : "")" aria-pressed="@(Preferences.TextSize == size.Id)" @onclick="() => SelectTextSize(size.Id)">
-                            <span style="font-size:@size.PreviewSize">Aa</span>@size.Name
+                        <button type="button"
+                                class="@(Preferences.TextSize == size.Id ? "selected" : "")"
+                                aria-pressed="@(Preferences.TextSize == size.Id)"
+                                @onclick="() => SelectTextSize(size.Id)">
+                            <span style="font-size:@size.PreviewSize">
+                                Aa
+                            </span>
+
+                            @size.Name
                         </button>
                     }
                 </div>
@@ -69,77 +232,605 @@
 
             <section class="settings-panel compact-panel">
                 <div class="setting-heading">
-                    <div><span>04</span><h2>Motion</h2></div>
-                    <p>Reduce transitions, pulsing indicators, and interface animation.</p>
+                    <div>
+                        <span>05</span>
+                        <h2>Motion</h2>
+                    </div>
+
+                    <p>
+                        Reduce transitions, pulsing indicators, and interface
+                        animation.
+                    </p>
                 </div>
+
                 <label class="toggle-row">
-                    <span><strong>Reduce animations</strong><small>Recommended for motion sensitivity or lower-powered devices.</small></span>
-                    <input type="checkbox" checked="@Preferences.ReducedMotion" @onchange="ToggleReducedMotion" />
+                    <span>
+                        <strong>Reduce animations</strong>
+                        <small>
+                            Recommended for motion sensitivity or
+                            lower-powered devices.
+                        </small>
+                    </span>
+
+                    <input type="checkbox"
+                           checked="@Preferences.ReducedMotion"
+                           @onchange="ToggleReducedMotion" />
+
                     <i aria-hidden="true"></i>
                 </label>
             </section>
 
             <div class="settings-footer">
-                <span>@SaveMessage</span>
-                <button type="button" @onclick="ResetSettings">Reset appearance settings</button>
+                <span>@AppearanceSaveMessage</span>
+
+                <button type="button"
+                        @onclick="ResetAppearance">
+                    Reset appearance settings
+                </button>
             </div>
         </main>
     }
 </div>
 
 <style>
-    .settings-page { min-height: 100vh; padding: 40px 18px 70px; color: var(--text); background: radial-gradient(circle at 15% 0%, var(--accent-surface), transparent 30%), var(--bg); font-family: Inter, system-ui, sans-serif; }
-    .settings-header, .settings-layout { width: min(980px, 100%); margin: 0 auto; }
-    .settings-header > a { display: inline-block; margin-bottom: 28px; color: var(--text-muted); text-decoration: none; font-size: 12px; font-weight: 800; }
-    .settings-header > a:hover { color: var(--accent); }
-    .settings-header h1 { margin: 0; font-size: clamp(34px, 5vw, 54px); letter-spacing: -1.5px; }
-    .settings-header > div > p:last-child { max-width: 650px; margin: 13px 0 0; color: var(--text-muted); line-height: 1.6; }
-    .eyebrow { margin: 0 0 7px; color: var(--accent); font-size: 10px; font-weight: 900; letter-spacing: 1.2px; }
-    .settings-layout { display: grid; gap: 16px; margin-top: 36px; }
-    .settings-panel, .loading-card { padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 15px; box-shadow: 0 16px 60px var(--shadow); }
-    .loading-card { width: min(980px, 100%); margin: 36px auto 0; color: var(--text-muted); }
-    .setting-heading { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
-    .setting-heading > div { display: flex; align-items: center; gap: 10px; }
-    .setting-heading > div > span { display: grid; width: 28px; height: 28px; place-items: center; color: var(--accent-contrast); background: var(--accent); border-radius: 8px; font-size: 10px; font-weight: 900; }
-    .setting-heading h2 { margin: 0; font-size: 20px; }
-    .setting-heading > p { max-width: 430px; margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.5; text-align: right; }
-    .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; }
-    .theme-choice { padding: 10px; color: var(--text); text-align: left; background: var(--surface-soft); border: 1px solid var(--border); border-radius: 11px; cursor: pointer; }
-    .theme-choice:hover { border-color: var(--border-strong); transform: translateY(-2px); }
-    .theme-choice.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-surface); }
-    .theme-choice strong, .theme-choice small { display: block; }
-    .theme-choice strong { margin-top: 10px; font-size: 12px; }
-    .theme-choice small { margin-top: 4px; color: var(--text-muted); font-size: 9px; line-height: 1.4; }
-    .theme-preview { position: relative; display: block; height: 76px; overflow: hidden; background: var(--preview-bg); border-radius: 8px; }
-    .theme-preview i { position: absolute; display: block; background: var(--preview-surface); border-radius: 4px; }
-    .theme-preview i:nth-child(1) { inset: 9px 34px 9px 9px; }
-    .theme-preview i:nth-child(2) { right: 9px; top: 9px; width: 18px; height: 28px; background: var(--preview-accent); }
-    .theme-preview i:nth-child(3) { right: 9px; bottom: 9px; width: 18px; height: 22px; }
-    .segmented-control { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .segmented-control button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; color: var(--text-muted); background: var(--surface-soft); border: 1px solid var(--border); border-radius: 9px; cursor: pointer; font-weight: 800; }
-    .segmented-control button:hover { color: var(--text); background: var(--surface-hover); }
-    .segmented-control button.selected { color: var(--accent-soft); background: var(--accent-surface); border-color: var(--accent-border); }
-    .text-sizes { grid-template-columns: repeat(3, 1fr); }
-    .compact-panel { display: grid; grid-template-columns: 1fr; }
-    .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 15px; background: var(--surface-soft); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; }
-    .toggle-row > span strong, .toggle-row > span small { display: block; }
-    .toggle-row > span small { margin-top: 4px; color: var(--text-muted); font-size: 10px; }
-    .toggle-row input { position: absolute; opacity: 0; pointer-events: none; }
-    .toggle-row i { position: relative; flex: 0 0 48px; height: 27px; background: var(--surface-strong); border: 1px solid var(--border-strong); border-radius: 99px; transition: .2s; }
-    .toggle-row i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 19px; height: 19px; background: var(--text-muted); border-radius: 50%; transition: .2s; }
-    .toggle-row input:checked + i { background: var(--accent-surface); border-color: var(--accent-border); }
-    .toggle-row input:checked + i::after { left: 24px; background: var(--accent); }
-    .settings-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 6px 2px; color: var(--text-muted); font-size: 11px; }
-    .settings-footer button { padding: 9px 12px; color: var(--text-muted); background: transparent; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
-    .settings-footer button:hover { color: var(--text); border-color: var(--danger-border); }
-    @@media (max-width: 780px) { .theme-grid { grid-template-columns: repeat(2, 1fr); } .setting-heading { display: block; } .setting-heading > p { margin-top: 10px; text-align: left; } }
-    @@media (max-width: 520px) { .settings-page { padding-inline: 10px; } .settings-panel { padding: 17px; } .theme-grid, .segmented-control { grid-template-columns: 1fr; } .settings-footer { align-items: stretch; flex-direction: column; } }
+    .settings-page {
+        min-height: 100vh;
+        padding: 40px 18px 70px;
+        color: var(--text);
+        background:
+            radial-gradient(
+                circle at 15% 0%,
+                var(--accent-surface),
+                transparent 30%
+            ),
+            var(--bg);
+        font-family: Inter, system-ui, sans-serif;
+    }
+
+    .settings-header,
+    .settings-layout {
+        width: min(980px, 100%);
+        margin: 0 auto;
+    }
+
+    .settings-header > a {
+        display: inline-block;
+        margin-bottom: 28px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .settings-header > a:hover {
+        color: var(--accent);
+    }
+
+    .settings-header h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 54px);
+        letter-spacing: -1.5px;
+    }
+
+    .settings-header > div > p:last-child {
+        max-width: 680px;
+        margin: 13px 0 0;
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    .eyebrow {
+        margin: 0 0 7px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 1.2px;
+    }
+
+    .settings-layout {
+        display: grid;
+        gap: 16px;
+        margin-top: 36px;
+    }
+
+    .settings-panel,
+    .loading-card {
+        padding: 24px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        box-shadow: 0 16px 60px var(--shadow);
+    }
+
+    .loading-card {
+        width: min(980px, 100%);
+        margin: 36px auto 0;
+        color: var(--text-muted);
+    }
+
+    .setting-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 20px;
+    }
+
+    .setting-heading > div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .setting-heading > div > span {
+        display: grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: 900;
+    }
+
+    .setting-heading h2 {
+        margin: 0;
+        font-size: 20px;
+    }
+
+    .setting-heading > p {
+        max-width: 430px;
+        margin: 3px 0 0;
+        color: var(--text-muted);
+        font-size: 12px;
+        line-height: 1.5;
+        text-align: right;
+    }
+
+    .profile-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr);
+        gap: 18px;
+    }
+
+    .profile-editor {
+        display: grid;
+        gap: 14px;
+    }
+
+    .field-label {
+        display: grid;
+        gap: 7px;
+    }
+
+    .field-label > span {
+        color: var(--text-muted);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: .3px;
+    }
+
+    .field-label input,
+    .field-label select {
+        width: 100%;
+        min-height: 45px;
+        padding: 10px 12px;
+        color: var(--text);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        outline: none;
+    }
+
+    .field-label input:focus,
+    .field-label select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-surface);
+    }
+
+    .field-label small {
+        color: var(--text-dim);
+        font-size: 9px;
+    }
+
+    .emblem-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .emblem-choice {
+        display: grid;
+        gap: 5px;
+        min-height: 74px;
+        place-items: center;
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .emblem-choice:hover {
+        color: var(--text);
+        border-color: var(--border-strong);
+    }
+
+    .emblem-choice.selected {
+        color: var(--accent-soft);
+        background: var(--accent-surface);
+        border-color: var(--accent-border);
+    }
+
+    .emblem-choice strong {
+        font-size: 21px;
+    }
+
+    .emblem-choice small {
+        font-size: 9px;
+    }
+
+    .profile-preview {
+        align-self: stretch;
+        padding: 18px;
+        color: var(--dark-panel-text, #eef4f8);
+        background:
+            radial-gradient(
+                circle at 85% 0%,
+                var(--accent-surface),
+                transparent 42%
+            ),
+            var(--code-bg);
+        border: 1px solid var(--border-strong);
+        border-radius: 13px;
+    }
+
+    .profile-preview > p {
+        margin: 0 0 18px;
+        color: var(--code-muted, #aab7c4);
+        font-size: 9px;
+        font-weight: 900;
+        letter-spacing: 1.1px;
+    }
+
+    .preview-identity {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .preview-emblem {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-radius: 13px;
+        box-shadow: 0 0 24px var(--accent-glow);
+        font-size: 21px;
+        font-weight: 900;
+    }
+
+    .preview-identity strong,
+    .preview-identity small {
+        display: block;
+    }
+
+    .preview-identity strong {
+        font-size: 17px;
+    }
+
+    .preview-identity small {
+        margin-top: 3px;
+        color: var(--code-muted, #aab7c4);
+        font-size: 10px;
+    }
+
+    .preview-achievement {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 22px;
+        padding: 12px;
+        background: rgba(255, 255, 255, .045);
+        border: 1px solid rgba(255, 255, 255, .09);
+        border-radius: 10px;
+    }
+
+    .preview-achievement > span {
+        color: var(--accent);
+        font-size: 18px;
+    }
+
+    .preview-achievement small,
+    .preview-achievement strong {
+        display: block;
+    }
+
+    .preview-achievement small {
+        color: var(--code-muted, #aab7c4);
+        font-size: 8px;
+        letter-spacing: .8px;
+    }
+
+    .preview-achievement strong {
+        margin-top: 3px;
+        font-size: 11px;
+    }
+
+    .panel-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-top: 16px;
+        color: var(--text-muted);
+        font-size: 10px;
+    }
+
+    .panel-footer button,
+    .settings-footer button {
+        padding: 9px 12px;
+        color: var(--text-muted);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .panel-footer button:hover,
+    .settings-footer button:hover {
+        color: var(--text);
+        border-color: var(--danger-border);
+    }
+
+    .theme-grid {
+        display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(145px, 1fr));
+        gap: 10px;
+    }
+
+    .theme-choice {
+        padding: 10px;
+        color: var(--text);
+        text-align: left;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 11px;
+        cursor: pointer;
+    }
+
+    .theme-choice:hover {
+        border-color: var(--border-strong);
+        transform: translateY(-2px);
+    }
+
+    .theme-choice.selected {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px var(--accent-surface);
+    }
+
+    .theme-choice strong,
+    .theme-choice small {
+        display: block;
+    }
+
+    .theme-choice strong {
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    .theme-choice small {
+        margin-top: 4px;
+        color: var(--text-muted);
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .theme-preview {
+        position: relative;
+        display: block;
+        height: 76px;
+        overflow: hidden;
+        background: var(--preview-bg);
+        border-radius: 8px;
+    }
+
+    .theme-preview i {
+        position: absolute;
+        display: block;
+        background: var(--preview-surface);
+        border-radius: 4px;
+    }
+
+    .theme-preview i:nth-child(1) {
+        inset: 9px 34px 9px 9px;
+    }
+
+    .theme-preview i:nth-child(2) {
+        right: 9px;
+        top: 9px;
+        width: 18px;
+        height: 28px;
+        background: var(--preview-accent);
+    }
+
+    .theme-preview i:nth-child(3) {
+        right: 9px;
+        bottom: 9px;
+        width: 18px;
+        height: 22px;
+    }
+
+    .segmented-control {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .segmented-control button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 52px;
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        cursor: pointer;
+        font-weight: 800;
+    }
+
+    .segmented-control button:hover {
+        color: var(--text);
+        background: var(--surface-hover);
+    }
+
+    .segmented-control button.selected {
+        color: var(--accent-soft);
+        background: var(--accent-surface);
+        border-color: var(--accent-border);
+    }
+
+    .text-sizes {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .compact-panel {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 15px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .toggle-row > span strong,
+    .toggle-row > span small {
+        display: block;
+    }
+
+    .toggle-row > span small {
+        margin-top: 4px;
+        color: var(--text-muted);
+        font-size: 10px;
+    }
+
+    .toggle-row input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .toggle-row i {
+        position: relative;
+        flex: 0 0 48px;
+        height: 27px;
+        background: var(--surface-strong);
+        border: 1px solid var(--border-strong);
+        border-radius: 99px;
+        transition: .2s;
+    }
+
+    .toggle-row i::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 19px;
+        height: 19px;
+        background: var(--text-muted);
+        border-radius: 50%;
+        transition: .2s;
+    }
+
+    .toggle-row input:checked + i {
+        background: var(--accent-surface);
+        border-color: var(--accent-border);
+    }
+
+    .toggle-row input:checked + i::after {
+        left: 24px;
+        background: var(--accent);
+    }
+
+    .settings-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 6px 2px;
+        color: var(--text-muted);
+        font-size: 11px;
+    }
+
+    @@media (max-width: 780px) {
+        .theme-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .setting-heading {
+            display: block;
+        }
+
+        .setting-heading > p {
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .profile-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .settings-page {
+            padding-inline: 10px;
+        }
+
+        .settings-panel {
+            padding: 17px;
+        }
+
+        .theme-grid,
+        .segmented-control,
+        .emblem-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .settings-footer,
+        .panel-footer {
+            align-items: stretch;
+            flex-direction: column;
+        }
+    }
 </style>
 
 @code {
     private ThemePreferences Preferences = new();
+    private ProfilePreferences Profile = new();
+    private TitleUnlockOption[] TitleOptions =
+        Array.Empty<TitleUnlockOption>();
+    private AchievementFeatureOption[] AchievementOptions =
+        Array.Empty<AchievementFeatureOption>();
     private bool Ready;
-    private string SaveMessage = "Changes save automatically.";
+
+    private string AppearanceSaveMessage =
+        "Appearance changes save automatically.";
+
+    private string ProfileSaveMessage =
+        "Profile changes save automatically.";
 
     private static readonly ThemeChoice[] Themes =
     {
@@ -169,37 +860,198 @@
         new("extra-large", "Extra large", "21px")
     };
 
+    private static readonly string[] Titles =
+    {
+        "Cave Explorer",
+        "Code Apprentice",
+        "Automation Trainee",
+        "Control Room Operator",
+        "Python Technician",
+        "C# Adventurer",
+        "Systems Builder",
+        "Academy Pathfinder"
+    };
+
+    private static readonly EmblemChoice[] Emblems =
+    {
+        new("cave", "Cave", "△"),
+        new("crystal", "Crystal", "◆"),
+        new("terminal", "Terminal", ">_"),
+        new("gear", "Gear", "⚙")
+    };
+
+    private static readonly string[] Achievements =
+    {
+        "First Steps",
+        "Foundation Challenge Complete",
+        "Control Terminal Online",
+        "Safety Systems Certified",
+        "Sequence Controller Online",
+        "Monitoring Network Established",
+        "Python Automation Technician"
+    };
+
+    private EmblemChoice SelectedEmblem =>
+        Emblems.FirstOrDefault(
+            emblem => emblem.Id == Profile.Emblem
+        ) ?? Emblems[0];
+
+    private string PreviewDisplayName =>
+        string.IsNullOrWhiteSpace(Profile.DisplayName)
+            ? "CaveCode Learner"
+            : Profile.DisplayName.Trim();
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
-        Preferences = await ThemeService.GetPreferencesAsync();
+        if (!firstRender)
+        {
+            return;
+        }
+
+        Preferences =
+            await ThemeService.GetPreferencesAsync();
+
+        Profile =
+            await ProfileService.GetPreferencesAsync();
+
+        TitleOptions =
+            await AchievementService.GetTitleOptionsAsync();
+
+        AchievementOptions =
+            await AchievementService.GetFeatureOptionsAsync();
+
         Ready = true;
+
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task SelectTheme(string theme) => Update(await ThemeService.SetThemeAsync(theme));
-    private async Task SelectMode(string mode) => Update(await ThemeService.SetModeAsync(mode));
-    private async Task SelectTextSize(string size) => Update(await ThemeService.SetTextSizeAsync(size));
+    private async Task UpdateDisplayName(ChangeEventArgs args)
+    {
+        Profile = await ProfileService.SetDisplayNameAsync(
+            args.Value?.ToString() ?? ""
+        );
+
+        ProfileSaveMessage = "Display name saved.";
+    }
+
+    private async Task UpdateTitle(ChangeEventArgs args)
+    {
+        string selected =
+            args.Value?.ToString() ?? "Cave Explorer";
+
+        TitleUnlockOption? option =
+            TitleOptions.FirstOrDefault(
+                item => item.Title == selected
+            );
+
+        if (option is null || !option.Unlocked)
+        {
+            ProfileSaveMessage =
+                "Claim the matching chapter achievement first.";
+            return;
+        }
+
+        Profile = await ProfileService.SetTitleAsync(selected);
+        ProfileSaveMessage = "Title saved.";
+    }
+
+    private async Task UpdateAchievement(ChangeEventArgs args)
+    {
+        string selected =
+            args.Value?.ToString() ?? "First Steps";
+
+        AchievementFeatureOption? option =
+            AchievementOptions.FirstOrDefault(
+                item => item.Name == selected
+            );
+
+        if (option is null || !option.Unlocked)
+        {
+            ProfileSaveMessage =
+                "Claim the matching chapter achievement first.";
+            return;
+        }
+
+        Profile =
+            await ProfileService.SetFeaturedAchievementAsync(
+                selected
+            );
+
+        ProfileSaveMessage = "Featured achievement saved.";
+    }
+
+    private async Task SelectEmblem(string emblem)
+    {
+        Profile = await ProfileService.SetEmblemAsync(emblem);
+        ProfileSaveMessage = "Emblem saved.";
+    }
+
+    private async Task ResetProfile()
+    {
+        Profile = await ProfileService.ResetAsync();
+        ProfileSaveMessage = "Profile settings reset.";
+    }
+
+    private async Task SelectTheme(string theme) =>
+        UpdateAppearance(await ThemeService.SetThemeAsync(theme));
+
+    private async Task SelectMode(string mode) =>
+        UpdateAppearance(await ThemeService.SetModeAsync(mode));
+
+    private async Task SelectTextSize(string size) =>
+        UpdateAppearance(await ThemeService.SetTextSizeAsync(size));
 
     private async Task ToggleReducedMotion(ChangeEventArgs args)
     {
-        bool enabled = args.Value is bool value ? value : bool.TryParse(args.Value?.ToString(), out bool parsed) && parsed;
-        Update(await ThemeService.SetReducedMotionAsync(enabled));
+        bool enabled =
+            args.Value is bool value
+                ? value
+                : bool.TryParse(
+                    args.Value?.ToString(),
+                    out bool parsed
+                ) && parsed;
+
+        UpdateAppearance(
+            await ThemeService.SetReducedMotionAsync(enabled)
+        );
     }
 
-    private async Task ResetSettings()
+    private async Task ResetAppearance()
     {
-        Update(await ThemeService.ResetAsync());
-        SaveMessage = "Appearance settings reset.";
+        UpdateAppearance(await ThemeService.ResetAsync());
+        AppearanceSaveMessage = "Appearance settings reset.";
     }
 
-    private void Update(ThemePreferences preferences)
+    private void UpdateAppearance(ThemePreferences preferences)
     {
         Preferences = preferences;
-        SaveMessage = "Saved in this browser.";
+        AppearanceSaveMessage = "Saved in this browser.";
     }
 
-    private sealed record ThemeChoice(string Id, string Name, string Description, string Background, string Surface, string Accent);
-    private sealed record ModeChoice(string Id, string Name, string Icon);
-    private sealed record TextSizeChoice(string Id, string Name, string PreviewSize);
+    private sealed record ThemeChoice(
+        string Id,
+        string Name,
+        string Description,
+        string Background,
+        string Surface,
+        string Accent
+    );
+
+    private sealed record ModeChoice(
+        string Id,
+        string Name,
+        string Icon
+    );
+
+    private sealed record TextSizeChoice(
+        string Id,
+        string Name,
+        string PreviewSize
+    );
+
+    private sealed record EmblemChoice(
+        string Id,
+        string Name,
+        string Symbol
+    );
 }

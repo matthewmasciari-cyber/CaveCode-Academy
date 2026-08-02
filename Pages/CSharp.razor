@@ -4,6 +4,7 @@
 @using System.Text.Json.Serialization
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
+@inject AchievementService AchievementService
 
 <PageTitle>CaveCode Academy</PageTitle>
 
@@ -20,6 +21,7 @@
         <nav class="course-nav" aria-label="Course navigation">
             <NavLink href="/" Match="NavLinkMatch.All">← Academy home</NavLink>
             <NavLink href="/settings">⚙ Appearance settings</NavLink>
+            <AchievementNavLink />
         </nav>
 
         <AuthPanel />
@@ -342,6 +344,53 @@
     </aside>
 </div>
 
+@if (ShowAchievementUnlock && ChapterAchievement is not null)
+{
+    <div class="achievement-unlock-overlay"
+         role="presentation"
+         @onclick="DismissAchievementUnlock">
+        <section class="achievement-unlock-dialog"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="achievement-unlock-title"
+                 @onclick:stopPropagation="true">
+            <span class="achievement-unlock-kicker">
+                CHAPTER @ChapterAchievement.Chapter COMPLETE
+            </span>
+            <div class="achievement-unlock-medal">◆</div>
+            <h2 id="achievement-unlock-title">
+                @ChapterAchievement.Name
+            </h2>
+            <p>@ChapterAchievement.Description</p>
+
+            <div class="achievement-unlock-rewards">
+                <div>
+                    <span>TITLE REWARD</span>
+                    <strong>@ChapterAchievement.TitleReward</strong>
+                </div>
+                <div>
+                    <span>CODE CRYSTALS</span>
+                    <strong>◆ @ChapterAchievement.Crystals</strong>
+                </div>
+            </div>
+
+            <small>
+                Reward unlocked. Visit Achievements to claim it.
+            </small>
+
+            <div class="achievement-unlock-actions">
+                <NavLink href="/achievements">
+                    View achievement
+                </NavLink>
+                <button type="button"
+                        @onclick="DismissAchievementUnlock">
+                    Continue learning
+                </button>
+            </div>
+        </section>
+    </div>
+}
+
 @if (ShowChapterOneSignInPrompt)
 {
     <div class="save-progress-overlay" role="presentation" @onclick="DismissSavePrompt">
@@ -387,7 +436,7 @@
 
     .course-nav {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
         margin: 0 0 14px;
     }
@@ -726,6 +775,133 @@
         caret-color: var(--accent);
     }
 
+
+    .achievement-unlock-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1200;
+        display: grid;
+        padding: 18px;
+        place-items: center;
+        background: rgba(3, 7, 10, .84);
+        backdrop-filter: blur(8px);
+    }
+
+    .achievement-unlock-dialog {
+        width: min(520px, 100%);
+        padding: 27px;
+        color: var(--dark-panel-text, #eef4f8);
+        text-align: center;
+        background:
+            radial-gradient(
+                circle at 50% 0%,
+                var(--accent-surface),
+                transparent 42%
+            ),
+            var(--code-bg);
+        border: 1px solid var(--accent-border);
+        border-radius: 17px;
+        box-shadow: 0 0 65px var(--accent-glow);
+    }
+
+    .achievement-unlock-kicker {
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 950;
+        letter-spacing: 1.2px;
+    }
+
+    .achievement-unlock-medal {
+        display: grid;
+        width: 72px;
+        height: 72px;
+        margin: 18px auto;
+        place-items: center;
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-radius: 20px;
+        box-shadow: 0 0 32px var(--accent-glow);
+        font-size: 29px;
+    }
+
+    .achievement-unlock-dialog h2 {
+        margin: 0;
+        font-size: 30px;
+    }
+
+    .achievement-unlock-dialog > p {
+        margin: 10px auto 18px;
+        color: var(--code-muted, #aab7c4);
+        line-height: 1.6;
+    }
+
+    .achievement-unlock-rewards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+    }
+
+    .achievement-unlock-rewards > div {
+        padding: 12px;
+        background: rgba(255, 255, 255, .045);
+        border: 1px solid rgba(255, 255, 255, .09);
+        border-radius: 9px;
+    }
+
+    .achievement-unlock-rewards span,
+    .achievement-unlock-rewards strong {
+        display: block;
+    }
+
+    .achievement-unlock-rewards span {
+        color: var(--code-muted, #aab7c4);
+        font-size: 8px;
+        letter-spacing: .7px;
+    }
+
+    .achievement-unlock-rewards strong {
+        margin-top: 5px;
+        color: var(--accent-soft);
+        font-size: 12px;
+    }
+
+    .achievement-unlock-dialog > small {
+        display: block;
+        margin-top: 14px;
+        color: var(--code-muted, #aab7c4);
+        font-size: 9px;
+    }
+
+    .achievement-unlock-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        margin-top: 17px;
+    }
+
+    .achievement-unlock-actions a,
+    .achievement-unlock-actions button {
+        display: grid;
+        min-height: 42px;
+        place-items: center;
+        border-radius: 9px;
+        font-size: 10px;
+        font-weight: 900;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .achievement-unlock-actions a {
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border: 1px solid var(--accent);
+    }
+
+    .achievement-unlock-actions button {
+        color: var(--dark-panel-text, #eef4f8);
+        background: transparent;
+        border: 1px solid var(--border-strong);
+    }
 
     .save-progress-overlay {
         position: fixed;
@@ -1603,6 +1779,9 @@
     private bool StagePassed;
     private int? SelectedPrediction;
     private bool ShowChapterOneSignInPrompt;
+    private AchievementUnlockResult? ChapterAchievement;
+    private bool ShowAchievementUnlock;
+    private bool PendingChapterOneSignInPrompt;
     private bool ProgressRestored;
 
     private const int ChapterOneLastModuleIndex = 7;
@@ -1927,6 +2106,7 @@
         }
 
         await SaveProgressAsync();
+        await HandleChapterCompletionAsync("csharp", finishedModuleIndex);
 
         if (finishedModuleIndex == ChapterOneLastModuleIndex)
         {
@@ -1943,7 +2123,66 @@
                 // If auth is unavailable, the learner can still continue.
             }
 
-            ShowChapterOneSignInPrompt = !signedIn;
+            if (!signedIn)
+            {
+                if (ShowAchievementUnlock)
+                {
+                    PendingChapterOneSignInPrompt = true;
+                }
+                else
+                {
+                    ShowChapterOneSignInPrompt = true;
+                }
+            }
+        }
+    }
+
+    private async Task HandleChapterCompletionAsync(
+        string course,
+        int finishedModuleIndex
+    )
+    {
+        int chapter = ChapterNumberForModule(finishedModuleIndex);
+
+        if (chapter == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            AchievementUnlockResult? result =
+                await AchievementService.UnlockChapterAsync(
+                    course,
+                    chapter
+                );
+
+            if (result is not null && result.NewlyUnlocked)
+            {
+                ChapterAchievement = result;
+                ShowAchievementUnlock = true;
+            }
+        }
+        catch
+        {
+            // Achievements never interrupt course progression.
+        }
+    }
+
+    private static int ChapterNumberForModule(int moduleIndex) =>
+        moduleIndex is 7 or 15 or 23 or 31 or 39
+            ? moduleIndex / 8 + 1
+            : 0;
+
+    private void DismissAchievementUnlock()
+    {
+        ShowAchievementUnlock = false;
+        ChapterAchievement = null;
+
+        if (PendingChapterOneSignInPrompt)
+        {
+            PendingChapterOneSignInPrompt = false;
+            ShowChapterOneSignInPrompt = true;
         }
     }
 

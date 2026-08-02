@@ -1,0 +1,155 @@
+@inject AchievementService AchievementService
+@inject ProfileService ProfileService
+
+<NavLink class="@(Compact ? "progress-identity compact" : "progress-identity")"
+         href="/achievements">
+    @if (!Compact)
+    {
+        <span class="identity-emblem" aria-hidden="true">
+            @EmblemSymbol
+        </span>
+
+        <span class="identity-copy">
+            <strong>@Title</strong>
+            <small>◆ @State.Crystals Code Crystals</small>
+        </span>
+    }
+    else
+    {
+        <span class="compact-crystals">◆ @State.Crystals</span>
+    }
+
+    @if (State.UnclaimedCount > 0)
+    {
+        <span class="identity-notification">
+            @State.UnclaimedCount
+        </span>
+    }
+</NavLink>
+
+<style>
+    .progress-identity {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 10px;
+        padding: 10px;
+        color: var(--text, #eef4f8);
+        text-decoration: none;
+        background: var(--surface-raised, #202c38);
+        border: 1px solid var(--border, #2b3948);
+        border-radius: 9px;
+    }
+
+    .progress-identity:hover {
+        border-color: var(--accent-border, #3e8a59);
+    }
+
+    .progress-identity.compact {
+        position: relative;
+        width: auto;
+        margin: 0;
+        padding: 9px 10px;
+        color: var(--text-muted, #9ba8b5);
+        font-size: 10px;
+        font-weight: 900;
+    }
+
+    .identity-emblem {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        place-items: center;
+        color: var(--accent-contrast, #07120b);
+        background: var(--accent, #71e49a);
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 950;
+    }
+
+    .identity-copy {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .identity-copy strong,
+    .identity-copy small {
+        display: block;
+    }
+
+    .identity-copy strong {
+        overflow: hidden;
+        font-size: 11px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .identity-copy small {
+        margin-top: 3px;
+        color: var(--accent, #71e49a);
+        font-size: 9px;
+        font-weight: 800;
+    }
+
+    .identity-notification {
+        display: grid;
+        min-width: 19px;
+        height: 19px;
+        padding: 0 5px;
+        place-items: center;
+        color: var(--accent-contrast, #07120b);
+        background: var(--accent, #71e49a);
+        border-radius: 99px;
+        font-size: 9px;
+        font-weight: 950;
+    }
+
+    .compact .identity-notification {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public bool Compact { get; set; }
+
+    private ProfilePreferences Profile = new();
+    private AchievementState State = new();
+
+    private string Title =>
+        string.IsNullOrWhiteSpace(Profile.Title)
+            ? "Cave Explorer"
+            : Profile.Title;
+
+    private string EmblemSymbol =>
+        Profile.Emblem switch
+        {
+            "cave" => "△",
+            "terminal" => ">_",
+            "gear" => "⚙",
+            _ => "◆"
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            Profile = await ProfileService.GetPreferencesAsync();
+            State = await AchievementService.GetStateAsync();
+        }
+        catch
+        {
+            // Local progression remains optional.
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+}

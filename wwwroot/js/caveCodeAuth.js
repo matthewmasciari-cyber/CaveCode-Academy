@@ -1,18 +1,33 @@
 let supabaseClient = null;
 
 const caveCodeLiveOrigin = "https://cavecodeacademy.dev";
-const caveCodeProgressKey = "cavecode.csharp.progress.v1";
 
-function caveCodeReturnUrl() {
-    const path = window.location.pathname.endsWith("/csharp")
-        ? "/csharp"
-        : "/";
-
-    return `${caveCodeLiveOrigin}${path}`;
+function normalizeCourseKey(courseKey) {
+    return courseKey === "python" ? "python" : "csharp";
 }
 
-function readLocalProgress() {
-    const raw = window.localStorage.getItem(caveCodeProgressKey);
+function courseProgressKey(courseKey) {
+    return `cavecode.${normalizeCourseKey(courseKey)}.progress.v1`;
+}
+
+function caveCodeReturnUrl() {
+    const path = window.location.pathname;
+
+    if (path.endsWith("/csharp")) {
+        return `${caveCodeLiveOrigin}/csharp`;
+    }
+
+    if (path.endsWith("/python")) {
+        return `${caveCodeLiveOrigin}/python`;
+    }
+
+    return `${caveCodeLiveOrigin}/`;
+}
+
+function readLocalProgress(courseKey) {
+    const raw = window.localStorage.getItem(
+        courseProgressKey(courseKey)
+    );
 
     if (!raw) {
         return null;
@@ -23,6 +38,18 @@ function readLocalProgress() {
     } catch {
         return null;
     }
+}
+
+function saveLocalProgress(courseKey, progress) {
+    const snapshot = {
+        ...progress,
+        updatedAt: new Date().toISOString()
+    };
+
+    window.localStorage.setItem(
+        courseProgressKey(courseKey),
+        JSON.stringify(snapshot)
+    );
 }
 
 async function currentUser() {
@@ -125,26 +152,27 @@ window.caveCodeAuth = {
         };
     },
 
+    // Backward-compatible C# progress functions.
     saveCourseProgress: function (progress) {
-        const snapshot = {
-            ...progress,
-            updatedAt: new Date().toISOString()
-        };
-
-        window.localStorage.setItem(
-            caveCodeProgressKey,
-            JSON.stringify(snapshot)
-        );
+        saveLocalProgress("csharp", progress);
     },
 
     loadCourseProgress: function () {
-        return readLocalProgress();
+        return readLocalProgress("csharp");
     },
 
-    syncLocalProgressToCloud: async function () {
-        // This intentionally preserves the local checkpoint now.
-        // The Supabase course_progress table will be connected in the
-        // dedicated cloud-progress database pass.
-        return readLocalProgress();
+    // Course-specific functions used by all new learning paths.
+    saveCourseProgressFor: function (courseKey, progress) {
+        saveLocalProgress(courseKey, progress);
+    },
+
+    loadCourseProgressFor: function (courseKey) {
+        return readLocalProgress(courseKey);
+    },
+
+    syncLocalProgressToCloud: async function (courseKey = "csharp") {
+        // Local checkpoints are preserved now. The Supabase database
+        // synchronization pass will connect these snapshots to the cloud.
+        return readLocalProgress(courseKey);
     }
 };

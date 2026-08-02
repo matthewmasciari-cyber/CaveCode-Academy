@@ -1,0 +1,2585 @@
+@page "/python"
+@using System.Text.RegularExpressions
+@using System.Linq
+@using System.Text.Json.Serialization
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+@inject AchievementService AchievementService
+
+<PageTitle>Python Automation Quest | CaveCode Academy</PageTitle>
+
+<div class="academy">
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark">Py</span>
+            <div>
+                <h1>Python Quest</h1>
+                <p>Learn Python by restoring an automated underground facility.</p>
+            </div>
+        </div>
+
+        <nav class="course-nav" aria-label="Course navigation">
+            <NavLink href="/" Match="NavLinkMatch.All">← Academy home</NavLink>
+            <NavLink href="/settings">⚙ Appearance settings</NavLink>
+            <AchievementNavLink />
+        </nav>
+
+        <AuthPanel />
+
+        <section class="course-progress">
+            <div class="row-between">
+                <span>Course progress</span>
+                <strong>@CourseProgress%</strong>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: @(CourseProgress)%"></div>
+            </div>
+            <small>@CompletedModuleCount / @Lessons.Count modules complete</small>
+        </section>
+
+        <div class="lesson-list">
+            @{
+                string? lastChapter = null;
+            }
+
+            @for (int index = 0; index < Lessons.Count; index++)
+            {
+                int lessonIndex = index;
+                Lesson lesson = Lessons[index];
+                bool unlocked = IsLessonUnlocked(index);
+                bool active = index == CurrentModuleIndex;
+
+                if (lesson.Chapter != lastChapter)
+                {
+                    lastChapter = lesson.Chapter;
+                    <h2>@lesson.Chapter</h2>
+                }
+
+                <button type="button"
+                        class="lesson-button @(active ? "active" : "") @(ModuleCompleted[index] ? "complete" : "")"
+                        disabled="@(!unlocked)"
+                        @onclick="() => SelectLesson(lessonIndex)">
+                    <span class="lesson-number">
+                        @(ModuleCompleted[index] ? "✓" : unlocked ? (index + 1).ToString() : "🔒")
+                    </span>
+                    <span class="lesson-copy">
+                        <strong>@lesson.Title</strong>
+                        <small>@ModuleMastery(index)% mastery</small>
+                    </span>
+                </button>
+            }
+        </div>
+    </aside>
+
+    <main class="lesson-main">
+        <header class="lesson-header">
+            <div>
+                <p class="eyebrow">MODULE @(CurrentModuleIndex + 1) OF @Lessons.Count · @CurrentLesson.Topic.ToUpperInvariant()</p>
+                <h2>@CurrentLesson.Title</h2>
+                <p>@CurrentLesson.Teaching</p>
+            </div>
+            <div class="mastery-ring">
+                <strong>@ModuleMastery(CurrentModuleIndex)%</strong>
+                <span>mastery</span>
+            </div>
+        </header>
+
+        <nav class="stage-tabs" aria-label="Training stages">
+            @foreach (TrainingStage stage in Enum.GetValues<TrainingStage>())
+            {
+                TrainingStage selectedStage = stage;
+                bool unlocked = IsStageUnlocked(stage);
+
+                <button type="button"
+                        class="stage-tab @(CurrentStage == stage ? "active" : "") @(IsStageComplete(stage) ? "done" : "")"
+                        disabled="@(!unlocked)"
+                        @onclick="() => SelectStage(selectedStage)">
+                    <span>@((int)stage + 1)</span>
+                    @StageLabel(stage)
+                </button>
+            }
+        </nav>
+
+        <section class="stage-card">
+            <div class="stage-heading">
+                <div>
+                    <p class="eyebrow">STAGE @((int)CurrentStage + 1) · @StageLabel(CurrentStage).ToUpperInvariant()</p>
+                    <h3>@StageHeading(CurrentStage)</h3>
+                </div>
+                <span class="support-badge">@SupportLabel(CurrentStage)</span>
+            </div>
+
+            @if (CurrentStage == TrainingStage.Learn)
+            {
+                <div class="learn-grid">
+                    <div>
+                        <h4>Understand the idea</h4>
+                        <p>@CurrentLesson.Teaching</p>
+
+                        <div class="reference-example">
+                            <span>Reference example</span>
+                            <pre><code>@CurrentLesson.ExampleCode</code></pre>
+                        </div>
+
+                        <div class="concept-points">
+                            @foreach (string point in ConceptPoints(CurrentLesson))
+                            {
+                                <div><span>•</span><p>@point</p></div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="memory-aid">
+                        <span class="mini-label">Visual memory aid</span>
+                        <div class="flow">
+                            <div>CODE</div><span>→</span><div>SIGNAL</div><span>→</span><div>FACILITY</div>
+                        </div>
+                        <p>@CurrentLesson.PreviewMessage</p>
+                    </div>
+                </div>
+
+                <button type="button" class="primary" @onclick="CompleteLearnStage">
+                    Begin guided typing →
+                </button>
+            }
+            else if (CurrentStage == TrainingStage.Predict)
+            {
+                <div class="prediction-card">
+                    <h4>Predict before running</h4>
+                    <p>@CurrentLesson.PredictionQuestion</p>
+
+                    <div class="prediction-options">
+                        @for (int index = 0; index < CurrentLesson.PredictionOptions.Length; index++)
+                        {
+                            int optionIndex = index;
+                            string option = CurrentLesson.PredictionOptions[index];
+
+                            <button type="button"
+                                    class="@PredictionClass(index)"
+                                    @onclick="() => SelectPrediction(optionIndex)">
+                                <span>@((char)('A' + index))</span>
+                                @option
+                            </button>
+                        }
+                    </div>
+
+                    @if (SelectedPrediction.HasValue)
+                    {
+                        <div class="feedback @(StagePassed ? "success" : "error")">
+                            @Feedback
+                        </div>
+                    }
+                </div>
+
+                @if (StagePassed)
+                {
+                    <button type="button" class="primary" @onclick="AdvanceStage">
+                        Continue to debugging →
+                    </button>
+                }
+            }
+            else if (CurrentStage == TrainingStage.Complete)
+            {
+                <div class="completion-panel">
+                    <div class="completion-icon">✓</div>
+                    <h3>Module mastery reached</h3>
+                    <p>You practiced the concept through explanation, copying, completion, prediction, debugging, recall, and transfer.</p>
+
+                    <div class="completion-summary">
+                        <div><span>Concept</span><strong>@CurrentLesson.Topic</strong></div>
+                        <div><span>Core code</span><code>@CurrentLesson.TargetCode</code></div>
+                        <div><span>Facility result</span><strong>@CurrentLesson.PreviewMessage</strong></div>
+                    </div>
+
+                    <button type="button" class="primary" @onclick="FinishModule">
+                        @(CurrentModuleIndex == Lessons.Count - 1 ? "Finish the course" : "Complete module and unlock next →")
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="exercise-intro">
+                    <h4>@ExerciseTitle(CurrentStage)</h4>
+                    <p>@ExercisePrompt(CurrentStage)</p>
+                </div>
+
+                @if (CurrentStage == TrainingStage.Debug)
+                {
+                    <div class="compiler-note">
+                        <strong>Compiler clue</strong>
+                        <p>@CurrentLesson.DebugPrompt</p>
+                    </div>
+                }
+
+                @if (ShowTargetGuide)
+                {
+                    <div class="typing-guide">
+                        <div class="editor-bar">
+                            <span>target.py</span>
+                            <span>FOLLOW ALONG</span>
+                        </div>
+                        <div class="character-guide">
+                            @for (int index = 0; index < CurrentExpectedCode.Length; index++)
+                            {
+                                char character = CurrentExpectedCode[index];
+                                string cssClass = GetCharacterClass(index);
+
+                                if (character == '\n')
+                                {
+                                    <span class="@cssClass newline-mark">↵</span><br />
+                                }
+                                else if (character == ' ')
+                                {
+                                    <span class="@cssClass space-mark">&nbsp;</span>
+                                }
+                                else
+                                {
+                                    <span class="@cssClass">@character</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                else if (HintVisible)
+                {
+                    <div class="revealed-target">
+                        <span>Hint target</span>
+                        <pre><code>@CurrentExpectedCode</code></pre>
+                    </div>
+                }
+
+                <div class="code-editor">
+                    <div class="editor-bar">
+                        <span>facility_training.py</span>
+                        <span>PYTHON</span>
+                    </div>
+
+                    <textarea @bind="StudentCode"
+                              @bind:event="oninput"
+                              spellcheck="false"
+                              aria-label="Python practice editor"></textarea>
+
+                    <div class="typing-stats">
+                        <div><span>Characters</span><strong>@StudentCode.Length / @CurrentExpectedCode.Length</strong></div>
+                        <div><span>Accuracy</span><strong>@Accuracy%</strong></div>
+                        <div><span>Errors</span><strong>@ErrorCount</strong></div>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button type="button" class="primary" @onclick="CheckCode">Check code</button>
+                    <button type="button" class="secondary" @onclick="ShowHint">Hint</button>
+                    <button type="button" class="secondary" @onclick="ResetStage">Reset</button>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Feedback))
+                {
+                    <div class="feedback @(StagePassed ? "success" : "error")">
+                        @Feedback
+                    </div>
+                }
+
+                @if (StagePassed)
+                {
+                    <button type="button" class="primary continue-button" @onclick="AdvanceStage">
+                        Continue to @NextStageLabel() →
+                    </button>
+                }
+            }
+        </section>
+    </main>
+
+    <aside class="preview-panel">
+        <header class="preview-header">
+            <div>
+                <p class="eyebrow">LIVE FACILITY PREVIEW</p>
+                <h2>@Preview.FacilityName</h2>
+            </div>
+            <span class="live">LIVE</span>
+        </header>
+
+        <div class="facility-diagram">
+            <div class="facility-titlebar">
+                <span>CRYSTAL CAVERN CONTROL</span>
+                <span>@Preview.Mode</span>
+            </div>
+            <div class="equipment-grid">
+                <div class="equipment-node @(Preview.DoorClosed ? "active" : "")">
+                    <span>DOOR</span>
+                    <strong>@(Preview.DoorClosed ? "CLOSED" : "OPEN")</strong>
+                </div>
+                <div class="equipment-node @(Preview.FanRunning ? "active" : "")">
+                    <span>FAN</span>
+                    <strong>@(Preview.FanRunning ? "RUNNING" : "OFF")</strong>
+                </div>
+                <div class="equipment-node @(Preview.PumpRunning ? "active" : "")">
+                    <span>PUMP</span>
+                    <strong>@(Preview.PumpRunning ? "RUNNING" : "OFF")</strong>
+                </div>
+                <div class="equipment-node @(Preview.AlarmActive ? "alarm" : "active")">
+                    <span>ALARM</span>
+                    <strong>@(Preview.AlarmActive ? "ACTIVE" : "NORMAL")</strong>
+                </div>
+            </div>
+            <div class="signal-line"></div>
+            <div class="controller-node">
+                <span>PYTHON CONTROLLER</span>
+                <strong>@Preview.Status</strong>
+            </div>
+        </div>
+
+        <div class="preview-stats">
+            <div><span>Temperature</span><strong>@Preview.Temperature.ToString("0.0") °C</strong></div>
+            <div><span>Pressure</span><strong>@Preview.Pressure.ToString("0.0") PSI</strong></div>
+            <div><span>Oxygen</span><strong>@Preview.Oxygen.ToString("0.0")%</strong></div>
+            <div><span>Mode</span><strong>@Preview.Mode</strong></div>
+            <div><span>Sensors</span><strong>@Preview.SensorCount online</strong></div>
+            <div><span>Cycles</span><strong>@Preview.CycleCount</strong></div>
+        </div>
+
+        <div class="health-track">
+            <div class="health-fill" style="width: @(Math.Clamp(Preview.Readiness, 0, 100))%"></div>
+        </div>
+
+        <section class="inventory-card">
+            <span>Data and logging</span>
+            <strong>@Preview.DataPoints readings · @Preview.LogStatus</strong>
+        </section>
+
+        <section class="terminal">
+            <div class="terminal-title">
+                <span>AUTOMATION TERMINAL</span>
+                <span>READ ONLY</span>
+            </div>
+            <p>[ACADEMY] Python module @(CurrentModuleIndex + 1) loaded.</p>
+            <p>[STAGE] @StageLabel(CurrentStage) training active.</p>
+            <p>[@(StagePassed ? "PASS" : "READY")] @(StagePassed ? CurrentLesson.PreviewMessage : Preview.Status)</p>
+        </section>
+    </aside>
+</div>
+
+@if (ShowAchievementUnlock && ChapterAchievement is not null)
+{
+    <div class="achievement-unlock-overlay"
+         role="presentation"
+         @onclick="DismissAchievementUnlock">
+        <section class="achievement-unlock-dialog"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="achievement-unlock-title"
+                 @onclick:stopPropagation="true">
+            <span class="achievement-unlock-kicker">
+                CHAPTER @ChapterAchievement.Chapter COMPLETE
+            </span>
+            <div class="achievement-unlock-medal">◆</div>
+            <h2 id="achievement-unlock-title">
+                @ChapterAchievement.Name
+            </h2>
+            <p>@ChapterAchievement.Description</p>
+
+            <div class="achievement-unlock-rewards">
+                <div>
+                    <span>TITLE REWARD</span>
+                    <strong>@ChapterAchievement.TitleReward</strong>
+                </div>
+                <div>
+                    <span>CODE CRYSTALS</span>
+                    <strong>◆ @ChapterAchievement.Crystals</strong>
+                </div>
+            </div>
+
+            <small>
+                Reward unlocked. Visit Achievements to claim it.
+            </small>
+
+            <div class="achievement-unlock-actions">
+                <NavLink href="/achievements">
+                    View achievement
+                </NavLink>
+                <button type="button"
+                        @onclick="DismissAchievementUnlock">
+                    Continue learning
+                </button>
+            </div>
+        </section>
+    </div>
+}
+
+@if (ShowChapterOneSignInPrompt)
+{
+    <div class="save-progress-overlay" role="presentation" @onclick="DismissSavePrompt">
+        <section class="save-progress-dialog" role="dialog" aria-modal="true" aria-labelledby="save-progress-title" @onclick:stopPropagation="true">
+            <span class="save-progress-kicker">CHAPTER 1 COMPLETE</span>
+            <h2 id="save-progress-title">Protect your CaveCode progress</h2>
+            <p>Great work—you finished Foundations. Sign in now and CaveCode will return you to Chapter 2 after authentication.</p>
+            <AuthPanel />
+            <button type="button" class="continue-guest" @onclick="DismissSavePrompt">Continue without signing in</button>
+            <small>Your current course position is already preserved on this device.</small>
+        </section>
+    </div>
+}
+
+<style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--bg-deep); }
+    button, textarea { font: inherit; }
+
+    .academy {
+        display: grid;
+        grid-template-columns: 280px minmax(520px, 1fr) 360px;
+        min-height: 100vh;
+        color: var(--text);
+        background: var(--bg);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .sidebar {
+        padding: 20px 14px;
+        overflow-y: auto;
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 18px; }
+    .brand-mark {
+        display: grid; width: 46px; height: 46px; place-items: center;
+        color: var(--accent-contrast); background: var(--accent); border-radius: 11px; font-weight: 900;
+    }
+    .brand h1 { margin: 0; font-size: 21px; }
+    .brand p { margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.4; }
+
+    .course-nav {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin: 0 0 14px;
+    }
+    .course-nav a {
+        padding: 9px 10px;
+        color: var(--text-muted);
+        text-align: center;
+        text-decoration: none;
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: 800;
+    }
+    .course-nav a:hover, .course-nav a.active {
+        color: var(--text);
+        background: var(--surface-hover);
+        border-color: var(--accent-border);
+    }
+
+    .course-progress {
+        padding: 15px; margin-bottom: 18px; background: var(--surface-raised);
+        border: 1px solid var(--border); border-radius: 11px;
+    }
+    .row-between { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+    .progress-track, .health-track {
+        height: 9px; margin: 10px 0 8px; overflow: hidden;
+        background: var(--surface-strong); border-radius: 99px;
+    }
+    .progress-fill, .health-fill { height: 100%; background: var(--accent); transition: width .25s ease; }
+    .course-progress small { color: var(--text-muted); }
+
+    .lesson-list h2 {
+        margin: 20px 8px 8px; color: var(--text-muted); font-size: 11px;
+        letter-spacing: .9px; text-transform: uppercase;
+    }
+    .lesson-button {
+        display: flex; width: 100%; align-items: center; gap: 10px;
+        padding: 10px; margin-bottom: 6px; color: var(--text);
+        text-align: left; background: transparent; border: 1px solid transparent;
+        border-radius: 9px; cursor: pointer;
+    }
+    .lesson-button:hover:not(:disabled) { background: var(--surface-hover); }
+    .lesson-button.active { background: var(--accent-surface); border-color: var(--accent-border); }
+    .lesson-button.complete { color: var(--accent-soft); }
+    .lesson-button:disabled { color: var(--text-dim); cursor: not-allowed; opacity: .62; }
+    .lesson-number {
+        display: grid; flex: 0 0 31px; height: 31px; place-items: center;
+        background: var(--surface-strong); border-radius: 8px; font-size: 12px;
+    }
+    .lesson-button.active .lesson-number, .lesson-button.complete .lesson-number {
+        color: var(--accent-contrast); background: var(--accent);
+    }
+    .lesson-copy { min-width: 0; }
+    .lesson-copy strong, .lesson-copy small { display: block; }
+    .lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+    .lesson-copy small { margin-top: 3px; color: var(--text-muted); font-size: 10px; }
+
+    .lesson-main { padding: 28px; overflow-y: auto; }
+    .lesson-header {
+        display: flex; justify-content: space-between; gap: 24px;
+        max-width: 950px; margin: 0 auto;
+    }
+    .lesson-header h2 { margin: 0 0 7px; font-size: 28px; }
+    .lesson-header > div:first-child > p:last-child {
+        max-width: 760px; margin: 0; color: var(--text-muted); line-height: 1.55;
+    }
+    .eyebrow {
+        margin: 0 0 6px; color: var(--accent); font-size: 11px;
+        font-weight: 850; letter-spacing: 1px;
+    }
+    .mastery-ring {
+        display: grid; flex: 0 0 86px; height: 86px; place-items: center;
+        align-content: center; background: var(--accent-surface); border: 2px solid var(--accent-border); border-radius: 50%;
+    }
+    .mastery-ring strong { font-size: 18px; }
+    .mastery-ring span { color: var(--text-muted); font-size: 10px; }
+
+    .stage-tabs {
+        display: grid; grid-template-columns: repeat(8, minmax(70px, 1fr));
+        max-width: 950px; margin: 23px auto 0; overflow: hidden;
+        border: 1px solid var(--border); border-radius: 11px;
+    }
+    .stage-tab {
+        min-height: 57px; padding: 8px 5px; color: var(--text-muted);
+        background: var(--surface); border: 0; border-right: 1px solid var(--border);
+        cursor: pointer; font-size: 11px;
+    }
+    .stage-tab:last-child { border-right: 0; }
+    .stage-tab span {
+        display: grid; width: 21px; height: 21px; margin: 0 auto 4px;
+        place-items: center; background: var(--surface-strong); border-radius: 50%; font-size: 10px;
+    }
+    .stage-tab.active { color: var(--text); background: var(--accent-surface); }
+    .stage-tab.active span, .stage-tab.done span { color: var(--accent-contrast); background: var(--accent); }
+    .stage-tab:disabled { opacity: .38; cursor: not-allowed; }
+
+    .stage-card {
+        max-width: 950px; min-height: 560px; padding: 23px;
+        margin: 18px auto 0; background: var(--surface-soft);
+        border: 1px solid var(--border); border-radius: 13px;
+    }
+    .stage-heading { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+    .stage-heading h3 { margin: 0; font-size: 21px; }
+    .support-badge {
+        padding: 7px 10px; color: var(--warning-text); background: var(--warning-surface);
+        border: 1px solid var(--warning-border); border-radius: 99px; font-size: 10px; font-weight: 800;
+    }
+
+    .learn-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 18px; margin: 23px 0; }
+    .learn-grid h4, .exercise-intro h4, .prediction-card h4 { margin: 0 0 8px; font-size: 17px; }
+    .learn-grid p, .exercise-intro p, .prediction-card p { color: var(--text-muted); line-height: 1.6; }
+    .reference-example, .revealed-target {
+        padding: 15px; margin: 16px 0; background: var(--code-bg);
+        border: 1px solid var(--surface-strong); border-radius: 9px;
+    }
+    .reference-example > span, .revealed-target > span, .mini-label {
+        color: var(--text-muted); font-size: 10px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase;
+    }
+    pre { margin: 10px 0 0; overflow: auto; white-space: pre-wrap; }
+    code { color: var(--code-text); font-family: Consolas, Monaco, monospace; }
+    .concept-points div { display: flex; gap: 9px; }
+    .concept-points span { color: var(--accent); }
+    .concept-points p { margin: 5px 0; }
+    .memory-aid {
+        padding: 18px; background: var(--surface-raised); border: 1px solid var(--border); border-radius: 11px;
+    }
+    .flow { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 20px 0; }
+    .flow div { padding: 11px 9px; background: var(--surface-soft); border-radius: 7px; font-size: 11px; font-weight: 800; }
+    .flow span { color: var(--accent); }
+
+    .exercise-intro { margin: 22px 0 14px; }
+    .compiler-note {
+        padding: 13px 15px; margin-bottom: 13px; color: var(--warning-text);
+        background: var(--warning-surface); border-left: 4px solid var(--warning-accent);
+    }
+    .compiler-note p { margin: 5px 0 0; color: var(--warning-muted); }
+
+    .typing-guide, .code-editor {
+        margin-top: 14px; overflow: hidden; background: var(--code-bg);
+        border: 1px solid var(--border-strong); border-radius: 10px;
+    }
+    .editor-bar {
+        display: flex; justify-content: space-between; padding: 9px 13px;
+        color: var(--text-muted); background: var(--surface); border-bottom: 1px solid var(--border);
+        font-size: 10px; font-weight: 800; letter-spacing: .7px;
+    }
+    .character-guide {
+        min-height: 76px; padding: 18px; white-space: pre-wrap;
+        font: 18px/1.55 Consolas, Monaco, monospace;
+    }
+    .character-correct { color: var(--accent); }
+    .character-wrong {
+        color: var(--danger); background: rgba(255, 85, 85, .16);
+        text-decoration: underline; text-decoration-thickness: 2px;
+    }
+    .character-current { color: var(--code-text); background: var(--accent-border); animation: pulse 1s infinite; }
+    .character-pending { color: var(--code-muted); }
+    .space-mark { display: inline-block; min-width: .55em; }
+    .newline-mark { color: var(--code-muted); font-size: 12px; }
+
+    textarea {
+        display: block; width: 100%; min-height: 180px; padding: 18px;
+        color: var(--code-text); background: var(--code-bg); border: 0; outline: none;
+        caret-color: var(--accent);
+        resize: vertical; font: 17px/1.55 Consolas, Monaco, monospace; tab-size: 4;
+    }
+    .typing-stats {
+        display: grid; grid-template-columns: repeat(3, 1fr); padding: 11px;
+        background: var(--surface); border-top: 1px solid var(--border);
+    }
+    .typing-stats div { text-align: center; }
+    .typing-stats span, .typing-stats strong { display: block; }
+    .typing-stats span { color: var(--text-muted); font-size: 9px; text-transform: uppercase; }
+    .typing-stats strong { margin-top: 3px; }
+
+    .action-row { display: flex; gap: 9px; margin-top: 14px; }
+    .primary, .secondary {
+        padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 750;
+    }
+    .primary { color: var(--accent-contrast); background: var(--accent); border: 0; }
+    .primary:hover { background: var(--accent-hover); }
+    .secondary { color: var(--text); background: var(--surface-strong); border: 1px solid var(--border-strong); }
+    .continue-button { margin-top: 13px; }
+    .feedback { padding: 13px 15px; margin-top: 14px; border-radius: 8px; }
+    .feedback.success { color: var(--accent-soft); background: var(--accent-surface); border: 1px solid var(--accent-border); }
+    .feedback.error { color: var(--danger-text); background: var(--danger-surface); border: 1px solid var(--danger-border); }
+
+    .prediction-card { margin-top: 23px; }
+    .prediction-options { display: grid; gap: 9px; margin: 16px 0; }
+    .prediction-options button {
+        display: flex; align-items: center; gap: 11px; padding: 12px;
+        color: var(--text); text-align: left; background: var(--surface-raised);
+        border: 1px solid var(--border); border-radius: 8px; cursor: pointer;
+    }
+    .prediction-options button span {
+        display: grid; width: 27px; height: 27px; place-items: center;
+        background: var(--surface-strong); border-radius: 6px; font-weight: 800;
+    }
+    .prediction-options button.selected { border-color: var(--border-strong); }
+    .prediction-options button.correct { background: var(--accent-surface); border-color: var(--accent-border); }
+    .prediction-options button.wrong { background: var(--danger-surface); border-color: var(--danger-border); }
+
+    .completion-panel { max-width: 720px; margin: 36px auto 0; text-align: center; }
+    .completion-icon {
+        display: grid; width: 72px; height: 72px; margin: 0 auto 14px;
+        place-items: center; color: var(--accent-contrast); background: var(--accent);
+        border-radius: 50%; font-size: 33px; font-weight: 900;
+    }
+    .completion-panel > p { color: var(--text-muted); line-height: 1.6; }
+    .completion-summary {
+        display: grid; gap: 8px; padding: 16px; margin: 20px 0;
+        text-align: left; background: var(--surface-soft); border: 1px solid var(--border); border-radius: 10px;
+    }
+    .completion-summary div { display: grid; grid-template-columns: 100px 1fr; gap: 12px; }
+    .completion-summary span { color: var(--text-muted); }
+
+    .preview-panel {
+        padding: 23px 18px; background: var(--surface); border-left: 1px solid var(--border);
+    }
+    .preview-header { display: flex; justify-content: space-between; align-items: center; }
+    .preview-header h2 { margin: 0; font-size: 20px; }
+    .live {
+        padding: 5px 8px; color: var(--accent); background: var(--accent-surface);
+        border: 1px solid var(--accent-border); border-radius: 5px; font-size: 10px; font-weight: 850;
+    }
+    .preview-stats {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 13px;
+    }
+    .preview-stats div, .inventory-card {
+        padding: 11px; background: var(--surface-raised); border: 1px solid var(--border); border-radius: 8px;
+    }
+    .preview-stats span, .preview-stats strong, .inventory-card span, .inventory-card strong { display: block; }
+    .preview-stats span, .inventory-card span { color: var(--text-muted); font-size: 9px; text-transform: uppercase; }
+    .preview-stats strong, .inventory-card strong { margin-top: 4px; }
+    .health-track { margin: 10px 0; }
+    .inventory-card { margin-top: 9px; }
+    .terminal {
+        min-height: 155px; padding: 13px; margin-top: 14px;
+        color: var(--accent-soft); background: var(--bg-deep); border: 1px solid var(--surface-strong);
+        border-radius: 9px; font: 11px/1.55 Consolas, Monaco, monospace;
+    }
+    .terminal-title { display: flex; justify-content: space-between; color: var(--text-dim); font-size: 9px; }
+    .terminal p { margin: 8px 0 0; }
+
+
+    .facility-diagram {
+        position: relative;
+        min-height: 310px;
+        margin-top: 18px;
+        padding: 16px;
+        overflow: hidden;
+        color: var(--dark-panel-text);
+        background:
+            linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+            var(--code-bg);
+        background-size: 28px 28px;
+        border: 1px solid var(--border-strong);
+        border-radius: 10px;
+        box-shadow: inset 0 0 42px rgba(0,0,0,.28);
+    }
+
+    .facility-titlebar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 12px;
+        color: var(--dark-panel-muted);
+        border-bottom: 1px solid var(--border-strong);
+        font: 800 9px/1.2 Consolas, Monaco, monospace;
+        letter-spacing: .7px;
+    }
+
+    .equipment-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        margin-top: 16px;
+    }
+
+    .equipment-node,
+    .controller-node {
+        position: relative;
+        padding: 13px;
+        background: color-mix(in srgb, var(--surface) 78%, #000);
+        border: 1px solid var(--border-strong);
+        border-radius: 8px;
+    }
+
+    .equipment-node::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 7px;
+        background: var(--text-dim);
+        border-radius: 50%;
+        box-shadow: 0 0 0 transparent;
+    }
+
+    .equipment-node.active::before {
+        background: var(--accent);
+        box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .equipment-node.alarm::before {
+        background: var(--danger);
+        box-shadow: 0 0 12px color-mix(in srgb, var(--danger) 70%, transparent);
+    }
+
+    .equipment-node span,
+    .equipment-node strong,
+    .controller-node span,
+    .controller-node strong {
+        display: block;
+    }
+
+    .equipment-node span,
+    .controller-node span {
+        color: var(--dark-panel-muted);
+        font-size: 8px;
+        font-weight: 850;
+        letter-spacing: .7px;
+    }
+
+    .equipment-node strong,
+    .controller-node strong {
+        margin-top: 5px;
+        color: var(--dark-panel-text);
+        font-size: 11px;
+    }
+
+    .signal-line {
+        width: 2px;
+        height: 22px;
+        margin: 4px auto;
+        background: var(--accent-border);
+        box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .controller-node {
+        text-align: center;
+        border-color: var(--accent-border);
+        background: color-mix(in srgb, var(--accent-surface) 42%, var(--code-bg));
+    }
+
+    @@keyframes pulse { 50% { background: var(--accent-border); } }
+
+    @@media (max-width: 1250px) {
+        .academy { grid-template-columns: 250px 1fr; }
+        .preview-panel { grid-column: 1 / -1; border-top: 1px solid var(--border); border-left: 0; }
+    }
+    @@media (max-width: 850px) {
+        .academy { display: block; }
+        .sidebar { max-height: 460px; }
+        .stage-tabs { grid-template-columns: repeat(4, 1fr); }
+        .learn-grid { grid-template-columns: 1fr; }
+        .lesson-main { padding: 20px 12px; }
+    }
+
+    /* Persistent dark-surface contrast */
+    .mastery-ring,
+    .stage-tab.active,
+    .lesson-button.active,
+    .prediction-options button.correct {
+        color: var(--accent-soft);
+    }
+
+    .mastery-ring span,
+    .lesson-button.active .lesson-copy small {
+        color: var(--accent-soft);
+        opacity: .82;
+    }
+
+    .lesson-button.complete:not(.active) {
+        color: var(--accent);
+    }
+
+    .reference-example,
+    .revealed-target,
+    .terminal,
+    .character-guide {
+        color: var(--dark-panel-text);
+    }
+
+    .reference-example > span,
+    .revealed-target > span,
+    .terminal-title,
+    .typing-guide .editor-bar,
+    .code-editor .editor-bar {
+        color: var(--dark-panel-muted);
+    }
+
+    .typing-guide .editor-bar,
+    .code-editor .editor-bar {
+        background: var(--code-bg);
+        border-color: var(--border-strong);
+    }
+
+    .character-current,
+    textarea {
+        color: var(--code-text);
+    }
+
+    .character-pending,
+    .newline-mark {
+        color: var(--code-muted);
+    }
+
+    textarea {
+        caret-color: var(--accent);
+    }
+
+
+    .achievement-unlock-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1200;
+        display: grid;
+        padding: 18px;
+        place-items: center;
+        background: rgba(3, 7, 10, .84);
+        backdrop-filter: blur(8px);
+    }
+
+    .achievement-unlock-dialog {
+        width: min(520px, 100%);
+        padding: 27px;
+        color: var(--dark-panel-text, #eef4f8);
+        text-align: center;
+        background:
+            radial-gradient(
+                circle at 50% 0%,
+                var(--accent-surface),
+                transparent 42%
+            ),
+            var(--code-bg);
+        border: 1px solid var(--accent-border);
+        border-radius: 17px;
+        box-shadow: 0 0 65px var(--accent-glow);
+    }
+
+    .achievement-unlock-kicker {
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 950;
+        letter-spacing: 1.2px;
+    }
+
+    .achievement-unlock-medal {
+        display: grid;
+        width: 72px;
+        height: 72px;
+        margin: 18px auto;
+        place-items: center;
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-radius: 20px;
+        box-shadow: 0 0 32px var(--accent-glow);
+        font-size: 29px;
+    }
+
+    .achievement-unlock-dialog h2 {
+        margin: 0;
+        font-size: 30px;
+    }
+
+    .achievement-unlock-dialog > p {
+        margin: 10px auto 18px;
+        color: var(--code-muted, #aab7c4);
+        line-height: 1.6;
+    }
+
+    .achievement-unlock-rewards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+    }
+
+    .achievement-unlock-rewards > div {
+        padding: 12px;
+        background: rgba(255, 255, 255, .045);
+        border: 1px solid rgba(255, 255, 255, .09);
+        border-radius: 9px;
+    }
+
+    .achievement-unlock-rewards span,
+    .achievement-unlock-rewards strong {
+        display: block;
+    }
+
+    .achievement-unlock-rewards span {
+        color: var(--code-muted, #aab7c4);
+        font-size: 8px;
+        letter-spacing: .7px;
+    }
+
+    .achievement-unlock-rewards strong {
+        margin-top: 5px;
+        color: var(--accent-soft);
+        font-size: 12px;
+    }
+
+    .achievement-unlock-dialog > small {
+        display: block;
+        margin-top: 14px;
+        color: var(--code-muted, #aab7c4);
+        font-size: 9px;
+    }
+
+    .achievement-unlock-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        margin-top: 17px;
+    }
+
+    .achievement-unlock-actions a,
+    .achievement-unlock-actions button {
+        display: grid;
+        min-height: 42px;
+        place-items: center;
+        border-radius: 9px;
+        font-size: 10px;
+        font-weight: 900;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .achievement-unlock-actions a {
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border: 1px solid var(--accent);
+    }
+
+    .achievement-unlock-actions button {
+        color: var(--dark-panel-text, #eef4f8);
+        background: transparent;
+        border: 1px solid var(--border-strong);
+    }
+
+    .save-progress-overlay {
+        position: fixed;
+        z-index: 1000;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 22px;
+        background: rgba(3, 8, 13, .78);
+        backdrop-filter: blur(8px);
+    }
+    .save-progress-dialog {
+        width: min(470px, 100%);
+        padding: 28px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 18px;
+        box-shadow: 0 28px 90px var(--shadow);
+    }
+    .save-progress-kicker { color: var(--accent); font-size: 10px; font-weight: 900; letter-spacing: 1.2px; }
+    .save-progress-dialog h2 { margin: 8px 0 10px; font-size: 28px; }
+    .save-progress-dialog > p { margin: 0 0 18px; color: var(--text-muted); line-height: 1.65; }
+    .save-progress-dialog .auth-card { margin-bottom: 10px; }
+    .continue-guest {
+        width: 100%;
+        padding: 11px 13px;
+        color: var(--text);
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        cursor: pointer;
+        font-weight: 800;
+    }
+    .save-progress-dialog > small { display: block; margin-top: 11px; color: var(--text-muted); text-align: center; line-height: 1.45; }
+
+</style>
+
+@code {
+    private enum TrainingStage
+    {
+        Learn,
+        Guided,
+        Fill,
+        Predict,
+        Debug,
+        Recall,
+        Transfer,
+        Complete
+    }
+
+    private sealed record Lesson(
+        string Chapter,
+        string Topic,
+        string Title,
+        string Teaching,
+        string ExampleCode,
+        string TargetCode,
+        string FillStarter,
+        string PredictionQuestion,
+        string[] PredictionOptions,
+        int PredictionCorrect,
+        string PredictionExplanation,
+        string BrokenCode,
+        string DebugPrompt,
+        string RecallPrompt,
+        string TransferPrompt,
+        string TransferCode,
+        string PreviewMessage
+    );
+
+    private sealed class CourseProgressSnapshot
+    {
+        [JsonPropertyName("currentModuleIndex")]
+        public int CurrentModuleIndex { get; set; }
+
+        [JsonPropertyName("currentStage")]
+        public int CurrentStage { get; set; }
+
+        [JsonPropertyName("highestCompletedStage")]
+        public int[] HighestCompletedStage { get; set; } = Array.Empty<int>();
+
+        [JsonPropertyName("moduleCompleted")]
+        public bool[] ModuleCompleted { get; set; } = Array.Empty<bool>();
+    }
+
+    private sealed class PreviewState
+    {
+        public string FacilityName { get; set; } = "Crystal Cavern";
+        public double Temperature { get; set; } = 18.5;
+        public double Pressure { get; set; } = 42.0;
+        public double Oxygen { get; set; } = 20.9;
+        public string Mode { get; set; } = "OFF";
+        public bool FanRunning { get; set; }
+        public bool PumpRunning { get; set; }
+        public bool AlarmActive { get; set; }
+        public bool DoorClosed { get; set; }
+        public int SensorCount { get; set; } = 1;
+        public int CycleCount { get; set; }
+        public int DataPoints { get; set; }
+        public int Readiness { get; set; }
+        public string LogStatus { get; set; } = "No log yet";
+        public string Status { get; set; } = "Complete the current training stage.";
+    }
+
+    private static readonly List<Lesson> Lessons = new()
+    {
+        new Lesson(
+            "Chapter 1 · Control-Room Foundations",
+            "Output",
+            "Boot the Control Terminal",
+            "Python uses print() to send text to the terminal. Text belongs inside quotation marks.",
+            "print(\"System ready\")",
+            "print(\"Cave control terminal online.\")",
+            "print(\"___\")",
+            "What does print() do?",
+            new[] { "Displays a value in the terminal", "Creates a sensor", "Repeats a loop", "Stores a password" },
+            0,
+            "print() displays the value placed inside its parentheses.",
+            "print(Cave control terminal online.)",
+            "The message is text, so it needs quotation marks.",
+            "From memory, display \"Cave control terminal online.\"",
+            "Display \"Ventilation controller ready.\"",
+            "print(\"Ventilation controller ready.\")",
+            "The facility terminal now displays a startup message."
+        ),
+        new Lesson(
+            "Chapter 1 · Control-Room Foundations",
+            "Variables",
+            "Name the Facility",
+            "A variable gives a value a reusable name. Python creates the variable when you assign a value with =.",
+            "zone_name = \"North Tunnel\"",
+            "facility_name = \"Crystal Cavern\"",
+            "facility_name = \"___\"",
+            "Which symbol assigns a value to a variable?",
+            new[] { "=", "==", ":", "#" },
+            0,
+            "A single equals sign assigns the value on the right to the name on the left.",
+            "facility_name == \"Crystal Cavern\"",
+            "Use one equals sign for assignment; two equals signs compare values.",
+            "Create facility_name with the text \"Crystal Cavern\".",
+            "Create controller_name with the text \"Cave Pi 1\".",
+            "controller_name = \"Cave Pi 1\"",
+            "The control room now knows the facility name."
+        ),
+        new Lesson(
+            "Chapter 1 · Control-Room Foundations",
+            "Numbers",
+            "Read the Temperature",
+            "Python stores decimal sensor readings as float values. A decimal point makes this reading a float.",
+            "humidity = 54.2",
+            "temperature = 18.5",
+            "temperature = ___",
+            "What kind of value is 18.5?",
+            new[] { "A float", "A string", "A Boolean", "A list" },
+            0,
+            "A number containing a decimal point is a float.",
+            "temperature = \"18.5\"",
+            "Quotation marks would make the reading text instead of a number.",
+            "Create temperature with the numeric value 18.5.",
+            "Create humidity with the numeric value 47.8.",
+            "humidity = 47.8",
+            "A simulated temperature sensor now reports 18.5°C."
+        ),
+        new Lesson(
+            "Chapter 1 · Control-Room Foundations",
+            "Booleans",
+            "Track Equipment Status",
+            "Boolean values are True or False. Python capitalizes the first letter of both Boolean keywords.",
+            "pump_running = False",
+            "fan_running = True",
+            "fan_running = ___",
+            "Which is a valid Python Boolean?",
+            new[] { "True", "true", "TRUE", "Yes" },
+            0,
+            "Python's Boolean keywords are exactly True and False.",
+            "fan_running = true",
+            "Python is case-sensitive; use True with a capital T.",
+            "Record that fan_running is True.",
+            "Create alarm_active and set it to False.",
+            "alarm_active = False",
+            "The dashboard can now show whether the fan is running."
+        ),
+        new Lesson(
+            "Chapter 1 · Control-Room Foundations",
+            "Input",
+            "Identify the Operator",
+            "input() pauses the program and collects text typed by the operator.",
+            "badge = input(\"Badge number: \")",
+            "operator = input(\"Enter operator name: \")",
+            "operator = input(\"___\")",
+            "What does input() return by default?",
+            new[] { "Text", "A float", "A Boolean", "A dictionary" },
+            0,
+            "input() returns a string unless you explicitly convert it.",
+            "operator = print(\"Enter operator name: \")",
+            "print() only displays text; input() collects a response.",
+            "Collect the operator name with the prompt \"Enter operator name: \".",
+            "Collect a zone name with the prompt \"Enter zone: \".",
+            "zone = input(\"Enter zone: \")",
+            "The control terminal can now identify its operator."
+        ),
+        new Lesson(
+            "Chapter 1 · Control-Room Foundations",
+            "Conversion",
+            "Convert a Pressure Reading",
+            "Values from input() are text. float() converts numeric text into a decimal number that can be calculated.",
+            "flow = float(input(\"Flow: \"))",
+            "pressure = float(input(\"Enter pressure: \"))",
+            "pressure = ___(input(\"Enter pressure: \"))",
+            "Why wrap input() with float()?",
+            new[] { "To convert text into a decimal number", "To repeat the question", "To make the value True", "To create a file" },
+            0,
+            "float() converts numeric text into a decimal value.",
+            "pressure = input(float(\"Enter pressure: \"))",
+            "Call input() first, then pass its returned text into float().",
+            "Collect and convert a pressure reading using float(input(...)).",
+            "Collect and convert an integer cycle count.",
+            "cycle_count = int(input(\"Enter cycle count: \"))",
+            "The terminal can now perform math with operator-entered readings."
+        ),
+        new Lesson(
+            "Chapter 1 · Control-Room Foundations",
+            "Arithmetic",
+            "Calculate an Average",
+            "Arithmetic operators let Python combine sensor readings. Parentheses make the intended order easy to see.",
+            "average_flow = (inlet_flow + outlet_flow) / 2",
+            "average_temperature = (zone_a + zone_b) / 2",
+            "average_temperature = (zone_a + zone_b) ___ 2",
+            "Which operator calculates the average after adding two readings?",
+            new[] { "/", "*", "%", "//=" },
+            0,
+            "Dividing the total by 2 gives the average of two values.",
+            "average_temperature = zone_a + zone_b / 2",
+            "Without parentheses, division happens before addition.",
+            "Write the average_temperature calculation from memory.",
+            "Calculate total_runtime by adding pump_hours and fan_hours.",
+            "total_runtime = pump_hours + fan_hours",
+            "The facility dashboard can now calculate combined readings."
+        ),
+        new Lesson(
+            "Chapter 1 · Control-Room Foundations",
+            "Challenge",
+            "Control-Room Startup Challenge",
+            "Combine variables, input, numeric conversion, arithmetic, Booleans, and output into one startup summary.",
+            "print(f\"{name}: {value}\")",
+            "facility_name = \"Crystal Cavern\"\noperator = input(\"Enter operator name: \")\ntemperature = 18.5\npressure = 42.0\nfan_running = True\nprint(f\"{facility_name} | {operator} | {temperature}°C | {pressure} PSI | Fan: {fan_running}\")",
+            "facility_name = \"___\"\noperator = input(\"___\")\ntemperature = ___\npressure = ___\nfan_running = ___\nprint(f\"{facility_name} | {operator} | {temperature}°C | {pressure} PSI | Fan: {fan_running}\")",
+            "What does the f before the final string allow?",
+            new[] { "Variables can be inserted with braces", "The string becomes a file", "The line repeats forever", "The values become Booleans" },
+            0,
+            "An f-string inserts expressions written inside braces.",
+            "facility_name = \"Crystal Cavern\"\noperator = input(\"Enter operator name: \")\ntemperature = \"18.5\"\npressure = 42.0\nfan_running = true\nprint(\"{facility_name} | {operator} | {temperature}\")",
+            "Repair the numeric temperature, Boolean capitalization, and missing f-string prefix.",
+            "Rebuild the complete startup summary from memory.",
+            "Create a startup summary for a wastewater pump station.",
+            "station_name = \"North Pump Station\"\noperator = input(\"Operator: \")\nlevel = 62.5\npump_running = False\nprint(f\"{station_name} | {operator} | Level: {level}% | Pump: {pump_running}\")",
+            "Chapter 1 complete: the control room is online."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions, Alarms, and Safety",
+            "If statements",
+            "Trigger a Temperature Alarm",
+            "An if statement runs its indented block only when its condition is True.",
+            "if pressure > 80:\n    print(\"High pressure\")",
+            "if temperature > 30:\n    print(\"High temperature alarm\")",
+            "if temperature ___ 30:\n    print(\"High temperature alarm\")",
+            "When does the alarm message run?",
+            new[] { "When temperature is greater than 30", "When temperature equals text", "Every time the program starts", "Only when the fan is off" },
+            0,
+            "The greater-than comparison becomes True above the setpoint.",
+            "if temperature > 30\nprint(\"High temperature alarm\")",
+            "Python needs a colon after the condition and indentation inside the block.",
+            "Write the high-temperature alarm from memory.",
+            "Print a low-level alarm when tank_level is below 20.",
+            "if tank_level < 20:\n    print(\"Low tank level\")",
+            "The controller now reacts to a high temperature."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions, Alarms, and Safety",
+            "Else",
+            "Classify Oxygen Safety",
+            "else provides the alternate path when an if condition is False.",
+            "if door_closed:\n    print(\"Ready\")\nelse:\n    print(\"Door open\")",
+            "if oxygen_level >= 19.5:\n    print(\"Safe\")\nelse:\n    print(\"Unsafe\")",
+            "if oxygen_level >= ___:\n    print(\"Safe\")\n___:\n    print(\"Unsafe\")",
+            "Which branch runs below 19.5?",
+            new[] { "else", "if", "import", "return" },
+            0,
+            "The else branch handles every value that did not pass the if condition.",
+            "if oxygen_level >= 19.5:\n    print(\"Safe\")\nelse\n    print(\"Unsafe\")",
+            "The else keyword also needs a colon.",
+            "Rebuild the safe-or-unsafe oxygen check.",
+            "Print Ready when door_closed is True, otherwise print Door open.",
+            "if door_closed:\n    print(\"Ready\")\nelse:\n    print(\"Door open\")",
+            "The safety display now has both safe and unsafe states."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions, Alarms, and Safety",
+            "Elif",
+            "Create Alarm Levels",
+            "elif adds ordered conditions between if and else. Python stops at the first branch that matches.",
+            "if level >= 90:\n    print(\"High\")\nelif level >= 70:\n    print(\"Normal\")\nelse:\n    print(\"Low\")",
+            "if temperature >= 40:\n    print(\"Critical\")\nelif temperature >= 30:\n    print(\"Warning\")\nelse:\n    print(\"Normal\")",
+            "if temperature >= ___:\n    print(\"Critical\")\nelif temperature >= ___:\n    print(\"Warning\")\nelse:\n    print(\"Normal\")",
+            "Why must the critical condition come first?",
+            new[] { "A critical value also meets the warning condition", "elif always runs first", "Python sorts conditions automatically", "else can compare values" },
+            0,
+            "Checking the highest threshold first prevents it from being classified only as a warning.",
+            "if temperature >= 30:\n    print(\"Warning\")\nelif temperature >= 40:\n    print(\"Critical\")\nelse:\n    print(\"Normal\")",
+            "The warning branch catches critical temperatures before the later condition can run.",
+            "Create Critical, Warning, and Normal temperature branches.",
+            "Classify pressure as High at 80+, Elevated at 60+, otherwise Normal.",
+            "if pressure >= 80:\n    print(\"High\")\nelif pressure >= 60:\n    print(\"Elevated\")\nelse:\n    print(\"Normal\")",
+            "The alarm panel now displays three severity levels."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions, Alarms, and Safety",
+            "Boolean logic",
+            "Combine Safety Conditions",
+            "The and operator requires both conditions to be True. It is useful for equipment permissives.",
+            "if guard_closed and motor_ready:\n    print(\"Start permitted\")",
+            "if door_closed and pressure_normal:\n    print(\"System ready\")",
+            "if door_closed ___ pressure_normal:\n    print(\"System ready\")",
+            "What must be true for the message to run?",
+            new[] { "Both conditions", "Either condition", "Neither condition", "Only the first condition" },
+            0,
+            "and returns True only when both sides are True.",
+            "if door_closed or pressure_normal:\n    print(\"System ready\")",
+            "or would allow the system to proceed when only one permissive is satisfied.",
+            "Write the two-condition system-ready check.",
+            "Allow pump start only when level_ok and overload_ok are both True.",
+            "if level_ok and overload_ok:\n    print(\"Pump start permitted\")",
+            "Multiple safety permissives can now be evaluated together."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions, Alarms, and Safety",
+            "Interlocks",
+            "Build an Emergency-Stop Interlock",
+            "not reverses a Boolean. A motor may start only when the emergency stop is not active.",
+            "if start_button and not guard_open:\n    print(\"Motor starting\")",
+            "if start_button and not emergency_stop:\n    print(\"Motor starting\")",
+            "if start_button and ___ emergency_stop:\n    print(\"Motor starting\")",
+            "What does not emergency_stop mean?",
+            new[] { "The emergency stop is not active", "The emergency stop is active", "Ignore the start button", "Create a new alarm" },
+            0,
+            "not converts False to True, allowing the safe condition to pass.",
+            "if start_button and emergency_stop:\n    print(\"Motor starting\")",
+            "The unsafe version starts specifically while the emergency stop is active.",
+            "Rebuild the start-button and emergency-stop interlock.",
+            "Start a fan only when command_on is True and smoke_alarm is False.",
+            "if command_on and not smoke_alarm:\n    print(\"Fan starting\")",
+            "The simulated equipment now respects an emergency interlock."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions, Alarms, and Safety",
+            "Comparisons",
+            "Compare a Tank Level",
+            "Comparison operators produce Boolean results that can trigger alarms and outputs.",
+            "low_flow = flow < 12.0",
+            "low_level = tank_level < minimum_level",
+            "low_level = tank_level ___ minimum_level",
+            "What value is stored in low_level?",
+            new[] { "True or False", "The tank volume", "A text message", "A list" },
+            0,
+            "A comparison expression evaluates to a Boolean.",
+            "low_level = tank_level = minimum_level",
+            "One equals sign assigns; use < to compare the two values.",
+            "Store whether tank_level is below minimum_level.",
+            "Store whether pressure is greater than maximum_pressure.",
+            "high_pressure = pressure > maximum_pressure",
+            "The controller can now store alarm conditions as Boolean values."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions, Alarms, and Safety",
+            "Modes",
+            "Add HAND-OFF-AUTO",
+            "String comparisons can select an operating mode. Each mode can run different control logic.",
+            "mode = \"AUTO\"\nif mode == \"AUTO\":\n    print(\"Automatic control\")",
+            "mode = \"AUTO\"\nif mode == \"HAND\":\n    print(\"Manual run\")\nelif mode == \"AUTO\":\n    print(\"Automatic control\")\nelse:\n    print(\"Equipment off\")",
+            "mode = \"___\"\nif mode == \"HAND\":\n    print(\"Manual run\")\nelif mode == \"___\":\n    print(\"Automatic control\")\nelse:\n    print(\"Equipment off\")",
+            "Which operator compares the selected mode?",
+            new[] { "==", "=", "+=", "!=" },
+            0,
+            "Two equals signs compare values without changing the variable.",
+            "mode = \"AUTO\"\nif mode = \"HAND\":\n    print(\"Manual run\")\nelif mode = \"AUTO\":\n    print(\"Automatic control\")",
+            "Use == for both comparisons and include an else path for OFF.",
+            "Rebuild the HAND-OFF-AUTO mode selector.",
+            "Create LOCAL and REMOTE modes with a fallback Disabled state.",
+            "mode = \"REMOTE\"\nif mode == \"LOCAL\":\n    print(\"Local control\")\nelif mode == \"REMOTE\":\n    print(\"Remote control\")\nelse:\n    print(\"Disabled\")",
+            "The facility now supports familiar equipment operating modes."
+        ),
+        new Lesson(
+            "Chapter 2 · Decisions, Alarms, and Safety",
+            "Challenge",
+            "Safety-Control Challenge",
+            "Combine mode selection, permissives, alarms, and an emergency stop into one equipment decision.",
+            "can_start = mode == \"AUTO\" and level_ok and not emergency_stop",
+            "can_start = mode == \"AUTO\" and door_closed and level_ok and not emergency_stop\nif can_start:\n    print(\"Pump running\")\nelif emergency_stop:\n    print(\"Emergency stop active\")\nelse:\n    print(\"Start blocked\")",
+            "can_start = mode == \"___\" and door_closed and level_ok and ___ emergency_stop\nif can_start:\n    print(\"Pump running\")\nelif emergency_stop:\n    print(\"___\")\nelse:\n    print(\"Start blocked\")",
+            "When will Pump running appear?",
+            new[] { "AUTO is selected, both permissives are true, and E-stop is inactive", "Whenever AUTO is selected", "Only while E-stop is active", "Whenever either permissive is true" },
+            0,
+            "All four parts of the and expression must evaluate to True.",
+            "can_start = mode = \"AUTO\" and door_closed or level_ok and emergency_stop\nif can_start\n    print(\"Pump running\")",
+            "Repair the comparison, Boolean grouping, emergency-stop logic, colon, and safe branches.",
+            "Rebuild the complete pump safety decision.",
+            "Create a fan safety decision using AUTO mode, air_quality_ok, door_closed, and smoke_alarm.",
+            "can_start = mode == \"AUTO\" and air_quality_ok and door_closed and not smoke_alarm\nif can_start:\n    print(\"Fan running\")\nelif smoke_alarm:\n    print(\"Smoke alarm active\")\nelse:\n    print(\"Fan start blocked\")",
+            "Chapter 2 complete: safety and alarm logic are active."
+        ),
+        new Lesson(
+            "Chapter 3 · Repeating Processes and Sequences",
+            "While loops",
+            "Poll a Sensor Until Target",
+            "A while loop repeats as long as its condition remains True. The loop body must change something so it can eventually stop.",
+            "level = 0\nwhile level < 3:\n    level += 1",
+            "temperature = 15\nwhile temperature < 20:\n    temperature += 1",
+            "temperature = 15\nwhile temperature < ___:\n    temperature ___ 1",
+            "Why does this loop eventually stop?",
+            new[] { "temperature increases until the condition becomes False", "while runs only once", "print ends every loop", "Python stops after five lines" },
+            0,
+            "The += operation moves temperature toward the target each iteration.",
+            "temperature = 15\nwhile temperature < 20:\n    temperature -= 1",
+            "Subtracting moves the value away from the target and creates an endless loop.",
+            "Write the temperature polling loop from memory.",
+            "Increase tank_level from 40 until it reaches 50.",
+            "tank_level = 40\nwhile tank_level < 50:\n    tank_level += 1",
+            "The simulator can now represent a changing process value."
+        ),
+        new Lesson(
+            "Chapter 3 · Repeating Processes and Sequences",
+            "For loops",
+            "Inspect Every Zone",
+            "for and range() repeat a block a known number of times. range(1, 6) produces 1 through 5.",
+            "for pump in range(1, 4):\n    print(f\"Checking pump {pump}\")",
+            "for zone in range(1, 6):\n    print(f\"Checking zone {zone}\")",
+            "for zone in range(___, ___):\n    print(f\"Checking zone {zone}\")",
+            "Why is the stop value 6 when there are five zones?",
+            new[] { "The stop value is excluded", "Zone 6 must also run", "range starts at zero only", "The loop subtracts one" },
+            0,
+            "range excludes its stop value, so range(1, 6) ends at 5.",
+            "for zone in range(1, 5):\nprint(f\"Checking zone {zone}\")",
+            "Use a stop value of 6 and indent the loop body.",
+            "Rebuild the five-zone inspection loop.",
+            "Inspect pumps 1 through 3.",
+            "for pump in range(1, 4):\n    print(f\"Checking pump {pump}\")",
+            "The inspection routine can now visit every facility zone."
+        ),
+        new Lesson(
+            "Chapter 3 · Repeating Processes and Sequences",
+            "Counters",
+            "Count Pump Cycles",
+            "A counter variable records how many times an event occurs. += 1 increments the count.",
+            "alarm_count = 0\nalarm_count += 1",
+            "cycle_count = 0\nfor cycle in range(3):\n    cycle_count += 1",
+            "cycle_count = ___\nfor cycle in range(3):\n    cycle_count ___ 1",
+            "What is cycle_count after the loop?",
+            new[] { "3", "0", "1", "4" },
+            0,
+            "The loop runs three times and adds one each time.",
+            "cycle_count = 0\nfor cycle in range(3):\n    cycle_count =+ 1",
+            "=+ assigns positive one each time; += is the increment operator.",
+            "Create and increment cycle_count through three cycles.",
+            "Count five successful sensor reads.",
+            "read_count = 0\nfor reading in range(5):\n    read_count += 1",
+            "The dashboard can now track equipment cycles."
+        ),
+        new Lesson(
+            "Chapter 3 · Repeating Processes and Sequences",
+            "Break",
+            "Stop an Unsafe Sequence",
+            "break immediately exits the nearest loop. It is useful when an alarm makes continued operation unsafe.",
+            "for step in range(10):\n    if fault_active:\n        break",
+            "for second in range(60):\n    if emergency_stop:\n        break\n    print(f\"Running: {second}\")",
+            "for second in range(60):\n    if emergency_stop:\n        ___\n    print(f\"Running: {second}\")",
+            "What happens when emergency_stop becomes True?",
+            new[] { "The loop ends immediately", "The loop restarts", "The value becomes False", "Only the print line stops" },
+            0,
+            "break transfers execution to the first line after the loop.",
+            "for second in range(60):\n    if emergency_stop:\n        continue\n    print(f\"Running: {second}\")",
+            "continue skips one iteration but does not stop the sequence.",
+            "Rebuild the emergency-stop loop with break.",
+            "Stop checking sensors as soon as critical_alarm becomes True.",
+            "for sensor in range(8):\n    if critical_alarm:\n        break\n    print(f\"Sensor {sensor} checked\")",
+            "Unsafe equipment sequences can now terminate immediately."
+        ),
+        new Lesson(
+            "Chapter 3 · Repeating Processes and Sequences",
+            "Continue",
+            "Skip Offline Sensors",
+            "continue skips the rest of the current iteration and moves to the next item.",
+            "for value in readings:\n    if value is None:\n        continue\n    print(value)",
+            "for sensor in sensors:\n    if sensor[\"online\"] is False:\n        continue\n    print(sensor[\"name\"])",
+            "for sensor in sensors:\n    if sensor[\"online\"] is ___:\n        ___\n    print(sensor[\"name\"])",
+            "What happens to an offline sensor?",
+            new[] { "It is skipped and the loop checks the next sensor", "The entire loop ends", "It is automatically repaired", "It becomes online" },
+            0,
+            "continue bypasses the remaining lines for that one sensor.",
+            "for sensor in sensors:\n    if sensor[\"online\"] is False:\n        break\n    print(sensor[\"name\"])",
+            "break would stop checking all remaining sensors.",
+            "Write the offline-sensor skip logic from memory.",
+            "Skip readings equal to -1 while printing valid values.",
+            "for reading in readings:\n    if reading == -1:\n        continue\n    print(reading)",
+            "The monitoring routine can ignore unavailable devices."
+        ),
+        new Lesson(
+            "Chapter 3 · Repeating Processes and Sequences",
+            "Countdowns",
+            "Warn Before Motor Start",
+            "range() can count downward by using a negative step. The stop value is still excluded.",
+            "for second in range(3, 0, -1):\n    print(second)",
+            "for seconds in range(5, 0, -1):\n    print(seconds)\nprint(\"Motor starting\")",
+            "for seconds in range(___, ___, ___):\n    print(seconds)\nprint(\"Motor starting\")",
+            "Which argument makes the countdown decrease?",
+            new[] { "-1", "0", "5", "True" },
+            0,
+            "The third range argument is the step, and -1 subtracts one each time.",
+            "for seconds in range(5, 0, 1):\n    print(seconds)",
+            "A positive step cannot move from 5 toward the lower stop value.",
+            "Rebuild the five-second startup countdown.",
+            "Create a three-second fan-start countdown.",
+            "for seconds in range(3, 0, -1):\n    print(seconds)\nprint(\"Fan starting\")",
+            "The system now gives operators a startup warning."
+        ),
+        new Lesson(
+            "Chapter 3 · Repeating Processes and Sequences",
+            "Sequences",
+            "Run an Equipment Sequence",
+            "A sequence combines ordered steps with safety checks. Each step should happen only after required conditions pass.",
+            "if ready:\n    print(\"Step 1\")\n    print(\"Step 2\")",
+            "if safety_ok:\n    print(\"Start exhaust fan\")\n    print(\"Open damper\")\n    print(\"Start process equipment\")\nelse:\n    print(\"Sequence blocked\")",
+            "if safety_ok:\n    print(\"___\")\n    print(\"___\")\n    print(\"___\")\nelse:\n    print(\"Sequence blocked\")",
+            "Why are all three startup lines indented?",
+            new[] { "They belong to the safe branch", "They are comments", "They create three loops", "Python ignores indentation" },
+            0,
+            "Indentation groups the ordered startup actions under the safety condition.",
+            "if safety_ok:\nprint(\"Start exhaust fan\")\nprint(\"Open damper\")\nelse:\nprint(\"Sequence blocked\")",
+            "Indent the branch bodies so Python can identify each block.",
+            "Rebuild the ventilation startup sequence.",
+            "Create a shutdown sequence that stops equipment, closes a valve, then stops the fan.",
+            "if shutdown_command:\n    print(\"Stop process equipment\")\n    print(\"Close valve\")\n    print(\"Stop exhaust fan\")",
+            "The simulator now performs ordered equipment actions."
+        ),
+        new Lesson(
+            "Chapter 3 · Repeating Processes and Sequences",
+            "Challenge",
+            "Automated Ventilation Challenge",
+            "Combine inspection, a countdown, repeated monitoring, counters, and an emergency break into one ventilation simulation.",
+            "for second in range(3, 0, -1):\n    print(second)",
+            "cycle_count = 0\nif air_quality_ok and not emergency_stop:\n    for seconds in range(3, 0, -1):\n        print(seconds)\n    print(\"Ventilation fan started\")\n    for minute in range(1, 6):\n        if emergency_stop:\n            break\n        cycle_count += 1\n        print(f\"Monitoring minute {minute}\")\nelse:\n    print(\"Ventilation blocked\")",
+            "cycle_count = ___\nif air_quality_ok and ___ emergency_stop:\n    for seconds in range(___, ___, ___):\n        print(seconds)\n    print(\"Ventilation fan started\")\n    for minute in range(1, 6):\n        if emergency_stop:\n            ___\n        cycle_count ___ 1",
+            "What protects the monitoring loop after startup?",
+            new[] { "The emergency-stop check and break", "The countdown alone", "The f-string", "The cycle counter" },
+            0,
+            "The condition is checked each iteration and break ends operation when necessary.",
+            "cycle_count = 0\nif air_quality_ok and emergency_stop:\n    for seconds in range(3, 0, 1):\n        print(seconds)\n    for minute in range(1, 6):\n        if emergency_stop:\n            continue\n        cycle_count =+ 1",
+            "Repair the emergency logic, countdown step, loop stop behavior, and counter operator.",
+            "Rebuild the ventilation challenge from memory.",
+            "Create a three-cycle sump-pump sequence that stops on high_pressure.",
+            "cycle_count = 0\nif level_high and not high_pressure:\n    for cycle in range(1, 4):\n        if high_pressure:\n            break\n        cycle_count += 1\n        print(f\"Pump cycle {cycle}\")\nelse:\n    print(\"Pump sequence blocked\")",
+            "Chapter 3 complete: automatic operating sequences are online."
+        ),
+        new Lesson(
+            "Chapter 4 · Sensors, Devices, and Data",
+            "Lists",
+            "Store Multiple Readings",
+            "A list stores an ordered collection inside square brackets. Lists are ideal for groups of sensor values.",
+            "flows = [12.1, 12.4, 11.9]",
+            "temperatures = [18.2, 19.1, 20.4, 18.9]",
+            "temperatures = [___, ___, ___, ___]",
+            "Which brackets create a list?",
+            new[] { "Square brackets", "Parentheses", "Braces", "Angle brackets" },
+            0,
+            "Python list literals use square brackets.",
+            "temperatures = (18.2, 19.1, 20.4, 18.9)",
+            "Parentheses create a tuple; use square brackets for this editable list.",
+            "Create the four-value temperatures list.",
+            "Create a pressures list containing 41.2, 42.0, and 41.7.",
+            "pressures = [41.2, 42.0, 41.7]",
+            "The sensor network can now retain multiple readings."
+        ),
+        new Lesson(
+            "Chapter 4 · Sensors, Devices, and Data",
+            "Iteration",
+            "Examine Every Reading",
+            "A for loop can visit every value in a list without manually using indexes.",
+            "for flow in flows:\n    print(flow)",
+            "for temperature in temperatures:\n    print(temperature)",
+            "for ___ in temperatures:\n    print(___)",
+            "What does temperature represent inside the loop?",
+            new[] { "The current list item", "The whole list", "The number of items", "A file name" },
+            0,
+            "The loop variable receives one list element at a time.",
+            "for temperatures in temperature:\n    print(temperatures)",
+            "The iterable and loop variable are reversed.",
+            "Loop through and print each temperature.",
+            "Loop through and print each pressure.",
+            "for pressure in pressures:\n    print(pressure)",
+            "Every stored sensor reading can now be inspected."
+        ),
+        new Lesson(
+            "Chapter 4 · Sensors, Devices, and Data",
+            "Aggregates",
+            "Summarize Sensor Values",
+            "Built-in functions can find minimum, maximum, total, and count. Divide sum() by len() for an average.",
+            "average = sum(readings) / len(readings)",
+            "highest = max(temperatures)\nlowest = min(temperatures)\naverage = sum(temperatures) / len(temperatures)",
+            "highest = ___(temperatures)\nlowest = ___(temperatures)\naverage = ___(temperatures) / ___(temperatures)",
+            "Which function returns the number of readings?",
+            new[] { "len()", "sum()", "max()", "float()" },
+            0,
+            "len() returns the number of items in a collection.",
+            "highest = min(temperatures)\nlowest = max(temperatures)\naverage = len(temperatures) / sum(temperatures)",
+            "The min and max assignments are reversed, and average must divide the total by the count.",
+            "Rebuild the high, low, and average calculations.",
+            "Calculate total_flow and average_flow from flows.",
+            "total_flow = sum(flows)\naverage_flow = total_flow / len(flows)",
+            "The dashboard can now summarize the sensor network."
+        ),
+        new Lesson(
+            "Chapter 4 · Sensors, Devices, and Data",
+            "Dictionaries",
+            "Describe a Pump",
+            "A dictionary stores named key-value pairs inside braces. It is useful for related equipment attributes.",
+            "fan = {\"name\": \"EF-1\", \"running\": True}",
+            "pump = {\"name\": \"Transfer Pump 1\", \"running\": True, \"hours\": 125}",
+            "pump = {\"name\": \"___\", \"running\": ___, \"hours\": ___}",
+            "How do you access the pump name?",
+            new[] { "pump[\"name\"]", "pump.name()", "pump[0]", "name[pump]" },
+            0,
+            "Use the key inside square brackets: pump[\"name\"].",
+            "pump = [\"name\": \"Transfer Pump 1\", \"running\": True, \"hours\": 125]",
+            "Dictionary entries belong inside braces, not square brackets.",
+            "Create the pump dictionary from memory.",
+            "Create a fan dictionary with name EF-1, running False, and hours 82.",
+            "fan = {\"name\": \"EF-1\", \"running\": False, \"hours\": 82}",
+            "Equipment details are now grouped into meaningful records."
+        ),
+        new Lesson(
+            "Chapter 4 · Sensors, Devices, and Data",
+            "Mutation",
+            "Update Equipment Status",
+            "Assigning through a dictionary key changes that field while preserving the other equipment data.",
+            "fan[\"running\"] = True",
+            "pump[\"running\"] = False\npump[\"hours\"] += 1",
+            "pump[\"running\"] = ___\npump[\"hours\"] ___ 1",
+            "What happens to the pump name?",
+            new[] { "It remains unchanged", "It becomes False", "It is deleted", "It increases by one" },
+            0,
+            "Only the addressed keys are modified.",
+            "pump[\"running\"] == False\npump[\"hours\"] =+ 1",
+            "Use assignment for running and += to increment hours.",
+            "Stop the pump and add one operating hour.",
+            "Start fan and add five hours to its runtime.",
+            "fan[\"running\"] = True\nfan[\"hours\"] += 5",
+            "The dashboard can now reflect changing equipment state."
+        ),
+        new Lesson(
+            "Chapter 4 · Sensors, Devices, and Data",
+            "Nested data",
+            "Group Multiple Devices",
+            "A list of dictionaries represents multiple devices that share a common structure.",
+            "valves = [{\"name\": \"V-1\", \"open\": True}, {\"name\": \"V-2\", \"open\": False}]",
+            "pumps = [\n    {\"name\": \"Pump 1\", \"running\": True},\n    {\"name\": \"Pump 2\", \"running\": False}\n]",
+            "pumps = [\n    {\"name\": \"___\", \"running\": ___},\n    {\"name\": \"___\", \"running\": ___}\n]",
+            "What type is pumps?",
+            new[] { "A list containing dictionaries", "One dictionary containing strings", "A function", "A Boolean" },
+            0,
+            "The outer square brackets create a list; each brace pair creates a device dictionary.",
+            "pumps = {\n    [\"name\": \"Pump 1\", \"running\": True],\n    [\"name\": \"Pump 2\", \"running\": False]\n}",
+            "Use a list outside and dictionaries inside.",
+            "Create the two-pump list from memory.",
+            "Create a list containing two fans with name and running fields.",
+            "fans = [\n    {\"name\": \"Fan 1\", \"running\": True},\n    {\"name\": \"Fan 2\", \"running\": False}\n]",
+            "The facility model can now manage multiple devices."
+        ),
+        new Lesson(
+            "Chapter 4 · Sensors, Devices, and Data",
+            "Reports",
+            "Create a Maintenance Report",
+            "Loop through equipment records and use f-strings to create readable reports.",
+            "for fan in fans:\n    print(f\"{fan['name']}: {fan['hours']} hours\")",
+            "for pump in pumps:\n    print(f\"{pump['name']}: {pump['hours']} hours\")",
+            "for pump in pumps:\n    print(f\"{pump['___']}: {pump['___']} hours\")",
+            "Why use different quotation marks around dictionary keys?",
+            new[] { "To avoid ending the outer f-string", "Python requires all keys to use single quotes", "It converts the value", "It creates comments" },
+            0,
+            "Single quotes inside a double-quoted f-string avoid a quote collision.",
+            "for pump in pumps:\nprint(f\"{pump[\"name\"]}: {pump[\"hours\"]} hours\")",
+            "Indent the body and avoid conflicting quotation marks inside the f-string.",
+            "Rebuild the maintenance report loop.",
+            "Report each fan's name and running state.",
+            "for fan in fans:\n    print(f\"{fan['name']}: Running = {fan['running']}\")",
+            "The facility can now print readable maintenance information."
+        ),
+        new Lesson(
+            "Chapter 4 · Sensors, Devices, and Data",
+            "Challenge",
+            "Facility Monitoring Challenge",
+            "Combine sensor lists, device dictionaries, loops, and aggregate calculations into one monitoring summary.",
+            "average = sum(readings) / len(readings)",
+            "temperatures = [18.2, 19.1, 20.4, 18.9, 21.0]\nequipment = [\n    {\"name\": \"Pump 1\", \"alarm\": False, \"hours\": 125},\n    {\"name\": \"Fan 1\", \"alarm\": True, \"hours\": 82},\n    {\"name\": \"Valve 1\", \"alarm\": False, \"hours\": 41}\n]\nprint(f\"Low: {min(temperatures)}\")\nprint(f\"High: {max(temperatures)}\")\nprint(f\"Average: {sum(temperatures) / len(temperatures)}\")\nfor device in equipment:\n    if device[\"alarm\"]:\n        print(f\"ALARM: {device['name']}\")",
+            "temperatures = [18.2, 19.1, 20.4, 18.9, 21.0]\nequipment = [\n    {\"name\": \"Pump 1\", \"alarm\": ___, \"hours\": 125},\n    {\"name\": \"Fan 1\", \"alarm\": ___, \"hours\": 82},\n    {\"name\": \"Valve 1\", \"alarm\": ___, \"hours\": 41}\n]\nprint(f\"Low: {___(temperatures)}\")\nprint(f\"High: {___(temperatures)}\")\nprint(f\"Average: {___(temperatures) / ___(temperatures)}\")",
+            "Which structure stores each equipment record?",
+            new[] { "A dictionary", "A float", "A Boolean operator", "A file" },
+            0,
+            "Each device is a dictionary inside the equipment list.",
+            "temperatures = [18.2, 19.1, 20.4]\nprint(f\"Low: {max(temperatures)}\")\nprint(f\"High: {min(temperatures)}\")\nprint(f\"Average: {len(temperatures) / sum(temperatures)}\")",
+            "Repair low, high, and average calculations, then include alarmed equipment.",
+            "Rebuild the complete monitoring challenge.",
+            "Create a pressure dashboard with three devices and a high-pressure alarm report.",
+            "pressures = [41.2, 42.0, 55.8, 41.7]\ndevices = [\n    {\"name\": \"Compressor 1\", \"alarm\": False},\n    {\"name\": \"Receiver 1\", \"alarm\": True},\n    {\"name\": \"Dryer 1\", \"alarm\": False}\n]\nprint(f\"Pressure average: {sum(pressures) / len(pressures)}\")\nfor device in devices:\n    if device[\"alarm\"]:\n        print(f\"ALARM: {device['name']}\")",
+            "Chapter 4 complete: the facility monitoring network is established."
+        ),
+        new Lesson(
+            "Chapter 5 · Functions, Files, and Raspberry Pi",
+            "Functions",
+            "Create a Sensor Function",
+            "A function packages reusable instructions. def names the function, and return sends a value back to the caller.",
+            "def read_level():\n    return 62.5",
+            "def read_temperature():\n    return 21.5",
+            "def read_temperature():\n    ___ 21.5",
+            "What does return do?",
+            new[] { "Sends a result back to the caller", "Prints automatically", "Repeats forever", "Creates a dictionary" },
+            0,
+            "return makes the function's result available to other code.",
+            "def read_temperature()\nreturn 21.5",
+            "Add a colon to the function header and indent the return statement.",
+            "Create read_temperature from memory.",
+            "Create read_pressure that returns 42.0.",
+            "def read_pressure():\n    return 42.0",
+            "The facility now has a reusable sensor-reading function."
+        ),
+        new Lesson(
+            "Chapter 5 · Functions, Files, and Raspberry Pi",
+            "Parameters",
+            "Check Different Readings",
+            "A parameter receives a value when the function is called, allowing one function to evaluate many readings.",
+            "def check_level(value):\n    return value < 20",
+            "def check_temperature(value):\n    if value > 30:\n        return \"Alarm\"\n    return \"Normal\"",
+            "def check_temperature(___):\n    if value > ___:\n        return \"Alarm\"\n    return \"Normal\"",
+            "What is value inside the function?",
+            new[] { "The argument supplied by the caller", "A fixed global constant", "The function name", "A list of all readings" },
+            0,
+            "The parameter is assigned the argument passed during each call.",
+            "def check_temperature:\n    if value > 30\n        print \"Alarm\"",
+            "Add the parameter list, colons, and return values.",
+            "Rebuild check_temperature from memory.",
+            "Create check_pressure(value) returning High above 80, otherwise Normal.",
+            "def check_pressure(value):\n    if value > 80:\n        return \"High\"\n    return \"Normal\"",
+            "One function can now evaluate any supplied sensor reading."
+        ),
+        new Lesson(
+            "Chapter 5 · Functions, Files, and Raspberry Pi",
+            "Return values",
+            "Build a Start-Permissive Function",
+            "A function can return a Boolean expression directly, making safety rules reusable and testable.",
+            "def valve_can_open(command, interlock):\n    return command and not interlock",
+            "def can_start(door_closed, emergency_stop):\n    return door_closed and not emergency_stop",
+            "def can_start(___, ___):\n    return door_closed and ___ emergency_stop",
+            "What type does can_start return?",
+            new[] { "A Boolean", "A list", "A file", "A loop" },
+            0,
+            "The and/not expression evaluates to True or False.",
+            "def can_start(door_closed, emergency_stop):\n    print door_closed and emergency_stop",
+            "Return the safe Boolean expression and reverse the emergency-stop condition.",
+            "Rebuild can_start from memory.",
+            "Create can_run_pump(level_ok, overload) returning the safe permissive.",
+            "def can_run_pump(level_ok, overload):\n    return level_ok and not overload",
+            "Equipment permissives can now be reused throughout the program."
+        ),
+        new Lesson(
+            "Chapter 5 · Functions, Files, and Raspberry Pi",
+            "Decomposition",
+            "Organize the Facility Program",
+            "Breaking a large program into small functions makes each responsibility easier to understand, test, and change.",
+            "def display_status(status):\n    print(status)",
+            "def read_sensors():\n    return {\"temperature\": 21.5, \"pressure\": 42.0}\n\ndef check_alarms(readings):\n    return readings[\"temperature\"] > 30\n\ndef display_status(alarm):\n    print(f\"Alarm active: {alarm}\")",
+            "def read_sensors():\n    return {\"temperature\": ___, \"pressure\": ___}\n\ndef check_alarms(readings):\n    return readings[\"temperature\"] ___ 30",
+            "Why separate these responsibilities?",
+            new[] { "Each function has one clear job", "Python requires exactly three functions", "It prevents return values", "It removes all variables" },
+            0,
+            "Small focused functions are easier to test and reuse.",
+            "def read_sensors()\n    print({\"temperature\": 21.5})\ndef check_alarms(readings):\nreturn readings[\"temperature\"] > 30",
+            "Repair the missing colon, use return for readings, and indent the second return.",
+            "Rebuild the three-function facility structure.",
+            "Create read_level(), check_low_level(value), and display_level(status).",
+            "def read_level():\n    return 62.5\n\ndef check_low_level(value):\n    return value < 20\n\ndef display_level(low_level):\n    print(f\"Low level: {low_level}\")",
+            "The automation program is now divided into maintainable functions."
+        ),
+        new Lesson(
+            "Chapter 5 · Functions, Files, and Raspberry Pi",
+            "File output",
+            "Log Sensor Readings",
+            "with open(..., 'a') opens a file safely in append mode, preserving existing log entries.",
+            "with open(\"events.txt\", \"a\") as file:\n    file.write(\"Pump started\\n\")",
+            "with open(\"readings.txt\", \"a\") as file:\n    file.write(\"Temperature: 21.5\\n\")",
+            "with open(\"readings.txt\", \"___\") as file:\n    file.___(\"Temperature: 21.5\\n\")",
+            "Why use append mode a?",
+            new[] { "To add new entries without erasing earlier ones", "To read only", "To delete the file", "To convert text to a float" },
+            0,
+            "Append mode writes at the end of the existing file.",
+            "open \"readings.txt\" as file:\nfile.print(\"Temperature: 21.5\")",
+            "Use a with statement, open(), append mode, indentation, and file.write().",
+            "Rebuild the temperature logging block.",
+            "Append Pump 1 started to events.txt.",
+            "with open(\"events.txt\", \"a\") as file:\n    file.write(\"Pump 1 started\\n\")",
+            "The facility can now preserve a history of readings."
+        ),
+        new Lesson(
+            "Chapter 5 · Functions, Files, and Raspberry Pi",
+            "File input",
+            "Review Historical Data",
+            "Read mode loads existing file contents. The with statement closes the file automatically afterward.",
+            "with open(\"events.txt\", \"r\") as file:\n    history = file.read()",
+            "with open(\"readings.txt\", \"r\") as file:\n    history = file.read()\n    print(history)",
+            "with open(\"readings.txt\", \"___\") as file:\n    history = file.___()\n    print(history)",
+            "Which mode opens a file for reading?",
+            new[] { "\"r\"", "\"a\"", "\"w\"", "\"x\"" },
+            0,
+            "The r mode opens an existing file for reading.",
+            "with open(\"readings.txt\", \"a\") as file:\n    history = file.write()\nprint(history)",
+            "Use read mode, call read(), and keep operations that use the open file inside the block.",
+            "Rebuild the historical-data reader.",
+            "Read and display events.txt.",
+            "with open(\"events.txt\", \"r\") as file:\n    events = file.read()\n    print(events)",
+            "Operators can now review previous facility events."
+        ),
+        new Lesson(
+            "Chapter 5 · Functions, Files, and Raspberry Pi",
+            "GPIO concepts",
+            "Simulate a Raspberry Pi Relay",
+            "Browser exercises use a Boolean to simulate an output. On Raspberry Pi, gpiozero exposes physical pins through Python objects.",
+            "output_on = False\noutput_on = True",
+            "relay_output = False\n\ndef energize_relay():\n    global relay_output\n    relay_output = True",
+            "relay_output = ___\n\ndef energize_relay():\n    global relay_output\n    relay_output = ___",
+            "Why declare global relay_output?",
+            new[] { "The function changes the variable created outside it", "It imports gpiozero", "It creates a loop", "It converts the value to text" },
+            0,
+            "global tells Python that assignment should update the existing module-level variable.",
+            "relay_output = False\n\ndef energize_relay():\n    relay_output == True",
+            "Declare the global variable and assign with one equals sign.",
+            "Rebuild the simulated relay function.",
+            "Create deenergize_relay() that turns the same output False.",
+            "def deenergize_relay():\n    global relay_output\n    relay_output = False",
+            "Python state now maps conceptually to a physical relay output."
+        ),
+        new Lesson(
+            "Chapter 5 · Functions, Files, and Raspberry Pi",
+            "Capstone",
+            "Cave Facility Automation Capstone",
+            "Combine functions, safety logic, modes, sensors, equipment records, repeated monitoring, and logging into one controller.",
+            "def can_start(level_ok, emergency_stop):\n    return level_ok and not emergency_stop",
+            "def can_start(mode, door_closed, level_ok, emergency_stop):\n    return mode == \"AUTO\" and door_closed and level_ok and not emergency_stop\n\ndef log_event(message):\n    with open(\"facility.log\", \"a\") as file:\n        file.write(message + \"\\n\")\n\nmode = \"AUTO\"\ndoor_closed = True\nlevel_ok = True\nemergency_stop = False\npump_running = False\n\nif can_start(mode, door_closed, level_ok, emergency_stop):\n    pump_running = True\n    log_event(\"Pump started\")\n    for cycle in range(1, 4):\n        if emergency_stop:\n            pump_running = False\n            log_event(\"Emergency stop\")\n            break\n        print(f\"Monitoring cycle {cycle}\")\nelse:\n    log_event(\"Start blocked\")",
+            "def can_start(mode, door_closed, level_ok, emergency_stop):\n    return mode == \"___\" and door_closed and level_ok and ___ emergency_stop\n\ndef log_event(message):\n    with open(\"facility.log\", \"___\") as file:\n        file.write(message + \"\\n\")\n\nmode = \"AUTO\"\ndoor_closed = ___\nlevel_ok = ___\nemergency_stop = ___",
+            "Which parts protect the pump after it starts?",
+            new[] { "The repeated emergency-stop check and safe shutdown", "The file name alone", "The range stop value only", "The print statement" },
+            0,
+            "The permissive controls startup, while the loop checks the emergency stop during operation.",
+            "def can_start(mode, door_closed, level_ok, emergency_stop)\n    return mode = \"AUTO\" or door_closed or level_ok or emergency_stop\n\ndef log_event(message):\n    open(\"facility.log\", \"r\").write(message)\n\nif can_start(mode, door_closed, level_ok, emergency_stop)\n    pump_running == True",
+            "Repair the function syntax, safe Boolean logic, append logging, condition colon, and assignments.",
+            "Rebuild the complete facility automation capstone.",
+            "Create a ventilation capstone using AUTO mode, air_quality_ok, smoke_alarm, three monitoring cycles, and event logging.",
+            "def can_start_fan(mode, air_quality_ok, smoke_alarm):\n    return mode == \"AUTO\" and air_quality_ok and not smoke_alarm\n\ndef log_event(message):\n    with open(\"ventilation.log\", \"a\") as file:\n        file.write(message + \"\\n\")\n\nmode = \"AUTO\"\nair_quality_ok = True\nsmoke_alarm = False\nfan_running = False\n\nif can_start_fan(mode, air_quality_ok, smoke_alarm):\n    fan_running = True\n    log_event(\"Fan started\")\n    for cycle in range(1, 4):\n        if smoke_alarm:\n            fan_running = False\n            log_event(\"Smoke shutdown\")\n            break\n        print(f\"Air-quality cycle {cycle}\")\nelse:\n    log_event(\"Fan start blocked\")",
+            "Course complete: the underground facility is fully automated."
+        )
+    };
+
+    private int CurrentModuleIndex;
+    private TrainingStage CurrentStage = TrainingStage.Learn;
+    private int[] HighestCompletedStage = Array.Empty<int>();
+    private bool[] ModuleCompleted = Array.Empty<bool>();
+
+    private string StudentCode = "";
+    private string Feedback = "";
+    private bool HintVisible;
+    private bool StagePassed;
+    private int? SelectedPrediction;
+    private bool ShowChapterOneSignInPrompt;
+    private AchievementUnlockResult? ChapterAchievement;
+    private bool ShowAchievementUnlock;
+    private bool PendingChapterOneSignInPrompt;
+    private bool ProgressRestored;
+
+    private const int ChapterOneLastModuleIndex = 7;
+
+    private Lesson CurrentLesson => Lessons[CurrentModuleIndex];
+
+    protected override void OnInitialized()
+    {
+        HighestCompletedStage = Enumerable.Repeat(-1, Lessons.Count).ToArray();
+        ModuleCompleted = new bool[Lessons.Count];
+        PrepareStage();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || ProgressRestored)
+        {
+            return;
+        }
+
+        ProgressRestored = true;
+
+        try
+        {
+            CourseProgressSnapshot? snapshot =
+                await JS.InvokeAsync<CourseProgressSnapshot?>(
+                    "caveCodeAuth.loadCourseProgressFor",
+                    "python"
+                );
+
+            if (snapshot is not null &&
+                snapshot.HighestCompletedStage.Length == Lessons.Count &&
+                snapshot.ModuleCompleted.Length == Lessons.Count)
+            {
+                HighestCompletedStage = snapshot.HighestCompletedStage;
+                ModuleCompleted = snapshot.ModuleCompleted;
+                CurrentModuleIndex = Math.Clamp(
+                    snapshot.CurrentModuleIndex,
+                    0,
+                    Lessons.Count - 1
+                );
+                CurrentStage = (TrainingStage)Math.Clamp(
+                    snapshot.CurrentStage,
+                    0,
+                    7
+                );
+                PrepareStage();
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch
+        {
+            // Local progress is optional; the course still works without it.
+        }
+    }
+
+    private int CompletedModuleCount => ModuleCompleted.Count(completed => completed);
+
+    private int CourseProgress =>
+        Lessons.Count == 0 ? 0 : CompletedModuleCount * 100 / Lessons.Count;
+
+    private int ModuleMastery(int index)
+    {
+        if (ModuleCompleted[index])
+        {
+            return 100;
+        }
+
+        int completedStages = HighestCompletedStage[index] + 1;
+        return Math.Clamp(completedStages * 100 / 8, 0, 100);
+    }
+
+    private bool IsLessonUnlocked(int index) =>
+        index == 0 || ModuleCompleted[index - 1];
+
+    private bool IsStageUnlocked(TrainingStage stage)
+    {
+        if (ModuleCompleted[CurrentModuleIndex])
+        {
+            return true;
+        }
+
+        return (int)stage <= HighestCompletedStage[CurrentModuleIndex] + 1;
+    }
+
+    private bool IsStageComplete(TrainingStage stage) =>
+        ModuleCompleted[CurrentModuleIndex] ||
+        (int)stage <= HighestCompletedStage[CurrentModuleIndex];
+
+    private void SelectLesson(int index)
+    {
+        if (!IsLessonUnlocked(index))
+        {
+            return;
+        }
+
+        CurrentModuleIndex = index;
+        CurrentStage = ModuleCompleted[index]
+            ? TrainingStage.Complete
+            : (TrainingStage)Math.Clamp(HighestCompletedStage[index] + 1, 0, 7);
+
+        PrepareStage();
+    }
+
+    private void SelectStage(TrainingStage stage)
+    {
+        if (!IsStageUnlocked(stage))
+        {
+            return;
+        }
+
+        CurrentStage = stage;
+        PrepareStage();
+    }
+
+    private void PrepareStage()
+    {
+        Feedback = "";
+        HintVisible = false;
+        SelectedPrediction = null;
+
+        bool alreadyComplete =
+            ModuleCompleted[CurrentModuleIndex] ||
+            (int)CurrentStage <= HighestCompletedStage[CurrentModuleIndex];
+
+        StagePassed = alreadyComplete;
+
+        StudentCode = CurrentStage switch
+        {
+            TrainingStage.Guided => alreadyComplete ? CurrentLesson.TargetCode : "",
+            TrainingStage.Fill => alreadyComplete ? CurrentLesson.TargetCode : CurrentLesson.FillStarter,
+            TrainingStage.Debug => alreadyComplete ? CurrentLesson.TargetCode : CurrentLesson.BrokenCode,
+            TrainingStage.Recall => alreadyComplete ? CurrentLesson.TargetCode : "",
+            TrainingStage.Transfer => alreadyComplete ? CurrentLesson.TransferCode : "",
+            _ => ""
+        };
+    }
+
+    private string CurrentExpectedCode => CurrentStage switch
+    {
+        TrainingStage.Guided => CurrentLesson.TargetCode,
+        TrainingStage.Fill => CurrentLesson.TargetCode,
+        TrainingStage.Debug => CurrentLesson.TargetCode,
+        TrainingStage.Recall => CurrentLesson.TargetCode,
+        TrainingStage.Transfer => CurrentLesson.TransferCode,
+        _ => ""
+    };
+
+    private bool ShowTargetGuide =>
+        CurrentStage is TrainingStage.Guided or TrainingStage.Fill;
+
+    private int ErrorCount
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(CurrentExpectedCode))
+            {
+                return 0;
+            }
+
+            int errors = 0;
+
+            for (int index = 0; index < StudentCode.Length; index++)
+            {
+                if (index >= CurrentExpectedCode.Length ||
+                    StudentCode[index] != CurrentExpectedCode[index])
+                {
+                    errors++;
+                }
+            }
+
+            return errors;
+        }
+    }
+
+    private int Accuracy
+    {
+        get
+        {
+            if (StudentCode.Length == 0)
+            {
+                return 0;
+            }
+
+            int correct = Math.Max(0, StudentCode.Length - ErrorCount);
+            return correct * 100 / StudentCode.Length;
+        }
+    }
+
+    private string GetCharacterClass(int index)
+    {
+        if (index >= StudentCode.Length)
+        {
+            return index == StudentCode.Length
+                ? "character-current"
+                : "character-pending";
+        }
+
+        return StudentCode[index] == CurrentExpectedCode[index]
+            ? "character-correct"
+            : "character-wrong";
+    }
+
+    private void CompleteLearnStage()
+    {
+        MarkStageComplete();
+        AdvanceStage();
+    }
+
+    private void CheckCode()
+    {
+        HintVisible = false;
+
+        if (CodesMatch(StudentCode, CurrentExpectedCode))
+        {
+            StagePassed = true;
+            Feedback = CurrentStage switch
+            {
+                TrainingStage.Debug => "Correct repair. The broken code now matches the intended Python.",
+                TrainingStage.Recall => "Correct recall. You rebuilt the code without the visible guide.",
+                TrainingStage.Transfer => "Correct transfer. You applied the concept to a new situation.",
+                _ => "Correct. Every required part of the code is present."
+            };
+        }
+        else
+        {
+            StagePassed = false;
+            Feedback = CurrentStage switch
+            {
+                TrainingStage.Debug => "The bug is not fully repaired yet. Use the compiler clue and inspect each token.",
+                TrainingStage.Recall => "Not yet. Rebuild the same structure from memory, or reveal the hint.",
+                TrainingStage.Transfer => "The new scenario is close, but the code does not match the requested result.",
+                _ => "Not quite. Red characters differ from the target code."
+            };
+        }
+    }
+
+    private static bool CodesMatch(string actual, string expected)
+    {
+        string Normalize(string code) =>
+            Regex.Replace(code.Replace("\r\n", "\n").Trim(), @"\s+", " ");
+
+        return Normalize(actual) == Normalize(expected);
+    }
+
+    private void SelectPrediction(int index)
+    {
+        SelectedPrediction = index;
+
+        if (index == CurrentLesson.PredictionCorrect)
+        {
+            StagePassed = true;
+            Feedback = "Correct. " + CurrentLesson.PredictionExplanation;
+        }
+        else
+        {
+            StagePassed = false;
+            Feedback = "Not quite. Think about the exact Python rule demonstrated in the example.";
+        }
+    }
+
+    private string PredictionClass(int index)
+    {
+        if (!SelectedPrediction.HasValue)
+        {
+            return "";
+        }
+
+        if (index == CurrentLesson.PredictionCorrect)
+        {
+            return "correct";
+        }
+
+        return index == SelectedPrediction.Value ? "wrong" : "";
+    }
+
+    private void ShowHint()
+    {
+        HintVisible = true;
+    }
+
+    private void ResetStage()
+    {
+        PrepareStage();
+    }
+
+    private void AdvanceStage()
+    {
+        MarkStageComplete();
+
+        if ((int)CurrentStage < (int)TrainingStage.Complete)
+        {
+            CurrentStage = (TrainingStage)((int)CurrentStage + 1);
+            PrepareStage();
+        }
+    }
+
+    private void MarkStageComplete()
+    {
+        HighestCompletedStage[CurrentModuleIndex] = Math.Max(
+            HighestCompletedStage[CurrentModuleIndex],
+            (int)CurrentStage
+        );
+    }
+
+    private async Task FinishModule()
+    {
+        int finishedModuleIndex = CurrentModuleIndex;
+
+        HighestCompletedStage[finishedModuleIndex] = 7;
+        ModuleCompleted[finishedModuleIndex] = true;
+
+        if (CurrentModuleIndex < Lessons.Count - 1)
+        {
+            CurrentModuleIndex++;
+            CurrentStage = TrainingStage.Learn;
+            PrepareStage();
+        }
+        else
+        {
+            Feedback = "Course complete. You restored and automated the full underground facility.";
+            StagePassed = true;
+        }
+
+        await SaveProgressAsync();
+        await HandleChapterCompletionAsync("python", finishedModuleIndex);
+
+        if (finishedModuleIndex == ChapterOneLastModuleIndex)
+        {
+            bool signedIn = false;
+
+            try
+            {
+                signedIn = await JS.InvokeAsync<bool>(
+                    "caveCodeAuth.isSignedIn"
+                );
+            }
+            catch
+            {
+                // If auth is unavailable, the learner can still continue.
+            }
+
+            if (!signedIn)
+            {
+                if (ShowAchievementUnlock)
+                {
+                    PendingChapterOneSignInPrompt = true;
+                }
+                else
+                {
+                    ShowChapterOneSignInPrompt = true;
+                }
+            }
+        }
+    }
+
+    private async Task HandleChapterCompletionAsync(
+        string course,
+        int finishedModuleIndex
+    )
+    {
+        int chapter = ChapterNumberForModule(finishedModuleIndex);
+
+        if (chapter == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            AchievementUnlockResult? result =
+                await AchievementService.UnlockChapterAsync(
+                    course,
+                    chapter
+                );
+
+            if (result is not null && result.NewlyUnlocked)
+            {
+                ChapterAchievement = result;
+                ShowAchievementUnlock = true;
+            }
+        }
+        catch
+        {
+            // Achievements never interrupt course progression.
+        }
+    }
+
+    private static int ChapterNumberForModule(int moduleIndex) =>
+        moduleIndex is 7 or 15 or 23 or 31 or 39
+            ? moduleIndex / 8 + 1
+            : 0;
+
+    private void DismissAchievementUnlock()
+    {
+        ShowAchievementUnlock = false;
+        ChapterAchievement = null;
+
+        if (PendingChapterOneSignInPrompt)
+        {
+            PendingChapterOneSignInPrompt = false;
+            ShowChapterOneSignInPrompt = true;
+        }
+    }
+
+    private async Task SaveProgressAsync()
+    {
+        CourseProgressSnapshot snapshot = new()
+        {
+            CurrentModuleIndex = CurrentModuleIndex,
+            CurrentStage = (int)CurrentStage,
+            HighestCompletedStage = HighestCompletedStage.ToArray(),
+            ModuleCompleted = ModuleCompleted.ToArray()
+        };
+
+        try
+        {
+            await JS.InvokeVoidAsync(
+                "caveCodeAuth.saveCourseProgressFor",
+                "python",
+                snapshot
+            );
+        }
+        catch
+        {
+            // Local progress is optional; never interrupt a lesson for it.
+        }
+    }
+
+    private void DismissSavePrompt()
+    {
+        ShowChapterOneSignInPrompt = false;
+    }
+
+    private string StageLabel(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Learn => "Learn",
+        TrainingStage.Guided => "Guided",
+        TrainingStage.Fill => "Fill",
+        TrainingStage.Predict => "Predict",
+        TrainingStage.Debug => "Debug",
+        TrainingStage.Recall => "Recall",
+        TrainingStage.Transfer => "Transfer",
+        TrainingStage.Complete => "Complete",
+        _ => ""
+    };
+
+    private string StageHeading(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Learn => "Understand the idea before typing it",
+        TrainingStage.Guided => "Follow the code character by character",
+        TrainingStage.Fill => "Complete the missing pieces",
+        TrainingStage.Predict => "Decide what the code means",
+        TrainingStage.Debug => "Repair code that would fail or behave incorrectly",
+        TrainingStage.Recall => "Rebuild the core pattern from memory",
+        TrainingStage.Transfer => "Use the same idea in a new automation situation",
+        TrainingStage.Complete => "Lock in the module",
+        _ => ""
+    };
+
+    private string SupportLabel(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Learn => "Full support",
+        TrainingStage.Guided => "Visible target",
+        TrainingStage.Fill => "Partial code",
+        TrainingStage.Predict => "No typing",
+        TrainingStage.Debug => "Compiler clue",
+        TrainingStage.Recall => "Target hidden",
+        TrainingStage.Transfer => "New context",
+        TrainingStage.Complete => "Mastery",
+        _ => ""
+    };
+
+    private string ExerciseTitle(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Guided => "Type the highlighted code exactly",
+        TrainingStage.Fill => "Replace the blanks",
+        TrainingStage.Debug => "Fix the broken code",
+        TrainingStage.Recall => "Write it without the target",
+        TrainingStage.Transfer => "Apply the pattern somewhere new",
+        _ => ""
+    };
+
+    private string ExercisePrompt(TrainingStage stage) => stage switch
+    {
+        TrainingStage.Guided => "The target remains visible. Correct characters turn green and incorrect characters turn red.",
+        TrainingStage.Fill => "The editor begins with missing pieces. Replace every blank so the line becomes valid Python.",
+        TrainingStage.Debug => CurrentLesson.DebugPrompt,
+        TrainingStage.Recall => CurrentLesson.RecallPrompt,
+        TrainingStage.Transfer => CurrentLesson.TransferPrompt,
+        _ => ""
+    };
+
+    private string NextStageLabel()
+    {
+        TrainingStage next = (int)CurrentStage < (int)TrainingStage.Complete
+            ? (TrainingStage)((int)CurrentStage + 1)
+            : TrainingStage.Complete;
+
+        return StageLabel(next).ToLowerInvariant();
+    }
+
+    private IEnumerable<string> ConceptPoints(Lesson lesson)
+    {
+        yield return "Read Python from top to bottom and use indentation to show which lines belong together.";
+        yield return "Python is case-sensitive, so True, False, variable names, and function names must match exactly.";
+        yield return "The facility preview applies this module's automation result after you pass a stage.";
+    }
+
+    private PreviewState Preview
+    {
+        get
+        {
+            PreviewState state = new();
+
+            for (int index = 0; index < Lessons.Count; index++)
+            {
+                if (ModuleCompleted[index])
+                {
+                    ApplyPreviewEffect(state, index + 1);
+                }
+            }
+
+            if (!ModuleCompleted[CurrentModuleIndex] && StagePassed)
+            {
+                ApplyPreviewEffect(state, CurrentModuleIndex + 1);
+            }
+
+            return state;
+        }
+    }
+
+    private static void ApplyPreviewEffect(PreviewState state, int module)
+    {
+        state.Readiness = Math.Max(state.Readiness, module * 100 / 40);
+
+        switch (module)
+        {
+            case 1:
+                state.Status = "Control terminal online.";
+                break;
+            case 2:
+                state.FacilityName = "Crystal Cavern";
+                break;
+            case 3:
+                state.Temperature = 18.5;
+                state.SensorCount = 2;
+                break;
+            case 4:
+                state.FanRunning = true;
+                break;
+            case 5:
+                state.Status = "Operator input enabled.";
+                break;
+            case 6:
+                state.Pressure = 42.0;
+                state.SensorCount = 3;
+                break;
+            case 7:
+                state.DataPoints = 2;
+                state.Status = "Average readings calculated.";
+                break;
+            case 8:
+                state.Mode = "READY";
+                state.DoorClosed = true;
+                state.DataPoints = 4;
+                state.Status = "Control room startup complete.";
+                break;
+            case 9:
+                state.Temperature = 31.0;
+                state.AlarmActive = true;
+                state.Status = "High-temperature alarm active.";
+                break;
+            case 10:
+                state.Oxygen = 20.9;
+                state.AlarmActive = false;
+                state.Status = "Oxygen level safe.";
+                break;
+            case 11:
+                state.Temperature = 35.0;
+                state.Status = "Warning severity selected.";
+                break;
+            case 12:
+                state.DoorClosed = true;
+                state.Status = "Safety permissives combined.";
+                break;
+            case 13:
+                state.Status = "Emergency-stop interlock armed.";
+                break;
+            case 14:
+                state.SensorCount = 4;
+                state.Status = "Tank-level comparison active.";
+                break;
+            case 15:
+                state.Mode = "AUTO";
+                break;
+            case 16:
+                state.AlarmActive = false;
+                state.PumpRunning = true;
+                state.Status = "Safety-control challenge passed.";
+                break;
+            case 17:
+                state.Temperature = 20.0;
+                state.DataPoints += 5;
+                break;
+            case 18:
+                state.SensorCount = 5;
+                state.Status = "Five facility zones inspected.";
+                break;
+            case 19:
+                state.CycleCount = 3;
+                break;
+            case 20:
+                state.PumpRunning = false;
+                state.Status = "Unsafe sequence stopped.";
+                break;
+            case 21:
+                state.SensorCount = 4;
+                state.Status = "Offline sensor skipped.";
+                break;
+            case 22:
+                state.Status = "Motor-start countdown complete.";
+                break;
+            case 23:
+                state.FanRunning = true;
+                state.Status = "Ventilation sequence running.";
+                break;
+            case 24:
+                state.FanRunning = true;
+                state.CycleCount = 5;
+                state.Status = "Automated ventilation online.";
+                break;
+            case 25:
+                state.DataPoints = 4;
+                break;
+            case 26:
+                state.SensorCount = 5;
+                state.Status = "Every stored reading inspected.";
+                break;
+            case 27:
+                state.DataPoints = 12;
+                state.Status = "Sensor summary calculated.";
+                break;
+            case 28:
+                state.PumpRunning = true;
+                state.Status = "Pump dictionary created.";
+                break;
+            case 29:
+                state.PumpRunning = false;
+                state.CycleCount += 1;
+                state.Status = "Equipment status updated.";
+                break;
+            case 30:
+                state.SensorCount = 7;
+                state.Status = "Multiple devices grouped.";
+                break;
+            case 31:
+                state.LogStatus = "Maintenance report ready";
+                break;
+            case 32:
+                state.DataPoints = 20;
+                state.SensorCount = 8;
+                state.AlarmActive = true;
+                state.Status = "Monitoring challenge complete.";
+                break;
+            case 33:
+                state.Temperature = 21.5;
+                state.Status = "Sensor function available.";
+                break;
+            case 34:
+                state.AlarmActive = false;
+                state.Status = "Reusable alarm check active.";
+                break;
+            case 35:
+                state.DoorClosed = true;
+                state.Status = "Start-permissive function ready.";
+                break;
+            case 36:
+                state.Status = "Facility program organized.";
+                break;
+            case 37:
+                state.LogStatus = "Writing readings.txt";
+                state.DataPoints += 1;
+                break;
+            case 38:
+                state.LogStatus = "History loaded";
+                break;
+            case 39:
+                state.PumpRunning = true;
+                state.Status = "Simulated relay energized.";
+                break;
+            case 40:
+                state.Mode = "AUTO";
+                state.DoorClosed = true;
+                state.FanRunning = true;
+                state.PumpRunning = true;
+                state.AlarmActive = false;
+                state.SensorCount = 8;
+                state.CycleCount = 3;
+                state.DataPoints = 24;
+                state.LogStatus = "facility.log active";
+                state.Status = "Facility automation capstone complete.";
+                break;
+        }
+    }
+
+}

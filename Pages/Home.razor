@@ -15,6 +15,7 @@
         <div class="home-header-actions">
             <nav aria-label="Academy navigation">
                 <NavLink href="/settings">Appearance</NavLink>
+                <AchievementNavLink />
                 <a href="#paths">Learning paths</a>
             </nav>
             <AuthPanel Compact="true" />
@@ -38,7 +39,7 @@
             <div class="hero-terminal" aria-label="Academy terminal preview">
                 <div class="terminal-bar"><span>CAVECODE TERMINAL</span><span>READY</span></div>
                 <p><span>&gt;</span> academy.select_path()</p>
-                <p class="terminal-success">C# Cave Adventure is available.</p>
+                <p class="terminal-success">C# Cave Adventure and Python Automation Quest are available.</p>
                 <p><span>&gt;</span> progress.unlock_projects()</p>
                 <p class="terminal-muted">Advanced paths unlock through mastery.</p>
             </div>
@@ -50,7 +51,7 @@
                     <p class="eyebrow">LEARNING PATHS</p>
                     <h2>Choose what you want to build</h2>
                 </div>
-                <span class="path-count">1 available · 4 in development</span>
+                <span class="path-count">2 available · 3 in development</span>
             </div>
 
             <div class="path-grid">
@@ -63,6 +64,16 @@
                     <p>Build a growing cave-exploration game while mastering C# foundations, logic, collections, classes, and combat.</p>
                     <div class="skill-tags"><span>40 modules</span><span>8-stage practice</span><span>Live game preview</span></div>
                     <NavLink class="path-action" href="/csharp">Enter the cave →</NavLink>
+                </article>
+                <article class="path-card available python-card">
+                    <div class="path-topline">
+                        <span class="language-mark">Py</span>
+                        <span class="status available-status">Available now</span>
+                    </div>
+                    <h3>Python Automation Quest</h3>
+                    <p>Restore an underground facility while learning Python through sensors, alarms, sequences, data, files, and Raspberry Pi concepts.</p>
+                    <div class="skill-tags"><span>40 modules</span><span>Automation simulation</span><span>Optional hardware path</span></div>
+                    <NavLink class="path-action" href="/python">Enter the control room →</NavLink>
                 </article>
 
                 @foreach (LearningPath path in ComingSoonPaths)
@@ -187,7 +198,6 @@
 
     private static readonly LearningPath[] ComingSoonPaths =
     {
-        new("Py", "Python Automation Quest", "Build useful tools, automate repetitive work, and learn programming through procedural challenges.", new[] { "Automation", "Tools", "Data" }),
         new("JS", "JavaScript Web Forge", "Create interactive websites and browser games while learning the language of the modern web.", new[] { "Web apps", "Browser games", "Interfaces" }),
         new("SQL", "SQL Database Dungeon", "Master queries by managing players, items, quests, and persistent world data.", new[] { "Queries", "Databases", "Game data" }),
         new("HTML", "HTML & CSS Workshop", "Build the structure and visual systems behind polished websites and game interfaces.", new[] { "Layouts", "Responsive design", "UI styling" })
