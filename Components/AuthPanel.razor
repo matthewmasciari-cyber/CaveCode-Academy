@@ -339,11 +339,11 @@
                 provider
             );
         }
-        catch
+        catch (System.Exception ex)
         {
             AuthBusy = false;
             AuthMessage =
-                $"{providerName} sign-in could not start.";
+                $"{providerName} sign-in failed: {ex.Message}";
         }
     }
 

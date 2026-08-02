@@ -103,7 +103,7 @@
     .setting-heading > div > span { display: grid; width: 28px; height: 28px; place-items: center; color: var(--accent-contrast); background: var(--accent); border-radius: 8px; font-size: 10px; font-weight: 900; }
     .setting-heading h2 { margin: 0; font-size: 20px; }
     .setting-heading > p { max-width: 430px; margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.5; text-align: right; }
-    .theme-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; }
     .theme-choice { padding: 10px; color: var(--text); text-align: left; background: var(--surface-soft); border: 1px solid var(--border); border-radius: 11px; cursor: pointer; }
     .theme-choice:hover { border-color: var(--border-strong); transform: translateY(-2px); }
     .theme-choice.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-surface); }
@@ -147,7 +147,12 @@
         new("midnight-crystal", "Midnight Crystal", "Cyan and violet crystal light.", "#080b16", "#14182b", "#66e3ff"),
         new("light-workshop", "Workshop", "Blue plans and warm amber.", "#10151d", "#1c2632", "#66a9ff"),
         new("high-contrast", "High Contrast", "Maximum separation and focus.", "#000000", "#101010", "#ffe600"),
-        new("ember-cave", "Ember Cave", "Orange torchlight and red stone.", "#140d0a", "#241711", "#ff9b54")
+        new("ember-cave", "Ember Cave", "Orange torchlight and red stone.", "#140d0a", "#241711", "#ff9b54"),
+        new("rose-quartz", "Rose Quartz", "Rose pink, champagne, and soft berry.", "#160d14", "#311c2b", "#ff8fbd"),
+        new("teal-blossom", "Teal Blossom", "Teal, seafoam, and blush highlights.", "#071716", "#15332f", "#58dcc8"),
+        new("salmon-sunset", "Salmon Sunset", "Coral salmon with warm cream light.", "#1a0f12", "#382127", "#ff9b8a"),
+        new("orchid-glow", "Orchid Glow", "Orchid purple, lavender, and pink.", "#130d1d", "#2c1e40", "#d8a4ff"),
+        new("blush-garden", "Blush Garden", "Dusty rose, sage, and soft mint.", "#111613", "#27332c", "#f2a7ba")
     };
 
     private static readonly ModeChoice[] Modes =
