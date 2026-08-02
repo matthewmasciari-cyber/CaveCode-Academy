@@ -1,0 +1,226 @@
+@using Microsoft.JSInterop
+@using System.Text.Json.Serialization
+@inject IJSRuntime JS
+
+<section class="auth-card">
+    @if (!AuthReady)
+    {
+        <div class="auth-status">Checking account…</div>
+    }
+    else if (CurrentUser is null)
+    {
+        <button type="button"
+                class="github-button"
+                disabled="@AuthBusy"
+                @onclick="SignInWithGitHub">
+            Sign in with GitHub
+        </button>
+
+        <p>@AuthMessage</p>
+    }
+    else
+    {
+        <div class="signed-in-user">
+            @if (!string.IsNullOrWhiteSpace(CurrentUser.AvatarUrl))
+            {
+                <img src="@CurrentUser.AvatarUrl"
+                     alt="GitHub profile" />
+            }
+
+            <div>
+                <strong>@DisplayName</strong>
+                <small>GitHub account connected</small>
+            </div>
+        </div>
+
+        <button type="button"
+                class="signout-button"
+                disabled="@AuthBusy"
+                @onclick="SignOut">
+            Sign out
+        </button>
+
+        <p>@AuthMessage</p>
+    }
+</section>
+
+<style>
+    .auth-card {
+        padding: 13px;
+        margin-bottom: 14px;
+        border: 1px solid #2b3948;
+        border-radius: 10px;
+        background: #151f2a;
+    }
+
+    .auth-card p,
+    .auth-status {
+        margin: 9px 0 0;
+        color: #8f9daa;
+        font-size: 11px;
+        line-height: 1.45;
+    }
+
+    .github-button,
+    .signout-button {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 800;
+    }
+
+    .github-button {
+        color: #08120c;
+        border: 0;
+        background: #71e49a;
+    }
+
+    .signout-button {
+        margin-top: 10px;
+        color: #dbe5df;
+        border: 1px solid #3a4a5a;
+        background: #202c38;
+    }
+
+    .github-button:disabled,
+    .signout-button:disabled {
+        cursor: wait;
+        opacity: .6;
+    }
+
+    .signed-in-user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .signed-in-user img {
+        width: 34px;
+        height: 34px;
+        border: 2px solid #71e49a;
+        border-radius: 50%;
+    }
+
+    .signed-in-user strong,
+    .signed-in-user small {
+        display: block;
+    }
+
+    .signed-in-user small {
+        margin-top: 2px;
+        color: #8794a1;
+        font-size: 10px;
+    }
+</style>
+
+@code {
+    private const string SupabaseUrl =
+        "https://geqnuysggqzbrogibdgq.supabase.co";
+
+    private const string SupabasePublishableKey =
+        "sb_publishable_G3PbwitcUVImRp7dHW4CIQ_zgL8wf3F";
+
+    private AuthUser? CurrentUser;
+    private bool AuthReady;
+    private bool AuthBusy;
+
+    private string AuthMessage =
+        "Sign in to sync course progress.";
+
+    private string DisplayName =>
+        !string.IsNullOrWhiteSpace(CurrentUser?.UserName)
+            ? CurrentUser.UserName
+            : !string.IsNullOrWhiteSpace(CurrentUser?.Email)
+                ? CurrentUser.Email
+                : "GitHub user";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            await JS.InvokeVoidAsync(
+                "caveCodeAuth.initialize",
+                SupabaseUrl,
+                SupabasePublishableKey
+            );
+
+            CurrentUser =
+                await JS.InvokeAsync<AuthUser?>(
+                    "caveCodeAuth.getCurrentUser"
+                );
+
+            AuthMessage = CurrentUser is null
+                ? "Sign in to sync course progress."
+                : "Signed in. Cloud progress is ready to connect.";
+        }
+        catch
+        {
+            AuthMessage =
+                "Authentication could not start. Reload and try again.";
+        }
+
+        AuthReady = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task SignInWithGitHub()
+    {
+        AuthBusy = true;
+        AuthMessage = "Opening GitHub sign-in…";
+
+        try
+        {
+            await JS.InvokeVoidAsync(
+                "caveCodeAuth.signInWithGitHub"
+            );
+        }
+        catch
+        {
+            AuthBusy = false;
+            AuthMessage =
+                "GitHub sign-in could not start.";
+        }
+    }
+
+    private async Task SignOut()
+    {
+        AuthBusy = true;
+
+        try
+        {
+            await JS.InvokeVoidAsync(
+                "caveCodeAuth.signOut"
+            );
+
+            CurrentUser = null;
+            AuthMessage = "Signed out successfully.";
+        }
+        catch
+        {
+            AuthMessage = "Sign out failed. Try again.";
+        }
+
+        AuthBusy = false;
+    }
+
+    private sealed class AuthUser
+    {
+        [JsonPropertyName("id")]
+        public string Id { get; set; } = "";
+
+        [JsonPropertyName("email")]
+        public string Email { get; set; } = "";
+
+        [JsonPropertyName("userName")]
+        public string UserName { get; set; } = "";
+
+        [JsonPropertyName("avatarUrl")]
+        public string AvatarUrl { get; set; } = "";
+    }
+}
