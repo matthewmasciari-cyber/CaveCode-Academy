@@ -1,6 +1,9 @@
 @page "/csharp"
 @using System.Text.RegularExpressions
 @using System.Linq
+@using System.Text.Json.Serialization
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
 
 <PageTitle>CaveCode Academy</PageTitle>
 
@@ -338,6 +341,20 @@
         </section>
     </aside>
 </div>
+
+@if (ShowChapterOneSignInPrompt)
+{
+    <div class="save-progress-overlay" role="presentation" @onclick="DismissSavePrompt">
+        <section class="save-progress-dialog" role="dialog" aria-modal="true" aria-labelledby="save-progress-title" @onclick:stopPropagation="true">
+            <span class="save-progress-kicker">CHAPTER 1 COMPLETE</span>
+            <h2 id="save-progress-title">Protect your CaveCode progress</h2>
+            <p>Great work—you finished Foundations. Sign in now and CaveCode will return you to Chapter 2 after authentication.</p>
+            <AuthPanel />
+            <button type="button" class="continue-guest" @onclick="DismissSavePrompt">Continue without signing in</button>
+            <small>Your current course position is already preserved on this device.</small>
+        </section>
+    </div>
+}
 
 <style>
     * { box-sizing: border-box; }
@@ -709,6 +726,42 @@
         caret-color: var(--accent);
     }
 
+
+    .save-progress-overlay {
+        position: fixed;
+        z-index: 1000;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 22px;
+        background: rgba(3, 8, 13, .78);
+        backdrop-filter: blur(8px);
+    }
+    .save-progress-dialog {
+        width: min(470px, 100%);
+        padding: 28px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 18px;
+        box-shadow: 0 28px 90px var(--shadow);
+    }
+    .save-progress-kicker { color: var(--accent); font-size: 10px; font-weight: 900; letter-spacing: 1.2px; }
+    .save-progress-dialog h2 { margin: 8px 0 10px; font-size: 28px; }
+    .save-progress-dialog > p { margin: 0 0 18px; color: var(--text-muted); line-height: 1.65; }
+    .save-progress-dialog .auth-card { margin-bottom: 10px; }
+    .continue-guest {
+        width: 100%;
+        padding: 11px 13px;
+        color: var(--text);
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        cursor: pointer;
+        font-weight: 800;
+    }
+    .save-progress-dialog > small { display: block; margin-top: 11px; color: var(--text-muted); text-align: center; line-height: 1.45; }
+
 </style>
 
 @code {
@@ -743,6 +796,21 @@
         string TransferCode,
         string PreviewMessage
     );
+
+    private sealed class CourseProgressSnapshot
+    {
+        [JsonPropertyName("currentModuleIndex")]
+        public int CurrentModuleIndex { get; set; }
+
+        [JsonPropertyName("currentStage")]
+        public int CurrentStage { get; set; }
+
+        [JsonPropertyName("highestCompletedStage")]
+        public int[] HighestCompletedStage { get; set; } = Array.Empty<int>();
+
+        [JsonPropertyName("moduleCompleted")]
+        public bool[] ModuleCompleted { get; set; } = Array.Empty<bool>();
+    }
 
     private sealed class PreviewState
     {
@@ -1534,6 +1602,10 @@
     private bool HintVisible;
     private bool StagePassed;
     private int? SelectedPrediction;
+    private bool ShowChapterOneSignInPrompt;
+    private bool ProgressRestored;
+
+    private const int ChapterOneLastModuleIndex = 7;
 
     private Lesson CurrentLesson => Lessons[CurrentModuleIndex];
 
@@ -1542,6 +1614,48 @@
         HighestCompletedStage = Enumerable.Repeat(-1, Lessons.Count).ToArray();
         ModuleCompleted = new bool[Lessons.Count];
         PrepareStage();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || ProgressRestored)
+        {
+            return;
+        }
+
+        ProgressRestored = true;
+
+        try
+        {
+            CourseProgressSnapshot? snapshot =
+                await JS.InvokeAsync<CourseProgressSnapshot?>(
+                    "caveCodeAuth.loadCourseProgress"
+                );
+
+            if (snapshot is not null &&
+                snapshot.HighestCompletedStage.Length == Lessons.Count &&
+                snapshot.ModuleCompleted.Length == Lessons.Count)
+            {
+                HighestCompletedStage = snapshot.HighestCompletedStage;
+                ModuleCompleted = snapshot.ModuleCompleted;
+                CurrentModuleIndex = Math.Clamp(
+                    snapshot.CurrentModuleIndex,
+                    0,
+                    Lessons.Count - 1
+                );
+                CurrentStage = (TrainingStage)Math.Clamp(
+                    snapshot.CurrentStage,
+                    0,
+                    7
+                );
+                PrepareStage();
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch
+        {
+            // Local progress is optional; the course still works without it.
+        }
     }
 
     private int CompletedModuleCount => ModuleCompleted.Count(completed => completed);
@@ -1793,10 +1907,12 @@
         );
     }
 
-    private void FinishModule()
+    private async Task FinishModule()
     {
-        HighestCompletedStage[CurrentModuleIndex] = 7;
-        ModuleCompleted[CurrentModuleIndex] = true;
+        int finishedModuleIndex = CurrentModuleIndex;
+
+        HighestCompletedStage[finishedModuleIndex] = 7;
+        ModuleCompleted[finishedModuleIndex] = true;
 
         if (CurrentModuleIndex < Lessons.Count - 1)
         {
@@ -1809,6 +1925,54 @@
             Feedback = "Course complete. You built the full foundation from variables through combat.";
             StagePassed = true;
         }
+
+        await SaveProgressAsync();
+
+        if (finishedModuleIndex == ChapterOneLastModuleIndex)
+        {
+            bool signedIn = false;
+
+            try
+            {
+                signedIn = await JS.InvokeAsync<bool>(
+                    "caveCodeAuth.isSignedIn"
+                );
+            }
+            catch
+            {
+                // If auth is unavailable, the learner can still continue.
+            }
+
+            ShowChapterOneSignInPrompt = !signedIn;
+        }
+    }
+
+    private async Task SaveProgressAsync()
+    {
+        CourseProgressSnapshot snapshot = new()
+        {
+            CurrentModuleIndex = CurrentModuleIndex,
+            CurrentStage = (int)CurrentStage,
+            HighestCompletedStage = HighestCompletedStage.ToArray(),
+            ModuleCompleted = ModuleCompleted.ToArray()
+        };
+
+        try
+        {
+            await JS.InvokeVoidAsync(
+                "caveCodeAuth.saveCourseProgress",
+                snapshot
+            );
+        }
+        catch
+        {
+            // Local progress is optional; never interrupt a lesson for it.
+        }
+    }
+
+    private void DismissSavePrompt()
+    {
+        ShowChapterOneSignInPrompt = false;
     }
 
     private string StageLabel(TrainingStage stage) => stage switch

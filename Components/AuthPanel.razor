@@ -2,21 +2,35 @@
 @using System.Text.Json.Serialization
 @inject IJSRuntime JS
 
-<section class="auth-card">
+<section class="auth-card @(Compact ? "compact" : "")">
     @if (!AuthReady)
     {
         <div class="auth-status">Checking account…</div>
     }
     else if (CurrentUser is null)
     {
-        <button type="button"
-                class="github-button"
-                disabled="@AuthBusy"
-                @onclick="SignInWithGitHub">
-            Sign in with GitHub
-        </button>
+        <div class="auth-actions">
+            <button type="button"
+                    class="google-button"
+                    disabled="@AuthBusy"
+                    @onclick="SignInWithGoogle">
+                <span class="provider-mark google-mark" aria-hidden="true">G</span>
+                @(Compact ? "Google" : "Continue with Google")
+            </button>
 
-        <p>@AuthMessage</p>
+            <button type="button"
+                    class="github-button"
+                    disabled="@AuthBusy"
+                    @onclick="SignInWithGitHub">
+                <span class="provider-mark" aria-hidden="true">⌘</span>
+                @(Compact ? "GitHub" : "Continue with GitHub")
+            </button>
+        </div>
+
+        @if (!Compact)
+        {
+            <p>@AuthMessage</p>
+        }
     }
     else
     {
@@ -24,12 +38,16 @@
             @if (!string.IsNullOrWhiteSpace(CurrentUser.AvatarUrl))
             {
                 <img src="@CurrentUser.AvatarUrl"
-                     alt="GitHub profile" />
+                     alt="Profile avatar" />
+            }
+            else
+            {
+                <span class="avatar-fallback" aria-hidden="true">@DisplayInitial</span>
             }
 
-            <div>
+            <div class="signed-in-copy">
                 <strong>@DisplayName</strong>
-                <small>GitHub account connected</small>
+                <small>@(Compact ? "Signed in" : "CaveCode account connected")</small>
             </div>
         </div>
 
@@ -40,7 +58,10 @@
             Sign out
         </button>
 
-        <p>@AuthMessage</p>
+        @if (!Compact)
+        {
+            <p>@AuthMessage</p>
+        }
     }
 </section>
 
@@ -48,45 +69,124 @@
     .auth-card {
         padding: 13px;
         margin-bottom: 14px;
-        border: 1px solid #2b3948;
+        color: var(--text, #eef4f8);
+        background: var(--surface, #151f2a);
+        border: 1px solid var(--border, #2b3948);
         border-radius: 10px;
-        background: #151f2a;
+    }
+
+    .auth-card.compact {
+        min-width: 0;
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        border: 0;
     }
 
     .auth-card p,
     .auth-status {
         margin: 9px 0 0;
-        color: #8f9daa;
+        color: var(--text-muted, #8f9daa);
         font-size: 11px;
         line-height: 1.45;
     }
 
+    .compact .auth-status {
+        margin: 0;
+        padding: 9px 11px;
+        background: var(--surface-raised, #202c38);
+        border: 1px solid var(--border, #2b3948);
+        border-radius: 8px;
+    }
+
+    .auth-actions {
+        display: grid;
+        gap: 9px;
+    }
+
+    .compact .auth-actions {
+        grid-template-columns: repeat(2, auto);
+        gap: 7px;
+    }
+
+    .google-button,
     .github-button,
     .signout-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         width: 100%;
         padding: 10px 12px;
         border-radius: 8px;
         cursor: pointer;
-        font-weight: 800;
+        font-weight: 850;
+        transition: transform .15s ease, filter .15s ease;
+    }
+
+    .compact .google-button,
+    .compact .github-button,
+    .compact .signout-button {
+        width: auto;
+        min-height: 38px;
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .google-button {
+        color: #202124;
+        background: #ffffff;
+        border: 1px solid #dadce0;
     }
 
     .github-button {
-        color: #08120c;
-        border: 0;
-        background: #71e49a;
+        color: #ffffff;
+        background: #24292f;
+        border: 1px solid #57606a;
+    }
+
+    .provider-mark {
+        font-size: 15px;
+        line-height: 1;
+    }
+
+    .google-mark {
+        color: #4285f4;
+        font-family: Arial, sans-serif;
+        font-weight: 950;
     }
 
     .signout-button {
         margin-top: 10px;
-        color: #dbe5df;
-        border: 1px solid #3a4a5a;
-        background: #202c38;
+        color: var(--text, #dbe5df);
+        background: var(--surface-raised, #202c38);
+        border: 1px solid var(--border-strong, #3a4a5a);
     }
 
+    .compact .signout-button {
+        margin-top: 7px;
+    }
+
+    .google-button:hover,
+    .github-button:hover,
+    .signout-button:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.04);
+    }
+
+    .google-button:focus-visible,
+    .github-button:focus-visible,
+    .signout-button:focus-visible {
+        outline: 3px solid var(--focus, #71e49a);
+        outline-offset: 2px;
+    }
+
+    .google-button:disabled,
     .github-button:disabled,
     .signout-button:disabled {
         cursor: wait;
         opacity: .6;
+        transform: none;
     }
 
     .signed-in-user {
@@ -95,11 +195,33 @@
         gap: 10px;
     }
 
-    .signed-in-user img {
+    .compact .signed-in-user {
+        justify-content: flex-end;
+    }
+
+    .signed-in-user img,
+    .avatar-fallback {
         width: 34px;
         height: 34px;
-        border: 2px solid #71e49a;
+        flex: 0 0 34px;
+        border: 2px solid var(--accent, #71e49a);
         border-radius: 50%;
+    }
+
+    .signed-in-user img {
+        object-fit: cover;
+    }
+
+    .avatar-fallback {
+        display: grid;
+        place-items: center;
+        color: var(--accent-contrast, #08120c);
+        background: var(--accent, #71e49a);
+        font-weight: 900;
+    }
+
+    .signed-in-copy {
+        min-width: 0;
     }
 
     .signed-in-user strong,
@@ -107,14 +229,29 @@
         display: block;
     }
 
+    .signed-in-user strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
     .signed-in-user small {
         margin-top: 2px;
-        color: #8794a1;
+        color: var(--text-muted, #8794a1);
         font-size: 10px;
+    }
+
+    @@media (max-width: 720px) {
+        .compact .auth-actions {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
 @code {
+    [Parameter]
+    public bool Compact { get; set; }
+
     private const string SupabaseUrl =
         "https://geqnuysggqzbrogibdgq.supabase.co";
 
@@ -124,16 +261,20 @@
     private AuthUser? CurrentUser;
     private bool AuthReady;
     private bool AuthBusy;
-
     private string AuthMessage =
-        "Sign in to sync course progress.";
+        "Sign in to connect your progress, themes, and achievements.";
 
     private string DisplayName =>
         !string.IsNullOrWhiteSpace(CurrentUser?.UserName)
             ? CurrentUser.UserName
             : !string.IsNullOrWhiteSpace(CurrentUser?.Email)
                 ? CurrentUser.Email
-                : "GitHub user";
+                : "CaveCode learner";
+
+    private string DisplayInitial =>
+        string.IsNullOrWhiteSpace(DisplayName)
+            ? "C"
+            : DisplayName[..1].ToUpperInvariant();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -155,9 +296,16 @@
                     "caveCodeAuth.getCurrentUser"
                 );
 
+            if (CurrentUser is not null)
+            {
+                await JS.InvokeVoidAsync(
+                    "caveCodeAuth.syncLocalProgressToCloud"
+                );
+            }
+
             AuthMessage = CurrentUser is null
-                ? "Sign in to sync course progress."
-                : "Signed in. Cloud progress is ready to connect.";
+                ? "Sign in to connect your progress, themes, and achievements."
+                : "Signed in. Your local progress is connected to this account.";
         }
         catch
         {
@@ -169,22 +317,33 @@
         await InvokeAsync(StateHasChanged);
     }
 
+    private async Task SignInWithGoogle()
+    {
+        await SignIn("google", "Google");
+    }
+
     private async Task SignInWithGitHub()
     {
+        await SignIn("github", "GitHub");
+    }
+
+    private async Task SignIn(string provider, string providerName)
+    {
         AuthBusy = true;
-        AuthMessage = "Opening GitHub sign-in…";
+        AuthMessage = $"Opening {providerName} sign-in…";
 
         try
         {
             await JS.InvokeVoidAsync(
-                "caveCodeAuth.signInWithGitHub"
+                "caveCodeAuth.signInWithProvider",
+                provider
             );
         }
         catch
         {
             AuthBusy = false;
             AuthMessage =
-                "GitHub sign-in could not start.";
+                $"{providerName} sign-in could not start.";
         }
     }
 
@@ -197,7 +356,6 @@
             await JS.InvokeVoidAsync(
                 "caveCodeAuth.signOut"
             );
-
             CurrentUser = null;
             AuthMessage = "Signed out successfully.";
         }
