@@ -539,8 +539,28 @@
         observer.observe(section);
     }
 
+    // CAVECODE_LANGUAGE_FINDER_CLOSE_BUTTON_81D4
     function start() {
         document.addEventListener("click", event => {
+            const closeButton = event.target.closest(".language-finder-close");
+
+            if (closeButton) {
+                event.preventDefault();
+                event.stopPropagation();
+                closeFinder();
+                return;
+            }
+
+            const openOverlay = document.querySelector(
+                '.language-finder-overlay[data-open="true"]'
+            );
+
+            if (openOverlay && event.target === openOverlay) {
+                event.preventDefault();
+                closeFinder();
+                return;
+            }
+
             const launcher = event.target.closest(
                 "[data-language-finder-open]"
             );
@@ -549,6 +569,19 @@
 
             event.preventDefault();
             openFinder({ automatic: false });
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key !== "Escape") return;
+
+            const overlay = document.querySelector(
+                '.language-finder-overlay[data-open="true"]'
+            );
+
+            if (!overlay) return;
+
+            event.preventDefault();
+            closeFinder();
         });
 
         installAutomaticPrompt();
