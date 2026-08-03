@@ -1,0 +1,919 @@
+/* CaveCode Academy - C++ Engine Foundry playable Chapter 1 */
+
+.cpp-academy {
+    display: grid;
+    grid-template-columns: 280px minmax(520px, 1fr) 370px;
+    min-height: 100vh;
+    color: var(--text);
+    background: var(--bg);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.cpp-academy * { box-sizing: border-box; }
+.cpp-academy button, .cpp-academy textarea { font: inherit; }
+
+.cpp-sidebar {
+    padding: 20px 14px;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+}
+.cpp-brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 18px; }
+.cpp-brand-mark {
+    display: grid;
+    width: 50px;
+    height: 46px;
+    place-items: center;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border: 1px solid var(--accent-border);
+    border-radius: 11px;
+    box-shadow: 0 8px 22px var(--shadow);
+    font-size: 13px;
+    font-weight: 950;
+}
+.cpp-brand h1 { margin: 0; font-size: 21px; }
+.cpp-brand p { margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.4; }
+.cpp-course-nav { display: grid; margin: 0 0 14px; }
+
+.cpp-availability-note {
+    padding: 13px;
+    margin: 0 0 17px;
+    color: var(--text);
+    background: var(--accent-surface);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+}
+.cpp-availability-note strong { color: var(--accent-soft); font-size: 10px; letter-spacing: .08em; }
+.cpp-availability-note p { margin: 6px 0 0; color: var(--text-muted); font-size: 11px; line-height: 1.5; }
+
+.cpp-lesson-list h2 {
+    margin: 20px 8px 8px;
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: .75px;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+.cpp-lesson-button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 6px;
+    color: var(--text);
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    cursor: pointer;
+}
+.cpp-lesson-button:hover:not(:disabled) { background: var(--surface-hover); }
+.cpp-lesson-button.active { background: var(--accent-surface); border-color: var(--accent-border); }
+.cpp-lesson-button.complete { color: var(--accent-soft); }
+.cpp-lesson-button:disabled { color: var(--text-dim); cursor: not-allowed; opacity: .62; }
+.cpp-lesson-number {
+    display: grid;
+    flex: 0 0 31px;
+    height: 31px;
+    place-items: center;
+    color: var(--text-muted);
+    background: var(--surface-strong);
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 850;
+}
+.cpp-lesson-button.active .cpp-lesson-number,
+.cpp-lesson-button.complete .cpp-lesson-number {
+    color: var(--accent-contrast);
+    background: var(--accent);
+}
+.cpp-lesson-copy { min-width: 0; }
+.cpp-lesson-copy strong, .cpp-lesson-copy small { display: block; }
+.cpp-lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.cpp-lesson-copy small { margin-top: 3px; color: var(--text-muted); font-size: 10px; }
+
+.cpp-lesson-main { padding: 28px; overflow-y: auto; }
+.cpp-lesson-header {
+    display: flex;
+    max-width: 950px;
+    justify-content: space-between;
+    gap: 24px;
+    margin: 0 auto;
+}
+.cpp-lesson-header h2 { margin: 0 0 7px; font-size: 28px; }
+.cpp-lesson-header > div:first-child > p:last-child {
+    max-width: 760px;
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+.cpp-academy .eyebrow {
+    margin: 0 0 6px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: 1px;
+}
+.cpp-mastery-ring {
+    display: grid;
+    flex: 0 0 88px;
+    height: 88px;
+    place-items: center;
+    align-content: center;
+    text-align: center;
+    background: var(--accent-surface);
+    border: 2px solid var(--accent-border);
+    border-radius: 50%;
+}
+.cpp-mastery-ring strong { font-size: 18px; }
+.cpp-mastery-ring span { color: var(--text-muted); font-size: 10px; }
+
+.cpp-academy .stage-tabs {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(70px, 1fr));
+    max-width: 950px;
+    margin: 23px auto 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+}
+.cpp-academy .stage-tab {
+    min-height: 57px;
+    padding: 8px 5px;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 0;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 11px;
+}
+.cpp-academy .stage-tab:last-child { border-right: 0; }
+.cpp-academy .stage-tab span {
+    display: grid;
+    width: 21px;
+    height: 21px;
+    margin: 0 auto 4px;
+    place-items: center;
+    background: var(--surface-strong);
+    border-radius: 50%;
+    font-size: 10px;
+}
+.cpp-academy .stage-tab.active { color: var(--text); background: var(--accent-surface); }
+.cpp-academy .stage-tab.active span,
+.cpp-academy .stage-tab.done span {
+    color: var(--accent-contrast);
+    background: var(--accent);
+}
+.cpp-academy .stage-tab:disabled { opacity: .38; cursor: not-allowed; }
+
+.cpp-stage-card {
+    max-width: 950px;
+    min-height: 560px;
+    padding: 23px;
+    margin: 18px auto 0;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+}
+.cpp-stage-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+.cpp-stage-heading h3 { margin: 0; font-size: 21px; }
+.cpp-support-badge {
+    padding: 7px 10px;
+    color: var(--warning-text);
+    background: var(--warning-surface);
+    border: 1px solid var(--warning-border);
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.cpp-learn-grid {
+    display: grid;
+    grid-template-columns: 1.25fr .75fr;
+    gap: 18px;
+    margin: 23px 0;
+}
+.cpp-learn-grid h4,
+.cpp-exercise-intro h4,
+.cpp-prediction-card h4 {
+    margin: 0 0 8px;
+    font-size: 17px;
+}
+.cpp-learn-grid p,
+.cpp-exercise-intro p,
+.cpp-prediction-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+.cpp-reference-example,
+.cpp-revealed-target {
+    padding: 15px;
+    margin: 16px 0;
+    background: var(--code-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 9px;
+}
+.cpp-reference-example > span,
+.cpp-revealed-target > span,
+.cpp-mini-label {
+    color: var(--dark-panel-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+.cpp-reference-example pre,
+.cpp-revealed-target pre {
+    margin: 10px 0 0;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+.cpp-reference-example code,
+.cpp-revealed-target code {
+    color: var(--code-text);
+    font-family: Consolas, Monaco, monospace;
+}
+.cpp-concept-points div { display: flex; gap: 9px; }
+.cpp-concept-points span { color: var(--accent); }
+.cpp-concept-points p { margin: 5px 0; }
+.cpp-memory-aid {
+    padding: 18px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+}
+.cpp-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin: 20px 0;
+}
+.cpp-flow div {
+    padding: 11px 9px;
+    background: var(--surface-soft);
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 800;
+}
+.cpp-flow span { color: var(--accent); }
+
+.cpp-exercise-intro { margin: 22px 0 14px; }
+.cpp-compiler-note {
+    padding: 13px 15px;
+    margin-bottom: 13px;
+    color: var(--warning-text);
+    background: var(--warning-surface);
+    border-left: 4px solid var(--warning-accent);
+}
+.cpp-compiler-note p { margin: 5px 0 0; color: var(--warning-muted); }
+
+.cpp-typing-guide {
+    margin-top: 14px;
+    overflow: hidden;
+    background: var(--code-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+}
+.cpp-editor-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 13px;
+    color: var(--dark-panel-muted);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .7px;
+}
+.cpp-character-guide {
+    min-height: 76px;
+    padding: 18px;
+    color: var(--code-text);
+    white-space: pre-wrap;
+    font: 18px/1.55 Consolas, Monaco, monospace;
+}
+.cpp-character-correct { color: var(--accent); }
+.cpp-character-wrong {
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 16%, transparent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+.cpp-character-current {
+    color: var(--code-text);
+    background: var(--accent-border);
+    animation: cpp-cursor-pulse 1s infinite;
+}
+.cpp-character-pending { color: var(--code-muted); }
+.cpp-space-mark { display: inline-block; min-width: .55em; }
+.cpp-newline-mark { color: var(--code-muted); font-size: 12px; }
+
+.cpp-academy .code-editor {
+    margin-top: 14px;
+    overflow: hidden;
+    background: var(--code-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+}
+.cpp-academy .code-editor .editor-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 13px;
+    color: var(--dark-panel-muted);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .7px;
+}
+.cpp-academy .code-editor textarea {
+    display: block;
+    width: 100%;
+    min-height: 160px;
+    resize: vertical;
+    padding: 18px;
+    color: var(--code-text);
+    background: var(--code-bg);
+    border: 0;
+    outline: none;
+    font: 17px/1.55 Consolas, Monaco, monospace;
+}
+.cpp-academy .typing-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border-strong);
+}
+.cpp-academy .typing-stats div {
+    padding: 9px 12px;
+    border-right: 1px solid var(--border-strong);
+}
+.cpp-academy .typing-stats div:last-child { border-right: 0; }
+.cpp-academy .typing-stats span,
+.cpp-academy .typing-stats strong {
+    display: block;
+}
+.cpp-academy .typing-stats span {
+    color: var(--code-muted);
+    font-size: 8px;
+    text-transform: uppercase;
+}
+.cpp-academy .typing-stats strong {
+    margin-top: 3px;
+    color: var(--code-text);
+    font-size: 11px;
+}
+
+.cpp-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 13px;
+}
+.cpp-primary,
+.cpp-secondary {
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 850;
+}
+.cpp-primary {
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+}
+.cpp-secondary {
+    color: var(--text);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+}
+.cpp-continue-button { margin-top: 12px; }
+
+.cpp-feedback {
+    padding: 13px 15px;
+    margin-top: 13px;
+    border-radius: 9px;
+    line-height: 1.5;
+}
+.cpp-feedback.success {
+    color: var(--accent-soft);
+    background: var(--accent-surface);
+    border: 1px solid var(--accent-border);
+}
+.cpp-feedback.error {
+    color: var(--danger-text);
+    background: var(--danger-surface);
+    border: 1px solid var(--danger-border);
+}
+
+.cpp-prediction-card { margin: 22px 0; }
+.cpp-prediction-options {
+    display: grid;
+    gap: 9px;
+    margin: 15px 0;
+}
+.cpp-prediction-options button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    color: var(--text);
+    text-align: left;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    cursor: pointer;
+}
+.cpp-prediction-options button span {
+    display: grid;
+    width: 25px;
+    height: 25px;
+    place-items: center;
+    color: var(--text-muted);
+    background: var(--surface-strong);
+    border-radius: 6px;
+}
+.cpp-prediction-options button.correct {
+    color: var(--accent-soft);
+    border-color: var(--accent-border);
+    background: var(--accent-surface);
+}
+.cpp-prediction-options button.wrong {
+    color: var(--danger-text);
+    border-color: var(--danger-border);
+    background: var(--danger-surface);
+}
+
+.cpp-completion-panel {
+    max-width: 720px;
+    margin: 36px auto;
+    text-align: center;
+}
+.cpp-completion-icon {
+    display: grid;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 16px;
+    place-items: center;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-radius: 50%;
+    font-size: 31px;
+    font-weight: 950;
+}
+.cpp-completion-panel > p {
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+.cpp-completion-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+.cpp-completion-summary div {
+    padding: 13px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+.cpp-completion-summary span,
+.cpp-completion-summary strong,
+.cpp-completion-summary code {
+    display: block;
+}
+.cpp-completion-summary span {
+    color: var(--text-muted);
+    font-size: 9px;
+    text-transform: uppercase;
+}
+.cpp-completion-summary strong,
+.cpp-completion-summary code {
+    margin-top: 6px;
+    overflow-wrap: anywhere;
+    color: var(--text);
+    font-size: 11px;
+}
+
+.cpp-preview-panel {
+    padding: 22px;
+    overflow-y: auto;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+}
+.cpp-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.cpp-preview-header h2 { margin: 0; font-size: 22px; }
+.cpp-live {
+    padding: 6px 9px;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-radius: 99px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+
+.cpp-foundry-scene {
+    position: relative;
+    min-height: 410px;
+    margin-top: 18px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 39%, var(--accent-surface), transparent 32%),
+        linear-gradient(180deg, var(--code-bg), var(--bg-deep));
+    border: 1px solid var(--border-strong);
+    border-radius: 13px;
+    box-shadow: inset 0 0 45px rgb(0 0 0 / 35%);
+}
+.cpp-grid-floor {
+    position: absolute;
+    right: -20%;
+    bottom: -18%;
+    left: -20%;
+    height: 55%;
+    background-image:
+        linear-gradient(var(--accent-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--accent-border) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: .32;
+    transform: perspective(200px) rotateX(56deg);
+    transform-origin: center top;
+}
+.cpp-engine-core {
+    position: absolute;
+    top: 92px;
+    left: 50%;
+    width: 140px;
+    height: 140px;
+    opacity: .28;
+    filter: grayscale(1);
+    transform: translateX(-50%);
+    transition: opacity .25s ease, filter .25s ease;
+}
+.cpp-engine-core.active {
+    opacity: 1;
+    filter: none;
+}
+.cpp-core-ring {
+    position: absolute;
+    inset: 0;
+    border: 7px solid var(--accent-border);
+    border-radius: 50%;
+}
+.cpp-core-ring--outer {
+    box-shadow:
+        0 0 22px var(--accent-border),
+        inset 0 0 22px var(--accent-border);
+    animation: cpp-core-spin 13s linear infinite;
+}
+.cpp-core-ring--middle {
+    inset: 27px;
+    border-width: 3px;
+    border-style: dashed;
+    animation: cpp-core-spin-reverse 9s linear infinite;
+}
+.cpp-core-center {
+    position: absolute;
+    inset: 44px;
+    display: grid;
+    place-items: center;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 28px var(--accent-border);
+    font-size: 17px;
+    font-weight: 950;
+}
+.cpp-foundry-system {
+    position: absolute;
+    display: grid;
+    width: 78px;
+    min-height: 50px;
+    place-items: center;
+    align-content: center;
+    padding: 7px;
+    color: var(--code-muted);
+    background: rgb(0 0 0 / 28%);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    opacity: .38;
+    transition: .25s ease;
+}
+.cpp-foundry-system.active {
+    color: var(--accent-soft);
+    background: var(--accent-surface);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 16px var(--accent-border);
+    opacity: 1;
+}
+.cpp-foundry-system span {
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: .09em;
+}
+.cpp-foundry-system strong {
+    max-width: 100%;
+    margin-top: 4px;
+    overflow: hidden;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cpp-foundry-system--messages { top: 24px; left: 20px; }
+.cpp-foundry-system--thermal { top: 24px; right: 20px; }
+.cpp-foundry-system--instruments { top: 105px; left: 18px; }
+.cpp-foundry-system--labels { top: 105px; right: 18px; }
+.cpp-foundry-system--input { bottom: 96px; left: 28px; }
+.cpp-foundry-system--power { right: 28px; bottom: 96px; }
+.cpp-foundry-system--dashboard {
+    right: 50%;
+    bottom: 27px;
+    width: 120px;
+    transform: translateX(50%);
+}
+
+.cpp-preview-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 13px;
+}
+.cpp-preview-stats div {
+    padding: 10px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+.cpp-preview-stats span,
+.cpp-preview-stats strong {
+    display: block;
+}
+.cpp-preview-stats span {
+    color: var(--text-muted);
+    font-size: 9px;
+    text-transform: uppercase;
+}
+.cpp-preview-stats strong {
+    margin-top: 4px;
+    overflow: hidden;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cpp-load-track {
+    height: 8px;
+    margin: 13px 0;
+    overflow: hidden;
+    background: var(--surface-strong);
+    border-radius: 99px;
+}
+.cpp-load-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width .25s ease;
+}
+
+.cpp-terminal {
+    padding: 14px;
+    color: var(--dark-panel-text);
+    background: var(--code-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 9px;
+    font: 10px/1.55 Consolas, Monaco, monospace;
+}
+.cpp-terminal-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    color: var(--dark-panel-muted);
+    border-bottom: 1px solid var(--border-strong);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+.cpp-terminal p { margin: 4px 0; }
+
+.cpp-xp-award-toast {
+    position: fixed;
+    z-index: 1200;
+    right: 18px;
+    bottom: 18px;
+    display: grid;
+    min-width: 230px;
+    gap: 4px;
+    padding: 15px;
+    color: var(--accent-contrast);
+    text-align: left;
+    background: var(--accent);
+    border: 1px solid var(--accent-border);
+    border-radius: 13px;
+    box-shadow: 0 20px 65px var(--shadow);
+    cursor: pointer;
+}
+.cpp-xp-award-toast span,
+.cpp-xp-award-toast small {
+    font-size: 9px;
+}
+.cpp-xp-award-toast strong { font-size: 20px; }
+
+.cpp-achievement-overlay,
+.cpp-save-progress-overlay {
+    position: fixed;
+    z-index: 1300;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 22px;
+    background: rgb(3 8 13 / 78%);
+    backdrop-filter: blur(8px);
+}
+.cpp-achievement-dialog,
+.cpp-save-progress-dialog {
+    width: min(500px, 100%);
+    padding: 28px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--accent-border);
+    border-radius: 18px;
+    box-shadow: 0 28px 90px var(--shadow);
+    text-align: center;
+}
+.cpp-achievement-kicker,
+.cpp-save-progress-kicker {
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+}
+.cpp-achievement-medal {
+    display: grid;
+    width: 76px;
+    height: 76px;
+    margin: 17px auto;
+    place-items: center;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-radius: 50%;
+    font-weight: 950;
+}
+.cpp-achievement-dialog h2,
+.cpp-save-progress-dialog h2 {
+    margin: 8px 0 10px;
+}
+.cpp-achievement-dialog > p,
+.cpp-save-progress-dialog > p {
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+.cpp-achievement-rewards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 17px;
+}
+.cpp-achievement-rewards div {
+    padding: 12px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+.cpp-achievement-rewards span,
+.cpp-achievement-rewards strong {
+    display: block;
+}
+.cpp-achievement-rewards span {
+    color: var(--text-muted);
+    font-size: 8px;
+}
+.cpp-achievement-rewards strong {
+    margin-top: 5px;
+    color: var(--accent-soft);
+    font-size: 12px;
+}
+.cpp-achievement-dialog > small,
+.cpp-save-progress-dialog > small {
+    display: block;
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 9px;
+}
+.cpp-achievement-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 17px;
+}
+.cpp-achievement-actions a,
+.cpp-achievement-actions button,
+.cpp-continue-guest {
+    display: grid;
+    min-height: 42px;
+    place-items: center;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 900;
+    text-decoration: none;
+    cursor: pointer;
+}
+.cpp-achievement-actions a {
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+}
+.cpp-achievement-actions button,
+.cpp-continue-guest {
+    color: var(--text);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+}
+.cpp-continue-guest {
+    width: 100%;
+    padding: 11px 13px;
+}
+
+.path-card.preview,
+.path-card.available {
+    border-color: var(--accent-border);
+}
+.path-card .preview-status {
+    color: var(--warning-text);
+    background: var(--warning-surface);
+    border-color: var(--warning-border);
+}
+
+@keyframes cpp-core-spin {
+    to { transform: rotate(360deg); }
+}
+@keyframes cpp-core-spin-reverse {
+    to { transform: rotate(-360deg); }
+}
+@keyframes cpp-cursor-pulse {
+    50% { opacity: .45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cpp-core-ring,
+    .cpp-character-current {
+        animation: none;
+    }
+}
+
+@media (max-width: 1250px) {
+    .cpp-academy {
+        grid-template-columns: 250px minmax(480px, 1fr);
+    }
+
+    .cpp-preview-panel {
+        grid-column: 1 / -1;
+        border-top: 1px solid var(--border);
+        border-left: 0;
+    }
+}
+
+@media (max-width: 820px) {
+    .cpp-academy { display: block; }
+
+    .cpp-sidebar,
+    .cpp-preview-panel {
+        overflow: visible;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .cpp-lesson-main { padding: 20px 14px; }
+
+    .cpp-lesson-header,
+    .cpp-stage-heading {
+        display: grid;
+    }
+
+    .cpp-learn-grid,
+    .cpp-completion-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .cpp-academy .stage-tabs {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .cpp-achievement-rewards,
+    .cpp-achievement-actions,
+    .cpp-preview-stats {
+        grid-template-columns: 1fr;
+    }
+}

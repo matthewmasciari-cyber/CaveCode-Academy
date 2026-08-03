@@ -1,0 +1,35 @@
+@namespace CaveCode.Components.CourseEngine
+
+<section class="course-progress">
+    <div class="row-between">
+        <span>@Label</span>
+        <strong>@ProgressPercent%</strong>
+    </div>
+    <div class="progress-track">
+        <div class="progress-fill"
+             style="width: @(ProgressPercent)%"></div>
+    </div>
+    <small>
+        @CompletedModules / @Math.Max(0, TotalModules) modules complete
+    </small>
+</section>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = "Course progress";
+
+    [Parameter]
+    public int CompletedModules { get; set; }
+
+    [Parameter]
+    public int TotalModules { get; set; } = 40;
+
+    private int ProgressPercent =>
+        TotalModules <= 0
+            ? 0
+            : Math.Clamp(
+                (int)Math.Floor(
+                    CompletedModules * 100d / TotalModules),
+                0,
+                100);
+}

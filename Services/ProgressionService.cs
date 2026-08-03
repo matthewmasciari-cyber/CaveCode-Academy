@@ -112,9 +112,11 @@ public sealed class ProgressionState
     public int TotalXp { get; set; }
     public int CSharpXp { get; set; }
     public int PythonXp { get; set; }
+    public int CppXp { get; set; }
     public int TotalLines { get; set; }
     public int CSharpLines { get; set; }
     public int PythonLines { get; set; }
+    public int CppLines { get; set; }
     public int Level { get; set; } = 1;
     public int XpIntoLevel { get; set; }
     public int XpForNextLevel { get; set; } = 500;
@@ -158,9 +160,11 @@ public sealed class LeaderboardEntry
     public int TotalXp { get; set; }
     public int CSharpXp { get; set; }
     public int PythonXp { get; set; }
+    public int CppXp { get; set; }
     public int TotalLines { get; set; }
     public int CSharpLines { get; set; }
     public int PythonLines { get; set; }
+    public int CppLines { get; set; }
     public int Level { get; set; } = 1;
     public bool IsCurrentUser { get; set; }
 }

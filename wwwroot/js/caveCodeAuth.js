@@ -3,7 +3,27 @@ let supabaseClient = null;
 const caveCodeLiveOrigin = "https://cavecodeacademy.dev";
 
 function normalizeCourseKey(courseKey) {
-    return courseKey === "python" ? "python" : "csharp";
+    // cavecode-auth-multicourse-course-keys-v1
+    const value = String(courseKey || "").toLowerCase();
+
+    if (value === "python") {
+        return "python";
+    }
+
+    if (value === "cpp" || value === "c++") {
+        return "cpp";
+    }
+
+    if (
+        value === "html" ||
+        value === "css" ||
+        value === "html-css" ||
+        value === "htmlcss"
+    ) {
+        return "htmlcss";
+    }
+
+    return "csharp";
 }
 
 function courseProgressKey(courseKey) {
@@ -11,17 +31,19 @@ function courseProgressKey(courseKey) {
 }
 
 function caveCodeReturnUrl() {
-    const path = window.location.pathname;
+    // cavecode-auth-multicourse-return-v1
+    const supportedPaths = new Set([
+        "/csharp",
+        "/python",
+        "/cpp",
+        "/html-css"
+    ]);
 
-    if (path.endsWith("/csharp")) {
-        return `${caveCodeLiveOrigin}/csharp`;
-    }
+    const path = supportedPaths.has(window.location.pathname)
+        ? window.location.pathname
+        : "/";
 
-    if (path.endsWith("/python")) {
-        return `${caveCodeLiveOrigin}/python`;
-    }
-
-    return `${caveCodeLiveOrigin}/`;
+    return `${caveCodeLiveOrigin}${path}`;
 }
 
 function readLocalProgress(courseKey) {

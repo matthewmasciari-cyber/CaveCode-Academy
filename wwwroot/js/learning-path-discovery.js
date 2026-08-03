@@ -61,6 +61,9 @@
                 ["puzzle", "Browser extensions and interface tools"]
             ],
             examples: "Google Maps web features, Discord web, Netflix interfaces, interactive pages across the web"
+            preview: true,
+            href: "/html-css",
+            action: "Preview the workshop →",
         },
         sql: {
             mark: "SQL",
@@ -85,6 +88,9 @@
             description: "Build the structure and visual systems behind polished websites and game interfaces.",
             tags: ["Layouts", "Responsive design", "UI styling"],
             available: false,
+            preview: true,
+            href: "/html-css",
+            action: "Preview the workshop →",
             reason: "The most visual starting point for learning how websites are structured, styled, and adapted to every screen.",
             uses: [
                 ["layout-template", "Website structure and page layout"],
@@ -135,7 +141,10 @@
             title: "C++ Engine Foundry",
             description: "Work close to the machine while building high-performance systems, simulations, engines, and real-time software.",
             tags: ["Unreal Engine", "Systems", "Performance"],
-            available: false,
+            available: true,
+            preview: false,
+            href: "/cpp",
+            action: "Enter the foundry →",
             reason: "The advanced choice for game engines, performance-heavy software, embedded systems, and low-level control.",
             uses: [
                 ["gamepad-2", "AAA game development"],
@@ -306,9 +315,17 @@
     }
 
     function createInjectedCard(key) {
+        // CAVECODE_MULTI_STATE_LANGUAGE_CARD_V1
         const profile = paths[key];
         const card = document.createElement("article");
-        card.className = "path-card locked path-card--injected";
+        const stateClass = profile.available
+            ? "available"
+            : profile.preview
+                ? "preview"
+                : "locked";
+
+        card.className =
+            `path-card path-card--injected ${stateClass}`;
         card.dataset.cavecodeLanguage = key;
 
         const topline = document.createElement("div");
@@ -319,8 +336,28 @@
         mark.textContent = profile.mark;
 
         const status = document.createElement("span");
-        status.className = "status locked-status";
-        status.append(icon("lock-keyhole"), document.createTextNode(" Coming soon"));
+        status.className = profile.available
+            ? "status available-status"
+            : profile.preview
+                ? "status preview-status"
+                : "status locked-status";
+
+        if (profile.available) {
+            status.append(
+                icon("circle-check-big"),
+                document.createTextNode(" Available now")
+            );
+        } else if (profile.preview) {
+            status.append(
+                icon("construction"),
+                document.createTextNode(" Course shell")
+            );
+        } else {
+            status.append(
+                icon("lock-keyhole"),
+                document.createTextNode(" Coming soon")
+            );
+        }
 
         topline.append(mark, status);
 
@@ -332,19 +369,40 @@
 
         const tags = document.createElement("div");
         tags.className = "skill-tags";
+
         profile.tags.forEach(tag => {
             const span = document.createElement("span");
             span.textContent = tag;
             tags.appendChild(span);
         });
 
-        const action = document.createElement("button");
-        action.className = "path-action locked-action";
-        action.type = "button";
-        action.disabled = true;
-        action.textContent = "Course in development";
+        let action;
 
-        card.append(topline, title, description, tags, action);
+        if ((profile.available || profile.preview) && profile.href) {
+            action = document.createElement("a");
+            action.className = "path-action";
+            action.href = profile.href;
+            action.textContent =
+                profile.action ||
+                (profile.preview
+                    ? "Preview course shell →"
+                    : "Enter course →");
+        } else {
+            action = document.createElement("button");
+            action.className = "path-action locked-action";
+            action.type = "button";
+            action.disabled = true;
+            action.textContent = "Course in development";
+        }
+
+        card.append(
+            topline,
+            title,
+            description,
+            tags,
+            action
+        );
+
         return card;
     }
 
@@ -416,13 +474,102 @@
     }
 
     function normalizeExistingCard(card, key) {
+        // CAVECODE_EXISTING_CARD_STATE_V2
         const profile = paths[key];
-        card.dataset.cavecodeLanguage = key;
+        const stateClass = profile.available
+            ? "available"
+            : profile.preview
+                ? "preview"
+                : "locked";
 
-        const status = card.querySelector(".locked-status");
-        if (status && status.dataset.cavecodeStatus !== "ready") {
-            status.replaceChildren(icon("lock-keyhole"), document.createTextNode(" Coming soon"));
+        card.dataset.cavecodeLanguage = key;
+        card.classList.remove("available", "preview", "locked");
+        card.classList.add(stateClass);
+
+        const topline =
+            card.querySelector(":scope > .path-topline");
+
+        let status =
+            topline?.querySelector(":scope > .status");
+
+        if (!status && topline) {
+            status = document.createElement("span");
+            topline.appendChild(status);
+        }
+
+        if (status) {
+            status.className = profile.available
+                ? "status available-status"
+                : profile.preview
+                    ? "status preview-status"
+                    : "status locked-status";
+
+            if (profile.available) {
+                status.replaceChildren(
+                    icon("circle-check-big"),
+                    document.createTextNode(" Available now")
+                );
+            } else if (profile.preview) {
+                status.replaceChildren(
+                    icon("construction"),
+                    document.createTextNode(" Course shell")
+                );
+            } else {
+                status.replaceChildren(
+                    icon("lock-keyhole"),
+                    document.createTextNode(" Coming soon")
+                );
+            }
+
             status.dataset.cavecodeStatus = "ready";
+        }
+
+        let action =
+            card.querySelector(":scope > .path-action");
+
+        const shouldLink =
+            (profile.available || profile.preview) &&
+            Boolean(profile.href);
+
+        if (shouldLink) {
+            if (!(action instanceof HTMLAnchorElement)) {
+                const link = document.createElement("a");
+
+                if (action) {
+                    action.replaceWith(link);
+                } else {
+                    card.appendChild(link);
+                }
+
+                action = link;
+            }
+
+            action.className = "path-action";
+            action.href = profile.href;
+            action.textContent =
+                profile.action ||
+                (profile.preview
+                    ? "Preview course shell →"
+                    : "Enter course →");
+        } else {
+            if (!(action instanceof HTMLButtonElement)) {
+                const button = document.createElement("button");
+
+                if (action) {
+                    action.replaceWith(button);
+                } else {
+                    card.appendChild(button);
+                }
+
+                action = button;
+            }
+
+            action.className =
+                "path-action locked-action";
+            action.type = "button";
+            action.disabled = true;
+            action.textContent =
+                "Course in development";
         }
 
         insertUsesPanel(card, key);
@@ -473,7 +620,7 @@
         }
 
         const count = section.querySelector(".path-count");
-        if (count) count.textContent = "2 available · 8 in development · 10 total";
+        if (count) count.textContent = "3 available · 1 shell preview · 6 in development · 10 total";
 
         refreshIcons(grid);
         scheduleEqualize();

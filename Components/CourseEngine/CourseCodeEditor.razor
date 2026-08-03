@@ -1,0 +1,64 @@
+@namespace CaveCode.Components.CourseEngine
+
+<div class="code-editor">
+    <div class="editor-bar">
+        <span>@FileName</span>
+        <span>@LanguageLabel</span>
+    </div>
+
+    <textarea value="@Value"
+              @oninput="HandleInputAsync"
+              spellcheck="false"
+              aria-label="@AriaLabel"></textarea>
+
+    @if (ShowStatistics)
+    {
+        <div class="typing-stats">
+            <div>
+                <span>Characters</span>
+                <strong>@Value.Length / @Math.Max(0, TargetLength)</strong>
+            </div>
+            <div>
+                <span>Accuracy</span>
+                <strong>@Math.Clamp(Accuracy, 0, 100)%</strong>
+            </div>
+            <div>
+                <span>Errors</span>
+                <strong>@Math.Max(0, ErrorCount)</strong>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public string FileName { get; set; } = "training.txt";
+
+    [Parameter, EditorRequired]
+    public string LanguageLabel { get; set; } = "CODE";
+
+    [Parameter]
+    public string AriaLabel { get; set; } = "Practice editor";
+
+    [Parameter]
+    public string Value { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public bool ShowStatistics { get; set; } = true;
+
+    [Parameter]
+    public int TargetLength { get; set; }
+
+    [Parameter]
+    public int Accuracy { get; set; }
+
+    [Parameter]
+    public int ErrorCount { get; set; }
+
+    private Task HandleInputAsync(ChangeEventArgs args) =>
+        ValueChanged.InvokeAsync(
+            args.Value?.ToString() ?? "");
+}

@@ -1,0 +1,306 @@
+@page "/html-css"
+@using CaveCode.CourseEngine
+@using CaveCode.Components.CourseEngine
+@inject CourseEngineService CourseEngine
+
+<PageTitle>HTML & CSS Workshop | CaveCode Academy</PageTitle>
+
+<div class="web-academy">
+    <aside class="web-sidebar">
+        <div class="web-brand">
+            <span class="web-brand-mark">&lt;/&gt;</span>
+            <div>
+                <h1>CaveCode</h1>
+                <p>Learn HTML and CSS by building one responsive interface.</p>
+            </div>
+        </div>
+
+        <nav class="web-course-nav" aria-label="Course navigation">
+            <AcademyHomeButton Compact="true" />
+        </nav>
+
+        <AuthPanel />
+
+        <CourseProgressPanel
+            Label="HTML & CSS course progress"
+            CompletedModules="@CompletedModuleCount"
+            TotalModules="@Manifest.ModuleCount" />
+
+        <div class="web-shell-notice">
+            <strong>COURSE SHELL PREVIEW</strong>
+            <p>
+                Explore all 40 modules now. Chapter 1 becomes playable in Pass 5.
+            </p>
+        </div>
+
+        <div class="web-lesson-list">
+            @{
+                string? lastChapter = null;
+            }
+
+            @for (int index = 0; index < Modules.Count; index++)
+            {
+                int moduleIndex = index;
+                HtmlCssRoadmapModule module = Modules[index];
+                bool active = moduleIndex == SelectedModuleIndex;
+
+                if (module.Chapter != lastChapter)
+                {
+                    lastChapter = module.Chapter;
+                    <h2>@module.Chapter</h2>
+                }
+
+                <button type="button"
+                        class="web-lesson-button @(active ? "active" : "")"
+                        @onclick="() => SelectRoadmapModule(moduleIndex)">
+                    <span class="web-lesson-number">@(moduleIndex + 1)</span>
+                    <span class="web-lesson-copy">
+                        <strong>@module.Title</strong>
+                        <small>Planned · @module.Topic</small>
+                    </span>
+                </button>
+            }
+        </div>
+    </aside>
+
+    <main class="web-lesson-main">
+        <header class="web-lesson-header">
+            <div>
+                <p class="eyebrow">
+                    MODULE @(SelectedModuleIndex + 1) OF @Modules.Count ·
+                    @CurrentModule.Topic.ToUpperInvariant()
+                </p>
+                <h2>@CurrentModule.Title</h2>
+                <p>@CurrentModule.Summary</p>
+            </div>
+
+            <div class="web-shell-ring">
+                <strong>ROADMAP</strong>
+                <span>preview</span>
+            </div>
+        </header>
+
+        <CourseStageTabs
+            CurrentStage="0"
+            HighestCompletedStage="-1"
+            UnlockedThroughStage="0"
+            AllDisabled="true"
+            StageSelected="IgnoreStageSelection" />
+
+        <section class="web-stage-card">
+            <div class="web-stage-heading">
+                <div>
+                    <p class="eyebrow">PASS 4 · COURSE SHELL</p>
+                    <h3>The shared eight-stage learning loop is ready</h3>
+                </div>
+                <span class="web-support-badge">
+                    Chapter 1 arrives in Pass 5
+                </span>
+            </div>
+
+            <div class="web-shell-grid">
+                <div>
+                    <h4>What this module will teach</h4>
+                    <p>@CurrentModule.Summary</p>
+
+                    <div class="web-concept-list">
+                        @foreach (string concept in CurrentModule.Concepts)
+                        {
+                            <div>
+                                <span>◆</span>
+                                <p>@concept</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <aside class="web-module-upgrade">
+                    <span class="web-mini-label">PROJECT UPGRADE</span>
+                    <h4>@CurrentModule.SystemArea</h4>
+                    <p>@CurrentModule.ProjectUpgrade</p>
+
+                    <div class="web-file-card">
+                        <span>Planned editor file</span>
+                        <code>@CurrentModule.EditorFileName</code>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="web-pass-five-note">
+                <div>
+                    <strong>Chapter 1 begins in Pass 5</strong>
+                    <p>
+                        Pass 5 activates Modules 1–8 with real HTML lessons,
+                        guided typing, prediction, debugging, recall, transfer,
+                        validation, rewards, and a live rendered webpage.
+                    </p>
+                </div>
+                <span>NO PROGRESS IS CHANGED BY THIS PREVIEW</span>
+            </div>
+        </section>
+    </main>
+
+    <aside class="web-preview-panel">
+        <header class="web-preview-header">
+            <div>
+                <p class="eyebrow">LIVE WORKSHOP PREVIEW</p>
+                <h2>Interface Canvas</h2>
+            </div>
+            <span class="web-live">SHELL</span>
+        </header>
+
+        <div class="web-browser-frame">
+            <div class="web-browser-bar">
+                <div class="web-browser-dots">
+                    <i></i><i></i><i></i>
+                </div>
+                <span>workshop.local/@PreviewSlug</span>
+            </div>
+
+            <div class="web-preview-page @PreviewModeClass">
+                <header class="web-preview-site-header">
+                    <strong>CaveCode Workshop</strong>
+                    <nav>
+                        <span>Projects</span>
+                        <span>Skills</span>
+                        <span>Contact</span>
+                    </nav>
+                </header>
+
+                <main>
+                    <section class="web-preview-hero">
+                        <div>
+                            <span class="web-preview-eyebrow">
+                                @CurrentModule.SystemArea.ToUpperInvariant()
+                            </span>
+                            <h3>Build interfaces that explain themselves.</h3>
+                            <p>
+                                HTML creates the structure. CSS controls the
+                                visual system and responsive layout.
+                            </p>
+                            <button type="button">View project</button>
+                        </div>
+
+                        <div class="web-preview-image" aria-hidden="true">
+                            <span>&lt;/&gt;</span>
+                        </div>
+                    </section>
+
+                    <section class="web-preview-card-grid">
+                        <article>
+                            <span>01</span>
+                            <h4>Structure</h4>
+                            <p>Semantic HTML makes content understandable.</p>
+                        </article>
+                        <article>
+                            <span>02</span>
+                            <h4>Style</h4>
+                            <p>Reusable CSS creates a consistent interface.</p>
+                        </article>
+                        <article>
+                            <span>03</span>
+                            <h4>Responsive</h4>
+                            <p>Layouts adapt from desktop through mobile.</p>
+                        </article>
+                    </section>
+
+                    <section class="web-preview-form">
+                        <label>
+                            Project name
+                            <input value="Interface Workshop" readonly />
+                        </label>
+                        <button type="button">Save preview</button>
+                    </section>
+                </main>
+            </div>
+
+            <div class="web-preview-highlight">
+                <span>SELECTED UPGRADE</span>
+                <strong>@CurrentModule.SystemArea</strong>
+                <small>@CurrentModule.EditorFileName</small>
+            </div>
+        </div>
+
+        <div class="web-preview-stats">
+            <div><span>Language</span><strong>HTML & CSS</strong></div>
+            <div><span>Build target</span><strong>Responsive web app</strong></div>
+            <div><span>Module</span><strong>@(SelectedModuleIndex + 1) / @Modules.Count</strong></div>
+            <div><span>Chapter</span><strong>@ChapterNumber</strong></div>
+            <div><span>Editor</span><strong>@CurrentModule.EditorFileName</strong></div>
+            <div><span>Status</span><strong>Shell preview</strong></div>
+        </div>
+
+        <section class="web-terminal">
+            <div class="web-terminal-title">
+                <span>WORKSHOP CONSOLE</span>
+                <span>READ ONLY</span>
+            </div>
+            <p>[ROADMAP] Module @(SelectedModuleIndex + 1) selected.</p>
+            <p>[FILE] @CurrentModule.EditorFileName queued.</p>
+            <p>[PREVIEW] @CurrentModule.SystemArea highlighted.</p>
+            <p>[STATUS] Waiting for Chapter 1 lesson content.</p>
+        </section>
+    </aside>
+</div>
+
+@code {
+    private CourseManifest Manifest = null!;
+    private CourseProgressSnapshot Progress = new();
+    private int SelectedModuleIndex;
+
+    private IReadOnlyList<HtmlCssRoadmapModule> Modules =>
+        HtmlCssCourseRoadmap.Modules;
+
+    private HtmlCssRoadmapModule CurrentModule =>
+        Modules[SelectedModuleIndex];
+
+    private int CompletedModuleCount =>
+        Progress.ModuleCompleted?.Count(completed => completed) ?? 0;
+
+    private int ChapterNumber =>
+        SelectedModuleIndex / 8 + 1;
+
+    private string PreviewSlug =>
+        CurrentModule.SystemArea
+            .ToLowerInvariant()
+            .Replace(" ", "-");
+
+    private string PreviewModeClass =>
+        $"web-preview-mode-{Math.Clamp(SelectedModuleIndex / 8 + 1, 1, 5)}";
+
+    protected override void OnInitialized()
+    {
+        Manifest = CourseEngine.GetCourse(CourseIds.HtmlCss);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            Progress = await CourseEngine.GetProgressAsync(
+                CourseIds.HtmlCss);
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+            // Browser progress is optional and this shell never writes it.
+        }
+    }
+
+    private void SelectRoadmapModule(int moduleIndex)
+    {
+        SelectedModuleIndex = Math.Clamp(
+            moduleIndex,
+            0,
+            Modules.Count - 1);
+    }
+
+    private static Task IgnoreStageSelection(int _) =>
+        Task.CompletedTask;
+}

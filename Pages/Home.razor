@@ -41,22 +41,21 @@
             <div class="hero-terminal" aria-label="Academy terminal preview">
                 <div class="terminal-bar"><span>CAVECODE TERMINAL</span><span>READY</span></div>
                 <p><span>&gt;</span> academy.select_path()</p>
-                <p class="terminal-success">C# Cave Adventure and Python Automation Quest are available.</p>
+                <p class="terminal-success">C#, Python, C++, and HTML & CSS learning paths are available.</p>
                 <p><span>&gt;</span> progress.unlock_projects()</p>
                 <p class="terminal-muted">Advanced paths unlock through mastery.</p>
             </div>
         </section>
-
         <section class="path-section" id="paths">
             <div class="section-heading">
                 <div>
                     <p class="eyebrow">LEARNING PATHS</p>
                     <h2>Choose what you want to build</h2>
                 </div>
-                <span class="path-count">2 available · 3 in development</span>
+                <span class="path-count">4 available · 6 in development · 10 total</span>
             </div>
 
-            <div class="path-grid">
+            <div class="path-grid path-grid--static">
                 <article class="path-card available csharp-card">
                     <div class="path-topline">
                         <span class="language-mark">C#</span>
@@ -64,10 +63,16 @@
                     </div>
                     <h3>C# Cave Adventure</h3>
                     <p>Build a growing cave-exploration game while mastering C# foundations, logic, collections, classes, and combat.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> Unity games, Windows applications, ASP.NET websites, APIs, and business software.</p>
                     <CourseResume Course="csharp" />
-                    <div class="skill-tags"><span>40 modules</span><span>8-stage practice</span><span>Live game preview</span></div>
+                    <div class="skill-tags">
+                        <span>40 modules</span>
+                        <span>8-stage practice</span>
+                        <span>Live game preview</span>
+                    </div>
                     <NavLink class="path-action" href="/csharp">Enter the cave →</NavLink>
                 </article>
+
                 <article class="path-card available python-card">
                     <div class="path-topline">
                         <span class="language-mark">Py</span>
@@ -75,29 +80,143 @@
                     </div>
                     <h3>Python Automation Quest</h3>
                     <p>Restore an underground facility while learning Python through sensors, alarms, sequences, data, files, and Raspberry Pi concepts.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> automation, artificial intelligence, data analysis, scripting, cybersecurity, and Raspberry Pi projects.</p>
                     <CourseResume Course="python" />
-                    <div class="skill-tags"><span>40 modules</span><span>Automation simulation</span><span>Optional hardware path</span></div>
+                    <div class="skill-tags">
+                        <span>40 modules</span>
+                        <span>Automation simulation</span>
+                        <span>Optional hardware path</span>
+                    </div>
                     <NavLink class="path-action" href="/python">Enter the control room →</NavLink>
                 </article>
 
-                @foreach (LearningPath path in ComingSoonPaths)
-                {
-                    <article class="path-card locked">
-                        <div class="path-topline">
-                            <span class="language-mark">@path.Mark</span>
-                            <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
-                        </div>
-                        <h3>@path.Title</h3>
-                        <p>@path.Description</p>
-                        <div class="skill-tags">
-                            @foreach (string tag in path.Tags)
-                            {
-                                <span>@tag</span>
-                            }
-                        </div>
-                        <button class="path-action locked-action" type="button" disabled>Course in development</button>
-                    </article>
-                }
+                <article class="path-card available cpp-card">
+                    <div class="path-topline">
+                        <span class="language-mark">C++</span>
+                        <span class="status available-status">Available now</span>
+                    </div>
+                    <h3>C++ Engine Foundry</h3>
+                    <p>Build a real-time engine workshop while learning program structure, variables, input, output, operators, debugging, and systems thinking.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> Unreal Engine, game engines, embedded systems, simulations, robotics, and high-performance software.</p>
+                    <div class="skill-tags">
+                        <span>40 modules</span>
+                        <span>Engine simulation</span>
+                        <span>Chapter 1 playable</span>
+                    </div>
+                    <NavLink class="path-action" href="/cpp">Enter the foundry →</NavLink>
+                </article>
+
+                <article class="path-card available htmlcss-card">
+                    <div class="path-topline">
+                        <span class="language-mark">HTML</span>
+                        <span class="status available-status">Available now</span>
+                    </div>
+                    <h3>HTML &amp; CSS Workshop</h3>
+                    <p>Build the structure and visual systems behind polished websites, responsive interfaces, landing pages, dashboards, and browser-game menus.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> websites, responsive layouts, portfolios, dashboards, email templates, and user interfaces.</p>
+                    <div class="skill-tags">
+                        <span>40 modules</span>
+                        <span>Live browser preview</span>
+                        <span>Chapter 1 playable</span>
+                    </div>
+                    <NavLink class="path-action" href="/html-css">Enter the workshop →</NavLink>
+                </article>
+
+                <article class="path-card locked javascript-card">
+                    <div class="path-topline">
+                        <span class="language-mark">JS</span>
+                        <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
+                    </div>
+                    <h3>JavaScript Web Forge</h3>
+                    <p>Create interactive websites and browser games while learning the language of the modern web.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> interactive websites, browser games, web applications, Node.js servers, and extensions.</p>
+                    <div class="skill-tags">
+                        <span>Web apps</span>
+                        <span>Browser games</span>
+                        <span>Interfaces</span>
+                    </div>
+                    <button class="path-action locked-action" type="button" disabled>Course in development</button>
+                </article>
+
+                <article class="path-card locked sql-card">
+                    <div class="path-topline">
+                        <span class="language-mark">SQL</span>
+                        <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
+                    </div>
+                    <h3>SQL Database Dungeon</h3>
+                    <p>Master queries by managing players, items, quests, and persistent world data.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> databases, reporting, analytics, application backends, inventories, and saved game data.</p>
+                    <div class="skill-tags">
+                        <span>Queries</span>
+                        <span>Databases</span>
+                        <span>Game data</span>
+                    </div>
+                    <button class="path-action locked-action" type="button" disabled>Course in development</button>
+                </article>
+
+                <article class="path-card locked typescript-card">
+                    <div class="path-topline">
+                        <span class="language-mark">TS</span>
+                        <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
+                    </div>
+                    <h3>TypeScript Application Architect</h3>
+                    <p>Scale JavaScript into dependable applications with types, reusable systems, and safer team workflows.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> React, Angular, Vue, large web applications, Node.js services, and developer tools.</p>
+                    <div class="skill-tags">
+                        <span>Typed JavaScript</span>
+                        <span>Large applications</span>
+                        <span>Modern frameworks</span>
+                    </div>
+                    <button class="path-action locked-action" type="button" disabled>Course in development</button>
+                </article>
+
+                <article class="path-card locked java-card">
+                    <div class="path-topline">
+                        <span class="language-mark">Java</span>
+                        <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
+                    </div>
+                    <h3>Java Enterprise Expedition</h3>
+                    <p>Build durable applications while learning the language behind Android systems, business software, and large backends.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> Android applications, enterprise systems, web backends, cloud services, and developer platforms.</p>
+                    <div class="skill-tags">
+                        <span>Android</span>
+                        <span>Enterprise</span>
+                        <span>Back-end systems</span>
+                    </div>
+                    <button class="path-action locked-action" type="button" disabled>Course in development</button>
+                </article>
+
+                <article class="path-card locked go-card">
+                    <div class="path-topline">
+                        <span class="language-mark">Go</span>
+                        <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
+                    </div>
+                    <h3>Go Cloud Command</h3>
+                    <p>Build fast network services and infrastructure tools while learning clear, practical concurrent programming.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> cloud infrastructure, APIs, DevOps tools, networking, containers, and monitoring services.</p>
+                    <div class="skill-tags">
+                        <span>Cloud</span>
+                        <span>DevOps</span>
+                        <span>Distributed systems</span>
+                    </div>
+                    <button class="path-action locked-action" type="button" disabled>Course in development</button>
+                </article>
+
+                <article class="path-card locked rust-card">
+                    <div class="path-topline">
+                        <span class="language-mark">Rust</span>
+                        <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
+                    </div>
+                    <h3>Rust Systems Frontier</h3>
+                    <p>Explore memory-safe systems programming through reliable tools, embedded projects, WebAssembly, and performance work.</p>
+                    <p class="path-examples"><strong>Common uses:</strong> systems software, command-line tools, WebAssembly, embedded development, and performance tools.</p>
+                    <div class="skill-tags">
+                        <span>Memory safety</span>
+                        <span>Systems</span>
+                        <span>WebAssembly</span>
+                    </div>
+                    <button class="path-action locked-action" type="button" disabled>Course in development</button>
+                </article>
             </div>
         </section>
 
@@ -350,6 +469,48 @@
     @@media (max-width: 760px) {
         .minigame-card-grid {
             grid-template-columns: 1fr;
+        }
+    }
+
+
+    /* CAVECODE_STATIC_LEARNING_PATHS_REPAIR_V1 */
+    .path-grid--static {
+        display: grid !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .path-grid--static .path-card,
+    .path-grid--static .path-card > * {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .path-grid--static .path-card {
+        min-height: 430px;
+    }
+
+    .path-grid--static .path-examples {
+        padding-top: 12px;
+        margin-top: 12px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border);
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+    .path-grid--static .path-examples strong {
+        color: var(--text);
+    }
+
+    .path-grid--static .available .language-mark {
+        color: var(--accent-contrast);
+        background: var(--accent);
+    }
+
+    @@media (max-width: 820px) {
+        .path-grid--static .path-card {
+            min-height: 0;
         }
     }
 

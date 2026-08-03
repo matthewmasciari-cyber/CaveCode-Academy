@@ -1,0 +1,52 @@
+@using CaveCode.CourseEngine
+@namespace CaveCode.Components.CourseEngine
+
+<nav class="stage-tabs" aria-label="@AriaLabel">
+    @foreach (CourseStageDefinition stage in CourseStageCatalog.All)
+    {
+        int stageIndex = (int)stage.Stage;
+        bool unlocked = IsUnlocked(stageIndex);
+        bool completed = IsCompleted(stageIndex);
+
+        <button type="button"
+                class="stage-tab @(CurrentStage == stageIndex ? "active" : "") @(completed ? "done" : "")"
+                disabled="@(!unlocked)"
+                @onclick="() => SelectStageAsync(stageIndex)">
+            <span>@(stageIndex + 1)</span>
+            @stage.Label
+        </button>
+    }
+</nav>
+
+@code {
+    [Parameter]
+    public string AriaLabel { get; set; } = "Training stages";
+
+    [Parameter]
+    public int CurrentStage { get; set; }
+
+    [Parameter]
+    public int HighestCompletedStage { get; set; } = -1;
+
+    [Parameter]
+    public int UnlockedThroughStage { get; set; }
+
+    [Parameter]
+    public bool AllDisabled { get; set; }
+
+    [Parameter]
+    public EventCallback<int> StageSelected { get; set; }
+
+    private bool IsUnlocked(int stageIndex) =>
+        !AllDisabled &&
+        stageIndex <= Math.Clamp(
+            UnlockedThroughStage,
+            0,
+            CourseStageCatalog.StageCount - 1);
+
+    private bool IsCompleted(int stageIndex) =>
+        stageIndex <= HighestCompletedStage;
+
+    private Task SelectStageAsync(int stageIndex) =>
+        StageSelected.InvokeAsync(stageIndex);
+}

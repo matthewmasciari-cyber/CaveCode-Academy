@@ -4,9 +4,11 @@
         totalXp: 0,
         cSharpXp: 0,
         pythonXp: 0,
+        cppXp: 0,
         totalLines: 0,
         cSharpLines: 0,
         pythonLines: 0,
+        cppLines: 0,
         publicLeaderboard: false,
         awardedModules: {},
         awardedStages: {},
@@ -39,7 +41,17 @@
     }
 
     function normalizeCourse(course) {
-        return course === "python" ? "python" : "csharp";
+        course = String(course || "").toLowerCase();
+
+        if (course === "python") {
+            return "python";
+        }
+
+        if (course === "cpp" || course === "c++") {
+            return "cpp";
+        }
+
+        return "csharp";
     }
 
     function save() {
@@ -78,9 +90,11 @@
             totalXp: current.totalXp,
             cSharpXp: current.cSharpXp,
             pythonXp: current.pythonXp,
+            cppXp: current.cppXp,
             totalLines: current.totalLines,
             cSharpLines: current.cSharpLines,
             pythonLines: current.pythonLines,
+            cppLines: current.cppLines,
             publicLeaderboard: current.publicLeaderboard,
             ...levelView(current.totalXp)
         };
@@ -91,6 +105,8 @@
 
         if (course === "python") {
             current.pythonXp += amount;
+        } else if (course === "cpp") {
+            current.cppXp += amount;
         } else {
             current.cSharpXp += amount;
         }
@@ -101,6 +117,8 @@
 
         if (course === "python") {
             current.pythonLines += amount;
+        } else if (course === "cpp") {
+            current.cppLines += amount;
         } else {
             current.cSharpLines += amount;
         }
@@ -159,6 +177,7 @@
         const before = JSON.stringify(current);
         reconcile("csharp");
         reconcile("python");
+        reconcile("cpp");
 
         if (before !== JSON.stringify(current)) {
             save();
@@ -179,9 +198,11 @@
             totalXp: state.totalXp,
             cSharpXp: state.cSharpXp,
             pythonXp: state.pythonXp,
+            cppXp: state.cppXp,
             totalLines: state.totalLines,
             cSharpLines: state.cSharpLines,
             pythonLines: state.pythonLines,
+            cppLines: state.cppLines,
             level: state.level,
             isCurrentUser: true
         };
@@ -193,14 +214,18 @@
                 ? "cSharpXp"
                 : filter === "python"
                     ? "pythonXp"
-                    : "totalXp";
+                    : filter === "cpp"
+                        ? "cppXp"
+                        : "totalXp";
 
         const linesField =
             filter === "csharp"
                 ? "cSharpLines"
                 : filter === "python"
                     ? "pythonLines"
-                    : "totalLines";
+                    : filter === "cpp"
+                        ? "cppLines"
+                        : "totalLines";
 
         return [...entries].sort((a, b) => {
             const xp = Number(b[xpField] || 0) -
@@ -430,7 +455,9 @@
             reconcileAll();
 
             filter =
-                filter === "csharp" || filter === "python"
+                filter === "csharp" ||
+                filter === "python" ||
+                filter === "cpp"
                     ? filter
                     : "overall";
 

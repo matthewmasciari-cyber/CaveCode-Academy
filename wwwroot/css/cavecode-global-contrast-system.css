@@ -1,0 +1,844 @@
+/* ==================================================================
+   CaveCode Academy - Whole-program semantic contrast system
+   Loaded after every prior stylesheet.
+
+   Design rule:
+   Themes may change accent and surface personality, but text hierarchy
+   remains nearly identical and readable in every theme and mode.
+   ================================================================== */
+
+/* ---------------------------------------------------------------
+   1. Shared semantic roles
+   --------------------------------------------------------------- */
+
+html {
+    --cc-text-primary: var(--text);
+    --cc-text-secondary:
+        color-mix(in srgb, var(--text) 82%, var(--surface) 18%);
+    --cc-text-muted:
+        color-mix(in srgb, var(--text) 70%, var(--surface) 30%);
+    --cc-text-disabled:
+        color-mix(in srgb, var(--text) 58%, var(--surface) 42%);
+
+    --cc-surface-page: var(--bg);
+    --cc-surface-card: var(--surface);
+    --cc-surface-soft: var(--surface-soft);
+    --cc-surface-raised: var(--surface-raised);
+    --cc-surface-strong: var(--surface-strong);
+
+    --cc-border: var(--border);
+    --cc-border-strong: var(--border-strong);
+
+    --cc-link: var(--accent);
+    --cc-on-accent: var(--accent-contrast);
+    --cc-accent-panel-text: var(--accent-soft);
+
+    --cc-success-text: var(--accent-soft);
+    --cc-warning-title: var(--warning-text);
+    --cc-warning-copy: var(--warning-muted);
+    --cc-danger-title: var(--danger-text);
+}
+
+/* Light mode uses darker accent-derived foregrounds on pale surfaces. */
+html[data-mode="light"] {
+    --cc-text-primary: var(--text);
+    --cc-text-secondary:
+        color-mix(in srgb, var(--text) 88%, var(--surface) 12%);
+    --cc-text-muted:
+        color-mix(in srgb, var(--text) 76%, var(--surface) 24%);
+    --cc-text-disabled:
+        color-mix(in srgb, var(--text) 62%, var(--surface) 38%);
+
+    --cc-link:
+        color-mix(in srgb, var(--accent) 42%, var(--text) 58%);
+    --cc-accent-panel-text:
+        color-mix(in srgb, var(--accent) 42%, var(--text) 58%);
+
+    /* Existing pages consume these original variables directly. */
+    --text-primary: var(--cc-text-primary);
+    --text-secondary: var(--cc-text-secondary);
+    --text-muted: var(--cc-text-muted);
+    --text-dim: var(--cc-text-disabled);
+    --text-disabled: var(--cc-text-disabled);
+    --text-placeholder: var(--cc-text-muted);
+}
+
+/* Dark mode receives the same hierarchy across all color themes. */
+html[data-mode="dark"],
+html:not([data-mode]) {
+    --cc-text-primary: var(--text);
+    --cc-text-secondary:
+        color-mix(in srgb, var(--text) 84%, var(--surface) 16%);
+    --cc-text-muted:
+        color-mix(in srgb, var(--text) 72%, var(--surface) 28%);
+    --cc-text-disabled:
+        color-mix(in srgb, var(--text) 59%, var(--surface) 41%);
+
+    --text-muted: var(--cc-text-muted);
+    --text-dim: var(--cc-text-disabled);
+}
+
+/* High contrast deliberately avoids blended gray-on-gray combinations. */
+html[data-theme="high-contrast"][data-mode="light"] {
+    --cc-text-primary: #000;
+    --cc-text-secondary: #111;
+    --cc-text-muted: #222;
+    --cc-text-disabled: #3a3a3a;
+    --cc-link: #3f3900;
+    --cc-accent-panel-text: #000;
+}
+
+html[data-theme="high-contrast"][data-mode="dark"] {
+    --cc-text-primary: #fff;
+    --cc-text-secondary: #f1f1f1;
+    --cc-text-muted: #d8d8d8;
+    --cc-text-disabled: #b9b9b9;
+    --cc-link: #ffe600;
+}
+
+/* ---------------------------------------------------------------
+   2. Page-level typography
+   --------------------------------------------------------------- */
+
+html body {
+    color: var(--cc-text-primary);
+}
+
+html :where(h1, h2, h3, h4, h5, h6, legend) {
+    color: var(--cc-text-primary);
+}
+
+html :where(strong, b) {
+    color: inherit;
+}
+
+/* Page introductions are intentionally as readable as their title. */
+html :where(
+    .cavecode-page-intro,
+    .hero-description,
+    .page-description
+) {
+    color: var(--cc-text-primary) !important;
+    opacity: 1 !important;
+}
+
+html :where(
+    .settings-header,
+    .achievement-header,
+    .achievements-header,
+    .leaderboard-header,
+    .minigame-header,
+    .mg-header,
+    .hub-header,
+    .learning-path-header,
+    .lesson-header,
+    .page-header,
+    .hero-header,
+    .home-hero,
+    .header-copy
+) :where(h1, h2) + p,
+html :where(
+    .settings-header,
+    .achievement-header,
+    .achievements-header,
+    .leaderboard-header,
+    .minigame-header,
+    .mg-header,
+    .hub-header,
+    .learning-path-header,
+    .lesson-header,
+    .page-header,
+    .hero-header
+) > div > p:last-child {
+    color: var(--cc-text-primary) !important;
+    opacity: 1 !important;
+}
+
+/* Shared secondary/descriptive roles. */
+html :where(
+    .muted,
+    .text-muted,
+    .subtitle,
+    .sub-title,
+    .description,
+    .helper-text,
+    .supporting-text,
+    .caption,
+    .fine-print,
+    .secondary-text,
+    .card-description,
+    .section-description,
+    .meta,
+    .metadata,
+    .note,
+    .hint-copy,
+    .support-copy
+) {
+    color: var(--cc-text-secondary) !important;
+    opacity: 1 !important;
+}
+
+html :where(
+    .text-dim,
+    .dim,
+    .tertiary-text,
+    .timestamp,
+    .microcopy
+) {
+    color: var(--cc-text-muted) !important;
+    opacity: 1 !important;
+}
+
+/* Common direct card/panel descriptions. */
+html :where(
+    .card,
+    .panel,
+    .settings-panel,
+    .achievement-card,
+    .leaderboard-card,
+    .profile-card,
+    .course-card,
+    .chapter-card,
+    .module-card,
+    .path-card,
+    .mode-card,
+    .mission-card,
+    .stage-card,
+    .launch-card,
+    .result,
+    .notice-card,
+    .status-card,
+    .reward-guide,
+    .auth-card
+) > p:not(.eyebrow):not(.error):not(.success) {
+    color: var(--cc-text-secondary) !important;
+}
+
+/* Eyebrows and accent text need a darker foreground in light mode. */
+html[data-mode="light"] :where(
+    .eyebrow,
+    .mini-label,
+    .section-label,
+    .overline,
+    .kicker
+) {
+    color: var(--cc-link) !important;
+    opacity: 1 !important;
+}
+
+html[data-mode="dark"] :where(
+    .eyebrow,
+    .mini-label,
+    .section-label,
+    .overline,
+    .kicker
+) {
+    color: var(--accent) !important;
+}
+
+/* ---------------------------------------------------------------
+   3. Links and navigation
+   --------------------------------------------------------------- */
+
+html a:not(
+    .primary
+):not(
+    .primary-action
+):not(
+    .path-action
+):not(
+    .github-button
+) {
+    color: var(--cc-link);
+}
+
+html :where(nav, .course-nav, .home-header, .sidebar) a {
+    color: var(--cc-text-secondary);
+}
+
+html :where(nav, .course-nav, .home-header, .sidebar) a:hover,
+html :where(nav, .course-nav, .home-header, .sidebar) a.active,
+html :where(nav, .course-nav, .home-header, .sidebar) a[aria-current="page"] {
+    color: var(--cc-text-primary);
+}
+
+/* ---------------------------------------------------------------
+   4. Cards, surfaces, and borders
+   --------------------------------------------------------------- */
+
+html :where(
+    .card,
+    .panel,
+    .settings-panel,
+    .achievement-card,
+    .leaderboard-card,
+    .profile-card,
+    .course-card,
+    .chapter-card,
+    .module-card,
+    .path-card,
+    .mode-card,
+    .mission-card,
+    .stage-card,
+    .launch-card,
+    .result,
+    .notice-card,
+    .status-card,
+    .reward-guide,
+    .auth-card,
+    .loading-card
+) {
+    color: var(--cc-text-primary);
+    border-color: var(--cc-border);
+}
+
+/* A common readable light-mode panel baseline. */
+html[data-mode="light"] :where(
+    .card,
+    .panel,
+    .settings-panel,
+    .achievement-card,
+    .leaderboard-card,
+    .profile-card,
+    .course-card,
+    .chapter-card,
+    .module-card,
+    .mode-card,
+    .mission-card,
+    .stage-card,
+    .launch-card,
+    .result,
+    .notice-card,
+    .status-card,
+    .reward-guide,
+    .auth-card,
+    .loading-card
+) {
+    color: var(--cc-text-primary);
+}
+
+/* ---------------------------------------------------------------
+   5. Buttons and interactive states
+   --------------------------------------------------------------- */
+
+html :where(
+    button,
+    [role="button"],
+    input,
+    textarea,
+    select
+) {
+    font: inherit;
+}
+
+html :where(
+    .primary,
+    .primary-action,
+    .path-action,
+    .github-button,
+    .primary-button,
+    [class*="button-primary"]
+) {
+    color: var(--cc-on-accent) !important;
+    background-color: var(--accent);
+}
+
+html :where(
+    .secondary-action,
+    .secondary-button,
+    .signout-button,
+    button:not(.primary):not(.danger-button):not(.decision-danger):not(.path-action)
+) {
+    color: var(--cc-text-primary);
+}
+
+html :where(
+    button:disabled,
+    input:disabled,
+    textarea:disabled,
+    select:disabled,
+    [aria-disabled="true"],
+    .locked-action
+) {
+    color: var(--cc-text-disabled) !important;
+    opacity: .82 !important;
+}
+
+/* Focus should remain obvious in pale and dark themes. */
+html :focus-visible {
+    outline-color: var(--accent) !important;
+    box-shadow:
+        0 0 0 2px var(--cc-surface-card),
+        0 0 0 5px var(--accent) !important;
+}
+
+/* ---------------------------------------------------------------
+   6. Forms
+   --------------------------------------------------------------- */
+
+html :where(input, textarea, select) {
+    color: var(--cc-text-primary);
+    background-color: var(--cc-surface-card);
+    border-color: var(--cc-border-strong);
+    caret-color: var(--accent);
+}
+
+html :where(input, textarea)::placeholder {
+    color: var(--cc-text-muted);
+    opacity: 1;
+}
+
+html :where(label, .field-label) {
+    color: var(--cc-text-primary);
+}
+
+html :where(label small, .field-label small, .field-help, .form-help) {
+    color: var(--cc-text-secondary) !important;
+}
+
+/* ---------------------------------------------------------------
+   7. Badges, tags, statuses, and compact labels
+   --------------------------------------------------------------- */
+
+html :where(
+    .skill-tags span,
+    .tag,
+    .chip,
+    .pill,
+    .status,
+    .support-badge,
+    .rank-badge,
+    .title-badge
+) {
+    color: var(--cc-text-secondary);
+    border-color: var(--cc-border);
+}
+
+html[data-mode="light"] :where(
+    .available-status,
+    .success-status,
+    .done-badge
+) {
+    color: var(--cc-accent-panel-text) !important;
+    background:
+        color-mix(in srgb, var(--accent) 10%, var(--surface)) !important;
+    border-color:
+        color-mix(in srgb, var(--accent) 52%, var(--border)) !important;
+}
+
+html[data-mode="dark"] :where(
+    .available-status,
+    .success-status,
+    .done-badge
+) {
+    color: var(--accent-soft) !important;
+}
+
+html :where(
+    .language-mark,
+    .home-brand-mark,
+    .path-recommendation-rank,
+    .path-wizard-brand__mark,
+    .path-wizard-result__mark
+) {
+    color: var(--cc-on-accent) !important;
+}
+
+/* ---------------------------------------------------------------
+   8. Notices and feedback
+   --------------------------------------------------------------- */
+
+html :where(
+    .warning,
+    .warning-card,
+    .compiler-note,
+    [class*="warning-notice"]
+) {
+    color: var(--cc-warning-copy);
+    background-color: var(--warning-surface);
+    border-color: var(--warning-border);
+}
+
+html :where(
+    .warning,
+    .warning-card,
+    .compiler-note,
+    [class*="warning-notice"]
+) :where(h2, h3, h4, strong, b) {
+    color: var(--cc-warning-title);
+}
+
+html :where(
+    .error,
+    .danger,
+    .danger-card,
+    [class*="error-notice"],
+    [class*="danger-notice"]
+) {
+    color: var(--danger-text);
+    background-color: var(--danger-surface);
+    border-color: var(--danger-border);
+}
+
+html :where(
+    .success,
+    .success-card,
+    .feedback.success
+) {
+    color: var(--cc-success-text);
+}
+
+/* Light-mode account/cooldown notices should never retain a dark panel with
+   dark text. */
+html[data-mode="light"] :where(
+    .cavecode-light-cooldown-notice,
+    [class*="rename-status"]:not([class*="modal"]),
+    [class*="rename-notice"]:not([class*="modal"]),
+    [class*="rename-policy"]:not([class*="modal"]),
+    [class*="rename-cooldown"]:not([class*="modal"]),
+    [class*="name-change-status"]:not([class*="modal"]),
+    [class*="name-change-notice"]:not([class*="modal"]),
+    [class*="name-change-policy"]:not([class*="modal"]),
+    [class*="name-change-cooldown"]:not([class*="modal"]),
+    [class*="cooldown-card"]:not([class*="modal"]),
+    [class*="cooldown-box"]:not([class*="modal"]),
+    [class*="cooldown-notice"]:not([class*="modal"])
+) {
+    color: var(--cc-text-primary) !important;
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--accent) 8%, white),
+            var(--surface-soft)
+        ) !important;
+    border-color:
+        color-mix(in srgb, var(--accent) 46%, var(--border-strong)) !important;
+}
+
+/* ---------------------------------------------------------------
+   9. Tables, scoreboards, and data rows
+   --------------------------------------------------------------- */
+
+html :where(table, .table, .leaderboard-table) {
+    color: var(--cc-text-primary);
+}
+
+html :where(th, .table-heading, .column-heading) {
+    color: var(--cc-text-secondary);
+}
+
+html :where(td, .table-row, .leaderboard-row) {
+    color: var(--cc-text-primary);
+    border-color: var(--cc-border);
+}
+
+html :where(
+    .leaderboard-row small,
+    .leaderboard-row span:not(.rank):not(.value),
+    td small
+) {
+    color: var(--cc-text-secondary);
+}
+
+/* ---------------------------------------------------------------
+   10. Progress, statistics, and numeric information
+   --------------------------------------------------------------- */
+
+html :where(
+    .stats span,
+    .mode-stats span,
+    .decision-stats span,
+    .completion-summary span,
+    .course-progress small,
+    .mastery-ring span,
+    .meter small,
+    .progress-label
+) {
+    color: var(--cc-text-secondary) !important;
+}
+
+html :where(
+    .stats strong,
+    .mode-stats strong,
+    .decision-stats strong,
+    .completion-summary strong,
+    .course-progress strong,
+    .mastery-ring strong,
+    .meter strong
+) {
+    color: var(--cc-text-primary);
+}
+
+/* ---------------------------------------------------------------
+   11. Dialogs, menus, tooltips, and loading/error UI
+   --------------------------------------------------------------- */
+
+html :where(
+    dialog,
+    .modal,
+    .decision-modal,
+    .path-wizard,
+    .popover,
+    .dropdown-menu,
+    .context-menu
+) {
+    color: var(--cc-text-primary);
+    background-color: var(--cc-surface-card);
+    border-color: var(--cc-border-strong);
+}
+
+html :where(
+    .tooltip,
+    [role="tooltip"]
+) {
+    color: var(--dark-panel-text);
+    background: var(--code-bg);
+    border-color: var(--border-strong);
+}
+
+html #blazor-error-ui {
+    color: #1d1200;
+    background: #fff0bd;
+}
+
+html #blazor-error-ui a {
+    color: #342400;
+}
+
+/* ---------------------------------------------------------------
+   12. Intentionally dark, theme-aware surfaces
+   --------------------------------------------------------------- */
+
+html :where(
+    .hero-terminal,
+    .terminal,
+    .console,
+    .code-editor,
+    .typing-guide,
+    .reference-example,
+    .revealed-target,
+    .editor-shell,
+    .code-block,
+    .profile-preview,
+    .crystal-wallet,
+    .sim,
+    .scene,
+    pre
+) {
+    --cc-text-primary: var(--dark-panel-text);
+    --cc-text-secondary: var(--dark-panel-muted);
+    --cc-text-muted: var(--code-muted);
+
+    color: var(--dark-panel-text);
+}
+
+/* Ensure local page styles cannot reintroduce light text variables inside
+   dark teaching panels. */
+html :where(
+    .hero-terminal,
+    .terminal,
+    .console,
+    .code-editor,
+    .typing-guide,
+    .reference-example,
+    .revealed-target,
+    .editor-shell,
+    .code-block,
+    .profile-preview,
+    .crystal-wallet,
+    .sim,
+    .scene,
+    pre
+) :where(
+    p,
+    span,
+    small,
+    label
+) {
+    color: inherit;
+}
+
+html :where(
+    .hero-terminal,
+    .terminal,
+    .console,
+    .code-editor,
+    .typing-guide,
+    .reference-example,
+    .revealed-target,
+    .editor-shell,
+    .code-block,
+    .profile-preview,
+    .crystal-wallet,
+    .sim,
+    .scene,
+    pre
+) :where(
+    .muted,
+    .terminal-muted,
+    .terminal-bar,
+    .editor-bar,
+    .mini-label,
+    small
+) {
+    color: var(--dark-panel-muted) !important;
+}
+
+/* Keep the already-approved theme-aware light-mode editor treatment. */
+html[data-mode="light"] :where(
+    .hero-terminal,
+    .terminal,
+    .console,
+    .code-editor,
+    .typing-guide,
+    .reference-example,
+    .revealed-target,
+    .editor-shell,
+    .code-block,
+    .profile-preview,
+    .crystal-wallet
+) {
+    color: var(--dark-panel-text) !important;
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--accent-surface) 86%, #000),
+            var(--accent-surface)
+        ) !important;
+    border-color: var(--accent-border) !important;
+}
+
+/* ---------------------------------------------------------------
+   13. Yellow theme / Lucide icon contrast
+   --------------------------------------------------------------- */
+
+html[data-theme="high-contrast"] :where(
+    .real-world-uses__icon-tile,
+    .real-world-uses__heading-icon,
+    .path-wizard-option__icon
+) {
+    color: #000 !important;
+    background: #ffe600 !important;
+    border-color: #000 !important;
+}
+
+html[data-theme="high-contrast"] :where(
+    .real-world-uses__icon-tile,
+    .real-world-uses__heading-icon,
+    .path-wizard-option__icon
+) svg {
+    color: #000 !important;
+    stroke: #000 !important;
+    opacity: 1 !important;
+}
+
+/* ---------------------------------------------------------------
+   14. Graphical contrast-audit mode
+   --------------------------------------------------------------- */
+
+html.cavecode-contrast-audit .cavecode-contrast-fail {
+    outline: 3px solid #ff2d55 !important;
+    outline-offset: 2px !important;
+}
+
+html.cavecode-contrast-audit .cavecode-contrast-warn {
+    outline: 2px dashed #ff9f0a !important;
+    outline-offset: 2px !important;
+}
+
+#cavecode-contrast-audit-panel {
+    position: fixed;
+    z-index: 2147483647;
+    right: 14px;
+    bottom: 14px;
+    width: min(420px, calc(100vw - 28px));
+    max-height: min(76vh, 680px);
+    overflow: auto;
+    padding: 14px;
+    color: #f7fbff;
+    background: #101820;
+    border: 1px solid #6f8293;
+    border-radius: 12px;
+    box-shadow: 0 18px 60px rgb(0 0 0 / 45%);
+    font: 12px/1.45 Inter, system-ui, sans-serif;
+}
+
+#cavecode-contrast-audit-panel * {
+    box-sizing: border-box;
+}
+
+#cavecode-contrast-audit-panel h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 15px;
+}
+
+#cavecode-contrast-audit-panel p {
+    margin: 7px 0;
+    color: #cbd7e0;
+}
+
+#cavecode-contrast-audit-panel .cc-audit-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin: 10px 0;
+}
+
+#cavecode-contrast-audit-panel .cc-audit-summary > div {
+    padding: 8px;
+    text-align: center;
+    background: #1b2732;
+    border: 1px solid #354656;
+    border-radius: 8px;
+}
+
+#cavecode-contrast-audit-panel .cc-audit-summary strong {
+    display: block;
+    color: #fff;
+    font-size: 16px;
+}
+
+#cavecode-contrast-audit-panel .cc-audit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+#cavecode-contrast-audit-panel button {
+    padding: 8px 10px;
+    color: #07140c;
+    background: #73e59b;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 850;
+}
+
+#cavecode-contrast-audit-panel button.secondary {
+    color: #f7fbff;
+    background: #263746;
+    border: 1px solid #4c6275;
+}
+
+#cavecode-contrast-audit-panel table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+    color: #eef5fa;
+}
+
+#cavecode-contrast-audit-panel th,
+#cavecode-contrast-audit-panel td {
+    padding: 6px;
+    text-align: left;
+    border-bottom: 1px solid #344553;
+}
+
+#cavecode-contrast-audit-panel .cc-audit-fail {
+    color: #ffb5c1;
+}
+
+#cavecode-contrast-audit-panel .cc-audit-pass {
+    color: #a9efbd;
+}
