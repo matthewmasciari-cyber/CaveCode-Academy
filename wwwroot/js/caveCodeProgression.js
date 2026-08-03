@@ -488,11 +488,47 @@
             } catch {
                 user = null;
             }
-
+            // CAVECODE_LEADERBOARD_SYNC_REPAIR_82B
             const local = localEntry(profile, user);
+            const cacheKey =
+                `cavecode.leaderboard.cache.v1.${filter}`;
+
             let cloudAvailable = false;
             let entries = [];
             let message = "";
+
+            const readCachedEntries = () => {
+                try {
+                    const raw =
+                        window.localStorage.getItem(cacheKey);
+
+                    if (!raw) {
+                        return [];
+                    }
+
+                    const parsed = JSON.parse(raw);
+
+                    return Array.isArray(parsed)
+                        ? parsed
+                        : [];
+                } catch {
+                    return [];
+                }
+            };
+
+            const saveCachedEntries = value => {
+                try {
+                    window.localStorage.setItem(
+                        cacheKey,
+                        JSON.stringify(value)
+                    );
+                } catch {
+                    // The live leaderboard still works when storage
+                    // is unavailable.
+                }
+            };
+
+            const cachedEntries = readCachedEntries();
 
             if (user && window.caveCodeAuth) {
                 try {
@@ -512,28 +548,70 @@
 
                     if (cloud?.available) {
                         cloudAvailable = true;
-                        entries = cloud.entries || [];
+
+                        const cloudEntries =
+                            Array.isArray(cloud.entries)
+                                ? cloud.entries
+                                : [];
+
+                        // Never replace a fuller shared list with a
+                        // transient empty or one-player response.
+                        entries =
+                            cachedEntries.length > cloudEntries.length
+                                ? cachedEntries
+                                : cloudEntries;
+
+                        if (cloudEntries.length >= cachedEntries.length) {
+                            saveCachedEntries(cloudEntries);
+                        }
                     } else {
+                        entries = cachedEntries;
                         message = cloud?.message || "";
                     }
                 } catch (error) {
+                    entries = cachedEntries;
                     message =
                         error?.message ||
                         "Global leaderboard is not configured.";
                 }
+            } else {
+                entries = cachedEntries;
             }
 
-            const existing = entries.findIndex(
-                entry => entry.id === local.id
+            const reconciledById = new Map();
+
+            for (const entry of entries) {
+                if (!entry || !entry.id) {
+                    continue;
+                }
+
+                reconciledById.set(entry.id, {
+                    ...entry,
+                    isCurrentUser: entry.id === local.id
+                });
+            }
+
+            const existing = reconciledById.get(local.id);
+
+            reconciledById.set(
+                local.id,
+                existing
+                    ? {
+                        ...existing,
+                        isCurrentUser: true
+                    }
+                    : local
             );
 
-            if (existing >= 0) {
-                entries[existing] = {
-                    ...entries[existing],
-                    isCurrentUser: true
-                };
-            } else {
-                entries.push(local);
+            entries = [...reconciledById.values()];
+
+            if (entries.length > cachedEntries.length) {
+                saveCachedEntries(
+                    entries.map(entry => ({
+                        ...entry,
+                        isCurrentUser: false
+                    }))
+                );
             }
 
             if (!user) {
@@ -541,7 +619,7 @@
                     "Sign in to publish your profile and join global rankings.";
             } else if (!cloudAvailable && !message) {
                 message =
-                    "Run the included Supabase SQL to activate global rankings.";
+                    "Showing the last saved shared leaderboard while cloud rankings reconnect.";
             } else if (!current.publicLeaderboard) {
                 message =
                     "Your profile is private. Enable public visibility to appear for other players.";
