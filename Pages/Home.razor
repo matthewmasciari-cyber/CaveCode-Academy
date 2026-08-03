@@ -4,19 +4,7 @@
 
 <div class="academy-home">
     <header class="home-header">
-        <!-- CAVECODE_OFFICIAL_BRANDING_PASS_1_V1 -->
-        <NavLink class="home-brand home-brand--official"
-                 href="/"
-                 Match="NavLinkMatch.All"
-                 aria-label="CaveCode Academy home">
-            <span class="cavecode-logo-surface cavecode-logo-surface--header"
-                  aria-hidden="true">
-                <img class="cavecode-official-logo cavecode-official-logo--header"
-                     src="branding/cavecode-academy-logo.svg?v=1"
-                     alt="" />
-            </span>
-            <span class="home-brand-tagline">Learn by building worlds.</span>
-        </NavLink>
+        <!-- CAVECODE_HOME_HEADER_CLEANUP_V1 -->
 
         <div class="home-header-actions">
             <nav aria-label="Academy navigation">
@@ -552,6 +540,12 @@
         .path-grid--static .path-card {
             min-height: 0;
         }
+    }
+
+
+    /* CAVECODE_HOME_HEADER_CLEANUP_V1 */
+    .academy-home .home-header {
+        justify-content: flex-end;
     }
 
 </style>
