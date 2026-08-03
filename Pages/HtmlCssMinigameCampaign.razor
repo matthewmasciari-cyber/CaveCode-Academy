@@ -1,0 +1,713 @@
+@page "/minigames/html-css/campaign"
+@using CaveCode.CourseEngine
+@using Microsoft.JSInterop
+@inject CourseEngineService CourseEngine
+@inject ProgressionService ProgressionService
+@inject AchievementService AchievementService
+@inject IJSRuntime JS
+
+<PageTitle>Interface Rescue Campaign · CaveCode Academy</PageTitle>
+
+@if (!AccessReady)
+{
+    <div class="campaign-access-screen">
+        <section>
+            <span>&lt;/&gt;</span>
+            <h1>Loading Interface Rescue Campaign</h1>
+            <p>Checking Chapter 1 and all five mission records.</p>
+        </section>
+    </div>
+}
+else if (!string.IsNullOrWhiteSpace(AccessError))
+{
+    <div class="campaign-access-screen">
+        <section class="locked">
+            <span>!</span>
+            <p class="campaign-eyebrow">INTERFACE RESCUE · LOCAL CHECKPOINT ERROR</p>
+            <h1>Campaign records could not be verified</h1>
+            <p>@AccessError</p>
+            <NavLink class="campaign-secondary" href="/minigames">Return to Minigame Hub</NavLink>
+        </section>
+    </div>
+}
+else if (!ChapterOneUnlocked)
+{
+    <div class="campaign-access-screen">
+        <section class="locked">
+            <span>&lt;/&gt;</span>
+            <p class="campaign-eyebrow">HTML & CSS WORKSHOP · CHAPTER 1 REQUIRED</p>
+            <h1>Complete Chapter 1 to enter the campaign</h1>
+            <p>Your current checkpoint is @ChapterOneCompletedModules / 8 modules.</p>
+            <div class="campaign-actions">
+                <NavLink class="campaign-primary" href="/html-css">Continue HTML & CSS →</NavLink>
+                <NavLink class="campaign-secondary" href="/minigames">Return to Minigame Hub</NavLink>
+            </div>
+        </section>
+    </div>
+}
+else
+{
+<div class="campaign-shell">
+    <header class="campaign-header">
+        <NavLink class="campaign-back" href="/minigames">← Minigame Hub</NavLink>
+        <img class="campaign-logo"
+             src="branding/cavecode-academy-logo.svg?v=1"
+             alt="CaveCode Academy" />
+        <p class="campaign-eyebrow">HTML & CSS WORKSHOP · INTERFACE RESCUE</p>
+        <h1>Five-Mission Campaign</h1>
+        <p class="campaign-intro">
+            Restore every damaged interface, claim the campaign reward,
+            and unlock randomized endless practice.
+        </p>
+
+        <div class="campaign-summary" aria-label="Campaign summary">
+            <div><span>Missions cleared</span><strong>@MissionProgress / 5</strong></div>
+            <div><span>Combined best</span><strong>@CombinedBestScore.ToString("N0") / 5,000</strong></div>
+            <div><span>Campaign average</span><strong>@AverageBestScore.ToString("N0")</strong></div>
+            <div><span>Minigame XP</span><strong>@State.TotalXpEarned.ToString("N0")</strong></div>
+        </div>
+    </header>
+
+    <main class="campaign-main">
+        <section class="campaign-panel">
+            <div class="campaign-panel-heading">
+                <div>
+                    <span>MISSION BOARD</span>
+                    <h2>Interface Rescue operations</h2>
+                </div>
+                <span class="campaign-status @(CampaignComplete ? "complete" : "active")">
+                    @(CampaignComplete ? "CAMPAIGN CLEARED" : $"{MissionProgress} / 5 CLEARED")
+                </span>
+            </div>
+
+            <div class="mission-board">
+                @MissionCard(1, "Workshop Landing Page", "/minigames/html-css", State.Mission1Completed, State.BestScore, State.FastestSeconds)
+                @MissionCard(2, "Project Card Grid", "/minigames/html-css/mission-2", State.Mission2Completed, State.Mission2BestScore, State.Mission2FastestSeconds)
+                @MissionCard(3, "Mobile Navigation", "/minigames/html-css/mission-3", State.Mission3Completed, State.Mission3BestScore, State.Mission3FastestSeconds)
+                @MissionCard(4, "Accessible Contact Form", "/minigames/html-css/mission-4", State.Mission4Completed, State.Mission4BestScore, State.Mission4FastestSeconds)
+                @MissionCard(5, "Responsive Dashboard", "/minigames/html-css/mission-5", State.Mission5Completed, State.Mission5BestScore, State.Mission5FastestSeconds)
+            </div>
+        </section>
+
+        <section class="campaign-reward-panel @(CampaignComplete ? "ready" : "locked")">
+            <div>
+                <p class="campaign-eyebrow">FULL CAMPAIGN REWARD</p>
+                <h2>Interface Rescue Campaign Complete</h2>
+                <p>
+                    Clear all five missions once to earn the one-time campaign bonus,
+                    achievement, title, and Endless Mode access.
+                </p>
+            </div>
+
+            <div class="reward-grid">
+                <div><span>HTML/CSS XP</span><strong>+200</strong></div>
+                <div><span>Code Crystals</span><strong>◆ 15</strong></div>
+                <div><span>Achievement</span><strong>Workshop Defender</strong></div>
+                <div><span>Title</span><strong>Interface Guardian</strong></div>
+            </div>
+
+            @if (!CampaignComplete)
+            {
+                <div class="campaign-locked-message">
+                    Complete the remaining @(5 - MissionProgress) mission@((5 - MissionProgress) == 1 ? "" : "s") to unlock this reward.
+                </div>
+            }
+            else if (State.CampaignRewardClaimed)
+            {
+                <div class="campaign-claimed">
+                    <strong>✓ CAMPAIGN REWARD CLAIMED</strong>
+                    <span>@CampaignRewardMessage</span>
+                </div>
+            }
+            else
+            {
+                <button class="campaign-claim-button"
+                        disabled="@RewardProcessing"
+                        @onclick="ClaimCampaignRewardAsync">
+                    @(RewardProcessing ? "Saving campaign reward…" : "Claim Campaign Reward")
+                </button>
+                @if (!string.IsNullOrWhiteSpace(CampaignRewardMessage))
+                {
+                    <p class="campaign-message">@CampaignRewardMessage</p>
+                }
+            }
+        </section>
+
+        <section class="endless-preview @(CampaignComplete ? "unlocked" : "locked")">
+            <div>
+                <p class="campaign-eyebrow">ENDLESS MODE</p>
+                <h2>Randomized recovery assignments</h2>
+                <p>
+                    Endless Mode randomly chooses one of the five missions and one of the
+                    three damage profiles. Each successful run continues using the normal
+                    repeat-clear mission reward.
+                </p>
+            </div>
+
+            <div class="endless-stats">
+                <span>Assignments generated</span>
+                <strong>@State.EndlessRuns.ToString("N0")</strong>
+            </div>
+
+            @if (CampaignComplete)
+            {
+                <NavLink class="campaign-primary" href="/minigames/html-css/endless">
+                    Enter Endless Mode →
+                </NavLink>
+            }
+            else
+            {
+                <span class="campaign-disabled">Clear all five missions to unlock</span>
+            }
+        </section>
+    </main>
+</div>
+}
+
+<style>
+    .campaign-shell,
+    .campaign-access-screen {
+        --campaign-surface: color-mix(in srgb, var(--surface, #101927) 92%, transparent);
+        min-height: 100vh;
+        color: var(--text, #eef7ff);
+        background:
+            radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent, #38bdf8) 20%, transparent), transparent 36%),
+            var(--background, #07101b);
+    }
+
+    .campaign-access-screen {
+        display: grid;
+        place-items: center;
+        padding: 28px;
+    }
+
+    .campaign-access-screen section {
+        width: min(720px, 100%);
+        padding: 34px;
+        text-align: center;
+        background: var(--campaign-surface);
+        border: 1px solid var(--border, #304158);
+        border-radius: 20px;
+    }
+
+    .campaign-access-screen section > span {
+        display: inline-grid;
+        place-items: center;
+        width: 68px;
+        height: 68px;
+        margin-bottom: 14px;
+        color: var(--accent, #38bdf8);
+        font-size: 28px;
+        font-weight: 950;
+        border: 1px solid color-mix(in srgb, var(--accent, #38bdf8) 55%, transparent);
+        border-radius: 18px;
+        box-shadow: 0 0 32px color-mix(in srgb, var(--accent, #38bdf8) 34%, transparent);
+    }
+
+    .campaign-header {
+        display: grid;
+        justify-items: center;
+        padding: 26px 24px 36px;
+        text-align: center;
+        border-bottom: 1px solid var(--border, #304158);
+    }
+
+    .campaign-back {
+        justify-self: start;
+        color: var(--text-muted, #9db0c7);
+        font-size: 12px;
+        font-weight: 850;
+        text-decoration: none;
+    }
+
+    .campaign-logo {
+        width: min(360px, 75vw);
+        height: auto;
+        margin: 8px auto 12px;
+        filter:
+            drop-shadow(0 0 12px color-mix(in srgb, var(--accent, #38bdf8) 68%, transparent))
+            drop-shadow(0 0 28px color-mix(in srgb, var(--accent, #38bdf8) 34%, transparent));
+    }
+
+    .campaign-eyebrow,
+    .campaign-panel-heading span:first-child {
+        margin: 0;
+        color: var(--accent, #38bdf8);
+        font-size: 10px;
+        font-weight: 950;
+        letter-spacing: 1.2px;
+    }
+
+    .campaign-header h1 {
+        margin: 8px 0;
+        font-size: clamp(34px, 6vw, 66px);
+        line-height: .98;
+    }
+
+    .campaign-intro {
+        max-width: 720px;
+        margin: 0;
+        color: var(--text-muted, #9db0c7);
+        line-height: 1.65;
+    }
+
+    .campaign-summary,
+    .reward-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        width: min(920px, 100%);
+        margin-top: 24px;
+    }
+
+    .campaign-summary > div,
+    .reward-grid > div,
+    .endless-stats {
+        display: grid;
+        gap: 4px;
+        padding: 14px;
+        text-align: left;
+        background: color-mix(in srgb, var(--surface, #101927) 88%, transparent);
+        border: 1px solid var(--border, #304158);
+        border-radius: 12px;
+    }
+
+    .campaign-summary span,
+    .reward-grid span,
+    .endless-stats span {
+        color: var(--text-muted, #9db0c7);
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    .campaign-summary strong,
+    .reward-grid strong,
+    .endless-stats strong {
+        font-size: 18px;
+    }
+
+    .campaign-main {
+        display: grid;
+        gap: 18px;
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 26px 0 56px;
+    }
+
+    .campaign-panel,
+    .campaign-reward-panel,
+    .endless-preview {
+        padding: 22px;
+        background: var(--campaign-surface);
+        border: 1px solid var(--border, #304158);
+        border-radius: 18px;
+    }
+
+    .campaign-panel-heading,
+    .endless-preview,
+    .campaign-reward-panel {
+        display: grid;
+        gap: 18px;
+    }
+
+    .campaign-panel-heading {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+    }
+
+    .campaign-panel h2,
+    .campaign-reward-panel h2,
+    .endless-preview h2 {
+        margin: 4px 0 0;
+    }
+
+    .campaign-status {
+        padding: 7px 10px;
+        color: var(--text-muted, #9db0c7);
+        background: var(--surface-soft, #162438);
+        border: 1px solid var(--border, #304158);
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 950;
+    }
+
+    .campaign-status.complete {
+        color: var(--success-text, #bbf7d0);
+        border-color: var(--success-border, #278a53);
+    }
+
+    .mission-board {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    .campaign-mission-card {
+        display: grid;
+        align-content: start;
+        gap: 10px;
+        min-height: 210px;
+        padding: 15px;
+        color: inherit;
+        text-decoration: none;
+        background: var(--surface-soft, #162438);
+        border: 1px solid var(--border, #304158);
+        border-radius: 14px;
+        transition: transform .15s ease, border-color .15s ease;
+    }
+
+    .campaign-mission-card:hover,
+    .campaign-mission-card:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--accent, #38bdf8);
+        outline: none;
+    }
+
+    .campaign-mission-card.complete {
+        border-color: color-mix(in srgb, var(--success-border, #278a53) 78%, var(--border, #304158));
+    }
+
+    .campaign-mission-number {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        color: var(--accent, #38bdf8);
+        background: color-mix(in srgb, var(--accent, #38bdf8) 12%, transparent);
+        border-radius: 9px;
+        font-weight: 950;
+    }
+
+    .campaign-mission-card h3 {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .campaign-mission-state {
+        color: var(--text-muted, #9db0c7);
+        font-size: 10px;
+        font-weight: 850;
+    }
+
+    .campaign-mission-card.complete .campaign-mission-state {
+        color: var(--success-text, #bbf7d0);
+    }
+
+    .campaign-mission-record {
+        display: grid;
+        gap: 5px;
+        margin-top: auto;
+        color: var(--text-muted, #9db0c7);
+        font-size: 10px;
+    }
+
+    .campaign-reward-panel.ready,
+    .endless-preview.unlocked {
+        border-color: color-mix(in srgb, var(--accent, #38bdf8) 65%, var(--border, #304158));
+        box-shadow: 0 0 32px color-mix(in srgb, var(--accent, #38bdf8) 12%, transparent);
+    }
+
+    .campaign-claim-button,
+    .campaign-primary,
+    .campaign-secondary,
+    .campaign-disabled {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        padding: 11px 16px;
+        border-radius: 10px;
+        font-weight: 950;
+        text-decoration: none;
+    }
+
+    .campaign-claim-button,
+    .campaign-primary {
+        color: #fff;
+        background: var(--accent, #2563eb);
+        border: 1px solid color-mix(in srgb, var(--accent, #2563eb) 72%, #fff);
+        cursor: pointer;
+    }
+
+    .campaign-secondary,
+    .campaign-disabled {
+        color: var(--text, #eef7ff);
+        background: var(--surface-soft, #162438);
+        border: 1px solid var(--border, #304158);
+    }
+
+    .campaign-claim-button:focus-visible,
+    .campaign-primary:focus-visible,
+    .campaign-secondary:focus-visible {
+        outline: 3px solid color-mix(in srgb, var(--accent, #38bdf8) 55%, #fff);
+        outline-offset: 3px;
+    }
+
+    .campaign-claimed,
+    .campaign-locked-message,
+    .campaign-message {
+        padding: 13px;
+        border-radius: 10px;
+    }
+
+    .campaign-claimed {
+        display: grid;
+        gap: 4px;
+        color: var(--success-text, #bbf7d0);
+        background: var(--success-surface, #102a1d);
+        border: 1px solid var(--success-border, #278a53);
+    }
+
+    .campaign-locked-message,
+    .campaign-message {
+        color: var(--text-muted, #9db0c7);
+        background: var(--surface-soft, #162438);
+        border: 1px solid var(--border, #304158);
+    }
+
+    .endless-preview {
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+    }
+
+    .campaign-actions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    @@media (max-width: 980px) {
+        .mission-board {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .campaign-summary,
+        .reward-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .endless-preview {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 560px) {
+        .mission-board,
+        .campaign-summary,
+        .reward-grid,
+        .campaign-panel-heading {
+            grid-template-columns: 1fr;
+        }
+
+        .campaign-main {
+            width: min(100% - 20px, 1180px);
+        }
+    }
+</style>
+
+@code {
+    private const int ChapterOneFinalModuleIndex = 7;
+
+    private sealed class CampaignState
+    {
+        public bool Mission1Completed { get; set; }
+        public int BestScore { get; set; }
+        public double? FastestSeconds { get; set; }
+        public bool Mission2Completed { get; set; }
+        public int Mission2BestScore { get; set; }
+        public double? Mission2FastestSeconds { get; set; }
+        public bool Mission3Completed { get; set; }
+        public int Mission3BestScore { get; set; }
+        public double? Mission3FastestSeconds { get; set; }
+        public bool Mission4Completed { get; set; }
+        public int Mission4BestScore { get; set; }
+        public double? Mission4FastestSeconds { get; set; }
+        public bool Mission5Completed { get; set; }
+        public int Mission5BestScore { get; set; }
+        public double? Mission5FastestSeconds { get; set; }
+        public int TotalXpEarned { get; set; }
+        public int TotalCrystalsEarned { get; set; }
+        public bool CampaignCompleted { get; set; }
+        public bool CampaignRewardClaimed { get; set; }
+        public string CampaignCompletedAt { get; set; } = "";
+        public int EndlessRuns { get; set; }
+    }
+
+    private sealed class CampaignRewardResult
+    {
+        public CampaignState State { get; set; } = new();
+        public string RewardKey { get; set; } = "";
+        public int XpAwarded { get; set; }
+        public int CrystalsAwarded { get; set; }
+        public bool DuplicateReward { get; set; }
+    }
+
+    private bool AccessReady;
+    private bool ChapterOneUnlocked;
+    private int ChapterOneCompletedModules;
+    private string AccessError = "";
+    private CampaignState State = new();
+    private bool RewardProcessing;
+    private string CampaignRewardMessage = "";
+
+    private int MissionProgress =>
+        (State.Mission1Completed ? 1 : 0) +
+        (State.Mission2Completed ? 1 : 0) +
+        (State.Mission3Completed ? 1 : 0) +
+        (State.Mission4Completed ? 1 : 0) +
+        (State.Mission5Completed ? 1 : 0);
+
+    private bool CampaignComplete => MissionProgress == 5;
+
+    private int CombinedBestScore =>
+        State.BestScore +
+        State.Mission2BestScore +
+        State.Mission3BestScore +
+        State.Mission4BestScore +
+        State.Mission5BestScore;
+
+    private int AverageBestScore => MissionProgress == 0 ? 0 : CombinedBestScore / MissionProgress;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            CourseProgressSnapshot progress =
+                await CourseEngine.GetProgressAsync(CourseIds.HtmlCss);
+
+            ChapterOneCompletedModules =
+                progress.ModuleCompleted.Take(8).Count(completed => completed);
+
+            ChapterOneUnlocked =
+                progress.ModuleCompleted.Length > ChapterOneFinalModuleIndex &&
+                progress.ModuleCompleted[ChapterOneFinalModuleIndex];
+
+            State = await JS.InvokeAsync<CampaignState>(
+                "caveCodeHtmlCssMinigame.getState");
+
+            if (State.CampaignRewardClaimed)
+            {
+                CampaignRewardMessage =
+                    "+200 HTML/CSS XP, ◆ 15 crystals, Workshop Defender achievement, and Interface Guardian title saved.";
+            }
+        }
+        catch (Exception error)
+        {
+            AccessError = "Interface Rescue could not read the local checkpoint: " + error.Message;
+        }
+        finally
+        {
+            AccessReady = true;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task ClaimCampaignRewardAsync()
+    {
+        if (!CampaignComplete || State.CampaignRewardClaimed || RewardProcessing)
+        {
+            return;
+        }
+
+        RewardProcessing = true;
+        CampaignRewardMessage = "";
+
+        try
+        {
+            CampaignRewardResult result =
+                await JS.InvokeAsync<CampaignRewardResult>(
+                    "caveCodeHtmlCssMinigame.claimCampaignReward");
+
+            await ProgressionService.AwardMinigameRunAsync(
+                CourseIds.HtmlCss,
+                result.RewardKey,
+                result.XpAwarded,
+                0);
+
+            await AchievementService.AwardMinigameCrystalsAsync(
+                result.RewardKey,
+                result.CrystalsAwarded);
+
+            await AchievementService.UnlockChapterAsync(
+                "htmlcss-minigame",
+                2);
+
+            State = result.State;
+            CampaignRewardMessage = result.DuplicateReward
+                ? "The campaign reward was already saved."
+                : "+200 HTML/CSS XP, ◆ 15 crystals, Workshop Defender achievement, and Interface Guardian title saved.";
+        }
+        catch (Exception error)
+        {
+            CampaignRewardMessage =
+                "The campaign is complete, but the reward save did not finish: " +
+                error.Message;
+        }
+        finally
+        {
+            RewardProcessing = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private RenderFragment MissionCard(
+        int number,
+        string title,
+        string href,
+        bool completed,
+        int bestScore,
+        double? fastestSeconds) => builder =>
+    {
+        int sequence = 0;
+        builder.OpenElement(sequence++, "a");
+        builder.AddAttribute(sequence++, "href", href);
+        builder.AddAttribute(sequence++, "class", $"campaign-mission-card {(completed ? "complete" : "pending")}");
+
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "campaign-mission-number");
+        builder.AddContent(sequence++, number);
+        builder.CloseElement();
+
+        builder.OpenElement(sequence++, "h3");
+        builder.AddContent(sequence++, title);
+        builder.CloseElement();
+
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "campaign-mission-state");
+        builder.AddContent(sequence++, completed ? "✓ CLEARED" : "READY");
+        builder.CloseElement();
+
+        builder.OpenElement(sequence++, "div");
+        builder.AddAttribute(sequence++, "class", "campaign-mission-record");
+        builder.OpenElement(sequence++, "span");
+        builder.AddContent(sequence++, $"Best: {bestScore:N0} / 1,000");
+        builder.CloseElement();
+        builder.OpenElement(sequence++, "span");
+        builder.AddContent(sequence++, $"Fastest: {FormatTime(fastestSeconds)}");
+        builder.CloseElement();
+        builder.CloseElement();
+
+        builder.CloseElement();
+    };
+
+    private static string FormatTime(double? seconds)
+    {
+        if (seconds is null)
+        {
+            return "—";
+        }
+
+        TimeSpan elapsed = TimeSpan.FromSeconds(Math.Max(0, seconds.Value));
+        return elapsed.TotalHours >= 1
+            ? elapsed.ToString(@"h\:mm\:ss")
+            : elapsed.ToString(@"m\:ss");
+    }
+}

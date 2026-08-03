@@ -171,6 +171,16 @@
             description: "Complete Interface Rescue Mission 1 with all six automated repair requirements.",
             titleReward: "Interface Rescuer",
             crystals: 0
+        },
+        {
+            id: "htmlcss-minigame-campaign",
+            course: "htmlcss-minigame",
+            courseName: "Interface Rescue",
+            chapter: 2,
+            name: "Workshop Defender",
+            description: "Complete all five Interface Rescue missions and claim the full campaign reward.",
+            titleReward: "Interface Guardian",
+            crystals: 0
         }
     ];
 

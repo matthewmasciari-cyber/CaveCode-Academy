@@ -1,4 +1,4 @@
-@page "/minigames/html-css/mission-3"
+@page "/minigames/html-css/mission-5"
 @implements IAsyncDisposable
 @using System.Text.RegularExpressions
 @using Microsoft.JSInterop
@@ -8,14 +8,14 @@
 @inject AchievementService AchievementService
 @inject IJSRuntime JS
 
-<PageTitle>Mobile Navigation Recovery · Interface Rescue</PageTitle>
+<PageTitle>Responsive Dashboard Recovery · Interface Rescue</PageTitle>
 
 @if (!AccessReady)
 {
     <div class="rescue-access-screen">
         <section>
             <span>&lt;/&gt;</span>
-            <h1>Loading Mission 3</h1>
+            <h1>Loading Mission 5</h1>
             <p>Checking your HTML & CSS Chapter 1 checkpoint and saved mission records.</p>
         </section>
     </div>
@@ -40,7 +40,7 @@ else if (!ChapterOneUnlocked)
         <section class="locked">
             <span>&lt;/&gt;</span>
             <p class="rescue-eyebrow">HTML & CSS WORKSHOP · CHAPTER 1 REQUIRED</p>
-            <h1>Complete Chapter 1 to enter Mission 3</h1>
+            <h1>Complete Chapter 1 to enter Mission 5</h1>
             <p>
                 Interface Rescue requires all eight HTML Foundations modules.
                 Your current checkpoint is @ChapterOneCompletedModules / 8.
@@ -74,7 +74,7 @@ else
                     <strong>Mission 2</strong>
                     <small>Project Card Grid</small>
                 </NavLink>
-                <NavLink class="rescue-profile-button active" href="/minigames/html-css/mission-3">
+                <NavLink class="rescue-profile-button" href="/minigames/html-css/mission-3">
                     <strong>Mission 3</strong>
                     <small>Mobile Navigation</small>
                 </NavLink>
@@ -82,7 +82,7 @@ else
                     <strong>Mission 4</strong>
                     <small>Accessible Contact Form</small>
                 </NavLink>
-                <NavLink class="rescue-profile-button" href="/minigames/html-css/mission-5">
+                <NavLink class="rescue-profile-button active" href="/minigames/html-css/mission-5">
                     <strong>Mission 5</strong>
                     <small>Responsive Dashboard</small>
                 </NavLink>
@@ -97,12 +97,12 @@ else
                 </NavLink>
             </div>
 
-            <p class="rescue-eyebrow">HTML & CSS WORKSHOP · PASS 6E-2 · MISSION 3</p>
-            <h1>Mobile Navigation Recovery</h1>
+            <p class="rescue-eyebrow">HTML & CSS WORKSHOP · PASS 6E-4 · MISSION 5</p>
+            <h1>Responsive Dashboard Recovery</h1>
             <p>
-                Restore the Workshop header, rebuild a native no-script menu,
-                reconnect every navigation target, and prove the interface
-                remains readable and usable from desktop through mobile.
+                Restore the Workshop operations dashboard with semantic regions,
+                readable metric cards, an accessible activity table, clear actions,
+                keyboard focus, and a responsive mobile information hierarchy.
             </p>
         </div>
 
@@ -110,8 +110,8 @@ else
             <span class="rescue-session-state">@SessionStateLabel</span>
             <strong>@TimeDisplay</strong>
             <small>
-                Mission 3 keeps a separate best score, fastest clear, and
-                reward history from Mission 1.
+                Mission 5 keeps a separate best score, fastest clear, and
+                reward history from Missions 1–4.
             </small>
         </div>
     </header>
@@ -122,15 +122,15 @@ else
                 <div class="rescue-panel-heading">
                     <div>
                         <span>MISSION BRIEF</span>
-                        <h2>Repair the Mobile Navigation</h2>
+                        <h2>Restore the Responsive Dashboard</h2>
                     </div>
-                    <span class="rescue-shell-badge">MISSION 3</span>
+                    <span class="rescue-shell-badge">MISSION 5</span>
                 </div>
 
                 <p>
-                    A failed responsive-header update damaged the Workshop navigation.
-                    Restore semantic landmarks, native menu behavior, target links,
-                    desktop alignment, keyboard focus, and mobile stacking.
+                    A failed dashboard redesign damaged the Workshop operations view.
+                    Restore semantic page regions, useful metric cards, accessible tabular
+                    activity, clear actions and status, keyboard focus, and mobile layout.
                 </p>
 
                 <div class="rescue-incident-report">
@@ -206,7 +206,7 @@ else
                 <p class="rescue-score-note">
                     Each requirement is worth 140 points. The time bonus begins
                     at 160 points and every hint subtracts 40 points. All six
-                    repairs must pass to clear Mission 3.
+                    repairs must pass to clear Mission 5.
                 </p>
 
                 @if (AttemptSubmitted)
@@ -216,7 +216,7 @@ else
                         <strong>@SubmissionMessage</strong>
                         <p>
                             @(RunPassed
-                                ? "The navigation satisfies every automated repair requirement."
+                                ? "The dashboard satisfies every automated structure, accessibility, and layout requirement."
                                 : "Start a new attempt and use the live evidence to finish the remaining repairs.")
                         </p>
                     </div>
@@ -226,26 +226,26 @@ else
             <section class="rescue-panel rescue-reward-panel">
                 <div class="rescue-panel-heading">
                     <div>
-                        <span>PERSISTENT MISSION 3 RECORD</span>
-                        <h2>Mobile Navigation rewards</h2>
+                        <span>PERSISTENT MISSION 5 RECORD</span>
+                        <h2>Dashboard recovery rewards</h2>
                     </div>
                     <span class="rescue-shell-badge">
-                        @(MinigameState.Mission3Completed ? "CLEARED" : "ACTIVE")
+                        @(MinigameState.Mission5Completed ? "CLEARED" : "ACTIVE")
                     </span>
                 </div>
 
                 <div class="rescue-record-grid">
                     <div>
                         <span>Best score</span>
-                        <strong>@MinigameState.Mission3BestScore.ToString("N0")</strong>
+                        <strong>@MinigameState.Mission5BestScore.ToString("N0")</strong>
                     </div>
                     <div>
                         <span>Fastest clear</span>
                         <strong>@FastestClearDisplay</strong>
                     </div>
                     <div>
-                        <span>Mission 3 clears</span>
-                        <strong>@MinigameState.Mission3Clears</strong>
+                        <span>Mission 5 clears</span>
+                        <strong>@MinigameState.Mission5Clears</strong>
                     </div>
                     <div>
                         <span>Total minigame XP</span>
@@ -265,8 +265,8 @@ else
                 </div>
 
                 <p class="rescue-mission-record-note">
-                    Mission 3 uses its own clear counter and reward keys. It
-                    does not overwrite Mission 1 or Mission 2 records.
+                    Mission 5 uses its own clear counter and reward keys. It
+                    does not overwrite Mission 1, 2, 3, or 4 records.
                 </p>
 
                 @if (!string.IsNullOrWhiteSpace(RewardMessage))
@@ -290,7 +290,7 @@ else
                 </div>
 
                 <p>
-                    Every profile targets the same final responsive navigation. Choose
+                    Every profile targets the same responsive operations dashboard. Choose
                     the full incident or isolate HTML and CSS failures.
                 </p>
 
@@ -331,7 +331,7 @@ else
                     <button type="button"
                             class="rescue-secondary-button"
                             @onclick="ResetWorkspace">
-                        @(AttemptSubmitted ? "Start new attempt" : "Reset damaged navigation")
+                        @(AttemptSubmitted ? "Start new attempt" : "Reset damaged dashboard")
                     </button>
                 </div>
 
@@ -348,7 +348,7 @@ else
                 <div class="rescue-panel-heading">
                     <div>
                         <span>REPAIR WORKSPACE</span>
-                        <h2>Mission 3 project files</h2>
+                        <h2>Mission 5 dashboard files</h2>
                     </div>
                     <span class="rescue-shell-badge">@HtmlLineCount HTML · @CssLineCount CSS</span>
                 </div>
@@ -356,23 +356,23 @@ else
                 <div class="rescue-editor-grid">
                     <div class="rescue-editor-column">
                         <div class="rescue-editor-title">
-                            <span>navigation.html</span>
+                            <span>dashboard.html</span>
                             <span>HTML</span>
                         </div>
                         <textarea value="@HtmlCode"
                                   disabled="@AttemptSubmitted"
-                                  aria-label="Mission 3 HTML editor"
+                                  aria-label="Mission 5 dashboard HTML editor"
                                   @oninput="UpdateHtml"></textarea>
                     </div>
 
                     <div class="rescue-editor-column">
                         <div class="rescue-editor-title">
-                            <span>navigation.css</span>
+                            <span>dashboard.css</span>
                             <span>CSS</span>
                         </div>
                         <textarea value="@CssCode"
                                   disabled="@AttemptSubmitted"
-                                  aria-label="Mission 3 CSS editor"
+                                  aria-label="Mission 5 dashboard CSS editor"
                                   @oninput="UpdateCss"></textarea>
                     </div>
                 </div>
@@ -384,7 +384,7 @@ else
                 <div class="rescue-panel-heading">
                     <div>
                         <span>SANDBOXED LIVE PREVIEW</span>
-                        <h2>Responsive site header</h2>
+                        <h2>Workshop operations dashboard</h2>
                     </div>
                     <span class="rescue-shell-badge">SCRIPTS BLOCKED</span>
                 </div>
@@ -403,7 +403,7 @@ else
                 <div class="rescue-preview-stage">
                     <iframe @key="PreviewRevision"
                             class="@PreviewFrameClass"
-                            title="Mobile Navigation Recovery preview"
+                            title="Responsive Dashboard Recovery preview"
                             sandbox=""
                             srcdoc="@PreviewDocument">
                     </iframe>
@@ -412,12 +412,12 @@ else
                 <div class="rescue-target-blueprint">
                     <strong>TARGET BLUEPRINT</strong>
                     <ul>
-                        <li>Semantic header, brand link, and labeled primary navigation</li>
-                        <li>Native details and summary menu with no JavaScript</li>
-                        <li>Overview, Projects, and Contact links with matching targets</li>
-                        <li>Aligned desktop header with a horizontal link row</li>
-                        <li>Readable controls with visible keyboard focus</li>
-                        <li>Wrapped mobile header with stacked links and no overflow</li>
+                        <li>Semantic dashboard header with a clear page title</li>
+                        <li>Four complete and readable metric cards</li>
+                        <li>Accessible recent-activity table with caption and scoped headers</li>
+                        <li>Clear dashboard actions and a labeled system-status region</li>
+                        <li>Readable panels and actions with visible keyboard focus</li>
+                        <li>Four-column desktop metrics that reorganize safely on mobile</li>
                     </ul>
                 </div>
             </section>
@@ -425,7 +425,7 @@ else
             <section class="rescue-terminal">
                 <div>
                     <span>INTERFACE RESCUE CONSOLE</span>
-                    <span>MISSION 3</span>
+                    <span>MISSION 5</span>
                 </div>
                 <p>[PROFILE] @ActiveProfileLabel</p>
                 <p>[VIEWPORT] @ViewportLabel(CurrentViewport)</p>
@@ -1446,13 +1446,13 @@ else
         public int TotalClears { get; set; }
         public int TotalXpEarned { get; set; }
         public int TotalCrystalsEarned { get; set; }
-        public bool Mission3Completed { get; set; }
-        public int Mission3BestScore { get; set; }
-        public double? Mission3FastestSeconds { get; set; }
-        public int Mission3Clears { get; set; }
-        public int Mission3LastScore { get; set; }
-        public double? Mission3LastElapsedSeconds { get; set; }
-        public string Mission3LastProfile { get; set; } = "";
+        public bool Mission5Completed { get; set; }
+        public int Mission5BestScore { get; set; }
+        public double? Mission5FastestSeconds { get; set; }
+        public int Mission5Clears { get; set; }
+        public int Mission5LastScore { get; set; }
+        public double? Mission5LastElapsedSeconds { get; set; }
+        public string Mission5LastProfile { get; set; } = "";
     }
 
     private sealed class HtmlCssMinigameRecordResult
@@ -1491,187 +1491,231 @@ else
     private static readonly RepairRequirement[] Requirements =
     {
         new(
-            "Restore the semantic site header",
-            "Use a site-header landmark with a brand link and a labeled primary navigation region."),
+            "Restore the semantic dashboard frame",
+            "Use main.dashboard-shell with a labeled dashboard header and h1#dashboard-title."),
         new(
-            "Build a native menu control",
-            "Use details.site-nav and summary.menu-toggle so the menu can open without JavaScript."),
+            "Rebuild the metric-card summary",
+            "Provide exactly four article.metric-card elements with a label, value, and supporting trend."),
         new(
-            "Restore the navigation links",
-            "Place Overview, Projects, and Contact links in a nav-list and connect them to matching section IDs."),
+            "Restore the accessible activity table",
+            "Use a caption, table head and body, and at least three column headers with scope=\"col\"."),
         new(
-            "Rebuild the desktop navigation",
-            "Align the header, show the navigation links in one row, and hide the menu summary on wide screens."),
+            "Restore actions and system status",
+            "Provide a labeled action navigation, an activity anchor, a button, and a labeled status region with three items."),
         new(
-            "Restore focus and readable controls",
-            "Give the menu and navigation links clear contrast, useful spacing, and visible keyboard focus."),
+            "Restore readable dashboard styling",
+            "Use four-column metrics, a two-column content area, readable panels and actions, and visible keyboard focus."),
         new(
-            "Make the navigation responsive",
-            "At a narrow breakpoint, reveal the menu control, stack the links, wrap the header, and prevent fixed-width overflow.")
+            "Make the dashboard responsive",
+            "Reflow metrics and content at a narrow breakpoint, protect table overflow, and remove fixed-width page constraints.")
     };
 
     private static readonly string[] Hints =
     {
-        "Use <header class=\"site-header\" id=\"top\">, a brand anchor, and <nav aria-label=\"Primary navigation\">.",
-        "A native <details class=\"site-nav\"> with <summary class=\"menu-toggle\">Menu</summary> works without JavaScript.",
-        "Put three .nav-link anchors inside li elements. Their href values should be #overview, #projects, and #contact, with matching IDs below.",
-        "On wide screens, make .site-header and .nav-list flex containers, hide .menu-toggle, and force .site-nav > nav to display.",
-        "Use clearly different foreground and background colors for .nav-link and .menu-toggle, then add :focus-visible outlines for both.",
-        "Inside a max-width media query near 760px, show .menu-toggle, wrap .site-header, make .site-nav full width, and stack .nav-list."
+        "Wrap the project in <main class=\"dashboard-shell\"> and use <header class=\"dashboard-header\" aria-labelledby=\"dashboard-title\"> with <h1 id=\"dashboard-title\">.",
+        "Inside <section class=\"metric-grid\" aria-label=\"Workshop metrics\"> create exactly four <article class=\"metric-card\"> elements. Each needs .metric-label, a <strong> value, and a <small> trend.",
+        "Build <table class=\"activity-table\"> with a <caption>, <thead>, <tbody>, and at least three <th scope=\"col\"> headers.",
+        "Use <nav class=\"dashboard-actions\" aria-label=\"Dashboard actions\"> with a link to #activity and a type=\"button\" action. Add <aside class=\"status-panel\" aria-labelledby=\"status-title\"> with at least three list items.",
+        "Use CSS Grid: four metric columns and a wider activity column beside a status column. Give panels and actions readable foreground/background colors plus a non-none :focus-visible outline.",
+        "Inside a max-width media query near 780px, use two metric columns and one dashboard-content column. Add overflow-x:auto to .table-scroll and avoid large fixed pixel widths."
     };
 
     private static readonly string[] FullIncidentSymptoms =
     {
-        "The site header lost its semantic header and primary navigation landmarks.",
-        "The mobile menu control is a non-interactive empty element.",
-        "Navigation links no longer point to matching page sections.",
-        "The desktop link row collapsed into an unstructured block.",
-        "Menu and link contrast plus keyboard focus are missing.",
-        "A fixed body width causes horizontal scrolling on mobile."
+        "The page no longer has a semantic dashboard header or connected title.",
+        "Metric cards are generic blocks with incomplete labels and values.",
+        "Recent activity is presented as loose text instead of an accessible table.",
+        "Dashboard actions and the system-status region are unlabeled or incomplete.",
+        "Panels, actions, and focus states have poor readability.",
+        "Fixed widths and missing breakpoints create horizontal scrolling on smaller screens."
     };
 
     private static readonly string[] HtmlSymptoms =
     {
-        "Desktop styling mostly survives, but the header uses generic containers.",
-        "The menu control is not a native details and summary interaction.",
-        "Navigation links are not organized as a list and their targets do not match.",
-        "The primary navigation has no accessible label."
+        "Most responsive dashboard styles survive, but semantic page regions are missing.",
+        "Metric content is not organized into four complete article cards.",
+        "The activity table lacks a caption, table sections, and scoped headers.",
+        "Dashboard actions and system status are not properly labeled."
     };
 
     private static readonly string[] CssSymptoms =
     {
-        "Semantic navigation survived, but the desktop header and links no longer align.",
-        "The menu control is visible on wide screens and unreadable.",
+        "Semantic dashboard content survives, but the metric and content grids have collapsed.",
+        "Panels and actions use unreadable foreground and background combinations.",
         "Keyboard focus indicators are missing.",
-        "The mobile breakpoint no longer reveals and stacks the navigation correctly.",
-        "A fixed body width creates horizontal overflow."
+        "The activity table cannot scroll safely on small screens.",
+        "The mobile breakpoint does not reorganize the dashboard."
     };
 
     private const string FullIncidentHtml = """
-        <div class="header" id="top">
-            <span class="brand">CaveCode Workshop</span>
+        <div class="dashboard-shell">
+            <div class="dashboard-header">
+                <div>
+                    <p>WORKSHOP OPERATIONS</p>
+                    <div>Workshop Dashboard</div>
+                    <p>Monitor current projects and recent activity.</p>
+                </div>
+                <div class="dashboard-actions">
+                    <span>View activity</span>
+                    <span>Create project</span>
+                </div>
+            </div>
 
-            <div class="site-nav">
-                <div class="menu-toggle"></div>
-                <div class="nav-list">
-                    <a href="#">Overview</a>
-                    <a href="#work">Projects</a>
-                    <a href="#email">Contact</a>
+            <div class="metric-grid">
+                <div class="metric-card"><span>Active projects</span><b>12</b></div>
+                <div class="metric-card"><span>Completed</span><b>28</b></div>
+                <div class="metric-card"><span>Team members</span><b>8</b></div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="panel activity-panel">
+                    <h2>Recent activity</h2>
+                    <p>Landing page · Updated · 10 minutes ago</p>
+                    <p>Project grid · Reviewed · 1 hour ago</p>
+                    <p>Mobile navigation · Published · Yesterday</p>
+                </div>
+
+                <div class="panel status-panel">
+                    <h2>System status</h2>
+                    <p>Build service Operational</p>
+                    <p>Preview service Operational</p>
                 </div>
             </div>
         </div>
-
-        <main>
-            <section id="intro">
-                <h1>Build responsive interfaces</h1>
-                <p>Practice HTML structure and CSS layout inside the Workshop.</p>
-            </section>
-
-            <section id="portfolio">
-                <h2>Projects</h2>
-                <p>Explore completed interface repairs.</p>
-            </section>
-
-            <section id="message">
-                <h2>Contact</h2>
-                <p>Send a project question to the Workshop team.</p>
-            </section>
-        </main>
         """;
 
     private const string StableHtml = """
-        <header class="site-header" id="top">
-            <a class="brand" href="#top">CaveCode Workshop</a>
+        <main class="dashboard-shell">
+            <header class="dashboard-header" aria-labelledby="dashboard-title">
+                <div>
+                    <p class="dashboard-eyebrow">WORKSHOP OPERATIONS</p>
+                    <h1 id="dashboard-title">Workshop Dashboard</h1>
+                    <p>Monitor current projects, activity, and platform status.</p>
+                </div>
 
-            <details class="site-nav">
-                <summary class="menu-toggle">Menu</summary>
-                <nav aria-label="Primary navigation">
-                    <ul class="nav-list">
-                        <li><a class="nav-link" href="#overview">Overview</a></li>
-                        <li><a class="nav-link" href="#projects">Projects</a></li>
-                        <li><a class="nav-link" href="#contact">Contact</a></li>
-                    </ul>
+                <nav class="dashboard-actions" aria-label="Dashboard actions">
+                    <a class="action-link" href="#activity">View activity</a>
+                    <button class="primary-action" type="button">Create project</button>
                 </nav>
-            </details>
-        </header>
+            </header>
 
-        <main>
-            <section id="overview">
-                <h1>Build responsive interfaces</h1>
-                <p>Practice HTML structure and CSS layout inside the Workshop.</p>
+            <section class="metric-grid" aria-label="Workshop metrics">
+                <article class="metric-card">
+                    <span class="metric-label">Active projects</span>
+                    <strong>12</strong>
+                    <small>+3 this month</small>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label">Completed projects</span>
+                    <strong>28</strong>
+                    <small>+6 this quarter</small>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label">Team members</span>
+                    <strong>8</strong>
+                    <small>2 currently online</small>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label">Open reviews</span>
+                    <strong>5</strong>
+                    <small>2 need attention</small>
+                </article>
             </section>
 
-            <section id="projects">
-                <h2>Projects</h2>
-                <p>Explore completed interface repairs.</p>
-            </section>
+            <div class="dashboard-content">
+                <section class="panel activity-panel"
+                         id="activity"
+                         aria-labelledby="activity-title">
+                    <h2 id="activity-title">Recent activity</h2>
+                    <div class="table-scroll">
+                        <table class="activity-table">
+                            <caption>Recent Workshop project activity</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Project</th>
+                                    <th scope="col">Event</th>
+                                    <th scope="col">Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Landing page</td>
+                                    <td>Updated</td>
+                                    <td>10 minutes ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Project grid</td>
+                                    <td>Reviewed</td>
+                                    <td>1 hour ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Mobile navigation</td>
+                                    <td>Published</td>
+                                    <td>Yesterday</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-            <section id="contact">
-                <h2>Contact</h2>
-                <p>Send a project question to the Workshop team.</p>
-            </section>
+                <aside class="panel status-panel" aria-labelledby="status-title">
+                    <h2 id="status-title">System status</h2>
+                    <ul class="status-list">
+                        <li><span>Build service</span><strong>Operational</strong></li>
+                        <li><span>Preview service</span><strong>Operational</strong></li>
+                        <li><span>Progress sync</span><strong>Operational</strong></li>
+                    </ul>
+                </aside>
+            </div>
         </main>
         """;
 
     private const string DamagedCss = """
         :root {
             font-family: Inter, system-ui, sans-serif;
-            color: #17202a;
+            color: #1d4ed8;
             background: #eef3f8;
         }
 
         * { box-sizing: border-box; }
 
         body {
-            width: 1040px;
+            width: 1180px;
             margin: 0;
-            padding: 20px;
+            padding: 18px;
             background: #eef3f8;
         }
 
-        .site-header,
-        .header {
+        .dashboard-shell {
+            width: 1120px;
+        }
+
+        .dashboard-header,
+        .dashboard-actions,
+        .metric-grid,
+        .dashboard-content {
             display: block;
-            padding: 16px;
-            background: #ffffff;
         }
 
-        .brand {
-            color: #17202a;
+        .metric-card,
+        .panel {
+            margin-top: 10px;
+            padding: 12px;
+            color: #315dc0;
+            background: #315dc0;
         }
 
-        .site-nav {
-            margin-top: 8px;
-        }
-
-        .menu-toggle {
-            display: block;
+        .action-link,
+        .primary-action {
+            display: inline-block;
             padding: 8px;
-            color: #315dc0;
-            background: #315dc0;
+            color: #1d4ed8;
+            background: #1d4ed8;
+            border: 0;
         }
 
-        .nav-list {
-            display: block;
-            padding: 0;
-        }
-
-        .nav-list li {
-            list-style: none;
-        }
-
-        .nav-link,
-        .nav-list a {
-            display: block;
-            padding: 4px;
-            color: #315dc0;
-            background: #315dc0;
-        }
-
-        main section {
-            margin-top: 20px;
-            padding: 24px;
-            background: #ffffff;
+        .activity-table {
+            width: 980px;
         }
         """;
 
@@ -1690,109 +1734,177 @@ else
             background: #eef3f8;
         }
 
-        .site-header,
-        .header {
-            display: flex;
-            max-width: 1100px;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+        .dashboard-shell {
+            width: min(1120px, 100%);
             margin: 0 auto;
-            padding: 16px 20px;
-            background: #ffffff;
-            border: 1px solid #d6dee8;
-            border-radius: 14px;
         }
 
-        .brand {
-            color: #17202a;
+        .dashboard-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 22px;
+        }
+
+        .dashboard-eyebrow {
+            margin: 0 0 6px;
+            color: #1d4ed8;
+            font-size: .78rem;
+            font-weight: 900;
+            letter-spacing: .08em;
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+        }
+
+        .dashboard-header p {
+            line-height: 1.5;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-link,
+        .primary-action {
+            display: inline-flex;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            color: #ffffff;
+            background: #1d4ed8;
+            border: 2px solid #1d4ed8;
+            border-radius: 9px;
+            font: inherit;
             font-weight: 900;
             text-decoration: none;
         }
 
-        .site-nav > nav {
-            display: block;
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
         }
 
-        .menu-toggle {
-            display: none;
-            padding: 10px 12px;
-            color: #ffffff;
-            background: #1d4ed8;
-            border-radius: 8px;
-            cursor: pointer;
+        .metric-card,
+        .panel {
+            padding: 18px;
+            color: #111827;
+            background: #ffffff;
+            border: 1px solid #d6dee8;
+            border-radius: 14px;
+            box-shadow: 0 14px 38px rgba(23, 32, 42, .08);
         }
 
-        .nav-list {
-            display: flex;
-            align-items: center;
+        .metric-card {
+            display: grid;
             gap: 8px;
-            margin: 0;
-            padding: 0;
         }
 
-        .nav-list li {
+        .metric-label {
+            color: #374151;
+            font-size: .82rem;
+            font-weight: 800;
+        }
+
+        .metric-card strong {
+            font-size: 2rem;
+        }
+
+        .metric-card small {
+            color: #374151;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+            gap: 18px;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .activity-table caption {
+            padding: 0 0 12px;
+            color: #374151;
+            text-align: left;
+        }
+
+        .activity-table th,
+        .activity-table td {
+            padding: 11px;
+            border-bottom: 1px solid #d6dee8;
+            text-align: left;
+        }
+
+        .status-list {
+            display: grid;
+            gap: 10px;
+            padding: 0;
+            margin: 0;
             list-style: none;
         }
 
-        .nav-link,
-        .nav-list a {
-            display: inline-flex;
-            padding: 10px 12px;
-            color: #ffffff;
-            background: #1d4ed8;
-            border-radius: 8px;
-            text-decoration: none;
+        .status-list li {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #d6dee8;
         }
 
-        .menu-toggle:focus-visible,
-        .nav-link:focus-visible,
-        .nav-list a:focus-visible {
+        .status-list strong {
+            color: #166534;
+        }
+
+        .action-link:focus-visible,
+        .primary-action:focus-visible {
             outline: 3px solid #f59e0b;
             outline-offset: 3px;
         }
 
-        main {
-            max-width: 1100px;
-            margin: 20px auto 0;
-        }
-
-        main section {
-            margin-top: 16px;
-            padding: 24px;
-            background: #ffffff;
-            border: 1px solid #d6dee8;
-            border-radius: 14px;
-        }
-
-        @media (max-width: 760px) {
-            .site-header,
-            .header {
-                flex-wrap: wrap;
-                align-items: stretch;
+        @media (max-width: 780px) {
+            .dashboard-header {
+                flex-direction: column;
             }
 
-            .site-nav {
+            .dashboard-actions {
                 width: 100%;
             }
 
-            .menu-toggle {
-                display: block;
+            .metric-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
-            .site-nav > nav {
-                display: block;
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .metric-grid {
+                grid-template-columns: 1fr;
             }
 
-            .nav-list {
-                flex-direction: column;
-                align-items: stretch;
-                margin-top: 10px;
-            }
-
-            .nav-link,
-            .nav-list a {
-                display: flex;
+            .dashboard-actions,
+            .action-link,
+            .primary-action {
                 width: 100%;
             }
         }
@@ -1807,8 +1919,8 @@ else
             min-height: 100vh;
         }
 
-        h1, h2, p { line-height: 1.45; }
-        a { text-decoration: none; font-weight: 800; }
+        h1, p { line-height: 1.45; }
+        button, input, select, textarea { font: inherit; }
         """;
 
     private bool AccessReady;
@@ -1854,8 +1966,8 @@ else
     private string ActiveProfileLabel => ProfileLabel(CurrentProfile);
 
     private string FastestClearDisplay =>
-        MinigameState.Mission3FastestSeconds.HasValue
-            ? FormatSeconds(MinigameState.Mission3FastestSeconds.Value)
+        MinigameState.Mission5FastestSeconds.HasValue
+            ? FormatSeconds(MinigameState.Mission5FastestSeconds.Value)
             : "—";
 
     private int HtmlLineCount => CountLines(HtmlCode);
@@ -2020,7 +2132,7 @@ else
 
         if (HintsUsed >= Hints.Length)
         {
-            CurrentHint = "All six Mission 3 hints have already been revealed.";
+            CurrentHint = "All six Mission 5 hints have already been revealed.";
             return;
         }
 
@@ -2050,7 +2162,7 @@ else
         int failed = checks.Count(check => !check.Passed);
         SubmissionMessage =
             RunPassed
-                ? $"All six mobile-navigation repairs passed with {FinalScore} points."
+                ? $"All six responsive-dashboard repairs passed with {FinalScore} points."
                 : $"{failed} repair requirement{(failed == 1 ? "" : "s")} still need attention. Final score: {FinalScore}.";
 
         if (RunPassed)
@@ -2073,7 +2185,7 @@ else
         {
             HtmlCssMinigameRecordResult record =
                 await JS.InvokeAsync<HtmlCssMinigameRecordResult>(
-                    "caveCodeHtmlCssMinigame.recordMission3Clear",
+                    "caveCodeHtmlCssMinigame.recordMission5Clear",
                     AttemptId,
                     FinalScore,
                     Math.Max(0, FinalElapsed.TotalSeconds),
@@ -2098,11 +2210,11 @@ else
 
             string recordText =
                 record.NewBestScore && record.NewFastestTime
-                    ? " New Mission 3 best score and fastest clear."
+                    ? " New Mission 5 best score and fastest clear."
                     : record.NewBestScore
-                        ? " New Mission 3 best score."
+                        ? " New Mission 5 best score."
                         : record.NewFastestTime
-                            ? " New Mission 3 fastest clear."
+                            ? " New Mission 5 fastest clear."
                             : "";
 
             RewardMessage =
@@ -2114,7 +2226,7 @@ else
         catch (Exception error)
         {
             RewardMessage =
-                "Mission 3 passed, but the local reward save did not finish: " +
+                "Mission 5 passed, but the local reward save did not finish: " +
                 error.Message;
         }
         finally
@@ -2196,195 +2308,257 @@ else
 
     private RequirementCheck EvaluateRequirement(int index) => index switch
     {
-        0 => EvaluateSemanticNavigation(),
-        1 => EvaluateNativeMenuControl(),
-        2 => EvaluateNavigationLinks(),
-        3 => EvaluateDesktopNavigation(),
-        4 => EvaluateNavigationAccess(),
-        5 => EvaluateResponsiveNavigation(),
+        0 => EvaluateDashboardFrame(),
+        1 => EvaluateMetricCards(),
+        2 => EvaluateActivityTable(),
+        3 => EvaluateActionsAndStatus(),
+        4 => EvaluateDashboardPresentation(),
+        5 => EvaluateResponsiveDashboard(),
         _ => new(false, "Unknown requirement.")
     };
 
-    private RequirementCheck EvaluateSemanticNavigation()
+    private RequirementCheck EvaluateDashboardFrame()
     {
-        bool header =
-            Regex.IsMatch(
-                HtmlCode ?? "",
-                @"<header\b[^>]*\bclass\s*=\s*[""'][^""']*\bsite-header\b[^""']*[""']",
-                RegexOptions.IgnoreCase);
-        bool brand =
-            Regex.IsMatch(
-                HtmlCode ?? "",
-                @"<a\b[^>]*\bclass\s*=\s*[""'][^""']*\bbrand\b[^""']*[""'][^>]*\bhref\s*=\s*[""']#top[""']",
-                RegexOptions.IgnoreCase);
-        bool nav =
-            Regex.IsMatch(
-                HtmlCode ?? "",
-                @"<nav\b[^>]*\baria-label\s*=\s*[""']Primary navigation[""']",
-                RegexOptions.IgnoreCase);
-        bool passed = header && brand && nav;
+        string html = HtmlCode ?? "";
+        bool main = Regex.IsMatch(
+            html,
+            @"<main\b[^>]*\bclass\s*=\s*[""'][^""']*\bdashboard-shell\b[^""']*[""']",
+            RegexOptions.IgnoreCase);
+        bool header = Regex.IsMatch(
+            html,
+            @"<header\b[^>]*\bclass\s*=\s*[""'][^""']*\bdashboard-header\b[^""']*[""'][^>]*\baria-labelledby\s*=\s*[""']dashboard-title[""']",
+            RegexOptions.IgnoreCase);
+        bool heading = Regex.IsMatch(
+            html,
+            @"<h1\b[^>]*\bid\s*=\s*[""']dashboard-title[""']",
+            RegexOptions.IgnoreCase);
+        bool passed = main && header && heading;
 
         return new(
             passed,
             passed
-                ? "Semantic site header, brand link, and labeled primary navigation are present."
-                : $"Site header: {PassWord(header)}; brand link: {PassWord(brand)}; labeled navigation: {PassWord(nav)}.");
+                ? "A semantic dashboard main region contains a labeled header and clear page title."
+                : $"Dashboard main: {PassWord(main)}; labeled header: {PassWord(header)}; title ID: {PassWord(heading)}.");
     }
 
-    private RequirementCheck EvaluateNativeMenuControl()
+    private RequirementCheck EvaluateMetricCards()
     {
-        bool details =
-            Regex.IsMatch(
-                HtmlCode ?? "",
-                @"<details\b[^>]*\bclass\s*=\s*[""'][^""']*\bsite-nav\b[^""']*[""']",
-                RegexOptions.IgnoreCase);
-        Match summary = Regex.Match(
-            HtmlCode ?? "",
-            @"<summary\b[^>]*\bclass\s*=\s*[""'][^""']*\bmenu-toggle\b[^""']*[""'][^>]*>(?<text>[\s\S]*?)</summary>",
+        string html = HtmlCode ?? "";
+        bool section = Regex.IsMatch(
+            html,
+            @"<section\b[^>]*\bclass\s*=\s*[""'][^""']*\bmetric-grid\b[^""']*[""'][^>]*\baria-label\s*=\s*[""'][^""']+[""']",
             RegexOptions.IgnoreCase);
-        bool summaryText =
-            summary.Success &&
-            Regex.Replace(summary.Groups["text"].Value, @"<[^>]+>", "").Trim().Length >= 3;
-        bool nestedNav = Regex.IsMatch(
-            HtmlCode ?? "",
-            @"<details\b[^>]*\bclass\s*=\s*[""'][^""']*\bsite-nav\b[^""']*[""'][^>]*>[\s\S]*?<summary\b[\s\S]*?</summary>[\s\S]*?<nav\b[\s\S]*?</nav>[\s\S]*?</details>",
+        MatchCollection cards = Regex.Matches(
+            html,
+            @"<article\b[^>]*\bclass\s*=\s*[""'][^""']*\bmetric-card\b[^""']*[""'][^>]*>(?<body>[\s\S]*?)</article>",
             RegexOptions.IgnoreCase);
-        bool passed = details && summaryText && nestedNav;
-
-        return new(
-            passed,
-            passed
-                ? "A native details and summary menu wraps the primary navigation."
-                : $"Details control: {PassWord(details)}; menu label: {PassWord(summaryText)}; nested navigation: {PassWord(nestedNav)}.");
-    }
-
-    private RequirementCheck EvaluateNavigationLinks()
-    {
-        MatchCollection links = Regex.Matches(
-            HtmlCode ?? "",
-            @"<a\b(?=[^>]*\bclass\s*=\s*[""'][^""']*\bnav-link\b[^""']*[""'])(?=[^>]*\bhref\s*=\s*[""']#(?<id>overview|projects|contact)[""'])[^>]*>",
-            RegexOptions.IgnoreCase);
-
-        HashSet<string> targets = links
+        int complete = cards
             .Cast<Match>()
-            .Select(match => match.Groups["id"].Value.ToLowerInvariant())
-            .ToHashSet();
-
-        bool list =
-            HasTag(HtmlCode, "ul") &&
-            CountTags(HtmlCode, "li") >= 3 &&
-            HasClass(HtmlCode, "nav-list");
-        bool matchingSections =
-            targets.SetEquals(new[] { "overview", "projects", "contact" }) &&
-            targets.All(target => HasId(HtmlCode, target));
-        bool passed = list && links.Count == 3 && matchingSections;
+            .Count(card =>
+                Regex.IsMatch(card.Groups["body"].Value, @"\bclass\s*=\s*[""'][^""']*\bmetric-label\b", RegexOptions.IgnoreCase) &&
+                Regex.IsMatch(card.Groups["body"].Value, @"<strong\b", RegexOptions.IgnoreCase) &&
+                Regex.IsMatch(card.Groups["body"].Value, @"<small\b", RegexOptions.IgnoreCase));
+        bool passed = section && cards.Count == 4 && complete == 4;
 
         return new(
             passed,
             passed
-                ? "Overview, Projects, and Contact links are organized in a list and connect to matching sections."
-                : $"Navigation list: {PassWord(list)}; valid links: {links.Count} / 3; matching targets: {PassWord(matchingSections)}.");
+                ? "The labeled metric region contains four complete semantic metric cards."
+                : $"Labeled metric section: {PassWord(section)}; cards: {cards.Count} / 4; complete cards: {complete} / 4.");
     }
 
-    private RequirementCheck EvaluateDesktopNavigation()
+    private RequirementCheck EvaluateActivityTable()
     {
-        string css = StripCssComments(CssCode);
-        bool headerLayout =
-            RuleContains(css, ".site-header", @"display\s*:\s*(?:flex|grid)") &&
-            RuleContains(css, ".site-header", @"align-items\s*:");
-        bool listLayout =
-            RuleContains(css, ".nav-list", @"display\s*:\s*flex") &&
-            (RuleContains(css, ".nav-list", @"gap\s*:\s*(?!0(?:px|rem|em|%)?\b)[^;]+") ||
-             RuleContains(css, ".nav-list", @"column-gap\s*:\s*(?!0(?:px|rem|em|%)?\b)[^;]+"));
-        bool toggleHidden =
-            RuleContains(css, ".menu-toggle", @"display\s*:\s*none");
-        bool navShown =
-            RuleContains(css, ".site-nav > nav", @"display\s*:\s*block");
-        bool passed = headerLayout && listLayout && toggleHidden && navShown;
-
-        return new(
-            passed,
-            passed
-                ? "Wide screens align the header and links while hiding the native menu summary."
-                : $"Header layout: {PassWord(headerLayout)}; link row: {PassWord(listLayout)}; summary hidden: {PassWord(toggleHidden)}; nav shown: {PassWord(navShown)}.");
-    }
-
-    private RequirementCheck EvaluateNavigationAccess()
-    {
-        string css = StripCssComments(CssCode);
-        bool linkContrast = HasReadableSelector(css, ".nav-link");
-        bool toggleContrast = HasReadableSelector(css, ".menu-toggle");
-        bool linkFocus = Regex.IsMatch(
-            css,
-            @"\.nav-link\s*:\s*focus-visible[\s\S]*?outline\s*:\s*(?!none)[^;]+",
+        string html = HtmlCode ?? "";
+        Match table = Regex.Match(
+            html,
+            @"<table\b[^>]*\bclass\s*=\s*[""'][^""']*\bactivity-table\b[^""']*[""'][^>]*>(?<body>[\s\S]*?)</table>",
             RegexOptions.IgnoreCase);
-        bool toggleFocus = Regex.IsMatch(
-            css,
-            @"\.menu-toggle\s*:\s*focus-visible[\s\S]*?outline\s*:\s*(?!none)[^;]+",
-            RegexOptions.IgnoreCase);
-        bool linkPadding =
-            RuleContains(css, ".nav-link", @"padding\s*:\s*(?!0(?:px|rem|em|%)?\b)[^;]+");
+        string body = table.Success ? table.Groups["body"].Value : "";
+        bool caption = Regex.IsMatch(body, @"<caption\b[^>]*>[\s\S]*?</caption>", RegexOptions.IgnoreCase);
+        bool head = HasTag(body, "thead");
+        bool tableBody = HasTag(body, "tbody");
+        int scopedHeaders = Regex.Matches(
+            body,
+            @"<th\b[^>]*\bscope\s*=\s*[""']col[""']",
+            RegexOptions.IgnoreCase).Count;
+        bool activityRegion =
+            HasId(html, "activity") &&
+            HasId(html, "activity-title");
         bool passed =
-            linkContrast &&
-            toggleContrast &&
-            linkFocus &&
-            toggleFocus &&
-            linkPadding;
+            table.Success &&
+            caption &&
+            head &&
+            tableBody &&
+            scopedHeaders >= 3 &&
+            activityRegion;
 
         return new(
             passed,
             passed
-                ? "Menu and navigation controls are readable, comfortably sized, and keyboard visible."
-                : $"Link contrast: {PassWord(linkContrast)}; menu contrast: {PassWord(toggleContrast)}; link focus: {PassWord(linkFocus)}; menu focus: {PassWord(toggleFocus)}; control spacing: {PassWord(linkPadding)}.");
+                ? "Recent activity uses a captioned table with table sections and scoped column headers."
+                : $"Table: {PassWord(table.Success)}; caption: {PassWord(caption)}; head/body: {PassWord(head && tableBody)}; scoped headers: {scopedHeaders} / 3; activity IDs: {PassWord(activityRegion)}.");
     }
 
-    private RequirementCheck EvaluateResponsiveNavigation()
+    private RequirementCheck EvaluateActionsAndStatus()
+    {
+        string html = HtmlCode ?? "";
+        Match nav = Regex.Match(
+            html,
+            @"<nav\b[^>]*\bclass\s*=\s*[""'][^""']*\bdashboard-actions\b[^""']*[""'][^>]*\baria-label\s*=\s*[""'][^""']+[""'][^>]*>(?<body>[\s\S]*?)</nav>",
+            RegexOptions.IgnoreCase);
+        string navBody = nav.Success ? nav.Groups["body"].Value : "";
+        bool activityLink = Regex.IsMatch(
+            navBody,
+            @"<a\b[^>]*\bhref\s*=\s*[""']#activity[""']",
+            RegexOptions.IgnoreCase);
+        bool actionButton = Regex.IsMatch(
+            navBody,
+            @"<button\b[^>]*\btype\s*=\s*[""']button[""']",
+            RegexOptions.IgnoreCase);
+        Match status = Regex.Match(
+            html,
+            @"<aside\b[^>]*\bclass\s*=\s*[""'][^""']*\bstatus-panel\b[^""']*[""'][^>]*\baria-labelledby\s*=\s*[""']status-title[""'][^>]*>(?<body>[\s\S]*?)</aside>",
+            RegexOptions.IgnoreCase);
+        string statusBody = status.Success ? status.Groups["body"].Value : "";
+        bool statusHeading = HasId(statusBody, "status-title");
+        int statusItems = CountTags(statusBody, "li");
+        bool passed =
+            nav.Success &&
+            activityLink &&
+            actionButton &&
+            status.Success &&
+            statusHeading &&
+            statusItems >= 3;
+
+        return new(
+            passed,
+            passed
+                ? "Dashboard actions are labeled and the status panel contains three readable system entries."
+                : $"Action nav: {PassWord(nav.Success)}; activity link: {PassWord(activityLink)}; button: {PassWord(actionButton)}; status region: {PassWord(status.Success && statusHeading)}; status items: {statusItems} / 3.");
+    }
+
+    private RequirementCheck EvaluateDashboardPresentation()
+    {
+        string css = StripCssComments(CssCode);
+        bool metricGrid =
+            RuleContains(css, ".metric-grid", @"display\s*:\s*grid") &&
+            RuleContains(
+                css,
+                ".metric-grid",
+                @"grid-template-columns\s*:\s*repeat\s*\(\s*4\s*,");
+        bool contentGrid =
+            RuleContains(css, ".dashboard-content", @"display\s*:\s*grid") &&
+            RuleContains(css, ".dashboard-content", @"grid-template-columns\s*:");
+        bool readablePanel =
+            HasReadableSelector(css, ".metric-card") ||
+            HasReadableSelector(css, ".panel");
+        bool readableAction =
+            HasReadableSelector(css, ".primary-action") ||
+            HasReadableSelector(css, ".action-link");
+        bool focus = Regex.IsMatch(
+            css,
+            @":focus-visible[\s\S]*?outline\s*:\s*(?!none)[^;]+",
+            RegexOptions.IgnoreCase);
+        bool passed =
+            metricGrid &&
+            contentGrid &&
+            readablePanel &&
+            readableAction &&
+            focus;
+
+        return new(
+            passed,
+            passed
+                ? "Desktop grids, readable panels and actions, and visible keyboard focus are restored."
+                : $"Four-column metrics: {PassWord(metricGrid)}; content grid: {PassWord(contentGrid)}; panel contrast: {PassWord(readablePanel)}; action contrast: {PassWord(readableAction)}; focus: {PassWord(focus)}.");
+    }
+
+    private RequirementCheck EvaluateResponsiveDashboard()
     {
         string css = StripCssComments(CssCode);
         Match media = Regex.Match(
             css,
-            @"@media\s*\(\s*max-width\s*:\s*(?<width>\d+)px\s*\)\s*\{(?<body>[\s\S]*)$",
+            @"@media\s*\(\s*max-width\s*:\s*(?<width>\d+)px\s*\)\s*\{(?<body>[\s\S]*?)\}(?=\s*@media|\s*$)",
             RegexOptions.IgnoreCase);
-
         int width = media.Success ? int.Parse(media.Groups["width"].Value) : int.MaxValue;
         string body = media.Success ? media.Groups["body"].Value : "";
-        bool breakpoint = media.Success && width >= 480 && width <= 820;
-        bool toggleVisible = Regex.IsMatch(
+        bool breakpoint = media.Success && width >= 600 && width <= 900;
+        bool metricReflow = Regex.IsMatch(
             body,
-            @"\.menu-toggle[\s\S]*?display\s*:\s*(?:block|flex)",
+            @"\.metric-grid[\s\S]*?grid-template-columns\s*:\s*repeat\s*\(\s*2\s*,",
             RegexOptions.IgnoreCase);
-        bool listStacked =
-            Regex.IsMatch(
-                body,
-                @"\.nav-list[\s\S]*?flex-direction\s*:\s*column",
-                RegexOptions.IgnoreCase) ||
-            Regex.IsMatch(
-                body,
-                @"\.nav-list[\s\S]*?grid-template-columns\s*:\s*1fr",
-                RegexOptions.IgnoreCase);
-        bool navWidth = Regex.IsMatch(
+        bool contentStack = Regex.IsMatch(
             body,
-            @"\.site-nav[\s\S]*?width\s*:\s*100%",
+            @"\.dashboard-content[\s\S]*?grid-template-columns\s*:\s*1fr",
             RegexOptions.IgnoreCase);
-        bool headerWrap = Regex.IsMatch(
-            body,
-            @"\.site-header[\s\S]*?flex-wrap\s*:\s*wrap",
-            RegexOptions.IgnoreCase);
-        bool fixedBodyWidth =
-            RuleContains(css, "body", @"width\s*:\s*(?:[8-9]\d{2}|[1-9]\d{3,})px");
+        bool tableScroll = RuleContains(css, ".table-scroll", @"overflow-x\s*:\s*auto");
+        bool fixedBodyWidth = RuleContains(css, "body", @"width\s*:\s*(?:[8-9]\d{2}|[1-9]\d{3,})px");
+        bool fixedShellWidth = RuleContains(css, ".dashboard-shell", @"width\s*:\s*(?:[8-9]\d{2}|[1-9]\d{3,})px");
         bool passed =
             breakpoint &&
-            toggleVisible &&
-            listStacked &&
-            navWidth &&
-            headerWrap &&
-            !fixedBodyWidth;
+            metricReflow &&
+            contentStack &&
+            tableScroll &&
+            !fixedBodyWidth &&
+            !fixedShellWidth;
 
         return new(
             passed,
             passed
-                ? $"A {width}px breakpoint reveals and stacks the native menu without fixed-width overflow."
-                : $"Breakpoint: {PassWord(breakpoint)}; menu visible: {PassWord(toggleVisible)}; links stacked: {PassWord(listStacked)}; nav width: {PassWord(navWidth)}; header wraps: {PassWord(headerWrap)}; body width removed: {PassWord(!fixedBodyWidth)}.");
+                ? $"A {width}px breakpoint reorganizes metrics and content while the activity table scrolls safely."
+                : $"Breakpoint: {PassWord(breakpoint)}; metric reflow: {PassWord(metricReflow)}; content stack: {PassWord(contentStack)}; table scroll: {PassWord(tableScroll)}; body width removed: {PassWord(!fixedBodyWidth)}; shell width removed: {PassWord(!fixedShellWidth)}.");
+    }
+
+    private static bool HasLabelFor(string html, string id) =>
+        Regex.IsMatch(
+            html ?? "",
+            $@"<label\b[^>]*\bfor\s*=\s*[""']{Regex.Escape(id)}[""']",
+            RegexOptions.IgnoreCase);
+
+    private static bool HasControlId(string html, string id) =>
+        Regex.IsMatch(
+            html ?? "",
+            $@"<(?:input|select|textarea)\b[^>]*\bid\s*=\s*[""']{Regex.Escape(id)}[""']",
+            RegexOptions.IgnoreCase);
+
+    private static int CountId(string html, string id) =>
+        Regex.Matches(
+            html ?? "",
+            $@"\bid\s*=\s*[""']{Regex.Escape(id)}[""']",
+            RegexOptions.IgnoreCase).Count;
+
+    private static string OpeningTagWithId(string html, string tag, string id)
+    {
+        Match match = Regex.Match(
+            html ?? "",
+            $@"<{Regex.Escape(tag)}\b[^>]*\bid\s*=\s*[""']{Regex.Escape(id)}[""'][^>]*>",
+            RegexOptions.IgnoreCase);
+        return match.Success ? match.Value : "";
+    }
+
+    private static bool HasAttribute(string openingTag, string attribute) =>
+        Regex.IsMatch(
+            openingTag ?? "",
+            $@"\s{Regex.Escape(attribute)}(?:\s*=|\s|>)",
+            RegexOptions.IgnoreCase);
+
+    private static bool AttributeEquals(string openingTag, string attribute, string value) =>
+        Regex.IsMatch(
+            openingTag ?? "",
+            $@"\b{Regex.Escape(attribute)}\s*=\s*[""']{Regex.Escape(value)}[""']",
+            RegexOptions.IgnoreCase);
+
+    private static bool AttributeContainsToken(string openingTag, string attribute, string token)
+    {
+        Match match = Regex.Match(
+            openingTag ?? "",
+            $@"\b{Regex.Escape(attribute)}\s*=\s*[""'](?<value>[^""']*)[""']",
+            RegexOptions.IgnoreCase);
+        return match.Success &&
+            match.Groups["value"].Value
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Any(value => string.Equals(value, token, StringComparison.OrdinalIgnoreCase));
     }
 
     private string BuildPreviewDocument()
@@ -2398,7 +2572,7 @@ else
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Mobile Navigation Recovery</title>
+                <title>Responsive Dashboard Recovery</title>
                 <style>{PreviewStyles}\n{css}</style>
             </head>
             <body>
@@ -2564,9 +2738,9 @@ else
 
     private static string ProfileDescription(DamageProfile profile) => profile switch
     {
-        DamageProfile.HtmlSystems => "Responsive styles remain while semantic landmarks, native controls, links, and targets fail.",
-        DamageProfile.CssSystems => "Semantic navigation remains while alignment, contrast, focus, and mobile behavior fail.",
-        _ => "HTML landmarks, native menu behavior, links, layout, focus, and responsiveness are damaged."
+        DamageProfile.HtmlSystems => "Responsive dashboard styles remain while semantic regions, metrics, table structure, actions, and status labeling fail.",
+        DamageProfile.CssSystems => "Semantic dashboard content remains while grids, contrast, focus, table overflow, and mobile behavior fail.",
+        _ => "Dashboard semantics, metrics, activity data, actions, status, focus, and responsiveness are damaged."
     };
 
     private string ViewportButtonClass(PreviewViewport viewport) =>
