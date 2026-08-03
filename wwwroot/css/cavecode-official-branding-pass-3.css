@@ -1,0 +1,234 @@
+/* CAVECODE_OFFICIAL_BRANDING_PASS_3_V1
+   Layout and glow refinement only. The approved SVG is never edited. */
+
+/* Remove every temporary white backing surface. */
+.cavecode-logo-surface,
+.cavecode-context-logo-surface {
+    overflow: visible !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Apply the current theme color around the unchanged SVG artwork. */
+.cavecode-official-logo,
+.cavecode-context-logo-image {
+    overflow: visible;
+    filter:
+        drop-shadow(0 0 3px color-mix(in srgb, var(--accent) 82%, white))
+        drop-shadow(0 0 15px var(--accent))
+        drop-shadow(0 0 34px color-mix(in srgb, var(--accent) 58%, transparent));
+}
+
+/* Header and footer branding remain compact but no longer boxed. */
+.home-brand--official .cavecode-logo-surface--header {
+    width: 132px;
+    height: auto;
+    aspect-ratio: 803.19 / 545.86;
+}
+
+.home-footer--official .cavecode-logo-surface--footer {
+    width: 104px;
+    height: auto;
+    aspect-ratio: 803.19 / 545.86;
+}
+
+/* Academy Home hero: one centered visual story instead of two columns. */
+.academy-home .hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: center;
+    gap: clamp(34px, 5vw, 58px) !important;
+    min-height: 0 !important;
+    padding: clamp(62px, 8vw, 104px) 0 clamp(70px, 8vw, 108px) !important;
+    text-align: center;
+}
+
+.academy-home .hero-copy {
+    display: grid;
+    width: min(100%, 1040px);
+    justify-items: center;
+}
+
+.cavecode-hero-brand {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    margin: 0 0 clamp(26px, 4vw, 44px);
+}
+
+.cavecode-hero-brand .cavecode-context-logo-surface {
+    width: clamp(270px, 38vw, 470px);
+    height: auto;
+    aspect-ratio: 803.19 / 545.86;
+}
+
+.academy-home .hero h1 {
+    max-width: 980px !important;
+    text-wrap: balance;
+}
+
+.academy-home .hero-description {
+    max-width: 760px !important;
+    margin-inline: auto !important;
+    text-wrap: pretty;
+}
+
+.academy-home .hero-actions {
+    justify-content: center;
+}
+
+.academy-home .hero-terminal {
+    width: min(900px, 100%);
+    text-align: left;
+}
+
+/* Learning Paths branding is centered, unboxed, and theme-lit. */
+.academy-home .path-section .section-heading {
+    display: grid !important;
+    justify-items: center;
+    text-align: center;
+}
+
+.academy-home .path-section .section-heading > div {
+    display: grid;
+    justify-items: center;
+}
+
+.cavecode-learning-path-brandline {
+    width: 100%;
+    align-items: center !important;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px !important;
+    margin: 0 0 12px !important;
+    text-align: center;
+}
+
+.cavecode-learning-path-brandline .cavecode-context-logo-surface {
+    width: 138px !important;
+    height: auto !important;
+    aspect-ratio: 803.19 / 545.86;
+}
+
+/* Course sidebars keep their language identity but lose the sales sentence. */
+.cavecode-course-academy-brand {
+    justify-content: center;
+    padding: 10px 0 20px !important;
+}
+
+.cavecode-course-academy-brand .cavecode-context-logo-surface {
+    width: clamp(150px, 12vw, 190px) !important;
+    height: auto !important;
+    aspect-ratio: 803.19 / 545.86;
+}
+
+.sidebar .brand,
+.cpp-sidebar .cpp-brand,
+.web-sidebar .web-brand {
+    justify-content: center;
+}
+
+/* Center the Academy mark above the requested page titles. */
+.settings-header,
+.achievement-header,
+.leaderboard-header,
+.hub-header {
+    position: relative;
+    padding-top: clamp(188px, 20vw, 228px) !important;
+}
+
+.cavecode-page-brandline {
+    position: absolute !important;
+    top: clamp(24px, 4vw, 42px);
+    left: 50%;
+    z-index: 2;
+    display: grid !important;
+    width: min(320px, calc(100vw - 48px));
+    justify-items: center;
+    margin: 0 !important;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.cavecode-page-brandline > span:last-child {
+    display: none;
+}
+
+.cavecode-page-brandline .cavecode-context-logo-surface {
+    width: clamp(210px, 24vw, 285px) !important;
+    height: auto !important;
+    aspect-ratio: 803.19 / 545.86;
+}
+
+.settings-header > div:first-of-type,
+.hub-header > div:first-of-type,
+.leaderboard-header > div:first-of-type,
+.achievement-header .header-copy > div:first-child {
+    text-align: center;
+}
+
+.settings-header > div:first-of-type,
+.hub-header > div:first-of-type,
+.leaderboard-header > div:first-of-type {
+    width: min(760px, 100%);
+    margin-inline: auto;
+}
+
+.achievement-header .header-copy > div:first-child {
+    width: min(680px, 100%);
+    margin-inline: auto;
+}
+
+/* The other Pass 2 placements also inherit the background-free glow. */
+.cavecode-auth-brand .cavecode-context-logo-surface,
+.cavecode-loading-brand .cavecode-context-logo-surface {
+    height: auto !important;
+    aspect-ratio: 803.19 / 545.86;
+}
+
+@media (max-width: 820px) {
+    .academy-home .hero {
+        padding-top: 56px !important;
+    }
+
+    .settings-header,
+    .achievement-header,
+    .leaderboard-header,
+    .hub-header {
+        padding-top: 178px !important;
+    }
+}
+
+@media (max-width: 620px) {
+    .cavecode-hero-brand .cavecode-context-logo-surface {
+        width: min(330px, calc(100vw - 54px));
+    }
+
+    .academy-home .hero h1 {
+        font-size: clamp(39px, 12vw, 58px) !important;
+        letter-spacing: -1.5px !important;
+    }
+
+    .academy-home .hero-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .academy-home .hero-actions a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .cavecode-page-brandline .cavecode-context-logo-surface {
+        width: min(235px, calc(100vw - 70px)) !important;
+    }
+
+    .settings-header,
+    .achievement-header,
+    .leaderboard-header,
+    .hub-header {
+        padding-top: 162px !important;
+    }
+}

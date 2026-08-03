@@ -128,7 +128,11 @@ public interface ICourseCodeValidator
 public sealed class StructuralCourseCodeValidator :
     ICourseCodeValidator
 {
-    public bool Supports(string courseId) => true;
+    public bool Supports(string courseId) =>
+        !string.Equals(
+            courseId,
+            CourseIds.HtmlCss,
+            StringComparison.OrdinalIgnoreCase);
 
     public CourseCodeValidationResult Validate(
         CourseCodeValidationRequest request)

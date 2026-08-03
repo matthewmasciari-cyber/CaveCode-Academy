@@ -16,6 +16,7 @@ builder.Services.AddScoped<MinigameService>();
 builder.Services.AddScoped<ThemeService>();
 builder.Services.AddScoped<CourseCatalogService>();
 builder.Services.AddScoped<ICourseCodeValidator, StructuralCourseCodeValidator>();
+builder.Services.AddScoped<ICourseCodeValidator, HtmlCourseCodeValidator>();
 builder.Services.AddScoped<CourseEngineService>();
 
 await builder.Build().RunAsync();

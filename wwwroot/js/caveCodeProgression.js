@@ -5,10 +5,12 @@
         cSharpXp: 0,
         pythonXp: 0,
         cppXp: 0,
+        htmlCssXp: 0,
         totalLines: 0,
         cSharpLines: 0,
         pythonLines: 0,
         cppLines: 0,
+        htmlCssLines: 0,
         publicLeaderboard: false,
         awardedModules: {},
         awardedStages: {},
@@ -51,6 +53,15 @@
             return "cpp";
         }
 
+        if (
+            course === "html" ||
+            course === "css" ||
+            course === "html-css" ||
+            course === "htmlcss"
+        ) {
+            return "htmlcss";
+        }
+
         return "csharp";
     }
 
@@ -91,10 +102,12 @@
             cSharpXp: current.cSharpXp,
             pythonXp: current.pythonXp,
             cppXp: current.cppXp,
+            htmlCssXp: current.htmlCssXp,
             totalLines: current.totalLines,
             cSharpLines: current.cSharpLines,
             pythonLines: current.pythonLines,
             cppLines: current.cppLines,
+            htmlCssLines: current.htmlCssLines,
             publicLeaderboard: current.publicLeaderboard,
             ...levelView(current.totalXp)
         };
@@ -107,6 +120,8 @@
             current.pythonXp += amount;
         } else if (course === "cpp") {
             current.cppXp += amount;
+        } else if (course === "htmlcss") {
+            current.htmlCssXp += amount;
         } else {
             current.cSharpXp += amount;
         }
@@ -119,6 +134,8 @@
             current.pythonLines += amount;
         } else if (course === "cpp") {
             current.cppLines += amount;
+        } else if (course === "htmlcss") {
+            current.htmlCssLines += amount;
         } else {
             current.cSharpLines += amount;
         }
@@ -178,6 +195,7 @@
         reconcile("csharp");
         reconcile("python");
         reconcile("cpp");
+        reconcile("htmlcss");
 
         if (before !== JSON.stringify(current)) {
             save();
@@ -186,7 +204,6 @@
 
     function localEntry(profile, user) {
         const state = stateView();
-
         return {
             id: user?.id || "local-player",
             displayName:
@@ -199,10 +216,12 @@
             cSharpXp: state.cSharpXp,
             pythonXp: state.pythonXp,
             cppXp: state.cppXp,
+            htmlCssXp: state.htmlCssXp,
             totalLines: state.totalLines,
             cSharpLines: state.cSharpLines,
             pythonLines: state.pythonLines,
             cppLines: state.cppLines,
+            htmlCssLines: state.htmlCssLines,
             level: state.level,
             isCurrentUser: true
         };

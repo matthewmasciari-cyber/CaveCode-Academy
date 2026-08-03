@@ -1,0 +1,114 @@
+/* CAVECODE_OFFICIAL_BRANDING_PASS_1_V1
+   The SVG artwork is never edited. These rules only control placement,
+   surrounding background, responsive size, and theme-safe visibility. */
+
+.home-brand--official {
+    min-width: 0;
+    gap: 14px;
+}
+
+.cavecode-logo-surface {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.16);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+}
+
+.cavecode-logo-surface--header {
+    width: 112px;
+    height: 76px;
+    padding: 5px 7px;
+    border-radius: 14px;
+}
+
+.cavecode-logo-surface--footer {
+    width: 88px;
+    height: 60px;
+    padding: 4px 6px;
+    border-radius: 11px;
+}
+
+.cavecode-official-logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.home-brand-tagline {
+    display: block;
+    max-width: 150px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.35;
+}
+
+footer.home-footer--official {
+    align-items: center;
+}
+
+.home-footer-brand-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.home-footer-brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.home-footer-tagline {
+    display: grid;
+    gap: 2px;
+}
+
+.home-footer-tagline strong {
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.home-footer-tagline small {
+    color: var(--text-muted);
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+@media (max-width: 720px) {
+    .cavecode-logo-surface--header {
+        width: 98px;
+        height: 67px;
+    }
+
+    .home-brand-tagline {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 520px) {
+    .home-brand--official {
+        gap: 9px;
+    }
+
+    .cavecode-logo-surface--header {
+        width: 86px;
+        height: 59px;
+        border-radius: 11px;
+    }
+
+    .home-brand-tagline {
+        display: none;
+    }
+
+    footer.home-footer--official {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

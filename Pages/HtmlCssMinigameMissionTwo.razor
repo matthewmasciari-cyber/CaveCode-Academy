@@ -1,0 +1,2493 @@
+@page "/minigames/html-css/mission-2"
+@implements IAsyncDisposable
+@using System.Text.RegularExpressions
+@using Microsoft.JSInterop
+@using CaveCode.CourseEngine
+@inject CourseEngineService CourseEngine
+@inject ProgressionService ProgressionService
+@inject AchievementService AchievementService
+@inject IJSRuntime JS
+
+<PageTitle>Project Grid Recovery · Interface Rescue</PageTitle>
+
+@if (!AccessReady)
+{
+    <div class="rescue-access-screen">
+        <section>
+            <span>&lt;/&gt;</span>
+            <h1>Loading Mission 2</h1>
+            <p>Checking your HTML & CSS Chapter 1 checkpoint and saved mission records.</p>
+        </section>
+    </div>
+}
+else if (!string.IsNullOrWhiteSpace(AccessError))
+{
+    <div class="rescue-access-screen">
+        <section class="locked">
+            <span>!</span>
+            <p class="rescue-eyebrow">INTERFACE RESCUE · LOCAL CHECKPOINT ERROR</p>
+            <h1>Mission access could not be verified</h1>
+            <p>@AccessError</p>
+            <NavLink class="rescue-access-secondary" href="/minigames">
+                Return to Minigame Hub
+            </NavLink>
+        </section>
+    </div>
+}
+else if (!ChapterOneUnlocked)
+{
+    <div class="rescue-access-screen">
+        <section class="locked">
+            <span>&lt;/&gt;</span>
+            <p class="rescue-eyebrow">HTML & CSS WORKSHOP · CHAPTER 1 REQUIRED</p>
+            <h1>Complete Chapter 1 to enter Mission 2</h1>
+            <p>
+                Interface Rescue requires all eight HTML Foundations modules.
+                Your current checkpoint is @ChapterOneCompletedModules / 8.
+            </p>
+            <div class="rescue-access-actions">
+                <NavLink class="rescue-access-primary" href="/html-css">
+                    Continue HTML & CSS →
+                </NavLink>
+                <NavLink class="rescue-access-secondary" href="/minigames">
+                    Return to Minigame Hub
+                </NavLink>
+            </div>
+        </section>
+    </div>
+}
+else
+{
+<div class="interface-rescue-shell">
+    <header class="rescue-header">
+        <div class="rescue-header-copy">
+            <NavLink class="rescue-back" href="/minigames">
+                ← Minigame Hub
+            </NavLink>
+
+            <div class="rescue-profile-grid rescue-mission-nav" aria-label="Interface Rescue missions">
+                <NavLink class="rescue-profile-button" href="/minigames/html-css">
+                    <strong>Mission 1</strong>
+                    <small>Workshop Landing Page</small>
+                </NavLink>
+                <NavLink class="rescue-profile-button active" href="/minigames/html-css/mission-2">
+                    <strong>Mission 2</strong>
+                    <small>Project Card Grid</small>
+                </NavLink>
+                @* CAVECODE_INTERFACE_RESCUE_MISSION_NAV_V2 *@
+                <NavLink class="rescue-profile-button" href="/minigames/html-css/mission-3">
+                    <strong>Mission 3</strong>
+                    <small>Mobile Navigation</small>
+                </NavLink>
+            </div>
+
+            <p class="rescue-eyebrow">HTML & CSS WORKSHOP · PASS 6E-1 · MISSION 2</p>
+            <h1>Project Grid Recovery</h1>
+            <p>
+                Repair three damaged project cards, restore their accessible
+                content and controls, rebuild the wide-screen grid, and prove
+                that the collection remains usable at mobile width.
+            </p>
+        </div>
+
+        <div class="rescue-session-panel">
+            <span class="rescue-session-state">@SessionStateLabel</span>
+            <strong>@TimeDisplay</strong>
+            <small>
+                Mission 2 keeps a separate best score, fastest clear, and
+                reward history from Mission 1.
+            </small>
+        </div>
+    </header>
+
+    <main class="rescue-layout">
+        <aside class="rescue-briefing">
+            <section class="rescue-panel">
+                <div class="rescue-panel-heading">
+                    <div>
+                        <span>MISSION BRIEF</span>
+                        <h2>Repair the Project Card Grid</h2>
+                    </div>
+                    <span class="rescue-shell-badge">MISSION 2</span>
+                </div>
+
+                <p>
+                    A failed component-library merge damaged the Workshop's
+                    project collection. Restore the intended cards without
+                    replacing the project with unrelated markup or styles.
+                </p>
+
+                <div class="rescue-incident-report">
+                    <strong>INCIDENT REPORT</strong>
+                    <ul>
+                        @foreach (string symptom in ActiveSymptoms)
+                        {
+                            <li>@symptom</li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="rescue-objective-list">
+                    @for (int index = 0; index < Requirements.Length; index++)
+                    {
+                        RequirementCheck check = EvaluateRequirement(index);
+
+                        <div class="rescue-objective @(check.Passed ? "passed" : "pending")">
+                            <span>@(check.Passed ? "✓" : (index + 1).ToString())</span>
+                            <div>
+                                <strong>@Requirements[index].Title</strong>
+                                <small>@Requirements[index].Detail</small>
+                                <em>@check.Evidence</em>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+
+            <section class="rescue-panel rescue-score-panel">
+                <div class="rescue-panel-heading">
+                    <div>
+                        <span>LIVE RUN STATUS</span>
+                        <h2>Scoreboard</h2>
+                    </div>
+                    <span class="rescue-shell-badge @ResultBadgeClass">@ResultBadgeLabel</span>
+                </div>
+
+                <div class="rescue-score-grid">
+                    <div>
+                        <span>@(AttemptSubmitted ? "Final score" : "Projected score")</span>
+                        <strong>@DisplayedScore / 1000</strong>
+                    </div>
+                    <div>
+                        <span>Repair goals</span>
+                        <strong>@PassedRequirementCount / @Requirements.Length</strong>
+                    </div>
+                    <div>
+                        <span>Time bonus</span>
+                        <strong>+@DisplayedTimeBonus</strong>
+                    </div>
+                    <div>
+                        <span>Hint penalty</span>
+                        <strong>-@DisplayedHintPenalty</strong>
+                    </div>
+                </div>
+
+                <div class="rescue-score-breakdown">
+                    <div>
+                        <span>Requirement points</span>
+                        <strong>@DisplayedRequirementPoints / 840</strong>
+                    </div>
+                    <div>
+                        <span>Scored time</span>
+                        <strong>@TimeDisplay</strong>
+                    </div>
+                    <div>
+                        <span>Hints revealed</span>
+                        <strong>@HintsUsed / @Hints.Length</strong>
+                    </div>
+                </div>
+
+                <p class="rescue-score-note">
+                    Each requirement is worth 140 points. The time bonus begins
+                    at 160 points and every hint subtracts 40 points. All six
+                    repairs must pass to clear Mission 2.
+                </p>
+
+                @if (AttemptSubmitted)
+                {
+                    <div class="rescue-result @ResultPanelClass">
+                        <span>@(RunPassed ? "MISSION PASSED" : "MISSION FAILED")</span>
+                        <strong>@SubmissionMessage</strong>
+                        <p>
+                            @(RunPassed
+                                ? "The card collection satisfies every automated repair requirement."
+                                : "Start a new attempt and use the live evidence to finish the remaining repairs.")
+                        </p>
+                    </div>
+                }
+            </section>
+
+            <section class="rescue-panel rescue-reward-panel">
+                <div class="rescue-panel-heading">
+                    <div>
+                        <span>PERSISTENT MISSION 2 RECORD</span>
+                        <h2>Project Grid rewards</h2>
+                    </div>
+                    <span class="rescue-shell-badge">
+                        @(MinigameState.Mission2Completed ? "CLEARED" : "ACTIVE")
+                    </span>
+                </div>
+
+                <div class="rescue-record-grid">
+                    <div>
+                        <span>Best score</span>
+                        <strong>@MinigameState.Mission2BestScore.ToString("N0")</strong>
+                    </div>
+                    <div>
+                        <span>Fastest clear</span>
+                        <strong>@FastestClearDisplay</strong>
+                    </div>
+                    <div>
+                        <span>Mission 2 clears</span>
+                        <strong>@MinigameState.Mission2Clears</strong>
+                    </div>
+                    <div>
+                        <span>Total minigame XP</span>
+                        <strong>@MinigameState.TotalXpEarned.ToString("N0")</strong>
+                    </div>
+                </div>
+
+                <div class="rescue-reward-rules">
+                    <div>
+                        <span>FIRST CLEAR</span>
+                        <strong>100 XP · ◆ 6</strong>
+                    </div>
+                    <div>
+                        <span>REPEAT CLEAR</span>
+                        <strong>40 XP · ◆ 2</strong>
+                    </div>
+                </div>
+
+                <p class="rescue-mission-record-note">
+                    Mission 2 uses its own clear counter and reward keys. It
+                    does not overwrite Mission 1's score or fastest-clear record.
+                </p>
+
+                @if (!string.IsNullOrWhiteSpace(RewardMessage))
+                {
+                    <div class="rescue-reward-result">
+                        <strong>REWARD SAVE</strong>
+                        <p>@RewardMessage</p>
+                    </div>
+                }
+            </section>
+        </aside>
+
+        <section class="rescue-workspace">
+            <section class="rescue-panel rescue-profile-panel">
+                <div class="rescue-panel-heading">
+                    <div>
+                        <span>DAMAGE PROFILE</span>
+                        <h2>Choose the systems to repair</h2>
+                    </div>
+                    <span class="rescue-profile-badge">@ActiveProfileLabel</span>
+                </div>
+
+                <p>
+                    Every profile targets the same final card grid. Choose the
+                    full incident or isolate HTML and CSS failures.
+                </p>
+
+                <div class="rescue-profile-grid">
+                    @foreach (DamageProfile profile in Enum.GetValues<DamageProfile>())
+                    {
+                        <button type="button"
+                                class="@ProfileButtonClass(profile)"
+                                disabled="@AttemptSubmitted"
+                                @onclick="() => LoadDamageProfile(profile)">
+                            <strong>@ProfileLabel(profile)</strong>
+                            <small>@ProfileDescription(profile)</small>
+                        </button>
+                    }
+                </div>
+            </section>
+
+            <section class="rescue-panel rescue-controls-panel">
+                <div class="rescue-control-row">
+                    <button type="button"
+                            class="rescue-primary-button"
+                            disabled="@(AttemptStarted || AttemptSubmitted)"
+                            @onclick="StartScoredRun">
+                        Start scored run
+                    </button>
+                    <button type="button"
+                            class="rescue-secondary-button"
+                            disabled="@AttemptSubmitted"
+                            @onclick="RevealHint">
+                        Reveal hint (-40)
+                    </button>
+                    <button type="button"
+                            class="rescue-submit-button"
+                            disabled="@AttemptSubmitted"
+                            @onclick="SubmitRepairAsync">
+                        Submit final repair
+                    </button>
+                    <button type="button"
+                            class="rescue-secondary-button"
+                            @onclick="ResetWorkspace">
+                        @(AttemptSubmitted ? "Start new attempt" : "Reset damaged grid")
+                    </button>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(CurrentHint))
+                {
+                    <div class="rescue-hint-box">
+                        <strong>MISSION HINT @Math.Min(HintsUsed, Hints.Length)</strong>
+                        <p>@CurrentHint</p>
+                    </div>
+                }
+            </section>
+
+            <section class="rescue-panel rescue-editor-panel">
+                <div class="rescue-panel-heading">
+                    <div>
+                        <span>REPAIR WORKSPACE</span>
+                        <h2>Mission 2 project files</h2>
+                    </div>
+                    <span class="rescue-shell-badge">@HtmlLineCount HTML · @CssLineCount CSS</span>
+                </div>
+
+                <div class="rescue-editor-grid">
+                    <div class="rescue-editor-column">
+                        <div class="rescue-editor-title">
+                            <span>projects.html</span>
+                            <span>HTML</span>
+                        </div>
+                        <textarea value="@HtmlCode"
+                                  disabled="@AttemptSubmitted"
+                                  aria-label="Mission 2 HTML editor"
+                                  @oninput="UpdateHtml"></textarea>
+                    </div>
+
+                    <div class="rescue-editor-column">
+                        <div class="rescue-editor-title">
+                            <span>project-grid.css</span>
+                            <span>CSS</span>
+                        </div>
+                        <textarea value="@CssCode"
+                                  disabled="@AttemptSubmitted"
+                                  aria-label="Mission 2 CSS editor"
+                                  @oninput="UpdateCss"></textarea>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <aside class="rescue-preview-column">
+            <section class="rescue-panel rescue-preview-panel">
+                <div class="rescue-panel-heading">
+                    <div>
+                        <span>SANDBOXED LIVE PREVIEW</span>
+                        <h2>Project collection</h2>
+                    </div>
+                    <span class="rescue-shell-badge">SCRIPTS BLOCKED</span>
+                </div>
+
+                <div class="rescue-viewport-controls" aria-label="Preview width">
+                    @foreach (PreviewViewport viewport in Enum.GetValues<PreviewViewport>())
+                    {
+                        <button type="button"
+                                class="@ViewportButtonClass(viewport)"
+                                @onclick="() => SetViewport(viewport)">
+                            @ViewportLabel(viewport)
+                        </button>
+                    }
+                </div>
+
+                <div class="rescue-preview-stage">
+                    <iframe @key="PreviewRevision"
+                            class="@PreviewFrameClass"
+                            title="Project Grid Recovery preview"
+                            sandbox=""
+                            srcdoc="@PreviewDocument">
+                    </iframe>
+                </div>
+
+                <div class="rescue-target-blueprint">
+                    <strong>TARGET BLUEPRINT</strong>
+                    <ul>
+                        <li>Three semantic article cards</li>
+                        <li>Useful headings, descriptions, and image alternatives</li>
+                        <li>Three-column desktop grid with consistent spacing</li>
+                        <li>Contained images and equal card structure</li>
+                        <li>Readable actions with keyboard focus</li>
+                        <li>One-column mobile layout without overflow</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="rescue-terminal">
+                <div>
+                    <span>INTERFACE RESCUE CONSOLE</span>
+                    <span>MISSION 2</span>
+                </div>
+                <p>[PROFILE] @ActiveProfileLabel</p>
+                <p>[VIEWPORT] @ViewportLabel(CurrentViewport)</p>
+                <p>[VALIDATION] @PassedRequirementCount of @Requirements.Length requirements pass</p>
+                <p>[SCORE] @DisplayedScore projected or final points</p>
+                <p>[SECURITY] iframe sandbox active; scripts and external requests removed</p>
+            </section>
+        </aside>
+    </main>
+</div>
+
+<style>
+    .interface-rescue-shell {
+        min-height: 100vh;
+        padding: 28px clamp(14px, 3vw, 42px) 54px;
+        color: var(--text);
+        background:
+            radial-gradient(
+                circle at 82% 0%,
+                var(--accent-surface),
+                transparent 31%
+            ),
+            var(--bg);
+        font-family: Inter, system-ui, sans-serif;
+    }
+
+    .interface-rescue-shell * {
+        box-sizing: border-box;
+    }
+
+    .interface-rescue-shell button,
+    .interface-rescue-shell textarea {
+        font: inherit;
+    }
+
+    .rescue-header {
+        display: grid;
+        width: min(1580px, 100%);
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 24px;
+        margin: 0 auto 22px;
+    }
+
+    .rescue-back {
+        display: inline-flex;
+        padding: 9px 12px;
+        margin-bottom: 24px;
+        color: var(--text);
+        text-decoration: none;
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .rescue-eyebrow {
+        margin: 0 0 7px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 950;
+        letter-spacing: 1.15px;
+    }
+
+    .rescue-header h1 {
+        margin: 0;
+        font-size: clamp(40px, 5vw, 70px);
+        letter-spacing: -2px;
+        line-height: .96;
+    }
+
+    .rescue-header-copy > p:last-child {
+        max-width: 800px;
+        margin: 18px 0 0;
+        color: var(--text-muted);
+        line-height: 1.65;
+    }
+
+    .rescue-session-panel {
+        display: grid;
+        min-width: 240px;
+        gap: 6px;
+        padding: 17px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 14px;
+        box-shadow: 0 18px 65px var(--shadow);
+    }
+
+    .rescue-session-state {
+        color: var(--accent);
+        font-size: 9px;
+        font-weight: 950;
+        letter-spacing: .9px;
+    }
+
+    .rescue-session-panel strong {
+        font: 900 30px Consolas, Monaco, monospace;
+    }
+
+    .rescue-session-panel small {
+        color: var(--text-muted);
+        line-height: 1.45;
+    }
+
+    .rescue-layout {
+        display: grid;
+        width: min(1580px, 100%);
+        grid-template-columns: 300px minmax(480px, 1fr) minmax(360px, 470px);
+        align-items: start;
+        gap: 16px;
+        margin: 0 auto;
+    }
+
+    .rescue-briefing {
+        display: grid;
+        gap: 14px;
+    }
+
+    .rescue-panel,
+    .rescue-workspace,
+    .rescue-preview-column {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        box-shadow: 0 18px 65px var(--shadow);
+    }
+
+    .rescue-panel {
+        padding: 18px;
+    }
+
+    .rescue-panel-heading,
+    .rescue-workspace-heading,
+    .rescue-preview-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .rescue-panel-heading span:first-child {
+        color: var(--accent);
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .9px;
+    }
+
+    .rescue-panel h2,
+    .rescue-workspace h2,
+    .rescue-preview-column h2 {
+        margin: 4px 0 0;
+        font-size: 20px;
+    }
+
+    .rescue-panel > p {
+        color: var(--text-muted);
+        line-height: 1.55;
+    }
+
+    .rescue-shell-badge,
+    .rescue-live-indicator {
+        padding: 6px 8px;
+        color: var(--accent);
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .7px;
+    }
+
+    .rescue-objective-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+    .rescue-objective {
+        display: grid;
+        grid-template-columns: 29px 1fr;
+        align-items: start;
+        gap: 9px;
+        padding: 9px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .rescue-objective > span {
+        display: grid;
+        width: 29px;
+        height: 29px;
+        place-items: center;
+        color: var(--text-muted);
+        background: var(--surface-strong);
+        border-radius: 7px;
+        font-size: 9px;
+        font-weight: 950;
+    }
+
+    .rescue-objective strong,
+    .rescue-objective small {
+        display: block;
+    }
+
+    .rescue-objective strong {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    .rescue-objective small {
+        margin-top: 3px;
+        color: var(--text-muted);
+        font-size: 8px;
+    }
+
+    .rescue-score-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+    .rescue-score-grid div {
+        padding: 10px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .rescue-score-grid span,
+    .rescue-score-grid strong {
+        display: block;
+    }
+
+    .rescue-score-grid span {
+        color: var(--text-muted);
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+
+    .rescue-score-grid strong {
+        margin-top: 4px;
+        font-size: 13px;
+    }
+
+    .rescue-score-note {
+        margin-bottom: 0;
+        font-size: 10px;
+    }
+
+    .rescue-control-stack {
+        display: grid;
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+    .rescue-primary,
+    .rescue-secondary {
+        min-height: 42px;
+        padding: 10px 12px;
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .rescue-primary {
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border: 1px solid var(--accent);
+    }
+
+    .rescue-secondary {
+        color: var(--text);
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+    }
+
+    .rescue-hint {
+        padding: 12px;
+        margin-top: 12px;
+        color: var(--warning-text);
+        background: var(--warning-surface);
+        border: 1px solid var(--warning-border);
+        border-radius: 9px;
+    }
+
+    .rescue-hint span {
+        color: var(--warning-accent);
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .8px;
+    }
+
+    .rescue-hint p {
+        margin: 5px 0 0;
+        color: var(--warning-muted);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .rescue-workspace,
+    .rescue-preview-column {
+        padding: 18px;
+    }
+
+    .rescue-editor-stats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 6px;
+    }
+
+    .rescue-editor-stats span {
+        padding: 6px 8px;
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 850;
+    }
+
+    .rescue-editor-grid {
+        display: grid;
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    .rescue-editor {
+        overflow: hidden;
+        background: var(--code-bg);
+        border: 1px solid var(--border-strong);
+        border-radius: 11px;
+    }
+
+    .rescue-editor-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 9px 12px;
+        color: var(--dark-panel-muted);
+        background: color-mix(
+            in srgb,
+            var(--code-bg) 78%,
+            var(--surface) 22%
+        );
+        border-bottom: 1px solid var(--border-strong);
+        font-size: 9px;
+        font-weight: 900;
+        letter-spacing: .65px;
+    }
+
+    .rescue-editor textarea {
+        display: block;
+        width: 100%;
+        min-height: 300px;
+        resize: vertical;
+        padding: 16px;
+        color: var(--code-text);
+        background: var(--code-bg);
+        border: 0;
+        outline: 0;
+        font: 14px/1.55 Consolas, Monaco, monospace;
+        tab-size: 4;
+    }
+
+    .rescue-editor textarea:focus {
+        box-shadow: inset 0 0 0 2px var(--accent);
+    }
+
+    .rescue-security-note {
+        display: grid;
+        gap: 3px;
+        padding: 11px 12px;
+        margin-top: 12px;
+        color: var(--accent-soft);
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 9px;
+    }
+
+    .rescue-security-note strong {
+        font-size: 9px;
+    }
+
+    .rescue-security-note span {
+        color: var(--text-muted);
+        font-size: 9px;
+        line-height: 1.45;
+    }
+
+    .rescue-browser {
+        margin-top: 15px;
+        overflow: hidden;
+        background: var(--code-bg);
+        border: 1px solid var(--border-strong);
+        border-radius: 12px;
+    }
+
+    .rescue-browser-bar {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 9px 11px;
+        color: var(--dark-panel-muted);
+        background: color-mix(
+            in srgb,
+            var(--code-bg) 79%,
+            var(--surface) 21%
+        );
+        border-bottom: 1px solid var(--border-strong);
+        font: 9px Consolas, Monaco, monospace;
+    }
+
+    .rescue-browser-dots {
+        display: flex;
+        gap: 5px;
+    }
+
+    .rescue-browser-dots i {
+        width: 7px;
+        height: 7px;
+        background: var(--border-strong);
+        border-radius: 50%;
+    }
+
+    .rescue-browser-dots i:first-child {
+        background: var(--danger);
+    }
+
+    .rescue-browser-dots i:nth-child(2) {
+        background: var(--warning-accent);
+    }
+
+    .rescue-browser-dots i:last-child {
+        background: var(--accent);
+    }
+
+    .rescue-preview-frame {
+        display: block;
+        width: 100%;
+        min-height: 650px;
+        background: #f5f7fb;
+        border: 0;
+    }
+
+    .rescue-console {
+        padding: 13px;
+        margin-top: 12px;
+        color: var(--dark-panel-text);
+        background: var(--code-bg);
+        border: 1px solid var(--border-strong);
+        border-radius: 10px;
+        font: 9px/1.55 Consolas, Monaco, monospace;
+    }
+
+    .rescue-console > div {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+        color: var(--dark-panel-muted);
+        border-bottom: 1px solid var(--border-strong);
+        font-size: 8px;
+        font-weight: 900;
+        letter-spacing: .7px;
+    }
+
+    .rescue-console p {
+        margin: 4px 0;
+    }
+
+    @@media (max-width: 1260px) {
+        .rescue-layout {
+            grid-template-columns: 290px minmax(0, 1fr);
+        }
+
+        .rescue-preview-column {
+            grid-column: 1 / -1;
+        }
+
+        .rescue-preview-frame {
+            min-height: 580px;
+        }
+    }
+
+    @@media (max-width: 820px) {
+        .rescue-header,
+        .rescue-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .rescue-session-panel {
+            min-width: 0;
+        }
+
+        .rescue-preview-column {
+            grid-column: auto;
+        }
+
+        .rescue-panel-heading,
+        .rescue-workspace-heading,
+        .rescue-preview-heading {
+            display: grid;
+        }
+
+        .rescue-editor-stats {
+            justify-content: flex-start;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .rescue-score-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .rescue-editor textarea {
+            min-height: 250px;
+        }
+
+        .rescue-preview-frame {
+            min-height: 480px;
+        }
+    }
+
+    /* PASS 6B MISSION CONTENT */
+    .rescue-incident-report {
+        padding: 12px;
+        margin-top: 13px;
+        color: var(--warning-text);
+        background: var(--warning-surface);
+        border: 1px solid var(--warning-border);
+        border-radius: 10px;
+    }
+
+    .rescue-incident-report strong {
+        color: var(--warning-accent);
+        font-size: 8px;
+        letter-spacing: .8px;
+    }
+
+    .rescue-incident-report ul,
+    .rescue-blueprint ul {
+        padding-left: 18px;
+        margin: 8px 0 0;
+    }
+
+    .rescue-incident-report li,
+    .rescue-blueprint li {
+        margin-top: 5px;
+        font-size: 10px;
+        line-height: 1.45;
+    }
+
+    .rescue-profile-badge {
+        padding: 6px 8px;
+        color: var(--text);
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .65px;
+    }
+
+    .rescue-profile-grid {
+        display: grid;
+        gap: 8px;
+        margin-top: 13px;
+    }
+
+    .rescue-profile-button {
+        display: grid;
+        gap: 3px;
+        min-height: 58px;
+        padding: 10px;
+        color: var(--text);
+        text-align: left;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        cursor: pointer;
+    }
+
+    .rescue-profile-button:hover {
+        background: var(--surface-hover);
+    }
+
+    .rescue-profile-button.active {
+        background: var(--accent-surface);
+        border-color: var(--accent-border);
+        box-shadow: inset 3px 0 0 var(--accent);
+    }
+
+    .rescue-profile-button strong {
+        font-size: 10px;
+    }
+
+    .rescue-profile-button small {
+        color: var(--text-muted);
+        font-size: 8px;
+        line-height: 1.4;
+    }
+
+    .rescue-viewport-controls {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        margin-top: 12px;
+    }
+
+    .rescue-viewport-button {
+        min-height: 34px;
+        color: var(--text);
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 9px;
+        font-weight: 900;
+    }
+
+    .rescue-viewport-button.active {
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-color: var(--accent);
+    }
+
+    .rescue-preview-frame {
+        margin: 0 auto;
+        transition: width .18s ease;
+    }
+
+    .rescue-preview-frame.viewport-desktop {
+        width: 100%;
+    }
+
+    .rescue-preview-frame.viewport-tablet {
+        width: min(760px, 86%);
+    }
+
+    .rescue-preview-frame.viewport-mobile {
+        width: min(390px, 72%);
+    }
+
+    .rescue-blueprint {
+        padding: 13px;
+        margin-top: 13px;
+        color: var(--text);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+    }
+
+    .rescue-blueprint > div {
+        display: grid;
+        gap: 3px;
+    }
+
+    .rescue-blueprint span {
+        color: var(--accent);
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .8px;
+    }
+
+    .rescue-blueprint strong {
+        font-size: 11px;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .rescue-preview-frame {
+            transition: none;
+        }
+    }
+
+
+    /* CAVECODE_HTMLCSS_MINIGAME_SCORING_STYLES_V3 */
+    .rescue-objective {
+        transition:
+            border-color 140ms ease,
+            background 140ms ease;
+    }
+
+    .rescue-objective.passed {
+        background: color-mix(
+            in srgb,
+            var(--accent-surface) 76%,
+            var(--surface) 24%
+        );
+        border-color: var(--accent-border);
+    }
+
+    .rescue-objective.passed > span {
+        color: #ffffff;
+        background: #176b3a;
+    }
+
+    .rescue-objective.pending > span {
+        color: var(--warning-text);
+        background: var(--warning-surface);
+        border: 1px solid var(--warning-border);
+    }
+
+    .rescue-objective em {
+        display: block;
+        margin-top: 5px;
+        color: var(--text-muted);
+        font-size: 10px;
+        font-style: normal;
+        line-height: 1.45;
+    }
+
+    .rescue-objective.passed em {
+        color: var(--accent-soft);
+    }
+
+    .rescue-score-breakdown {
+        display: grid;
+        gap: 8px;
+        margin-top: 11px;
+    }
+
+    .rescue-score-breakdown > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 9px 11px;
+        color: var(--text-muted);
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        font-size: 10px;
+    }
+
+    .rescue-score-breakdown strong {
+        color: var(--text);
+    }
+
+    .rescue-submit {
+        min-height: 42px;
+        padding: 10px 13px;
+        color: #ffffff;
+        background: #176b3a;
+        border: 1px solid #64c58b;
+        border-radius: 9px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+    .rescue-submit:hover:not(:disabled),
+    .rescue-submit:focus-visible {
+        color: #ffffff;
+        background: #10552e;
+        border-color: #a6efc1;
+    }
+
+    .rescue-submit:focus-visible {
+        outline: 3px solid #ffd166;
+        outline-offset: 3px;
+    }
+
+    .rescue-submit:disabled,
+    .rescue-control-stack button:disabled,
+    .rescue-profile-button:disabled {
+        cursor: not-allowed;
+        opacity: .58;
+    }
+
+    .rescue-editor textarea:disabled {
+        cursor: not-allowed;
+        opacity: .82;
+    }
+
+    .rescue-shell-badge.passed {
+        color: #d7ffe5;
+        background: #124b2b;
+        border-color: #64c58b;
+    }
+
+    .rescue-shell-badge.failed {
+        color: #ffe1e1;
+        background: #671f28;
+        border-color: #e57b86;
+    }
+
+    .rescue-shell-badge.live {
+        color: #dcecff;
+        background: #163d68;
+        border-color: #7cb7f4;
+    }
+
+    .rescue-result {
+        padding: 13px;
+        margin-top: 14px;
+        border-radius: 10px;
+    }
+
+    .rescue-result span,
+    .rescue-result strong {
+        display: block;
+    }
+
+    .rescue-result span {
+        font-size: 9px;
+        font-weight: 950;
+        letter-spacing: .09em;
+    }
+
+    .rescue-result strong {
+        margin-top: 5px;
+        font-size: 13px;
+    }
+
+    .rescue-result p {
+        margin: 7px 0 0;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .rescue-result.passed {
+        color: #d7ffe5;
+        background: #124b2b;
+        border: 1px solid #64c58b;
+    }
+
+    .rescue-result.failed {
+        color: #ffe1e1;
+        background: #671f28;
+        border: 1px solid #e57b86;
+    }
+
+    /* CAVECODE_HTMLCSS_MINIGAME_REWARDS_V4 */
+    .rescue-access-screen {
+        display: grid;
+        min-height: 100vh;
+        padding: 24px;
+        place-items: center;
+        color: var(--text);
+        background:
+            radial-gradient(
+                circle at 50% 0%,
+                color-mix(in srgb, var(--accent) 18%, transparent),
+                transparent 40%
+            ),
+            var(--bg);
+    }
+
+    .rescue-access-screen section {
+        width: min(620px, 100%);
+        padding: 34px;
+        text-align: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: 0 24px 80px var(--shadow);
+    }
+
+    .rescue-access-screen section > span:first-child {
+        display: grid;
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 18px;
+        place-items: center;
+        color: #ffffff;
+        background: #1f6feb;
+        border-radius: 18px;
+        font: 950 18px Consolas, Monaco, monospace;
+    }
+
+    .rescue-access-screen h1 {
+        margin: 8px 0 10px;
+        font-size: clamp(28px, 6vw, 46px);
+    }
+
+    .rescue-access-screen p {
+        color: var(--text-muted);
+        line-height: 1.65;
+    }
+
+    .rescue-access-action,
+    .rescue-access-secondary {
+        display: grid;
+        min-height: 46px;
+        margin-top: 12px;
+        place-items: center;
+        border-radius: 10px;
+        font-weight: 900;
+        text-decoration: none;
+    }
+
+    .rescue-access-action {
+        color: #ffffff !important;
+        background: #1f6feb;
+        border: 1px solid #8bc1ff;
+    }
+
+    .rescue-access-secondary {
+        color: var(--text);
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+    }
+
+    .rescue-record-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        margin-top: 16px;
+    }
+
+    .rescue-record-grid div,
+    .rescue-reward-rules div {
+        padding: 12px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .rescue-record-grid span,
+    .rescue-record-grid strong,
+    .rescue-reward-rules span,
+    .rescue-reward-rules strong {
+        display: block;
+    }
+
+    .rescue-record-grid span,
+    .rescue-reward-rules span {
+        color: var(--text-muted);
+        font-size: 8px;
+        font-weight: 900;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+    }
+
+    .rescue-record-grid strong,
+    .rescue-reward-rules strong {
+        margin-top: 5px;
+        color: var(--text);
+        font-size: 11px;
+    }
+
+    .rescue-reward-rules {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 9px;
+        margin-top: 10px;
+    }
+
+    .rescue-reward-message,
+    .rescue-reward-result {
+        padding: 13px;
+        margin-top: 12px;
+        color: var(--accent-soft);
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 9px;
+        line-height: 1.55;
+    }
+
+    .rescue-reward-result p {
+        margin: 7px 0;
+        color: var(--text-muted);
+    }
+
+    .rescue-reward-result a {
+        color: var(--accent);
+        font-weight: 900;
+    }
+
+    @@media (max-width: 720px) {
+        .rescue-record-grid,
+        .rescue-reward-rules {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+
+    .rescue-mission-nav {
+        margin-top: 14px;
+    }
+
+    .rescue-mission-nav a {
+        text-decoration: none;
+    }
+
+    .rescue-mission-nav .rescue-profile-button {
+        display: grid;
+        align-content: center;
+    }
+
+    .rescue-mission-record-note {
+        margin: 12px 0 0;
+        color: var(--text-muted);
+        font-size: 11px;
+        line-height: 1.5;
+    }
+</style>
+}
+
+@code {
+    private sealed record RepairRequirement(string Title, string Detail);
+    private sealed record RequirementCheck(bool Passed, string Evidence);
+
+    private sealed class HtmlCssMinigameState
+    {
+        public bool Mission1Completed { get; set; }
+        public int BestScore { get; set; }
+        public double? FastestSeconds { get; set; }
+        public int TotalClears { get; set; }
+        public int TotalXpEarned { get; set; }
+        public int TotalCrystalsEarned { get; set; }
+        public bool Mission2Completed { get; set; }
+        public int Mission2BestScore { get; set; }
+        public double? Mission2FastestSeconds { get; set; }
+        public int Mission2Clears { get; set; }
+        public int Mission2LastScore { get; set; }
+        public double? Mission2LastElapsedSeconds { get; set; }
+        public string Mission2LastProfile { get; set; } = "";
+    }
+
+    private sealed class HtmlCssMinigameRecordResult
+    {
+        public HtmlCssMinigameState State { get; set; } = new();
+        public string RewardKey { get; set; } = "";
+        public int XpAwarded { get; set; }
+        public int CrystalsAwarded { get; set; }
+        public int ClearNumber { get; set; }
+        public bool FirstClear { get; set; }
+        public bool NewBestScore { get; set; }
+        public bool NewFastestTime { get; set; }
+        public bool DuplicateAttempt { get; set; }
+    }
+
+    private enum DamageProfile
+    {
+        FullIncident,
+        HtmlSystems,
+        CssSystems
+    }
+
+    private enum PreviewViewport
+    {
+        Desktop,
+        Tablet,
+        Mobile
+    }
+
+    private const int RequirementPointsEach = 140;
+    private const int MaximumTimeBonus = 160;
+    private const int HintPenaltyEach = 40;
+    private const int MaximumScore = 1000;
+    private const int ChapterOneFinalModuleIndex = 7;
+
+    private static readonly RepairRequirement[] Requirements =
+    {
+        new(
+            "Restore semantic project cards",
+            "Use one projects section containing a project-grid and exactly three article cards."),
+        new(
+            "Restore card content",
+            "Every article needs its own heading, useful description, and action link."),
+        new(
+            "Describe every project image",
+            "All three images need meaningful non-empty alternative text."),
+        new(
+            "Rebuild the desktop grid",
+            "Use CSS Grid, three wide-screen columns, and a visible gap between cards."),
+        new(
+            "Contain cards and actions",
+            "Keep images inside their cards, use consistent card structure, readable actions, and visible keyboard focus."),
+        new(
+            "Make the grid responsive",
+            "At a narrow breakpoint, stack the cards into one column without fixed-width overflow.")
+    };
+
+    private static readonly string[] Hints =
+    {
+        "The projects container should be a section with id=\"projects\". Each individual project should be an article inside .project-grid.",
+        "Each article needs an h2, a paragraph, and an anchor with class card-action.",
+        "Use specific alt text that explains each interface preview instead of leaving alt empty or writing only image.",
+        "Set .project-grid to display: grid, add grid-template-columns: repeat(3, 1fr), and include a gap.",
+        "Use width: 100% and object-fit: cover on card images. Give .project-card a consistent column layout and give .card-action readable colors plus :focus-visible.",
+        "Add a max-width media query near 760px that changes .project-grid to one column and avoid a large fixed pixel width on body or .project-grid."
+    };
+
+    private static readonly string[] FullIncidentSymptoms =
+    {
+        "Project items are generic div elements instead of article cards.",
+        "One card lost its heading and another lost its description.",
+        "Image alternatives are empty or meaningless.",
+        "The project grid collapsed into a single unspaced block.",
+        "Images overflow and project actions have poor contrast.",
+        "Keyboard focus and the mobile one-column breakpoint are missing."
+    };
+
+    private static readonly string[] HtmlSymptoms =
+    {
+        "The visual grid mostly survives, but project items are generic containers.",
+        "Card headings, descriptions, or actions are incomplete.",
+        "Image alternative text is missing or vague.",
+        "The projects region does not communicate its purpose semantically."
+    };
+
+    private static readonly string[] CssSymptoms =
+    {
+        "Semantic project articles survived, but the grid no longer has three columns.",
+        "Card images overflow their containers.",
+        "Cards do not maintain a consistent vertical structure.",
+        "Action contrast and keyboard focus are missing.",
+        "The mobile breakpoint no longer stacks the cards."
+    };
+
+    private const string FullIncidentHtml = """
+        <div class="projects" id="projects">
+            <h1>Workshop Projects</h1>
+            <p>Explore interfaces created inside CaveCode Academy.</p>
+
+            <div class="project-list">
+                <div class="project-card">
+                    <img src="sensor-dashboard.svg" alt="">
+                    <div class="project-card-body">
+                        <p>Monitor equipment status and alarm conditions.</p>
+                        <a href="#sensor">Explore dashboard</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="control-room.svg" alt="project image">
+                    <div class="project-card-body">
+                        <h2>Control Room</h2>
+                        <a class="card-action" href="#control">Open controls</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="project-grid.svg">
+                    <div class="project-card-body">
+                        <h2>Project Grid</h2>
+                        <p>Organize responsive interface work.</p>
+                        <a class="card-action" href="#grid">View project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """;
+
+    private const string StableHtml = """
+        <section class="projects" id="projects">
+            <h1>Workshop Projects</h1>
+            <p>Explore interfaces created inside CaveCode Academy.</p>
+
+            <div class="project-grid">
+                <article class="project-card" id="sensor">
+                    <img src="sensor-dashboard.svg" alt="Sensor dashboard showing equipment status and alarms">
+                    <div class="project-card-body">
+                        <h2>Sensor Dashboard</h2>
+                        <p>Monitor equipment status and alarm conditions.</p>
+                        <a class="card-action" href="#sensor">Explore dashboard</a>
+                    </div>
+                </article>
+
+                <article class="project-card" id="control">
+                    <img src="control-room.svg" alt="Industrial control room interface with system controls">
+                    <div class="project-card-body">
+                        <h2>Control Room</h2>
+                        <p>Operate equipment sequences and safety interlocks.</p>
+                        <a class="card-action" href="#control">Open controls</a>
+                    </div>
+                </article>
+
+                <article class="project-card" id="grid">
+                    <img src="project-grid.svg" alt="Responsive project cards arranged in a grid">
+                    <div class="project-card-body">
+                        <h2>Project Grid</h2>
+                        <p>Organize responsive interface work.</p>
+                        <a class="card-action" href="#grid">View project</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+        """;
+
+    private const string DamagedCss = """
+        :root {
+            font-family: Inter, system-ui, sans-serif;
+            color: #17202a;
+            background: #eef3f8;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            width: 1100px;
+            margin: 0;
+            padding: 24px;
+            background: #eef3f8;
+        }
+
+        .projects {
+            padding: 24px;
+            background: #ffffff;
+        }
+
+        .project-list,
+        .project-grid {
+            display: block;
+        }
+
+        .project-card {
+            margin-bottom: 8px;
+            background: #ffffff;
+            border: 1px solid #d6dee8;
+        }
+
+        .project-card img {
+            width: 540px;
+            height: 190px;
+        }
+
+        .project-card-body { padding: 16px; }
+
+        .card-action {
+            color: #315dc0;
+            background: #315dc0;
+        }
+        """;
+
+    private const string SupportCss = """
+        :root {
+            font-family: Inter, system-ui, sans-serif;
+            color: #17202a;
+            background: #eef3f8;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #eef3f8;
+        }
+
+        .projects {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .project-grid,
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #d6dee8;
+            border-radius: 14px;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .project-card-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+        .card-action {
+            display: inline-flex;
+            width: fit-content;
+            margin-top: auto;
+            padding: 10px 13px;
+            color: #ffffff;
+            background: #1d4ed8;
+            border-radius: 8px;
+        }
+
+        .card-action:focus-visible {
+            outline: 3px solid #f59e0b;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 760px) {
+            .project-grid,
+            .project-list {
+                grid-template-columns: 1fr;
+            }
+        }
+        """;
+
+    private const string PreviewStyles = """
+        :root {
+            color-scheme: light;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        h1, h2, p { line-height: 1.45; }
+        a { text-decoration: none; font-weight: 800; }
+        """;
+
+    private const string SensorImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%231d4ed8'/%3E%3Ccircle cx='180' cy='180' r='74' fill='%23ffffff' fill-opacity='.22'/%3E%3Cpath d='M310 120h210v28H310zm0 58h170v28H310zm0 58h195v28H310z' fill='white'/%3E%3C/svg%3E";
+    private const string ControlImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%230f766e'/%3E%3Crect x='90' y='75' width='460' height='210' rx='18' fill='%23ffffff' fill-opacity='.16'/%3E%3Ccircle cx='190' cy='180' r='48' fill='%23ffffff'/%3E%3Crect x='285' y='125' width='180' height='24' fill='white'/%3E%3Crect x='285' y='175' width='130' height='24' fill='white'/%3E%3Crect x='285' y='225' width='155' height='24' fill='white'/%3E%3C/svg%3E";
+    private const string GridImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%237c3aed'/%3E%3Cg fill='white' fill-opacity='.88'%3E%3Crect x='90' y='85' width='135' height='190' rx='14'/%3E%3Crect x='252' y='85' width='135' height='190' rx='14'/%3E%3Crect x='414' y='85' width='135' height='190' rx='14'/%3E%3C/g%3E%3C/svg%3E";
+
+    private bool AccessReady;
+    private bool ChapterOneUnlocked;
+    private int ChapterOneCompletedModules;
+    private string AccessError = "";
+
+    private HtmlCssMinigameState MinigameState = new();
+    private bool RewardProcessing;
+    private bool RewardsProcessed;
+    private string RewardMessage = "";
+    private string AttemptId = Guid.NewGuid().ToString("N");
+
+    private DamageProfile CurrentProfile = DamageProfile.FullIncident;
+    private PreviewViewport CurrentViewport = PreviewViewport.Desktop;
+    private string HtmlCode = FullIncidentHtml;
+    private string CssCode = DamagedCss;
+    private int PreviewRevision;
+    private int HintsUsed;
+    private string CurrentHint = "";
+
+    private bool AttemptStarted;
+    private DateTimeOffset AttemptStartedAt;
+    private bool AttemptSubmitted;
+    private bool RunPassed;
+    private int FinalScore;
+    private int FinalRequirementPoints;
+    private int FinalTimeBonus;
+    private int FinalHintPenalty;
+    private TimeSpan FinalElapsed;
+    private string SubmissionMessage = "";
+
+    private CancellationTokenSource? TimerCancellation;
+    private Task? TimerTask;
+
+    private string[] ActiveSymptoms => CurrentProfile switch
+    {
+        DamageProfile.HtmlSystems => HtmlSymptoms,
+        DamageProfile.CssSystems => CssSymptoms,
+        _ => FullIncidentSymptoms
+    };
+
+    private string ActiveProfileLabel => ProfileLabel(CurrentProfile);
+
+    private string FastestClearDisplay =>
+        MinigameState.Mission2FastestSeconds.HasValue
+            ? FormatSeconds(MinigameState.Mission2FastestSeconds.Value)
+            : "—";
+
+    private int HtmlLineCount => CountLines(HtmlCode);
+    private int CssLineCount => CountLines(CssCode);
+
+    private TimeSpan Elapsed =>
+        AttemptSubmitted
+            ? FinalElapsed
+            : AttemptStarted
+                ? DateTimeOffset.UtcNow - AttemptStartedAt
+                : TimeSpan.Zero;
+
+    private string TimeDisplay =>
+        $"{(int)Elapsed.TotalMinutes:00}:{Elapsed.Seconds:00}";
+
+    private string SessionStateLabel =>
+        AttemptSubmitted
+            ? "RUN COMPLETE"
+            : AttemptStarted
+                ? "SESSION RUNNING"
+                : "READY TO START";
+
+    private RequirementCheck[] LiveChecks => EvaluateRequirements();
+    private int PassedRequirementCount => LiveChecks.Count(check => check.Passed);
+    private int CurrentRequirementPoints => PassedRequirementCount * RequirementPointsEach;
+    private int CurrentTimeBonus => Math.Max(0, MaximumTimeBonus - (int)(Elapsed.TotalSeconds / 3));
+    private int CurrentHintPenalty => Math.Min(Hints.Length, HintsUsed) * HintPenaltyEach;
+    private int ProjectedScore => Math.Clamp(CurrentRequirementPoints + CurrentTimeBonus - CurrentHintPenalty, 0, MaximumScore);
+    private int DisplayedScore => AttemptSubmitted ? FinalScore : ProjectedScore;
+    private int DisplayedRequirementPoints => AttemptSubmitted ? FinalRequirementPoints : CurrentRequirementPoints;
+    private int DisplayedTimeBonus => AttemptSubmitted ? FinalTimeBonus : CurrentTimeBonus;
+    private int DisplayedHintPenalty => AttemptSubmitted ? FinalHintPenalty : CurrentHintPenalty;
+
+    private string ResultBadgeLabel =>
+        AttemptSubmitted
+            ? RunPassed ? "MISSION PASSED" : "MISSION FAILED"
+            : "LIVE SCORING";
+
+    private string ResultBadgeClass =>
+        AttemptSubmitted
+            ? RunPassed ? "passed" : "failed"
+            : "live";
+
+    private string ResultPanelClass => RunPassed ? "passed" : "failed";
+    private string PreviewDocument => BuildPreviewDocument();
+
+    private string PreviewFrameClass => CurrentViewport switch
+    {
+        PreviewViewport.Tablet => "rescue-preview-frame viewport-tablet",
+        PreviewViewport.Mobile => "rescue-preview-frame viewport-mobile",
+        _ => "rescue-preview-frame viewport-desktop"
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            CourseProgressSnapshot progress =
+                await CourseEngine.GetProgressAsync(CourseIds.HtmlCss);
+
+            ChapterOneCompletedModules =
+                progress.ModuleCompleted.Take(8).Count(completed => completed);
+
+            ChapterOneUnlocked =
+                progress.ModuleCompleted.Length > ChapterOneFinalModuleIndex &&
+                progress.ModuleCompleted[ChapterOneFinalModuleIndex];
+
+            MinigameState =
+                await JS.InvokeAsync<HtmlCssMinigameState>(
+                    "caveCodeHtmlCssMinigame.getState");
+        }
+        catch (Exception error)
+        {
+            AccessError =
+                "Interface Rescue could not read the local checkpoint: " +
+                error.Message;
+        }
+        finally
+        {
+            AccessReady = true;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private Task UpdateHtml(ChangeEventArgs args)
+    {
+        if (AttemptSubmitted)
+        {
+            return Task.CompletedTask;
+        }
+
+        EnsureAttemptStarted();
+        HtmlCode = args.Value?.ToString() ?? "";
+        PreviewRevision++;
+        return Task.CompletedTask;
+    }
+
+    private Task UpdateCss(ChangeEventArgs args)
+    {
+        if (AttemptSubmitted)
+        {
+            return Task.CompletedTask;
+        }
+
+        EnsureAttemptStarted();
+        CssCode = args.Value?.ToString() ?? "";
+        PreviewRevision++;
+        return Task.CompletedTask;
+    }
+
+    private void StartScoredRun() => EnsureAttemptStarted();
+
+    private void EnsureAttemptStarted()
+    {
+        if (AttemptStarted || AttemptSubmitted)
+        {
+            return;
+        }
+
+        AttemptStarted = true;
+        AttemptStartedAt = DateTimeOffset.UtcNow;
+        TimerCancellation = new CancellationTokenSource();
+        TimerTask = RunClockAsync(TimerCancellation.Token);
+    }
+
+    private async Task RunClockAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+
+            while (await timer.WaitForNextTickAsync(cancellationToken))
+            {
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+
+    private void StopClock()
+    {
+        TimerCancellation?.Cancel();
+        TimerCancellation?.Dispose();
+        TimerCancellation = null;
+    }
+
+    private void RevealHint()
+    {
+        if (AttemptSubmitted)
+        {
+            return;
+        }
+
+        EnsureAttemptStarted();
+
+        if (HintsUsed >= Hints.Length)
+        {
+            CurrentHint = "All six Mission 2 hints have already been revealed.";
+            return;
+        }
+
+        CurrentHint = Hints[HintsUsed];
+        HintsUsed++;
+    }
+
+    private async Task SubmitRepairAsync()
+    {
+        if (AttemptSubmitted)
+        {
+            return;
+        }
+
+        EnsureAttemptStarted();
+        FinalElapsed = DateTimeOffset.UtcNow - AttemptStartedAt;
+
+        RequirementCheck[] checks = EvaluateRequirements();
+        FinalRequirementPoints = checks.Count(check => check.Passed) * RequirementPointsEach;
+        FinalTimeBonus = Math.Max(0, MaximumTimeBonus - (int)(FinalElapsed.TotalSeconds / 3));
+        FinalHintPenalty = Math.Min(Hints.Length, HintsUsed) * HintPenaltyEach;
+        FinalScore = Math.Clamp(FinalRequirementPoints + FinalTimeBonus - FinalHintPenalty, 0, MaximumScore);
+        RunPassed = checks.All(check => check.Passed);
+        AttemptSubmitted = true;
+        StopClock();
+
+        int failed = checks.Count(check => !check.Passed);
+        SubmissionMessage =
+            RunPassed
+                ? $"All six project-grid repairs passed with {FinalScore} points."
+                : $"{failed} repair requirement{(failed == 1 ? "" : "s")} still need attention. Final score: {FinalScore}.";
+
+        if (RunPassed)
+        {
+            await ProcessRewardsAsync();
+        }
+    }
+
+    private async Task ProcessRewardsAsync()
+    {
+        if (RewardsProcessed || RewardProcessing)
+        {
+            return;
+        }
+
+        RewardProcessing = true;
+        RewardMessage = "";
+
+        try
+        {
+            HtmlCssMinigameRecordResult record =
+                await JS.InvokeAsync<HtmlCssMinigameRecordResult>(
+                    "caveCodeHtmlCssMinigame.recordMission2Clear",
+                    AttemptId,
+                    FinalScore,
+                    Math.Max(0, FinalElapsed.TotalSeconds),
+                    CurrentProfile.ToString());
+
+            int validatedLines =
+                CountValidatedLines(HtmlCode) +
+                CountValidatedLines(CssCode);
+
+            await ProgressionService.AwardMinigameRunAsync(
+                CourseIds.HtmlCss,
+                record.RewardKey,
+                record.XpAwarded,
+                validatedLines);
+
+            await AchievementService.AwardMinigameCrystalsAsync(
+                record.RewardKey,
+                record.CrystalsAwarded);
+
+            MinigameState = record.State;
+            RewardsProcessed = true;
+
+            string recordText =
+                record.NewBestScore && record.NewFastestTime
+                    ? " New Mission 2 best score and fastest clear."
+                    : record.NewBestScore
+                        ? " New Mission 2 best score."
+                        : record.NewFastestTime
+                            ? " New Mission 2 fastest clear."
+                            : "";
+
+            RewardMessage =
+                $"+{record.XpAwarded} HTML/CSS XP, " +
+                $"◆ {record.CrystalsAwarded} crystals, and " +
+                $"{validatedLines} validated lines saved." +
+                recordText;
+        }
+        catch (Exception error)
+        {
+            RewardMessage =
+                "Mission 2 passed, but the local reward save did not finish: " +
+                error.Message;
+        }
+        finally
+        {
+            RewardProcessing = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void LoadDamageProfile(DamageProfile profile)
+    {
+        if (AttemptSubmitted)
+        {
+            return;
+        }
+
+        CurrentProfile = profile;
+        ResetMissionState();
+        ApplyCurrentProfile();
+    }
+
+    private void ResetWorkspace()
+    {
+        ResetMissionState();
+        ApplyCurrentProfile();
+    }
+
+    private void ResetMissionState()
+    {
+        StopClock();
+        AttemptStarted = false;
+        AttemptSubmitted = false;
+        RunPassed = false;
+        FinalScore = 0;
+        FinalRequirementPoints = 0;
+        FinalTimeBonus = 0;
+        FinalHintPenalty = 0;
+        FinalElapsed = TimeSpan.Zero;
+        SubmissionMessage = "";
+        HintsUsed = 0;
+        CurrentHint = "";
+        RewardProcessing = false;
+        RewardsProcessed = false;
+        RewardMessage = "";
+        AttemptId = Guid.NewGuid().ToString("N");
+    }
+
+    private void ApplyCurrentProfile()
+    {
+        switch (CurrentProfile)
+        {
+            case DamageProfile.HtmlSystems:
+                HtmlCode = FullIncidentHtml;
+                CssCode = SupportCss;
+                break;
+            case DamageProfile.CssSystems:
+                HtmlCode = StableHtml;
+                CssCode = DamagedCss;
+                break;
+            default:
+                HtmlCode = FullIncidentHtml;
+                CssCode = DamagedCss;
+                break;
+        }
+
+        PreviewRevision++;
+    }
+
+    private void SetViewport(PreviewViewport viewport)
+    {
+        CurrentViewport = viewport;
+        PreviewRevision++;
+    }
+
+    private RequirementCheck[] EvaluateRequirements() =>
+        Enumerable.Range(0, Requirements.Length)
+            .Select(EvaluateRequirement)
+            .ToArray();
+
+    private RequirementCheck EvaluateRequirement(int index) => index switch
+    {
+        0 => EvaluateSemanticCards(),
+        1 => EvaluateCardContent(),
+        2 => EvaluateImageAlternatives(),
+        3 => EvaluateDesktopGrid(),
+        4 => EvaluateCardContainmentAndActions(),
+        5 => EvaluateResponsiveGrid(),
+        _ => new(false, "Unknown requirement.")
+    };
+
+    private RequirementCheck EvaluateSemanticCards()
+    {
+        bool section = HasTag(HtmlCode, "section") && HasId(HtmlCode, "projects");
+        bool grid = HasClass(HtmlCode, "project-grid");
+        int articles = CountTags(HtmlCode, "article");
+        bool passed = section && grid && articles == 3;
+
+        return new(
+            passed,
+            passed
+                ? "Projects section, project-grid container, and three article cards are present."
+                : $"Projects section: {PassWord(section)}; project-grid: {PassWord(grid)}; article cards: {articles} / 3.");
+    }
+
+    private RequirementCheck EvaluateCardContent()
+    {
+        MatchCollection articles = Regex.Matches(
+            HtmlCode ?? "",
+            @"<article\b[^>]*>(?<body>[\s\S]*?)</article>",
+            RegexOptions.IgnoreCase);
+
+        int complete = articles.Cast<Match>().Count(article =>
+        {
+            string body = article.Groups["body"].Value;
+            return HasTag(body, "h2") &&
+                   HasTag(body, "p") &&
+                   HasAnchorClass(body, "card-action");
+        });
+
+        bool passed = articles.Count == 3 && complete == 3;
+
+        return new(
+            passed,
+            passed
+                ? "All three article cards contain a heading, description, and card action."
+                : $"Complete card content: {complete} / 3 articles.");
+    }
+
+    private RequirementCheck EvaluateImageAlternatives()
+    {
+        MatchCollection images = Regex.Matches(
+            HtmlCode ?? "",
+            @"<img\b(?<attrs>[^>]*)>",
+            RegexOptions.IgnoreCase);
+
+        int meaningful = images.Cast<Match>().Count(image =>
+        {
+            Match alt = Regex.Match(
+                image.Groups["attrs"].Value,
+                @"\balt\s*=\s*[""'](?<value>[^""']+)[""']",
+                RegexOptions.IgnoreCase);
+
+            if (!alt.Success)
+            {
+                return false;
+            }
+
+            string value = alt.Groups["value"].Value.Trim().ToLowerInvariant();
+            return value.Length >= 12 && value is not "image" and not "project image" and not "photo";
+        });
+
+        bool passed = images.Count == 3 && meaningful == 3;
+
+        return new(
+            passed,
+            passed
+                ? "All three project images have meaningful alternative text."
+                : $"Meaningful image alternatives: {meaningful} / 3.");
+    }
+
+    private RequirementCheck EvaluateDesktopGrid()
+    {
+        string css = StripCssComments(CssCode);
+        bool displayGrid = RuleContains(css, ".project-grid", @"display\s*:\s*grid");
+        bool threeColumns = RuleContains(
+            css,
+            ".project-grid",
+            @"grid-template-columns\s*:\s*(?:repeat\(\s*3\s*,\s*(?:minmax\([^;]+\)|1fr)\s*\)|(?:minmax\([^;]+\)|1fr)\s+(?:minmax\([^;]+\)|1fr)\s+(?:minmax\([^;]+\)|1fr))");
+        bool gap = RuleContains(css, ".project-grid", @"(?:gap|column-gap)\s*:\s*(?!0(?:px|rem|em|%)?\b)[^;]+");
+        bool passed = displayGrid && threeColumns && gap;
+
+        return new(
+            passed,
+            passed
+                ? "The wide project collection uses a three-column CSS Grid with spacing."
+                : $"Grid display: {PassWord(displayGrid)}; three columns: {PassWord(threeColumns)}; gap: {PassWord(gap)}.");
+    }
+
+    private RequirementCheck EvaluateCardContainmentAndActions()
+    {
+        string css = StripCssComments(CssCode);
+        bool cardLayout =
+            RuleContains(css, ".project-card", @"display\s*:\s*(?:flex|grid)") &&
+            (RuleContains(css, ".project-card", @"flex-direction\s*:\s*column") ||
+             RuleContains(css, ".project-card", @"grid-template-rows\s*:"));
+        bool overflow = RuleContains(css, ".project-card", @"overflow\s*:\s*hidden");
+        bool imageWidth = RuleContains(css, ".project-card img", @"width\s*:\s*100%");
+        bool objectFit = RuleContains(css, ".project-card img", @"object-fit\s*:\s*cover");
+        bool readable = HasReadableAction(css);
+        bool focus = Regex.IsMatch(css, @"\.card-action\s*:\s*focus-visible\s*\{[\s\S]*?outline\s*:\s*(?!none)[^;]+", RegexOptions.IgnoreCase);
+        bool passed = cardLayout && overflow && imageWidth && objectFit && readable && focus;
+
+        return new(
+            passed,
+            passed
+                ? "Cards contain their images, keep a consistent column structure, and expose readable keyboard-focusable actions."
+                : $"Card structure: {PassWord(cardLayout)}; overflow: {PassWord(overflow)}; image width: {PassWord(imageWidth)}; object fit: {PassWord(objectFit)}; action contrast: {PassWord(readable)}; focus: {PassWord(focus)}.");
+    }
+
+    private RequirementCheck EvaluateResponsiveGrid()
+    {
+        string css = StripCssComments(CssCode);
+        Match media = Regex.Match(
+            css,
+            @"@media\s*\(\s*max-width\s*:\s*(?<width>\d+)px\s*\)\s*\{(?<body>[\s\S]*)$",
+            RegexOptions.IgnoreCase);
+
+        int width = media.Success ? int.Parse(media.Groups["width"].Value) : int.MaxValue;
+        string body = media.Success ? media.Groups["body"].Value : "";
+        bool breakpoint = media.Success && width >= 480 && width <= 820;
+        bool oneColumn = Regex.IsMatch(
+            body,
+            @"\.project-grid[\s\S]*?grid-template-columns\s*:\s*1fr",
+            RegexOptions.IgnoreCase);
+        bool fixedBodyWidth = RuleContains(css, "body", @"width\s*:\s*(?:[8-9]\d{2}|[1-9]\d{3,})px");
+        bool fixedGridWidth = RuleContains(css, ".project-grid", @"width\s*:\s*(?:[8-9]\d{2}|[1-9]\d{3,})px");
+        bool passed = breakpoint && oneColumn && !fixedBodyWidth && !fixedGridWidth;
+
+        return new(
+            passed,
+            passed
+                ? $"A {width}px breakpoint stacks the project grid without fixed-width overflow."
+                : $"Breakpoint: {PassWord(breakpoint)}; one-column grid: {PassWord(oneColumn)}; body width removed: {PassWord(!fixedBodyWidth)}; grid width removed: {PassWord(!fixedGridWidth)}.");
+    }
+
+    private string BuildPreviewDocument()
+    {
+        string html = SanitizeHtml(HtmlCode)
+            .Replace("sensor-dashboard.svg", SensorImage, StringComparison.OrdinalIgnoreCase)
+            .Replace("control-room.svg", ControlImage, StringComparison.OrdinalIgnoreCase)
+            .Replace("project-grid.svg", GridImage, StringComparison.OrdinalIgnoreCase);
+        string css = SanitizeCss(CssCode);
+
+        return $"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Project Grid Recovery</title>
+                <style>{PreviewStyles}\n{css}</style>
+            </head>
+            <body>
+                {html}
+            </body>
+            </html>
+            """;
+    }
+
+    private static string SanitizeHtml(string html)
+    {
+        string value = html ?? "";
+        value = Regex.Replace(value, @"<script\b[\s\S]*?</script\s*>", "", RegexOptions.IgnoreCase);
+        value = Regex.Replace(value, @"\s+on[a-z]+\s*=\s*(?:""[^""]*""|'[^']*')", "", RegexOptions.IgnoreCase);
+        value = Regex.Replace(value, @"javascript\s*:", "", RegexOptions.IgnoreCase);
+        value = Regex.Replace(value, @"\s+(?:src|href)\s*=\s*[""']https?://[^""']*[""']", "", RegexOptions.IgnoreCase);
+        return value;
+    }
+
+    private static string SanitizeCss(string css)
+    {
+        string value = css ?? "";
+        value = Regex.Replace(value, @"@import[^;]+;", "", RegexOptions.IgnoreCase);
+        value = Regex.Replace(value, @"url\s*\([^)]*\)", "none", RegexOptions.IgnoreCase);
+        value = Regex.Replace(value, @"expression\s*\([^)]*\)", "", RegexOptions.IgnoreCase);
+        return value;
+    }
+
+    private static bool HasTag(string html, string tag) =>
+        Regex.IsMatch(html ?? "", $@"<\s*{Regex.Escape(tag)}\b", RegexOptions.IgnoreCase);
+
+    private static int CountTags(string html, string tag) =>
+        Regex.Matches(html ?? "", $@"<\s*{Regex.Escape(tag)}\b", RegexOptions.IgnoreCase).Count;
+
+    private static bool HasId(string html, string id) =>
+        Regex.IsMatch(html ?? "", $@"\bid\s*=\s*[""']{Regex.Escape(id)}[""']", RegexOptions.IgnoreCase);
+
+    private static bool HasClass(string html, string className) =>
+        Regex.IsMatch(html ?? "", $@"\bclass\s*=\s*[""'][^""']*\b{Regex.Escape(className)}\b[^""']*[""']", RegexOptions.IgnoreCase);
+
+    private static bool HasAnchorClass(string html, string className) =>
+        Regex.IsMatch(html ?? "", $@"<a\b[^>]*\bclass\s*=\s*[""'][^""']*\b{Regex.Escape(className)}\b[^""']*[""']", RegexOptions.IgnoreCase);
+
+    private static string StripCssComments(string css) =>
+        Regex.Replace(css ?? "", @"/\*.*?\*/", "", RegexOptions.Singleline);
+
+    private static bool RuleContains(string css, string selector, string declarationPattern)
+    {
+        MatchCollection rules = Regex.Matches(
+            css ?? "",
+            @"(?<selectors>[^{}]+)\{(?<body>[^{}]*)\}",
+            RegexOptions.Singleline);
+
+        foreach (Match rule in rules)
+        {
+            if (rule.Groups["selectors"].Value.IndexOf(selector, StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                continue;
+            }
+
+            if (Regex.IsMatch(rule.Groups["body"].Value, declarationPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool HasReadableAction(string css)
+    {
+        MatchCollection rules = Regex.Matches(
+            css ?? "",
+            @"(?<selectors>[^{}]+)\{(?<body>[^{}]*)\}",
+            RegexOptions.Singleline);
+
+        foreach (Match rule in rules)
+        {
+            if (rule.Groups["selectors"].Value.IndexOf(".card-action", StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                continue;
+            }
+
+            string body = rule.Groups["body"].Value;
+            string foreground = DeclarationValue(body, "color");
+            string background = DeclarationValue(body, "background-color");
+
+            if (string.IsNullOrWhiteSpace(background))
+            {
+                background = DeclarationValue(body, "background");
+            }
+
+            if (TryParseCssColor(foreground, out double foregroundLuminance) &&
+                TryParseCssColor(background, out double backgroundLuminance))
+            {
+                double light = Math.Max(foregroundLuminance, backgroundLuminance);
+                double dark = Math.Min(foregroundLuminance, backgroundLuminance);
+                return (light + .05) / (dark + .05) >= 4.5;
+            }
+        }
+
+        return false;
+    }
+
+    private static string DeclarationValue(string body, string property)
+    {
+        Match match = Regex.Match(
+            body ?? "",
+            $@"(?:^|;)\s*{Regex.Escape(property)}\s*:\s*(?<value>[^;]+)",
+            RegexOptions.IgnoreCase);
+        return match.Success ? match.Groups["value"].Value.Trim() : "";
+    }
+
+    private static bool TryParseCssColor(string value, out double luminance)
+    {
+        luminance = 0;
+        string color = (value ?? "").Trim().ToLowerInvariant();
+        color = color switch
+        {
+            "white" => "#ffffff",
+            "black" => "#000000",
+            "navy" => "#000080",
+            _ => color
+        };
+
+        Match hex = Regex.Match(color, @"^#(?<hex>[0-9a-f]{3}|[0-9a-f]{6})$", RegexOptions.IgnoreCase);
+        if (!hex.Success)
+        {
+            return false;
+        }
+
+        string digits = hex.Groups["hex"].Value;
+        if (digits.Length == 3)
+        {
+            digits = string.Concat(digits.Select(character => new string(character, 2)));
+        }
+
+        int red = Convert.ToInt32(digits[..2], 16);
+        int green = Convert.ToInt32(digits.Substring(2, 2), 16);
+        int blue = Convert.ToInt32(digits.Substring(4, 2), 16);
+
+        static double Channel(int component)
+        {
+            double componentValue = component / 255d;
+            return componentValue <= .03928
+                ? componentValue / 12.92
+                : Math.Pow((componentValue + .055) / 1.055, 2.4);
+        }
+
+        luminance = .2126 * Channel(red) + .7152 * Channel(green) + .0722 * Channel(blue);
+        return true;
+    }
+
+    private string ProfileButtonClass(DamageProfile profile) =>
+        profile == CurrentProfile ? "rescue-profile-button active" : "rescue-profile-button";
+
+    private static string ProfileLabel(DamageProfile profile) => profile switch
+    {
+        DamageProfile.HtmlSystems => "HTML systems",
+        DamageProfile.CssSystems => "CSS systems",
+        _ => "Full Incident"
+    };
+
+    private static string ProfileDescription(DamageProfile profile) => profile switch
+    {
+        DamageProfile.HtmlSystems => "Grid styles remain while semantic cards, content, links, and image alternatives fail.",
+        DamageProfile.CssSystems => "Semantic card content remains while layout, containment, contrast, focus, and responsiveness fail.",
+        _ => "HTML structure, accessibility, grid layout, card containment, actions, and responsiveness are damaged."
+    };
+
+    private string ViewportButtonClass(PreviewViewport viewport) =>
+        viewport == CurrentViewport ? "rescue-viewport-button active" : "rescue-viewport-button";
+
+    private static string ViewportLabel(PreviewViewport viewport) => viewport switch
+    {
+        PreviewViewport.Tablet => "Tablet",
+        PreviewViewport.Mobile => "Mobile",
+        _ => "Desktop"
+    };
+
+    private static int CountLines(string value) =>
+        string.IsNullOrEmpty(value) ? 0 : value.Count(character => character == '\n') + 1;
+
+    private static int CountValidatedLines(string value) =>
+        string.IsNullOrWhiteSpace(value)
+            ? 0
+            : value.Replace("\r\n", "\n").Split('\n').Count(line => !string.IsNullOrWhiteSpace(line));
+
+    private static string FormatSeconds(double seconds)
+    {
+        TimeSpan value = TimeSpan.FromSeconds(Math.Max(0, seconds));
+        return $"{(int)value.TotalMinutes:00}:{value.Seconds:00}";
+    }
+
+    private static string PassWord(bool passed) => passed ? "pass" : "pending";
+
+    public async ValueTask DisposeAsync()
+    {
+        StopClock();
+        if (TimerTask is not null)
+        {
+            try
+            {
+                await TimerTask;
+            }
+            catch (OperationCanceledException)
+            {
+            }
+        }
+    }
+}

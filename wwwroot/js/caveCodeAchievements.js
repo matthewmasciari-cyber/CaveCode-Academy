@@ -151,6 +151,26 @@
             description: "Complete the full C++ Engine Foundry learning path.",
             titleReward: "C++ Engine Architect",
             crystals: 250
+        },
+        {
+            id: "htmlcss-chapter-1",
+            course: "htmlcss",
+            courseName: "HTML & CSS Workshop",
+            chapter: 1,
+            name: "Workshop Structure Complete",
+            description: "Complete HTML & CSS Chapter 1 and build the first semantic Interface Workshop page.",
+            titleReward: "Markup Builder",
+            crystals: 100
+        },
+        {
+            id: "htmlcss-minigame-1",
+            course: "htmlcss-minigame",
+            courseName: "Interface Rescue",
+            chapter: 1,
+            name: "Interface Restored",
+            description: "Complete Interface Rescue Mission 1 with all six automated repair requirements.",
+            titleReward: "Interface Rescuer",
+            crystals: 0
         }
     ];
 
@@ -226,7 +246,7 @@
     function syncFromCourseProgress(state) {
         let changed = false;
 
-        for (const course of ["csharp", "python", "cpp"]) {
+        for (const course of ["csharp", "python", "cpp", "htmlcss"]) {
             const modules = completedModules(
                 progressSnapshot(course)
             );

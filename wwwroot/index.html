@@ -15,7 +15,12 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="css/themes.css" />
     <link rel="stylesheet" href="css/light-mode-contrast.css?v=1" />
-<link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="icon"
+          type="image/svg+xml"
+          href="branding/cavecode-academy-logo.svg?v=1" />
+    <link rel="alternate icon"
+          type="image/png"
+          href="favicon.png" />
     <link href="CaveCode.styles.css" rel="stylesheet" />
     <script type="importmap"></script>
     <link rel="stylesheet" href="css/cavecode-ui-contrast-v1.css?v=1" />
@@ -23,10 +28,25 @@
     <link rel="stylesheet" href="css/themed-code-and-page-header-contrast.css?v=1" />
     <link rel="stylesheet" href="css/cavecode-global-contrast-system.css?v=1" />
     <link rel="stylesheet" href="css/cpp-course-shell.css?v=1" />
-    <link rel="stylesheet" href="css/html-css-course-shell.css?v=1" />
+    <link rel="stylesheet" href="css/html-css-course-shell.css?v=5b1" />
+    <link rel="stylesheet" href="css/cavecode-official-branding-pass-1.css?v=1" />
+    <link rel="stylesheet" href="css/cavecode-official-branding-pass-2.css?v=1" />
+    <link rel="stylesheet" href="css/cavecode-official-branding-pass-3.css?v=1" />
 </head>
 <body>
     <div id="app">
+        <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
+        <div class="cavecode-loading-brand">
+            <span class="cavecode-context-logo-surface cavecode-context-logo-surface--loading">
+                <img class="cavecode-context-logo-image"
+                     src="branding/cavecode-academy-logo.svg?v=1"
+                     alt="CaveCode Academy" />
+            </span>
+            <div>
+                <strong>Loading CaveCode Academy</strong>
+                <small>Preparing your learning paths…</small>
+            </div>
+        </div>
         <svg class="loading-progress">
             <circle r="40%" cx="50%" cy="50%" />
             <circle r="40%" cx="50%" cy="50%" />
@@ -47,5 +67,6 @@
     <script src="js/page-header-contrast.js?v=1"></script>
     <script src="js/cavecode-contrast-auditor.js?v=1"></script>
     <script src="js/caveCodeCourseEngine.js?v=1"></script>
+    <script src="js/caveCodeHtmlCssMinigame.js?v=1"></script>
 </body>
 </html>

@@ -4,12 +4,18 @@
 
 <div class="academy-home">
     <header class="home-header">
-        <NavLink class="home-brand" href="/" Match="NavLinkMatch.All">
-            <span class="home-brand-mark">&lt;/&gt;</span>
-            <span>
-                <strong>CaveCode Academy</strong>
-                <small>Learn by building worlds.</small>
+        <!-- CAVECODE_OFFICIAL_BRANDING_PASS_1_V1 -->
+        <NavLink class="home-brand home-brand--official"
+                 href="/"
+                 Match="NavLinkMatch.All"
+                 aria-label="CaveCode Academy home">
+            <span class="cavecode-logo-surface cavecode-logo-surface--header"
+                  aria-hidden="true">
+                <img class="cavecode-official-logo cavecode-official-logo--header"
+                     src="branding/cavecode-academy-logo.svg?v=1"
+                     alt="" />
             </span>
+            <span class="home-brand-tagline">Learn by building worlds.</span>
         </NavLink>
 
         <div class="home-header-actions">
@@ -27,6 +33,15 @@
     <main>
         <section class="hero">
             <div class="hero-copy">
+                <!-- CAVECODE_OFFICIAL_BRANDING_PASS_3_V1 -->
+                <div class="cavecode-hero-brand"
+                     aria-label="CaveCode Academy">
+                    <span class="cavecode-context-logo-surface cavecode-context-logo-surface--hero">
+                        <img class="cavecode-context-logo-image"
+                             src="branding/cavecode-academy-logo.svg?v=1"
+                             alt="CaveCode Academy" />
+                    </span>
+                </div>
                 <p class="eyebrow">CHOOSE YOUR PATH</p>
                 <h1>One academy. Multiple ways to learn code.</h1>
                 <p class="hero-description">
@@ -49,7 +64,16 @@
         <section class="path-section" id="paths">
             <div class="section-heading">
                 <div>
-                    <p class="eyebrow">LEARNING PATHS</p>
+                    <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
+                    <div class="cavecode-learning-path-brandline"
+                         aria-label="CaveCode Academy learning paths">
+                        <span class="cavecode-context-logo-surface cavecode-context-logo-surface--learning">
+                            <img class="cavecode-context-logo-image"
+                                 src="branding/cavecode-academy-logo.svg?v=1"
+                                 alt="" />
+                        </span>
+                        <p class="eyebrow">LEARNING PATHS</p>
+                    </div>
                     <h2>Choose what you want to build</h2>
                 </div>
                 <span class="path-count">4 available · 6 in development · 10 total</span>
@@ -288,8 +312,24 @@
         </section>
     </main>
 
-    <footer>
-        <span>CaveCode Academy</span>
+    <footer class="home-footer home-footer--official">
+        <div class="home-footer-brand-group">
+            <NavLink class="home-footer-brand"
+                     href="/"
+                     Match="NavLinkMatch.All"
+                     aria-label="CaveCode Academy home">
+                <span class="cavecode-logo-surface cavecode-logo-surface--footer"
+                      aria-hidden="true">
+                    <img class="cavecode-official-logo cavecode-official-logo--footer"
+                         src="branding/cavecode-academy-logo.svg?v=1"
+                         alt="" />
+                </span>
+            </NavLink>
+            <span class="home-footer-tagline">
+                <strong>CaveCode Academy</strong>
+                <small>Learn by building worlds.</small>
+            </span>
+        </div>
         <NavLink href="/settings">Viewing preferences</NavLink>
     </footer>
 </div>

@@ -2,16 +2,27 @@
 @using CaveCode.CourseEngine
 @using CaveCode.Components.CourseEngine
 @inject CourseEngineService CourseEngine
+@inject ProgressionService ProgressionService
+@inject AchievementService AchievementService
 
 <PageTitle>HTML & CSS Workshop | CaveCode Academy</PageTitle>
 
-<div class="web-academy">
+<div class="web-academy web-academy--playable">
     <aside class="web-sidebar">
+        <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
+        <div class="cavecode-course-academy-brand"
+             aria-label="CaveCode Academy">
+            <span class="cavecode-context-logo-surface cavecode-context-logo-surface--course">
+                <img class="cavecode-context-logo-image"
+                     src="branding/cavecode-academy-logo.svg?v=1"
+                     alt="" />
+            </span>
+        </div>
         <div class="web-brand">
             <span class="web-brand-mark">&lt;/&gt;</span>
             <div>
                 <h1>CaveCode</h1>
-                <p>Learn HTML and CSS by building one responsive interface.</p>
+                    <!-- CAVECODE_OFFICIAL_BRANDING_PASS_3_V1 -->
             </div>
         </div>
 
@@ -26,10 +37,11 @@
             CompletedModules="@CompletedModuleCount"
             TotalModules="@Manifest.ModuleCount" />
 
-        <div class="web-shell-notice">
-            <strong>COURSE SHELL PREVIEW</strong>
+        <div class="web-availability-note">
+            <strong>CHAPTER 1 AVAILABLE</strong>
             <p>
-                Explore all 40 modules now. Chapter 1 becomes playable in Pass 5.
+                Modules 1-8 are fully playable. Chapters 2–5 remain visible
+                and locked until their content passes are added.
             </p>
         </div>
 
@@ -38,11 +50,13 @@
                 string? lastChapter = null;
             }
 
-            @for (int index = 0; index < Modules.Count; index++)
+            @for (int index = 0; index < Roadmap.Count; index++)
             {
                 int moduleIndex = index;
-                HtmlCssRoadmapModule module = Modules[index];
-                bool active = moduleIndex == SelectedModuleIndex;
+                HtmlCssRoadmapModule module = Roadmap[index];
+                bool available = IsModuleAvailable(index);
+                bool unlocked = IsLessonUnlocked(index);
+                bool active = index == CurrentModuleIndex;
 
                 if (module.Chapter != lastChapter)
                 {
@@ -51,12 +65,31 @@
                 }
 
                 <button type="button"
-                        class="web-lesson-button @(active ? "active" : "")"
-                        @onclick="() => SelectRoadmapModule(moduleIndex)">
-                    <span class="web-lesson-number">@(moduleIndex + 1)</span>
+                        class="web-lesson-button @(active ? "active" : "") @(ModuleCompleted[index] ? "complete" : "")"
+                        disabled="@(!unlocked)"
+                        @onclick="() => SelectLessonAsync(moduleIndex)">
+                    <span class="web-lesson-number">
+                        @if (ModuleCompleted[index])
+                        {
+                            <span class="web-lesson-complete-mark">✓</span>
+                        }
+                        else if (unlocked)
+                        {
+                            <span>@(index + 1)</span>
+                        }
+                        else
+                        {
+                            <LockMark Compact="true" />
+                        }
+                    </span>
+
                     <span class="web-lesson-copy">
                         <strong>@module.Title</strong>
-                        <small>Planned · @module.Topic</small>
+                        <small>
+                            @(available
+                                ? $"{ModuleMastery(index)}% mastery"
+                                : "Planned expansion")
+                        </small>
                     </span>
                 </button>
             }
@@ -67,167 +100,304 @@
         <header class="web-lesson-header">
             <div>
                 <p class="eyebrow">
-                    MODULE @(SelectedModuleIndex + 1) OF @Modules.Count ·
-                    @CurrentModule.Topic.ToUpperInvariant()
+                    MODULE @(CurrentModuleIndex + 1) OF @Manifest.ModuleCount ·
+                    @CurrentLesson.Topic.ToUpperInvariant()
                 </p>
-                <h2>@CurrentModule.Title</h2>
-                <p>@CurrentModule.Summary</p>
+                <h2>@CurrentLesson.Title</h2>
+                <p>@CurrentLesson.Teaching</p>
             </div>
 
-            <div class="web-shell-ring">
-                <strong>ROADMAP</strong>
-                <span>preview</span>
+            <div class="web-mastery-ring">
+                <strong>@ModuleMastery(CurrentModuleIndex)%</strong>
+                <span>mastery</span>
             </div>
         </header>
 
         <CourseStageTabs
-            CurrentStage="0"
-            HighestCompletedStage="-1"
-            UnlockedThroughStage="0"
-            AllDisabled="true"
-            StageSelected="IgnoreStageSelection" />
+            CurrentStage="@((int)CurrentStage)"
+            HighestCompletedStage="@HighestCompletedStage[CurrentModuleIndex]"
+            UnlockedThroughStage="@UnlockedThroughStage"
+            StageSelected="SelectStageAsync" />
 
         <section class="web-stage-card">
             <div class="web-stage-heading">
                 <div>
-                    <p class="eyebrow">PASS 4 · COURSE SHELL</p>
-                    <h3>The shared eight-stage learning loop is ready</h3>
+                    <p class="eyebrow">
+                        STAGE @((int)CurrentStage + 1) ·
+                        @CourseStageCatalog.Label((int)CurrentStage).ToUpperInvariant()
+                    </p>
+                    <h3>@StageHeading(CurrentStage)</h3>
                 </div>
                 <span class="web-support-badge">
-                    Chapter 1 arrives in Pass 5
+                    @CourseStageCatalog.Get((int)CurrentStage).SupportLabel
                 </span>
             </div>
 
-            <div class="web-shell-grid">
-                <div>
-                    <h4>What this module will teach</h4>
-                    <p>@CurrentModule.Summary</p>
+            @if (CurrentStage == CourseTrainingStage.Learn)
+            {
+                <div class="web-learn-grid">
+                    <div>
+                        <h4>Understand the HTML idea</h4>
+                        <p>@CurrentLesson.Teaching</p>
 
-                    <div class="web-concept-list">
-                        @foreach (string concept in CurrentModule.Concepts)
+                        <div class="web-reference-example">
+                            <span>Reference example</span>
+                            <pre><code>@CurrentLesson.ExampleCode</code></pre>
+                        </div>
+
+                        <div class="web-concept-points">
+                            @foreach (string point in CurrentLesson.ConceptPoints)
+                            {
+                                <div>
+                                    <span>◆</span>
+                                    <p>@point</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="web-memory-aid">
+                        <span class="web-mini-label">Browser memory aid</span>
+                        <div class="web-flow">
+                            <div>ELEMENT</div>
+                            <span>→</span>
+                            <div>MEANING</div>
+                            <span>→</span>
+                            <div>PAGE</div>
+                        </div>
+                        <p>@CurrentLesson.PreviewMessage</p>
+                    </div>
+                </div>
+
+                <button type="button"
+                        class="web-primary"
+                        @onclick="CompleteLearnStageAsync">
+                    Begin guided typing →
+                </button>
+            }
+            else if (CurrentStage == CourseTrainingStage.Predict)
+            {
+                <div class="web-prediction-card">
+                    <h4>Predict before checking</h4>
+                    <p>@CurrentLesson.PredictionQuestion</p>
+
+                    <div class="web-prediction-options">
+                        @for (int index = 0;
+                              index < CurrentLesson.PredictionOptions.Length;
+                              index++)
                         {
-                            <div>
-                                <span>◆</span>
-                                <p>@concept</p>
-                            </div>
+                            int optionIndex = index;
+                            string option =
+                                CurrentLesson.PredictionOptions[index];
+
+                            <button type="button"
+                                    class="@PredictionClass(index)"
+                                    @onclick="() => SelectPrediction(optionIndex)">
+                                <span>@((char)('A' + index))</span>
+                                @option
+                            </button>
                         }
                     </div>
+
+                    @if (SelectedPrediction.HasValue)
+                    {
+                        <div class="web-feedback @(StagePassed ? "success" : "error")">
+                            @Feedback
+                        </div>
+                    }
                 </div>
 
-                <aside class="web-module-upgrade">
-                    <span class="web-mini-label">PROJECT UPGRADE</span>
-                    <h4>@CurrentModule.SystemArea</h4>
-                    <p>@CurrentModule.ProjectUpgrade</p>
-
-                    <div class="web-file-card">
-                        <span>Planned editor file</span>
-                        <code>@CurrentModule.EditorFileName</code>
-                    </div>
-                </aside>
-            </div>
-
-            <div class="web-pass-five-note">
-                <div>
-                    <strong>Chapter 1 begins in Pass 5</strong>
+                @if (StagePassed)
+                {
+                    <button type="button"
+                            class="web-primary"
+                            @onclick="AdvanceStageAsync">
+                        Continue to debugging →
+                    </button>
+                }
+            }
+            else if (CurrentStage == CourseTrainingStage.Complete)
+            {
+                <div class="web-completion-panel">
+                    <div class="web-completion-icon">✓</div>
+                    <h3>Module mastery reached</h3>
                     <p>
-                        Pass 5 activates Modules 1–8 with real HTML lessons,
-                        guided typing, prediction, debugging, recall, transfer,
-                        validation, rewards, and a live rendered webpage.
+                        You used explanation, guided typing, completion,
+                        prediction, debugging, recall, and transfer to build
+                        this part of the Workshop page.
                     </p>
+
+                    <div class="web-completion-summary">
+                        <div>
+                            <span>Concept</span>
+                            <strong>@CurrentLesson.Topic</strong>
+                        </div>
+                        <div>
+                            <span>Editor file</span>
+                            <code>@CurrentEditorFileName</code>
+                        </div>
+                        <div>
+                            <span>Rendered result</span>
+                            <strong>@CurrentLesson.PreviewMessage</strong>
+                        </div>
+                    </div>
+
+                    <button type="button"
+                            class="web-primary"
+                            @onclick="FinishModuleAsync">
+                        @(CurrentModuleIndex < PlayableModuleCount - 1
+                            ? "Complete module and unlock next →"
+                            : "Complete Chapter 1 →")
+                    </button>
                 </div>
-                <span>NO PROGRESS IS CHANGED BY THIS PREVIEW</span>
-            </div>
+            }
+            else
+            {
+                <div class="web-exercise-intro">
+                    <h4>@ExerciseTitle(CurrentStage)</h4>
+                    <p>@ExercisePrompt(CurrentStage)</p>
+                </div>
+
+                @if (CurrentStage == CourseTrainingStage.Debug)
+                {
+                    <div class="web-browser-note">
+                        <strong>Browser clue</strong>
+                        <p>@CurrentLesson.DebugPrompt</p>
+                    </div>
+                }
+
+                @if (ShowTargetGuide)
+                {
+                    <div class="web-typing-guide">
+                        <div class="web-editor-bar">
+                            <span>@CurrentEditorFileName</span>
+                            <span>FOLLOW ALONG</span>
+                        </div>
+
+                        <div class="web-character-guide">
+                            @for (int index = 0;
+                                  index < CurrentExpectedCode.Length;
+                                  index++)
+                            {
+                                char character = CurrentExpectedCode[index];
+                                string cssClass = GetCharacterClass(index);
+
+                                if (character == '\n')
+                                {
+                                    <span class="@cssClass web-newline-mark">↵</span><br />
+                                }
+                                else if (character == ' ')
+                                {
+                                    <span class="@cssClass web-space-mark">&nbsp;</span>
+                                }
+                                else
+                                {
+                                    <span class="@cssClass">@character</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                else if (HintVisible)
+                {
+                    <div class="web-revealed-target">
+                        <span>Hint target</span>
+                        <pre><code>@CurrentExpectedCode</code></pre>
+                    </div>
+                }
+
+                <CourseCodeEditor
+                    FileName="@CurrentEditorFileName"
+                    LanguageLabel="HTML"
+                    AriaLabel="HTML practice editor"
+                    Value="@StudentCode"
+                    ValueChanged="UpdateStudentCode"
+                    TargetLength="@CurrentExpectedCode.Length"
+                    Accuracy="@Accuracy"
+                    ErrorCount="@ErrorCount" />
+
+                <div class="web-action-row">
+                    <button type="button"
+                            class="web-primary"
+                            @onclick="CheckCodeAsync">
+                        Check HTML
+                    </button>
+                    <button type="button"
+                            class="web-secondary"
+                            @onclick="ShowHint">
+                        Hint
+                    </button>
+                    <button type="button"
+                            class="web-secondary"
+                            @onclick="ResetStage">
+                        Reset
+                    </button>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Feedback))
+                {
+                    <div class="web-feedback @(StagePassed ? "success" : "error")">
+                        @Feedback
+                    </div>
+                }
+
+                @if (StagePassed)
+                {
+                    <button type="button"
+                            class="web-primary web-continue-button"
+                            @onclick="AdvanceStageAsync">
+                        Continue to @NextStageLabel() →
+                    </button>
+                }
+            }
         </section>
     </main>
 
     <aside class="web-preview-panel">
         <header class="web-preview-header">
             <div>
-                <p class="eyebrow">LIVE WORKSHOP PREVIEW</p>
-                <h2>Interface Canvas</h2>
+                <p class="eyebrow">SANDBOXED LIVE PREVIEW</p>
+                <h2>Interface Workshop</h2>
             </div>
-            <span class="web-live">SHELL</span>
+            <span class="web-live">LIVE</span>
         </header>
+
+        <div class="web-preview-safety">
+            <strong>Safe preview</strong>
+            <span>
+                HTML renders while you type. Scripts are blocked from running.
+            </span>
+        </div>
 
         <div class="web-browser-frame">
             <div class="web-browser-bar">
                 <div class="web-browser-dots">
                     <i></i><i></i><i></i>
                 </div>
-                <span>workshop.local/@PreviewSlug</span>
+                <span>workshop.local/index.html</span>
             </div>
 
-            <div class="web-preview-page @PreviewModeClass">
-                <header class="web-preview-site-header">
-                    <strong>CaveCode Workshop</strong>
-                    <nav>
-                        <span>Projects</span>
-                        <span>Skills</span>
-                        <span>Contact</span>
-                    </nav>
-                </header>
-
-                <main>
-                    <section class="web-preview-hero">
-                        <div>
-                            <span class="web-preview-eyebrow">
-                                @CurrentModule.SystemArea.ToUpperInvariant()
-                            </span>
-                            <h3>Build interfaces that explain themselves.</h3>
-                            <p>
-                                HTML creates the structure. CSS controls the
-                                visual system and responsive layout.
-                            </p>
-                            <button type="button">View project</button>
-                        </div>
-
-                        <div class="web-preview-image" aria-hidden="true">
-                            <span>&lt;/&gt;</span>
-                        </div>
-                    </section>
-
-                    <section class="web-preview-card-grid">
-                        <article>
-                            <span>01</span>
-                            <h4>Structure</h4>
-                            <p>Semantic HTML makes content understandable.</p>
-                        </article>
-                        <article>
-                            <span>02</span>
-                            <h4>Style</h4>
-                            <p>Reusable CSS creates a consistent interface.</p>
-                        </article>
-                        <article>
-                            <span>03</span>
-                            <h4>Responsive</h4>
-                            <p>Layouts adapt from desktop through mobile.</p>
-                        </article>
-                    </section>
-
-                    <section class="web-preview-form">
-                        <label>
-                            Project name
-                            <input value="Interface Workshop" readonly />
-                        </label>
-                        <button type="button">Save preview</button>
-                    </section>
-                </main>
-            </div>
+            <iframe @key="PreviewRevision"
+                    class="web-live-frame"
+                    title="Rendered HTML Workshop preview"
+                    sandbox=""
+                    srcdoc="@PreviewDocument">
+            </iframe>
 
             <div class="web-preview-highlight">
-                <span>SELECTED UPGRADE</span>
-                <strong>@CurrentModule.SystemArea</strong>
-                <small>@CurrentModule.EditorFileName</small>
+                <span>ACTIVE PREVIEW</span>
+                <strong>@PreviewStatus</strong>
+                <small>@CurrentEditorFileName · sandboxed iframe</small>
             </div>
         </div>
 
         <div class="web-preview-stats">
-            <div><span>Language</span><strong>HTML & CSS</strong></div>
-            <div><span>Build target</span><strong>Responsive web app</strong></div>
-            <div><span>Module</span><strong>@(SelectedModuleIndex + 1) / @Modules.Count</strong></div>
-            <div><span>Chapter</span><strong>@ChapterNumber</strong></div>
-            <div><span>Editor</span><strong>@CurrentModule.EditorFileName</strong></div>
-            <div><span>Status</span><strong>Shell preview</strong></div>
+            <div><span>Language</span><strong>HTML</strong></div>
+            <div><span>Chapter</span><strong>1 of 5</strong></div>
+            <div><span>Module</span><strong>@(CurrentModuleIndex + 1) / @Manifest.ModuleCount</strong></div>
+            <div><span>Stage</span><strong>@CourseStageCatalog.Label((int)CurrentStage)</strong></div>
+            <div><span>Completed</span><strong>@CompletedModuleCount / @Manifest.ModuleCount</strong></div>
+            <div><span>Preview</span><strong>Scripts blocked</strong></div>
         </div>
 
         <section class="web-terminal">
@@ -235,72 +405,1028 @@
                 <span>WORKSHOP CONSOLE</span>
                 <span>READ ONLY</span>
             </div>
-            <p>[ROADMAP] Module @(SelectedModuleIndex + 1) selected.</p>
-            <p>[FILE] @CurrentModule.EditorFileName queued.</p>
-            <p>[PREVIEW] @CurrentModule.SystemArea highlighted.</p>
-            <p>[STATUS] Waiting for Chapter 1 lesson content.</p>
+            <p>[MODULE] @(CurrentModuleIndex + 1) · @CurrentLesson.Topic</p>
+            <p>[STAGE] @CourseStageCatalog.Label((int)CurrentStage)</p>
+            <p>[RENDER] @PreviewStatus</p>
+            <p>[SECURITY] iframe sandbox active; scripts disabled.</p>
         </section>
     </aside>
 </div>
 
+
+@if (ShowXpAward && LastProgressAward is not null)
+{
+    <button type="button"
+            class="web-xp-award-toast"
+            @onclick="DismissXpAward">
+        <span>HTML/CSS MODULE REWARD</span>
+        <strong>+@LastProgressAward.XpAwarded XP</strong>
+        <small>
+            Level @LastProgressAward.State.Level
+            · @LastProgressAward.State.TotalXp total XP
+        </small>
+    </button>
+}
+
+@if (ShowAchievementUnlock && ChapterAchievement is not null)
+{
+    <div class="web-achievement-overlay"
+         role="presentation"
+         @onclick="DismissAchievementUnlock">
+        <section class="web-achievement-dialog"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="web-achievement-title"
+                 @onclick:stopPropagation="true">
+            <span class="web-achievement-kicker">
+                HTML &amp; CSS CHAPTER @ChapterAchievement.Chapter COMPLETE
+            </span>
+            <div class="web-achievement-medal">&lt;/&gt;</div>
+            <h2 id="web-achievement-title">@ChapterAchievement.Name</h2>
+            <p>@ChapterAchievement.Description</p>
+
+            <div class="web-achievement-rewards">
+                <div>
+                    <span>TITLE REWARD</span>
+                    <strong>@ChapterAchievement.TitleReward</strong>
+                </div>
+                <div>
+                    <span>CODE CRYSTALS</span>
+                    <strong>◆ @ChapterAchievement.Crystals</strong>
+                </div>
+            </div>
+
+            <small>Reward unlocked. Visit Achievements to claim it.</small>
+
+            <div class="web-achievement-actions">
+                <NavLink href="/achievements">View achievement</NavLink>
+                <button type="button"
+                        @onclick="DismissAchievementUnlock">
+                    Continue learning
+                </button>
+            </div>
+        </section>
+    </div>
+}
+
 @code {
+    private const int PlayableModuleCount =
+        HtmlCssChapterOneLessons.PlayableModuleCount;
+    private const int ChapterOneLastModuleIndex = 7;
+
+    private const string PreviewImageDataUri =
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' " +
+        "viewBox='0 0 640 360'%3E%3Cdefs%3E%3ClinearGradient id='g' " +
+        "x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23315dc0'/%3E" +
+        "%3Cstop offset='1' stop-color='%23168c51'/%3E%3C/linearGradient%3E" +
+        "%3C/defs%3E%3Crect width='640' height='360' rx='28' fill='url(%23g)'/%3E" +
+        "%3Ctext x='320' y='205' text-anchor='middle' font-family='Arial' " +
+        "font-size='78' font-weight='700' fill='white'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E";
+
+    private const string PreviewStyles = """
+        :root {
+            color-scheme: light;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #17202a;
+            background: #f4f7fb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 18px;
+            color: #17202a;
+            background: #f4f7fb;
+            line-height: 1.55;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            color: #ffffff;
+            background: #17202a;
+            border-radius: 12px;
+        }
+
+        header nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        a {
+            color: inherit;
+            font-weight: 700;
+        }
+
+        main,
+        .lesson-live-slot {
+            padding: 18px;
+            background: #ffffff;
+            border: 1px solid #d8e0e8;
+            border-radius: 12px;
+        }
+
+        .lesson-live-slot {
+            margin-top: 14px;
+            border: 2px dashed #315dc0;
+        }
+
+        .lesson-live-slot::before {
+            display: block;
+            margin-bottom: 10px;
+            color: #315dc0;
+            content: "LIVE LESSON CODE";
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: .08em;
+        }
+
+        h1,
+        h2 {
+            line-height: 1.15;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+            margin: 16px 0;
+            border-radius: 12px;
+        }
+
+        li + li {
+            margin-top: 6px;
+        }
+
+        section {
+            margin-top: 18px;
+        }
+
+        footer {
+            padding: 14px 16px;
+            margin-top: 16px;
+            color: #44576a;
+            text-align: center;
+            background: #e7edf4;
+            border-radius: 10px;
+        }
+
+        .preview-placeholder {
+            color: #61758a;
+            font-style: italic;
+        }
+        """;
+
     private CourseManifest Manifest = null!;
     private CourseProgressSnapshot Progress = new();
-    private int SelectedModuleIndex;
 
-    private IReadOnlyList<HtmlCssRoadmapModule> Modules =>
+    private int CurrentModuleIndex;
+    private CourseTrainingStage CurrentStage =
+        CourseTrainingStage.Learn;
+    private int[] HighestCompletedStage =
+        Enumerable.Repeat(-1, 40).ToArray();
+    private bool[] ModuleCompleted = new bool[40];
+
+    private string StudentCode = "";
+    private string Feedback = "";
+    private bool StagePassed;
+    private bool HintVisible;
+    private int? SelectedPrediction;
+    private bool ProgressRestored;
+    private int PreviewRevision;
+
+    private ProgressionAwardResult? LastProgressAward;
+    private bool ShowXpAward;
+    private AchievementUnlockResult? ChapterAchievement;
+    private bool ShowAchievementUnlock;
+
+
+    private IReadOnlyList<CourseLesson> Lessons =>
+        HtmlCssChapterOneLessons.All;
+    private IReadOnlyList<HtmlCssRoadmapModule> Roadmap =>
         HtmlCssCourseRoadmap.Modules;
-
-    private HtmlCssRoadmapModule CurrentModule =>
-        Modules[SelectedModuleIndex];
+    private CourseLesson CurrentLesson =>
+        Lessons[CurrentModuleIndex];
 
     private int CompletedModuleCount =>
-        Progress.ModuleCompleted?.Count(completed => completed) ?? 0;
+        ModuleCompleted.Count(completed => completed);
 
-    private int ChapterNumber =>
-        SelectedModuleIndex / 8 + 1;
+    private int UnlockedThroughStage =>
+        ModuleCompleted[CurrentModuleIndex]
+            ? CourseStageCatalog.StageCount - 1
+            : Math.Clamp(
+                HighestCompletedStage[CurrentModuleIndex] + 1,
+                0,
+                CourseStageCatalog.StageCount - 1);
 
-    private string PreviewSlug =>
-        CurrentModule.SystemArea
-            .ToLowerInvariant()
-            .Replace(" ", "-");
+    private string CurrentEditorFileName =>
+        CurrentLesson.EditorFileNameOverride ??
+        Manifest.EditorFileName;
 
-    private string PreviewModeClass =>
-        $"web-preview-mode-{Math.Clamp(SelectedModuleIndex / 8 + 1, 1, 5)}";
+    private string CurrentExpectedCode => CurrentStage switch
+    {
+        CourseTrainingStage.Guided => CurrentLesson.TargetCode,
+        CourseTrainingStage.Fill => CurrentLesson.TargetCode,
+        CourseTrainingStage.Debug => CurrentLesson.TargetCode,
+        CourseTrainingStage.Recall => CurrentLesson.TargetCode,
+        CourseTrainingStage.Transfer => CurrentLesson.TransferCode,
+        _ => ""
+    };
+
+    private bool ShowTargetGuide =>
+        CurrentStage is
+            CourseTrainingStage.Guided or
+            CourseTrainingStage.Fill;
+
+    private bool CurrentStageAcceptsCode =>
+        CurrentStage is
+            CourseTrainingStage.Guided or
+            CourseTrainingStage.Fill or
+            CourseTrainingStage.Debug or
+            CourseTrainingStage.Recall or
+            CourseTrainingStage.Transfer;
+
+    private string PreviewDocument =>
+        BuildPreviewDocument();
+
+    private string PreviewStatus
+    {
+        get
+        {
+            if (CurrentStageAcceptsCode &&
+                !string.IsNullOrWhiteSpace(StudentCode))
+            {
+                return "Rendering the current editor contents";
+            }
+
+            if (ModuleCompleted[ChapterOneLastModuleIndex])
+            {
+                return "Complete Chapter 1 page rendered";
+            }
+
+            return $"Growing project through Module {CurrentModuleIndex + 1}";
+        }
+    }
 
     protected override void OnInitialized()
     {
-        Manifest = CourseEngine.GetCourse(CourseIds.HtmlCss);
+        Manifest = CourseEngine.GetCourse(
+            CourseIds.HtmlCss);
+
+        PrepareStage();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(
+        bool firstRender)
     {
-        if (!firstRender)
+        if (!firstRender || ProgressRestored)
         {
             return;
         }
+
+        ProgressRestored = true;
 
         try
         {
             Progress = await CourseEngine.GetProgressAsync(
                 CourseIds.HtmlCss);
 
+            HighestCompletedStage =
+                Progress.HighestCompletedStage.ToArray();
+            ModuleCompleted =
+                Progress.ModuleCompleted.ToArray();
+
+            CurrentModuleIndex = Math.Clamp(
+                Progress.CurrentModuleIndex,
+                0,
+                PlayableModuleCount - 1);
+
+            CurrentStage =
+                (CourseTrainingStage)Math.Clamp(
+                    Progress.CurrentStage,
+                    0,
+                    CourseStageCatalog.StageCount - 1);
+
+            if (!IsLessonUnlocked(CurrentModuleIndex))
+            {
+                CurrentModuleIndex =
+                    FirstIncompletePlayableModule();
+
+                CurrentStage =
+                    ModuleCompleted[CurrentModuleIndex]
+                        ? CourseTrainingStage.Complete
+                        : CourseTrainingStage.Learn;
+            }
+
+            PrepareStage();
+
+            // Reconcile rewards for learners who completed HTML/CSS
+            // modules before Pass 5B-2 was installed.
+            try
+            {
+                await ProgressionService.GetStateAsync();
+                await AchievementService.GetStateAsync();
+            }
+            catch
+            {
+                // Reward reconciliation never blocks local course progress.
+            }
+
             await InvokeAsync(StateHasChanged);
         }
         catch
         {
-            // Browser progress is optional and this shell never writes it.
+            // Local browser progress is optional.
         }
     }
 
-    private void SelectRoadmapModule(int moduleIndex)
+    private bool IsModuleAvailable(int index) =>
+        index >= 0 &&
+        index < PlayableModuleCount;
+
+    private bool IsLessonUnlocked(int index)
     {
-        SelectedModuleIndex = Math.Clamp(
-            moduleIndex,
-            0,
-            Modules.Count - 1);
+        if (!IsModuleAvailable(index))
+        {
+            return false;
+        }
+
+        return index == 0 ||
+            ModuleCompleted[index - 1];
     }
 
-    private static Task IgnoreStageSelection(int _) =>
-        Task.CompletedTask;
+    private int FirstIncompletePlayableModule()
+    {
+        for (int index = 0;
+             index < PlayableModuleCount;
+             index++)
+        {
+            if (!ModuleCompleted[index])
+            {
+                return index;
+            }
+        }
+
+        return PlayableModuleCount - 1;
+    }
+
+    private int ModuleMastery(int index)
+    {
+        if (index < 0 ||
+            index >= ModuleCompleted.Length)
+        {
+            return 0;
+        }
+
+        if (ModuleCompleted[index])
+        {
+            return 100;
+        }
+
+        int stages =
+            HighestCompletedStage[index] + 1;
+
+        return Math.Clamp(
+            stages * 100 /
+                CourseStageCatalog.StageCount,
+            0,
+            100);
+    }
+
+    private async Task SelectLessonAsync(int index)
+    {
+        if (!IsLessonUnlocked(index))
+        {
+            return;
+        }
+
+        CurrentModuleIndex = index;
+        CurrentStage = ModuleCompleted[index]
+            ? CourseTrainingStage.Complete
+            : (CourseTrainingStage)Math.Clamp(
+                HighestCompletedStage[index] + 1,
+                0,
+                CourseStageCatalog.StageCount - 1);
+
+        PrepareStage();
+        await SaveProgressAsync();
+    }
+
+    private async Task SelectStageAsync(int stageIndex)
+    {
+        if (stageIndex < 0 ||
+            stageIndex > UnlockedThroughStage)
+        {
+            return;
+        }
+
+        CurrentStage =
+            (CourseTrainingStage)stageIndex;
+
+        PrepareStage();
+        await SaveProgressAsync();
+    }
+
+    private void PrepareStage()
+    {
+        Feedback = "";
+        HintVisible = false;
+        SelectedPrediction = null;
+
+        bool alreadyComplete =
+            ModuleCompleted[CurrentModuleIndex] ||
+            (int)CurrentStage <=
+                HighestCompletedStage[
+                    CurrentModuleIndex];
+
+        StagePassed = alreadyComplete;
+
+        StudentCode = CurrentStage switch
+        {
+            CourseTrainingStage.Guided =>
+                alreadyComplete
+                    ? CurrentLesson.TargetCode
+                    : "",
+            CourseTrainingStage.Fill =>
+                alreadyComplete
+                    ? CurrentLesson.TargetCode
+                    : CurrentLesson.FillStarter,
+            CourseTrainingStage.Debug =>
+                alreadyComplete
+                    ? CurrentLesson.TargetCode
+                    : CurrentLesson.BrokenCode,
+            CourseTrainingStage.Recall =>
+                alreadyComplete
+                    ? CurrentLesson.TargetCode
+                    : "",
+            CourseTrainingStage.Transfer =>
+                alreadyComplete
+                    ? CurrentLesson.TransferCode
+                    : "",
+            _ => ""
+        };
+
+        PreviewRevision++;
+    }
+
+    private Task UpdateStudentCode(string value)
+    {
+        StudentCode = value;
+        PreviewRevision++;
+        return Task.CompletedTask;
+    }
+
+    private int ErrorCount
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(
+                CurrentExpectedCode))
+            {
+                return 0;
+            }
+
+            int errors = 0;
+
+            for (int index = 0;
+                 index < StudentCode.Length;
+                 index++)
+            {
+                if (index >=
+                        CurrentExpectedCode.Length ||
+                    StudentCode[index] !=
+                        CurrentExpectedCode[index])
+                {
+                    errors++;
+                }
+            }
+
+            return errors;
+        }
+    }
+
+    private int Accuracy
+    {
+        get
+        {
+            if (StudentCode.Length == 0)
+            {
+                return 0;
+            }
+
+            int correct = Math.Max(
+                0,
+                StudentCode.Length - ErrorCount);
+
+            return correct * 100 /
+                StudentCode.Length;
+        }
+    }
+
+    private string GetCharacterClass(int index)
+    {
+        if (index >= StudentCode.Length)
+        {
+            return index ==
+                    StudentCode.Length
+                ? "web-character-current"
+                : "web-character-pending";
+        }
+
+        return StudentCode[index] ==
+                CurrentExpectedCode[index]
+            ? "web-character-correct"
+            : "web-character-wrong";
+    }
+
+    private async Task CompleteLearnStageAsync()
+    {
+        MarkStageComplete();
+        await AdvanceStageAsync();
+    }
+
+    private async Task CheckCodeAsync()
+    {
+        HintVisible = false;
+
+        CourseCodeValidationResult result =
+            CourseEngine.ValidateCode(
+                new CourseCodeValidationRequest(
+                    CourseIds.HtmlCss,
+                    CurrentModuleIndex,
+                    CurrentStage,
+                    StudentCode,
+                    CurrentExpectedCode));
+
+        if (result.IsValid)
+        {
+            StagePassed = true;
+            Feedback = CurrentStage switch
+            {
+                CourseTrainingStage.Debug =>
+                    "Correct repair. The browser now receives properly structured HTML.",
+                CourseTrainingStage.Recall =>
+                    "Correct recall. You rebuilt the HTML without the visible target.",
+                CourseTrainingStage.Transfer =>
+                    "Correct transfer. You applied the same HTML idea to a new page.",
+                _ =>
+                    "Correct. The required HTML structure is present."
+            };
+
+            try
+            {
+                await ProgressionService.AwardStageAsync(
+                    CourseIds.HtmlCss,
+                    CurrentModuleIndex,
+                    (int)CurrentStage,
+                    StudentCode);
+            }
+            catch
+            {
+                // Reward storage never interrupts a validated lesson.
+            }
+
+        }
+        else
+        {
+            StagePassed = false;
+            Feedback = result.Message;
+        }
+
+        PreviewRevision++;
+    }
+
+    private void SelectPrediction(int index)
+    {
+        SelectedPrediction = index;
+
+        if (index ==
+            CurrentLesson.PredictionCorrect)
+        {
+            StagePassed = true;
+            Feedback =
+                "Correct. " +
+                CurrentLesson.PredictionExplanation;
+        }
+        else
+        {
+            StagePassed = false;
+            Feedback =
+                "Not quite. Think about the exact HTML meaning shown in the example.";
+        }
+    }
+
+    private string PredictionClass(int index)
+    {
+        if (!SelectedPrediction.HasValue)
+        {
+            return "";
+        }
+
+        if (index ==
+            CurrentLesson.PredictionCorrect)
+        {
+            return "correct";
+        }
+
+        return index ==
+                SelectedPrediction.Value
+            ? "wrong"
+            : "";
+    }
+
+    private void ShowHint()
+    {
+        HintVisible = true;
+    }
+
+    private void ResetStage()
+    {
+        PrepareStage();
+    }
+
+    private async Task AdvanceStageAsync()
+    {
+        MarkStageComplete();
+
+        if ((int)CurrentStage <
+            (int)CourseTrainingStage.Complete)
+        {
+            CurrentStage =
+                (CourseTrainingStage)(
+                    (int)CurrentStage + 1);
+
+            PrepareStage();
+        }
+
+        await SaveProgressAsync();
+    }
+
+    private void MarkStageComplete()
+    {
+        HighestCompletedStage[
+            CurrentModuleIndex] =
+            Math.Max(
+                HighestCompletedStage[
+                    CurrentModuleIndex],
+                (int)CurrentStage);
+    }
+
+    private async Task FinishModuleAsync()
+    {
+        int finishedModuleIndex =
+            CurrentModuleIndex;
+
+        HighestCompletedStage[
+            finishedModuleIndex] =
+            CourseStageCatalog.StageCount - 1;
+
+        ModuleCompleted[
+            finishedModuleIndex] = true;
+
+        try
+        {
+            ProgressionAwardResult award =
+                await ProgressionService.AwardModuleAsync(
+                    CourseIds.HtmlCss,
+                    finishedModuleIndex);
+
+            if (award.NewlyAwarded)
+            {
+                LastProgressAward = award;
+                ShowXpAward = true;
+            }
+        }
+        catch
+        {
+            // Module rewards never interrupt course completion.
+        }
+
+        if (finishedModuleIndex <
+            PlayableModuleCount - 1)
+        {
+            CurrentModuleIndex++;
+            CurrentStage =
+                CourseTrainingStage.Learn;
+
+            PrepareStage();
+        }
+        else
+        {
+            CurrentStage =
+                CourseTrainingStage.Complete;
+            StagePassed = true;
+            Feedback =
+                "HTML & CSS Chapter 1 complete. Your checkpoint is saved locally; Workshop Structure Complete is ready to claim from Achievements.";
+            PreviewRevision++;
+        }
+
+        await SaveProgressAsync();
+
+        if (finishedModuleIndex == ChapterOneLastModuleIndex)
+        {
+            await HandleChapterCompletionAsync();
+        }
+    }
+
+    private async Task HandleChapterCompletionAsync()
+    {
+        try
+        {
+            AchievementUnlockResult? result =
+                await AchievementService.UnlockChapterAsync(
+                    CourseIds.HtmlCss,
+                    1);
+
+            if (result is not null && result.NewlyUnlocked)
+            {
+                ChapterAchievement = result;
+                ShowAchievementUnlock = true;
+            }
+        }
+        catch
+        {
+            // Achievement errors never interrupt saved course progress.
+        }
+    }
+
+    private async Task SaveProgressAsync()
+    {
+        Progress.CurrentModuleIndex =
+            CurrentModuleIndex;
+        Progress.CurrentStage =
+            (int)CurrentStage;
+        Progress.HighestCompletedStage =
+            HighestCompletedStage.ToArray();
+        Progress.ModuleCompleted =
+            ModuleCompleted.ToArray();
+
+        try
+        {
+            Progress =
+                await CourseEngine.SaveProgressAsync(
+                    CourseIds.HtmlCss,
+                    Progress);
+        }
+        catch
+        {
+            // Browser storage failure never interrupts a lesson.
+        }
+    }
+
+    private string StageHeading(
+        CourseTrainingStage stage) =>
+        stage switch
+        {
+            CourseTrainingStage.Learn =>
+                "Understand the element before typing it",
+            CourseTrainingStage.Guided =>
+                "Follow the HTML character by character",
+            CourseTrainingStage.Fill =>
+                "Complete the missing tags and attributes",
+            CourseTrainingStage.Predict =>
+                "Decide what the HTML means",
+            CourseTrainingStage.Debug =>
+                "Repair invalid or incorrectly nested markup",
+            CourseTrainingStage.Recall =>
+                "Rebuild the structure from memory",
+            CourseTrainingStage.Transfer =>
+                "Apply the same element to a new page",
+            CourseTrainingStage.Complete =>
+                "Confirm module mastery",
+            _ => ""
+        };
+
+    private string ExerciseTitle(
+        CourseTrainingStage stage) =>
+        stage switch
+        {
+            CourseTrainingStage.Guided =>
+                "Type the complete target",
+            CourseTrainingStage.Fill =>
+                "Replace every blank",
+            CourseTrainingStage.Debug =>
+                "Repair the browser structure",
+            CourseTrainingStage.Recall =>
+                "Write it without the guide",
+            CourseTrainingStage.Transfer =>
+                "Build the requested variation",
+            _ => "Practice"
+        };
+
+    private string ExercisePrompt(
+        CourseTrainingStage stage) =>
+        stage switch
+        {
+            CourseTrainingStage.Guided =>
+                "Follow the visible character guide while the sandboxed browser renders your HTML.",
+            CourseTrainingStage.Fill =>
+                "Replace each ___ marker with the missing HTML while preserving the rest.",
+            CourseTrainingStage.Debug =>
+                CurrentLesson.DebugPrompt,
+            CourseTrainingStage.Recall =>
+                CurrentLesson.RecallPrompt,
+            CourseTrainingStage.Transfer =>
+                CurrentLesson.TransferPrompt,
+            _ => ""
+        };
+
+    private string NextStageLabel()
+    {
+        int next = Math.Min(
+            (int)CurrentStage + 1,
+            CourseStageCatalog.StageCount - 1);
+
+        return CourseStageCatalog
+            .Label(next)
+            .ToLowerInvariant();
+    }
+
+
+    private void DismissXpAward()
+    {
+        ShowXpAward = false;
+        LastProgressAward = null;
+    }
+
+    private void DismissAchievementUnlock()
+    {
+        ShowAchievementUnlock = false;
+        ChapterAchievement = null;
+    }
+
+    private string BuildPreviewDocument()
+    {
+        if (ModuleCompleted[
+                ChapterOneLastModuleIndex])
+        {
+            return PreparePreviewDocument(
+                Lessons[
+                    ChapterOneLastModuleIndex]
+                    .TargetCode);
+        }
+
+        if (CurrentStageAcceptsCode &&
+            !string.IsNullOrWhiteSpace(StudentCode) &&
+            CurrentModuleIndex is 0 or 7)
+        {
+            return PreparePreviewDocument(
+                StudentCode);
+        }
+
+        var body = new System.Text.StringBuilder();
+
+        if (ModuleCompleted[6])
+        {
+            body.AppendLine(
+                Lessons[6].TargetCode);
+        }
+        else if (ModuleCompleted[2])
+        {
+            body.AppendLine("<header>");
+            body.AppendLine(
+                "    <strong>CaveCode Workshop</strong>");
+            body.AppendLine(
+                Lessons[2].TargetCode);
+            body.AppendLine("</header>");
+        }
+        else
+        {
+            body.AppendLine(
+                "<header><strong>CaveCode Workshop</strong></header>");
+        }
+
+        body.AppendLine("<main>");
+
+        if (ModuleCompleted[1])
+        {
+            body.AppendLine(
+                Lessons[1].TargetCode);
+        }
+        else
+        {
+            body.AppendLine(
+                "<h1>Interface Workshop</h1>");
+            body.AppendLine(
+                "<p class=\"preview-placeholder\">Complete Module 2 to add the page introduction.</p>");
+        }
+
+        if (ModuleCompleted[3])
+        {
+            body.AppendLine(
+                Lessons[3].TargetCode);
+        }
+
+        if (ModuleCompleted[5])
+        {
+            body.AppendLine(
+                Lessons[5].TargetCode
+                    .Replace(
+                        "<main>\n",
+                        "",
+                        StringComparison.Ordinal)
+                    .Replace(
+                        "\n</main>",
+                        "",
+                        StringComparison.Ordinal));
+        }
+        else if (ModuleCompleted[4])
+        {
+            body.AppendLine(
+                "<section id=\"projects\">");
+            body.AppendLine(
+                "    <h2>Featured Projects</h2>");
+            body.AppendLine(
+                Lessons[4].TargetCode);
+            body.AppendLine("</section>");
+        }
+
+        if (CurrentStageAcceptsCode &&
+            !string.IsNullOrWhiteSpace(StudentCode) &&
+            CurrentModuleIndex is > 0 and < 7)
+        {
+            body.AppendLine(
+                "<section class=\"lesson-live-slot\">");
+            body.AppendLine(StudentCode);
+            body.AppendLine("</section>");
+        }
+
+        body.AppendLine("</main>");
+
+        if (ModuleCompleted[5])
+        {
+            body.AppendLine(
+                "<footer id=\"contact\"><p>Built in CaveCode Academy.</p></footer>");
+        }
+
+        string document = $"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Interface Workshop Preview</title>
+            </head>
+            <body>
+            {body}
+            </body>
+            </html>
+            """;
+
+        return PreparePreviewDocument(
+            document);
+    }
+
+    private static string PreparePreviewDocument(
+        string html)
+    {
+        string result =
+            string.IsNullOrWhiteSpace(html)
+                ? "<p>Begin typing HTML to render the preview.</p>"
+                : html;
+
+        result = result.Replace(
+            "workshop-preview.png",
+            PreviewImageDataUri,
+            StringComparison.Ordinal);
+
+        string style =
+            $"<style>{PreviewStyles}</style>";
+
+        if (result.Contains(
+            "</head>",
+            StringComparison.OrdinalIgnoreCase))
+        {
+            int index = result.IndexOf(
+                "</head>",
+                StringComparison.OrdinalIgnoreCase);
+
+            return result.Insert(
+                index,
+                style);
+        }
+
+        return $"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                {style}
+            </head>
+            <body>
+                {result}
+            </body>
+            </html>
+            """;
+    }
 }

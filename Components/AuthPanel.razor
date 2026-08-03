@@ -10,6 +10,18 @@
     }
     else if (CurrentUser is null)
     {
+        <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
+        @if (!Compact)
+        {
+            <div class="cavecode-auth-brand">
+                <span class="cavecode-context-logo-surface cavecode-context-logo-surface--auth">
+                    <img class="cavecode-context-logo-image"
+                         src="branding/cavecode-academy-logo.svg?v=1"
+                         alt="CaveCode Academy" />
+                </span>
+                <span>Sign in to CaveCode Academy</span>
+            </div>
+        }
         <div class="auth-actions">
             <button type="button"
                     class="google-button"

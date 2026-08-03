@@ -1,5 +1,9 @@
 @page "/minigames"
 @inject MinigameService MinigameService
+@using Microsoft.JSInterop
+@using CaveCode.CourseEngine
+@inject CourseEngineService CourseEngine
+@inject IJSRuntime JS
 
 <PageTitle>Minigames · CaveCode Academy</PageTitle>
 
@@ -17,6 +21,16 @@
         }
 
         <div>
+            <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
+            <div class="cavecode-page-brandline"
+                 aria-label="CaveCode Academy branding">
+                <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
+                    <img class="cavecode-context-logo-image"
+                         src="branding/cavecode-academy-logo.svg?v=1"
+                         alt="" />
+                </span>
+                <span>CaveCode Academy</span>
+            </div>
             <p class="eyebrow">PLAY WHAT YOU LEARNED</p>
             <h1>Code Minigames</h1>
             <p>
@@ -160,6 +174,57 @@
                     {
                         <span class="mode-action locked-action">
                             Complete Chapter 1 to unlock
+                        </span>
+                    }
+                </article>
+                @* CAVECODE_HTMLCSS_MINIGAME_MISSION3_CARD_V6 *@
+                <article class="mode-card interface-mode">
+                    <div class="mode-topline">
+                        <span class="mode-mark">&lt;/&gt;</span>
+                        <span>@HtmlCssAvailability</span>
+                    </div>
+
+                    <p class="eyebrow">HTML & CSS WORKSHOP</p>
+                    <h2>Interface Rescue</h2>
+                    <p>
+                        Repair a landing page, recover a project-card grid,
+                        and rebuild a responsive no-script mobile navigation
+                        with live validation and separate mission records.
+                    </p>
+
+                    <div class="mode-stats">
+                        <div>
+                            <span>Missions</span>
+                            <strong>@HtmlCssMissionProgress / 3</strong>
+                        </div>
+                        <div>
+                            <span>Best score</span>
+                            <strong>@HtmlCssBestScore.ToString("N0")</strong>
+                        </div>
+                        <div>
+                            <span>Minigame XP</span>
+                            <strong>@HtmlCssState.TotalXpEarned.ToString("N0")</strong>
+                        </div>
+                    </div>
+
+                    <div class="chapter-track">
+                        <span class="@(HtmlCssState.Mission1Completed ? "complete" : "preview")">1</span>
+                        <span class="@(HtmlCssState.Mission2Completed ? "complete" : "preview")">2</span>
+                        <span class="@(HtmlCssState.Mission3Completed ? "complete" : "preview")">3</span>
+                        <span>4</span>
+                        <span>5</span>
+                    </div>
+
+                    @if (HtmlCssChapterOneComplete)
+                    {
+                        <NavLink class="mode-action interface-rescue-action" href="/minigames/html-css">
+                            Open Interface Rescue →
+                        </NavLink>
+                    }
+                    else
+                    {
+                        <span class="mode-action locked-action">
+                            Complete HTML/CSS Chapter 1 to unlock
                         </span>
                     }
                 </article>
@@ -462,11 +527,92 @@
             grid-template-columns: repeat(2, 1fr);
         }
     }
+
+    /* CAVECODE_HTMLCSS_MINIGAME_SHELL_STYLES_V1 */
+    .mode-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .interface-mode {
+        background:
+            radial-gradient(
+                circle at 85% 0%,
+                color-mix(
+                    in srgb,
+                    var(--accent) 17%,
+                    transparent
+                ),
+                transparent 34%
+            ),
+            var(--surface);
+    }
+
+    @@media (max-width: 1080px) {
+        .mode-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 800px) {
+        .mode-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* CAVECODE_HTMLCSS_MINIGAME_REWARDS_STYLES_V4 */
+    .interface-mode .interface-rescue-action {
+        color: #ffffff !important;
+        background: #1f6feb !important;
+        border: 1px solid #8bc1ff !important;
+        text-shadow: 0 1px 2px #0b1f36;
+    }
+
+    .interface-mode .interface-rescue-action:hover,
+    .interface-mode .interface-rescue-action:focus-visible {
+        color: #ffffff !important;
+        background: #174ea6 !important;
+        border-color: #b9d8ff !important;
+    }
+
+    .interface-mode .interface-rescue-action:focus-visible {
+        outline: 3px solid #ffd166;
+        outline-offset: 3px;
+    }
+
+
+    .interface-mode .interface-rescue-action:focus-visible {
+        outline: 3px solid #ffd166;
+        outline-offset: 3px;
+    }
+
 </style>
 
 @code {
+    // CAVECODE_HTMLCSS_MINIGAME_HUB_STATE_V4
+    private sealed class HtmlCssMinigameHubState
+    {
+        public bool Mission1Completed { get; set; }
+        public int BestScore { get; set; }
+        public double? FastestSeconds { get; set; }
+        public int TotalClears { get; set; }
+        public int TotalXpEarned { get; set; }
+        public int TotalCrystalsEarned { get; set; }
+        public bool Mission2Completed { get; set; }
+        public int Mission2BestScore { get; set; }
+        public double? Mission2FastestSeconds { get; set; }
+        public int Mission2Clears { get; set; }
+        public bool Mission3Completed { get; set; }
+        public int Mission3BestScore { get; set; }
+        public double? Mission3FastestSeconds { get; set; }
+        public int Mission3Clears { get; set; }
+
+    }
+
     private MinigameHubState State = new();
     private bool Ready;
+    private HtmlCssMinigameHubState HtmlCssState = new();
+    private bool HtmlCssChapterOneComplete;
+    private int HtmlCssCompletedModules;
 
     private static bool HasAcademyHomeButton => true;
 
@@ -484,6 +630,29 @@
                 ? "Full campaign · Endless unlocked"
                 : $"{State.Python.CompletedChapters} chapter mechanics unlocked";
 
+    private int HtmlCssMissionProgress =>
+        (HtmlCssState.Mission1Completed ? 1 : 0) +
+        (HtmlCssState.Mission2Completed ? 1 : 0) +
+        (HtmlCssState.Mission3Completed ? 1 : 0);
+
+    private int HtmlCssBestScore =>
+        Math.Max(
+            HtmlCssState.BestScore,
+            Math.Max(
+                HtmlCssState.Mission2BestScore,
+                HtmlCssState.Mission3BestScore));
+
+    private string HtmlCssAvailability =>
+        !HtmlCssChapterOneComplete
+            ? "Complete Chapter 1 to unlock"
+            : HtmlCssState.Mission3Completed
+                ? "Missions 1–3 cleared"
+                : HtmlCssState.Mission2Completed
+                    ? "Missions 1–2 cleared · Mission 3 ready"
+                    : HtmlCssState.Mission1Completed
+                        ? "Mission 1 cleared · Missions 2–3 ready"
+                        : "Chapter 1 complete · 3 missions ready";
+
     protected override async Task OnAfterRenderAsync(
         bool firstRender
     )
@@ -494,6 +663,33 @@
         }
 
         State = await MinigameService.GetHubStateAsync();
+
+        // CAVECODE_HTMLCSS_MINIGAME_HUB_LOAD_V4
+        try
+        {
+            CourseProgressSnapshot progress =
+                await CourseEngine.GetProgressAsync(
+                    CourseIds.HtmlCss);
+
+            HtmlCssCompletedModules =
+                progress.ModuleCompleted
+                    .Take(8)
+                    .Count(completed => completed);
+
+            HtmlCssChapterOneComplete =
+                progress.ModuleCompleted.Length > 7 &&
+                progress.ModuleCompleted[7];
+
+            HtmlCssState =
+                await JS.InvokeAsync<HtmlCssMinigameHubState>(
+                    "caveCodeHtmlCssMinigame.getHubState");
+        }
+        catch
+        {
+            // The existing C# and Python hub remains usable if
+            // the HTML/CSS local record cannot be read.
+        }
+
         Ready = true;
         await InvokeAsync(StateHasChanged);
     }
