@@ -1,0 +1,108 @@
+<span class="title-effect @EffectClass" title="@VisibleTitle">@VisibleTitle</span>
+
+<style>
+    .title-effect {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        color: var(--text, #eef4f8);
+        font-weight: 900;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .title-effect.stone { color: #d5dee7; text-shadow: 0 1px #536170; }
+
+    .title-effect.electric,
+    .title-effect.circuit {
+        color: transparent;
+        background: linear-gradient(90deg, #8be9ff, #ffffff, #55d8ff, #8be9ff);
+        background-size: 240% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: title-electric 2.2s linear infinite;
+        filter: drop-shadow(0 0 5px rgba(85, 216, 255, .35));
+    }
+
+    .title-effect.fire {
+        color: transparent;
+        background: linear-gradient(90deg, #ffcf70, #ff7a45, #fff0a5, #ff6a3d);
+        background-size: 240% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: title-flow 2.8s ease-in-out infinite;
+    }
+
+    .title-effect.water {
+        color: transparent;
+        background: linear-gradient(90deg, #7cecff, #4f8dff, #a7f6ff, #31c9ea);
+        background-size: 260% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: title-flow 3.4s ease-in-out infinite;
+    }
+
+    .title-effect.safety {
+        color: transparent;
+        background: linear-gradient(90deg, #9cff78, #fff179, #b5ff8f, #63e87c);
+        background-size: 220% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: title-pulse 2.4s ease-in-out infinite;
+    }
+
+    .title-effect.prismatic {
+        color: transparent;
+        background: linear-gradient(90deg, #ff8fbd, #d8a4ff, #66e3ff, #73e59b, #ffe178, #ff9b8a, #ff8fbd);
+        background-size: 320% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: title-prismatic 4s linear infinite;
+    }
+
+    @@keyframes title-electric { to { background-position: -240% 0; } }
+    @@keyframes title-prismatic { to { background-position: -320% 0; } }
+    @@keyframes title-flow {
+        0%, 100% { background-position: 0 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    @@keyframes title-pulse {
+        0%, 100% { background-position: 0 50%; opacity: .86; }
+        50% { background-position: 100% 50%; opacity: 1; }
+    }
+
+    html[data-reduced-motion="true"] .title-effect {
+        animation: none !important;
+        background-position: 50% 50%;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Cave Explorer";
+
+    private string VisibleTitle => NormalizeTitle(Title);
+
+    private string EffectClass {
+        get {
+            string value = VisibleTitle.ToLowerInvariant();
+            if (value.Contains("champion") || value.Contains("python technician") || value.Contains("master")) return "prismatic";
+            if (value.Contains("logic") || value.Contains("adventurer")) return "fire";
+            if (value.Contains("control room") || value.Contains("automation")) return "electric";
+            if (value.Contains("systems monitor") || value.Contains("monitoring")) return "water";
+            if (value.Contains("safety")) return "safety";
+            if (value.Contains("systems builder") || value.Contains("code apprentice")) return "circuit";
+            return "stone";
+        }
+    }
+
+    private static string NormalizeTitle(string value) {
+        string title = string.IsNullOrWhiteSpace(value) ? "Cave Explorer" : value.Trim();
+        if (title.StartsWith("Claim ", StringComparison.OrdinalIgnoreCase)) title = title[6..].Trim();
+        foreach (string separator in new[] { " — ", " - " }) {
+            int index = title.IndexOf(separator, StringComparison.Ordinal);
+            if (index > 0) { title = title[..index].Trim(); break; }
+        }
+        return title;
+    }
+}

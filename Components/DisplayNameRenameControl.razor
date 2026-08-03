@@ -1,0 +1,635 @@
+@namespace CaveCode.Components
+@using System.Text.Json.Serialization
+@inject Microsoft.JSInterop.IJSRuntime JS
+
+<div class="cc-name-change">
+    <span class="cc-name-label">Display name</span>
+
+    <div class="cc-name-row">
+        <input type="text"
+               maxlength="24"
+               autocomplete="off"
+               value="@DraftName"
+               disabled="@(!Status.CanChangeNow || Submitting)"
+               placeholder="Use account name"
+               @oninput="HandleDraftChanged" />
+
+        <button type="button"
+                class="cc-name-button"
+                disabled="@(!CanSubmit)"
+                @onclick="OpenConfirmation">
+            Change Name
+        </button>
+    </div>
+
+    <small class="cc-name-help">
+        Leave blank to use your Google or GitHub name.
+        Clearing the field still counts as a name change.
+    </small>
+
+    @if (!Ready)
+    {
+        <div class="cc-name-status">
+            Checking name-change availability…
+        </div>
+    }
+    else if (Status.IsFirstChangeFree)
+    {
+        <div class="cc-name-status cc-name-status-free">
+            <strong>Your first name change is free.</strong>
+            <span>
+                Future changes cost 500 ◆. Every successful change
+                starts a 5-day cooldown.
+            </span>
+        </div>
+    }
+    else if (!Status.CanChangeNow)
+    {
+        <div class="cc-name-status">
+            <strong>Name-change cooldown active.</strong>
+            <span>
+                Your next change costs 500 ◆ and becomes available
+                @NextAvailableLabel.
+            </span>
+        </div>
+    }
+    else
+    {
+        <div class="cc-name-status">
+            <strong>Name-change cost: 500 ◆</strong>
+            <span>
+                Balance: @(Status.CrystalBalance) ◆.
+                A successful change starts a 5-day cooldown.
+            </span>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+    {
+        <div class="cc-name-message cc-name-error">
+            @ErrorMessage
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(SuccessMessage))
+    {
+        <div class="cc-name-message cc-name-success">
+            @SuccessMessage
+        </div>
+    }
+</div>
+
+@if (ShowConfirmation)
+{
+    <div class="cc-name-modal-backdrop"
+         role="presentation"
+         @onclick="CloseConfirmation">
+        <section class="cc-name-modal"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="cc-name-modal-title"
+                 @onclick:stopPropagation="true">
+            <div class="cc-name-modal-kicker">
+                DISPLAY NAME
+            </div>
+
+            <h2 id="cc-name-modal-title">
+                @(Status.IsFirstChangeFree
+                    ? "Use your free name change?"
+                    : "Change your name for 500 ◆?")
+            </h2>
+
+            <div class="cc-name-comparison">
+                <div>
+                    <span>Current name</span>
+                    <strong>@CurrentNameLabel</strong>
+                </div>
+
+                <div class="cc-name-arrow">→</div>
+
+                <div>
+                    <span>New name</span>
+                    <strong>@NewNameLabel</strong>
+                </div>
+            </div>
+
+            @if (Status.IsFirstChangeFree)
+            {
+                <p>
+                    This change costs 0 ◆. Your next name change will
+                    cost 500 ◆, and you will not be able to change your
+                    name again for five days.
+                </p>
+            }
+            else
+            {
+                <p>
+                    Confirming deducts 500 Code Crystals and starts a
+                    five-day cooldown. Your current balance is
+                    @(Status.CrystalBalance) ◆.
+                </p>
+            }
+
+            <div class="cc-name-modal-actions">
+                <button type="button"
+                        class="cc-name-cancel"
+                        disabled="@Submitting"
+                        @onclick="CloseConfirmation">
+                    Keep Current Name
+                </button>
+
+                <button type="button"
+                        class="cc-name-confirm"
+                        disabled="@Submitting"
+                        @onclick="ConfirmChange">
+                    @(Submitting
+                        ? "Changing…"
+                        : Status.IsFirstChangeFree
+                            ? "Confirm Free Change"
+                            : "Confirm for 500 ◆")
+                </button>
+            </div>
+        </section>
+    </div>
+}
+
+@code {
+    private RenameStatus Status { get; set; } = new();
+    private bool Ready { get; set; }
+    private bool ShowConfirmation { get; set; }
+    private bool Submitting { get; set; }
+    private string DraftName { get; set; } = "";
+    private string ErrorMessage { get; set; } = "";
+    private string SuccessMessage { get; set; } = "";
+
+    private bool NameChanged =>
+        Normalize(DraftName) !=
+        Normalize(Status.CurrentDisplayName);
+
+    private bool CanSubmit =>
+        Ready &&
+        !Submitting &&
+        Status.CanChangeNow &&
+        NameChanged &&
+        (
+            Status.CurrentCost == 0 ||
+            Status.CanAfford
+        );
+
+    private string CurrentNameLabel =>
+        string.IsNullOrWhiteSpace(Status.CurrentDisplayName)
+            ? "Account name"
+            : Status.CurrentDisplayName;
+
+    private string NewNameLabel =>
+        string.IsNullOrWhiteSpace(Normalize(DraftName))
+            ? "Use account name"
+            : Normalize(DraftName);
+
+    private string NextAvailableLabel
+    {
+        get
+        {
+            if (
+                DateTimeOffset.TryParse(
+                    Status.NextAvailableAt,
+                    out DateTimeOffset value
+                )
+            )
+            {
+                return value
+                    .ToLocalTime()
+                    .ToString(
+                        "MMMM d, yyyy 'at' h:mm tt"
+                    );
+            }
+
+            return "after the current cooldown";
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(
+        bool firstRender
+    )
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            Status =
+                await JS.InvokeAsync<RenameStatus>(
+                    "caveCodeRenameButton.getStatus"
+                );
+
+            DraftName =
+                Status.CurrentDisplayName ?? "";
+        }
+        catch (Exception exception)
+        {
+            ErrorMessage =
+                "Name-change information could not be loaded: " +
+                exception.Message;
+        }
+        finally
+        {
+            Ready = true;
+            StateHasChanged();
+        }
+    }
+
+    private Task HandleDraftChanged(
+        ChangeEventArgs args
+    )
+    {
+        DraftName =
+            args.Value?.ToString() ?? "";
+
+        ErrorMessage = "";
+        SuccessMessage = "";
+
+        return Task.CompletedTask;
+    }
+
+    private void OpenConfirmation()
+    {
+        ErrorMessage = "";
+        SuccessMessage = "";
+
+        if (!Ready)
+        {
+            ErrorMessage =
+                "Name-change information is still loading.";
+            return;
+        }
+
+        if (!Status.CanChangeNow)
+        {
+            ErrorMessage =
+                "Your display name is still in its five-day cooldown.";
+            return;
+        }
+
+        if (!NameChanged)
+        {
+            ErrorMessage =
+                "Enter a different display name.";
+            return;
+        }
+
+        if (
+            Status.CurrentCost > 0 &&
+            !Status.CanAfford
+        )
+        {
+            ErrorMessage =
+                $"This change costs 500 ◆, but your balance is " +
+                $"{Status.CrystalBalance} ◆.";
+            return;
+        }
+
+        ShowConfirmation = true;
+    }
+
+    private void CloseConfirmation()
+    {
+        if (!Submitting)
+        {
+            ShowConfirmation = false;
+        }
+    }
+
+    private async Task ConfirmChange()
+    {
+        if (Submitting)
+        {
+            return;
+        }
+
+        Submitting = true;
+        ErrorMessage = "";
+        SuccessMessage = "";
+
+        try
+        {
+            RenameResult result =
+                await JS.InvokeAsync<RenameResult>(
+                    "caveCodeRenameButton.confirmRename",
+                    DraftName
+                );
+
+            Status =
+                result.Status ?? new RenameStatus();
+
+            if (!result.Success)
+            {
+                ErrorMessage =
+                    result.Message ??
+                    "The display name could not be changed.";
+                return;
+            }
+
+            ShowConfirmation = false;
+            DraftName =
+                Status.CurrentDisplayName ?? "";
+
+            SuccessMessage =
+                result.Message ??
+                "Display name changed.";
+
+            StateHasChanged();
+            await Task.Delay(700);
+
+            await JS.InvokeVoidAsync(
+                "caveCodeRenameButton.reloadPage"
+            );
+        }
+        catch (Exception exception)
+        {
+            ErrorMessage =
+                "The display name could not be changed: " +
+                exception.Message;
+        }
+        finally
+        {
+            Submitting = false;
+        }
+    }
+
+    private static string Normalize(
+        string? value
+    )
+    {
+        string normalized =
+            string.Join(
+                " ",
+                (value ?? "")
+                    .Split(
+                        ' ',
+                        StringSplitOptions.RemoveEmptyEntries
+                    )
+            )
+            .Trim();
+
+        return normalized.Length <= 24
+            ? normalized
+            : normalized[..24];
+    }
+
+    public sealed class RenameStatus
+    {
+        [JsonPropertyName("currentDisplayName")]
+        public string CurrentDisplayName { get; set; } = "";
+
+        [JsonPropertyName("isFirstChangeFree")]
+        public bool IsFirstChangeFree { get; set; } = true;
+
+        [JsonPropertyName("canChangeNow")]
+        public bool CanChangeNow { get; set; } = true;
+
+        [JsonPropertyName("currentCost")]
+        public int CurrentCost { get; set; }
+
+        [JsonPropertyName("crystalBalance")]
+        public int CrystalBalance { get; set; }
+
+        [JsonPropertyName("canAfford")]
+        public bool CanAfford { get; set; } = true;
+
+        [JsonPropertyName("nextAvailableAt")]
+        public string? NextAvailableAt { get; set; }
+    }
+
+    public sealed class RenameResult
+    {
+        [JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [JsonPropertyName("message")]
+        public string? Message { get; set; }
+
+        [JsonPropertyName("status")]
+        public RenameStatus? Status { get; set; }
+    }
+}
+
+<style>
+    .cc-name-change {
+        display: grid;
+        gap: 0.65rem;
+        width: 100%;
+    }
+
+    .cc-name-label {
+        font-weight: 800;
+        letter-spacing: 0.02em;
+    }
+
+    .cc-name-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.65rem;
+        align-items: stretch;
+    }
+
+    .cc-name-row input {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .cc-name-button,
+    .cc-name-confirm,
+    .cc-name-cancel {
+        min-height: 44px;
+        border-radius: 0.75rem;
+        padding: 0.7rem 1rem;
+        font: inherit;
+        font-weight: 850;
+        cursor: pointer;
+    }
+
+    .cc-name-button,
+    .cc-name-confirm {
+        border: 1px solid
+            color-mix(
+                in srgb,
+                var(--accent, #31d7a4) 75%,
+                white
+            );
+        background: var(--accent, #31d7a4);
+        color: #07130f;
+        white-space: nowrap;
+    }
+
+    .cc-name-button:disabled,
+    .cc-name-confirm:disabled,
+    .cc-name-cancel:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .cc-name-help {
+        opacity: 0.8;
+        line-height: 1.45;
+    }
+
+    .cc-name-status {
+        display: grid;
+        gap: 0.22rem;
+        border: 1px solid
+            color-mix(
+                in srgb,
+                currentColor 20%,
+                transparent
+            );
+        border-radius: 0.8rem;
+        padding: 0.8rem 0.9rem;
+        background:
+            color-mix(
+                in srgb,
+                var(--panel, #152239) 86%,
+                transparent
+            );
+        line-height: 1.4;
+    }
+
+    .cc-name-status-free {
+        border-color:
+            color-mix(
+                in srgb,
+                var(--accent, #31d7a4) 55%,
+                transparent
+            );
+    }
+
+    .cc-name-message {
+        border-radius: 0.7rem;
+        padding: 0.75rem 0.85rem;
+        font-weight: 750;
+    }
+
+    .cc-name-error {
+        border: 1px solid #ff8a8a;
+        background: rgba(155, 28, 28, 0.2);
+    }
+
+    .cc-name-success {
+        border: 1px solid #64e3ad;
+        background: rgba(22, 130, 87, 0.2);
+    }
+
+    .cc-name-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 5000;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+        background: rgba(3, 8, 18, 0.78);
+        backdrop-filter: blur(7px);
+    }
+
+    .cc-name-modal {
+        width: min(560px, 100%);
+        display: grid;
+        gap: 1rem;
+        border: 1px solid
+            color-mix(
+                in srgb,
+                var(--accent, #31d7a4) 55%,
+                white
+            );
+        border-radius: 1.1rem;
+        padding: clamp(1.1rem, 3vw, 1.7rem);
+        background: var(--panel, #152239);
+        color: var(--text, #f6f8ff);
+        box-shadow:
+            0 30px 80px rgba(0, 0, 0, 0.52);
+    }
+
+    .cc-name-modal h2,
+    .cc-name-modal p {
+        margin: 0;
+    }
+
+    .cc-name-modal-kicker {
+        color: var(--accent, #31d7a4);
+        font-size: 0.76rem;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+    }
+
+    .cc-name-comparison {
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 0.7rem;
+        align-items: center;
+    }
+
+    .cc-name-comparison > div:not(.cc-name-arrow) {
+        display: grid;
+        gap: 0.2rem;
+        border-radius: 0.8rem;
+        padding: 0.8rem;
+        background:
+            color-mix(
+                in srgb,
+                currentColor 8%,
+                transparent
+            );
+    }
+
+    .cc-name-comparison span {
+        font-size: 0.78rem;
+        opacity: 0.72;
+    }
+
+    .cc-name-arrow {
+        font-size: 1.3rem;
+        font-weight: 900;
+    }
+
+    .cc-name-modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+    }
+
+    .cc-name-cancel {
+        border: 1px solid
+            color-mix(
+                in srgb,
+                currentColor 28%,
+                transparent
+            );
+        background: transparent;
+        color: inherit;
+    }
+
+    @@media (max-width: 620px) {
+        .cc-name-row {
+            grid-template-columns: 1fr;
+        }
+
+        .cc-name-button {
+            width: 100%;
+        }
+
+        .cc-name-comparison {
+            grid-template-columns: 1fr;
+        }
+
+        .cc-name-arrow {
+            transform: rotate(90deg);
+            justify-self: center;
+        }
+
+        .cc-name-modal-actions {
+            display: grid;
+        }
+    }
+</style>

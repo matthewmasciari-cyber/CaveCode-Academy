@@ -1,18 +1,33 @@
 let supabaseClient = null;
 
 const caveCodeLiveOrigin = "https://cavecodeacademy.dev";
-const caveCodeProgressKey = "cavecode.csharp.progress.v1";
 
-function caveCodeReturnUrl() {
-    const path = window.location.pathname.endsWith("/csharp")
-        ? "/csharp"
-        : "/";
-
-    return `${caveCodeLiveOrigin}${path}`;
+function normalizeCourseKey(courseKey) {
+    return courseKey === "python" ? "python" : "csharp";
 }
 
-function readLocalProgress() {
-    const raw = window.localStorage.getItem(caveCodeProgressKey);
+function courseProgressKey(courseKey) {
+    return `cavecode.${normalizeCourseKey(courseKey)}.progress.v1`;
+}
+
+function caveCodeReturnUrl() {
+    const path = window.location.pathname;
+
+    if (path.endsWith("/csharp")) {
+        return `${caveCodeLiveOrigin}/csharp`;
+    }
+
+    if (path.endsWith("/python")) {
+        return `${caveCodeLiveOrigin}/python`;
+    }
+
+    return `${caveCodeLiveOrigin}/`;
+}
+
+function readLocalProgress(courseKey) {
+    const raw = window.localStorage.getItem(
+        courseProgressKey(courseKey)
+    );
 
     if (!raw) {
         return null;
@@ -23,6 +38,18 @@ function readLocalProgress() {
     } catch {
         return null;
     }
+}
+
+function saveLocalProgress(courseKey, progress) {
+    const snapshot = {
+        ...progress,
+        updatedAt: new Date().toISOString()
+    };
+
+    window.localStorage.setItem(
+        courseProgressKey(courseKey),
+        JSON.stringify(snapshot)
+    );
 }
 
 async function currentUser() {
@@ -125,26 +152,113 @@ window.caveCodeAuth = {
         };
     },
 
+    // Backward-compatible C# progress functions.
     saveCourseProgress: function (progress) {
-        const snapshot = {
-            ...progress,
-            updatedAt: new Date().toISOString()
-        };
-
-        window.localStorage.setItem(
-            caveCodeProgressKey,
-            JSON.stringify(snapshot)
-        );
+        saveLocalProgress("csharp", progress);
     },
 
     loadCourseProgress: function () {
-        return readLocalProgress();
+        return readLocalProgress("csharp");
     },
 
-    syncLocalProgressToCloud: async function () {
-        // This intentionally preserves the local checkpoint now.
-        // The Supabase course_progress table will be connected in the
-        // dedicated cloud-progress database pass.
-        return readLocalProgress();
+    // Course-specific functions used by all new learning paths.
+    saveCourseProgressFor: function (courseKey, progress) {
+        saveLocalProgress(courseKey, progress);
+    },
+
+    loadCourseProgressFor: function (courseKey) {
+        return readLocalProgress(courseKey);
+    },
+
+    syncLocalProgressToCloud: async function (courseKey = "csharp") {
+        return readLocalProgress(courseKey);
+    },
+
+    upsertLeaderboardProfile: async function (profile) {
+        if (!supabaseClient) {
+            return { available: false, message: "Supabase is not initialized." };
+        }
+
+        const user = await currentUser();
+
+        if (!user) {
+            return { available: false, message: "Sign in to publish rankings." };
+        }
+
+        const payload = {
+            id: user.id,
+            display_name: String(profile.displayName || "CaveCode Learner").slice(0, 24),
+            emblem: profile.emblem || "crystal",
+            title: profile.title || "Cave Explorer",
+            total_xp: Number(profile.totalXp || 0),
+            csharp_xp: Number(profile.cSharpXp || 0),
+            python_xp: Number(profile.pythonXp || 0),
+            total_lines: Number(profile.totalLines || 0),
+            csharp_lines: Number(profile.cSharpLines || 0),
+            python_lines: Number(profile.pythonLines || 0),
+            is_public: Boolean(profile.isPublic),
+            updated_at: new Date().toISOString()
+        };
+
+        const { error } = await supabaseClient
+            .from("leaderboard_profiles")
+            .upsert(payload, { onConflict: "id" });
+
+        return error
+            ? { available: false, message: error.message }
+            : { available: true, message: "" };
+    },
+
+    getLeaderboardProfiles: async function (filter = "overall") {
+        if (!supabaseClient) {
+            return { available: false, entries: [], message: "Supabase is not initialized." };
+        }
+
+        const orderColumn =
+            filter === "csharp"
+                ? "csharp_xp"
+                : filter === "python"
+                    ? "python_xp"
+                    : "total_xp";
+
+        const { data, error } = await supabaseClient
+            .from("leaderboard_profiles")
+            .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+            .eq("is_public", true)
+            .order(orderColumn, { ascending: false })
+            .limit(100);
+
+        if (error) {
+            return { available: false, entries: [], message: error.message };
+        }
+
+        const entries = (data || []).map(row => {
+            let level = 1;
+            let remaining = Number(row.total_xp || 0);
+            let required = 500;
+
+            while (remaining >= required) {
+                remaining -= required;
+                level += 1;
+                required = 400 + level * 100;
+            }
+
+            return {
+                id: row.id,
+                displayName: row.display_name,
+                emblem: row.emblem,
+                title: row.title,
+                totalXp: Number(row.total_xp || 0),
+                cSharpXp: Number(row.csharp_xp || 0),
+                pythonXp: Number(row.python_xp || 0),
+                totalLines: Number(row.total_lines || 0),
+                cSharpLines: Number(row.csharp_lines || 0),
+                pythonLines: Number(row.python_lines || 0),
+                level,
+                isCurrentUser: false
+            };
+        });
+
+        return { available: true, entries, message: "" };
     }
 };

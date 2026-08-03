@@ -1,0 +1,443 @@
+/*
+ * CaveCode dark-mode contrast and compact profile preview pass.
+ * UI only: no gameplay, saves, rewards, validation, or profile logic.
+ */
+
+/* ---------------------------------------------------------------
+   Dark-mode semantic contrast
+   --------------------------------------------------------------- */
+
+html[data-mode="dark"] .mg-page,
+html[data-mode="dark"] .minigame-hub,
+html:not([data-mode]) .mg-page,
+html:not([data-mode]) .minigame-hub {
+    /*
+     * Rebuild secondary colors from each theme's own text/surface
+     * palette. This keeps Rose Quartz, Teal Blossom, etc. visually
+     * distinct while guaranteeing readable dark-mode contrast.
+     */
+    --text-muted:
+        color-mix(
+            in srgb,
+            var(--text) 78%,
+            var(--surface) 22%
+        ) !important;
+
+    --text-dim:
+        color-mix(
+            in srgb,
+            var(--text) 65%,
+            var(--surface) 35%
+        ) !important;
+
+    --dark-panel-text:
+        color-mix(
+            in srgb,
+            var(--text) 94%,
+            white 6%
+        ) !important;
+
+    --dark-panel-muted:
+        color-mix(
+            in srgb,
+            var(--text) 76%,
+            var(--code-bg) 24%
+        ) !important;
+
+    color: var(--text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-mode="system"] .mg-page,
+    html[data-mode="system"] .minigame-hub {
+        --text-muted:
+            color-mix(
+                in srgb,
+                var(--text) 78%,
+                var(--surface) 22%
+            ) !important;
+
+        --text-dim:
+            color-mix(
+                in srgb,
+                var(--text) 65%,
+                var(--surface) 35%
+            ) !important;
+
+        --dark-panel-text:
+            color-mix(
+                in srgb,
+                var(--text) 94%,
+                white 6%
+            ) !important;
+
+        --dark-panel-muted:
+            color-mix(
+                in srgb,
+                var(--text) 76%,
+                var(--code-bg) 24%
+            ) !important;
+
+        color: var(--text) !important;
+    }
+}
+
+/* Main surfaces should never inherit Bootstrap/default dark grays. */
+html[data-mode="dark"] .mg-page :is(
+    .card,
+    .launch-card,
+    .result,
+    .sidebar,
+    .challenge,
+    .mission-card,
+    .meter,
+    .objective,
+    .hint,
+    .coaching,
+    .coaching-grid > div,
+    .syntax-status,
+    .feedback,
+    .sim,
+    .anti,
+    .decision-modal,
+    .reward
+),
+html[data-mode="dark"] .minigame-hub :is(
+    .loading-card,
+    .mode-card,
+    .reward-guide,
+    .reward-guide > div
+),
+html:not([data-mode]) .mg-page :is(
+    .card,
+    .launch-card,
+    .result,
+    .sidebar,
+    .challenge,
+    .mission-card,
+    .meter,
+    .objective,
+    .hint,
+    .coaching,
+    .coaching-grid > div,
+    .syntax-status,
+    .feedback,
+    .sim,
+    .anti,
+    .decision-modal,
+    .reward
+),
+html:not([data-mode]) .minigame-hub :is(
+    .loading-card,
+    .mode-card,
+    .reward-guide,
+    .reward-guide > div
+) {
+    color: var(--text) !important;
+}
+
+/* Descriptive and secondary copy. */
+html[data-mode="dark"] .mg-page :is(
+    .mg-header > div > p:last-child,
+    .launch-card > p:not(.eyebrow),
+    .result > p:not(.eyebrow),
+    .launch-card label > span,
+    .stats span,
+    .meter small,
+    .mission-topline,
+    .objective > span,
+    .hint > span,
+    .coaching > span,
+    .coaching-grid span,
+    .completion-row span,
+    .syntax-status span,
+    .editor > span,
+    .feedback,
+    .feedback span,
+    .sim-head,
+    .scene small,
+    .anti p,
+    .note,
+    .decision-copy,
+    .decision-stats span
+),
+html[data-mode="dark"] .minigame-hub :is(
+    .hub-header > div > p:last-child,
+    .mode-topline,
+    .mode-card > p:not(.eyebrow),
+    .mode-stats span,
+    .chapter-track span,
+    .loading-card
+),
+html:not([data-mode]) .mg-page :is(
+    .mg-header > div > p:last-child,
+    .launch-card > p:not(.eyebrow),
+    .result > p:not(.eyebrow),
+    .launch-card label > span,
+    .stats span,
+    .meter small,
+    .mission-topline,
+    .objective > span,
+    .hint > span,
+    .coaching > span,
+    .coaching-grid span,
+    .completion-row span,
+    .syntax-status span,
+    .editor > span,
+    .feedback,
+    .feedback span,
+    .sim-head,
+    .scene small,
+    .anti p,
+    .note,
+    .decision-copy,
+    .decision-stats span
+),
+html:not([data-mode]) .minigame-hub :is(
+    .hub-header > div > p:last-child,
+    .mode-topline,
+    .mode-card > p:not(.eyebrow),
+    .mode-stats span,
+    .chapter-track span,
+    .loading-card
+) {
+    color: var(--text-muted) !important;
+}
+
+/* Important values stay brighter than their labels. */
+html[data-mode="dark"] .mg-page :is(
+    h1,
+    h2,
+    h3,
+    .stats strong,
+    .meter strong,
+    .coaching-grid strong,
+    .completion-row strong,
+    .syntax-status strong,
+    .feedback strong,
+    .decision-stats strong
+),
+html[data-mode="dark"] .minigame-hub :is(
+    h1,
+    h2,
+    h3,
+    .mode-stats strong,
+    .reward-guide strong
+),
+html:not([data-mode]) .mg-page :is(
+    h1,
+    h2,
+    h3,
+    .stats strong,
+    .meter strong,
+    .coaching-grid strong,
+    .completion-row strong,
+    .syntax-status strong,
+    .feedback strong,
+    .decision-stats strong
+),
+html:not([data-mode]) .minigame-hub :is(
+    h1,
+    h2,
+    h3,
+    .mode-stats strong,
+    .reward-guide strong
+) {
+    color: var(--text) !important;
+}
+
+/* Form controls and ordinary non-primary buttons. */
+html[data-mode="dark"] .mg-page :is(select, textarea),
+html:not([data-mode]) .mg-page :is(select, textarea) {
+    color: var(--text) !important;
+    caret-color: var(--accent);
+}
+
+html[data-mode="dark"] .mg-page button:not(
+    .primary
+):not(
+    .danger-button
+):not(
+    .decision-danger
+),
+html:not([data-mode]) .mg-page button:not(
+    .primary
+):not(
+    .danger-button
+):not(
+    .decision-danger
+) {
+    color: var(--text) !important;
+}
+
+html[data-mode="dark"] .mg-page button:disabled,
+html:not([data-mode]) .mg-page button:disabled {
+    color: var(--text-muted) !important;
+    opacity: .72;
+}
+
+/* Active code/simulation dark panels. */
+html[data-mode="dark"] .mg-page :is(
+    .sim-head,
+    .scene
+),
+html:not([data-mode]) .mg-page :is(
+    .sim-head,
+    .scene
+) {
+    color: var(--dark-panel-text) !important;
+}
+
+html[data-mode="dark"] .mg-page :is(
+    .sim-head,
+    .scene small
+),
+html:not([data-mode]) .mg-page :is(
+    .sim-head,
+    .scene small
+) {
+    color: var(--dark-panel-muted) !important;
+}
+
+/* System mode receives the same targeted rules only when the device
+   is actually using dark appearance. */
+@media (prefers-color-scheme: dark) {
+    html[data-mode="system"] .mg-page :is(
+        .card,
+        .launch-card,
+        .result,
+        .sidebar,
+        .challenge,
+        .mission-card,
+        .meter,
+        .objective,
+        .hint,
+        .coaching,
+        .coaching-grid > div,
+        .syntax-status,
+        .feedback,
+        .sim,
+        .anti,
+        .decision-modal,
+        .reward
+    ),
+    html[data-mode="system"] .minigame-hub :is(
+        .loading-card,
+        .mode-card,
+        .reward-guide,
+        .reward-guide > div
+    ) {
+        color: var(--text) !important;
+    }
+
+    html[data-mode="system"] .mg-page :is(
+        .mg-header > div > p:last-child,
+        .launch-card > p:not(.eyebrow),
+        .result > p:not(.eyebrow),
+        .launch-card label > span,
+        .stats span,
+        .meter small,
+        .mission-topline,
+        .objective > span,
+        .hint > span,
+        .coaching > span,
+        .coaching-grid span,
+        .completion-row span,
+        .syntax-status span,
+        .editor > span,
+        .feedback,
+        .feedback span,
+        .sim-head,
+        .scene small,
+        .anti p,
+        .note,
+        .decision-copy,
+        .decision-stats span
+    ),
+    html[data-mode="system"] .minigame-hub :is(
+        .hub-header > div > p:last-child,
+        .mode-topline,
+        .mode-card > p:not(.eyebrow),
+        .mode-stats span,
+        .chapter-track span,
+        .loading-card
+    ) {
+        color: var(--text-muted) !important;
+    }
+
+    html[data-mode="system"] .mg-page :is(
+        h1,
+        h2,
+        h3,
+        .stats strong,
+        .meter strong,
+        .coaching-grid strong,
+        .completion-row strong,
+        .syntax-status strong,
+        .feedback strong,
+        .decision-stats strong
+    ),
+    html[data-mode="system"] .minigame-hub :is(
+        h1,
+        h2,
+        h3,
+        .mode-stats strong,
+        .reward-guide strong
+    ) {
+        color: var(--text) !important;
+    }
+
+    html[data-mode="system"] .mg-page :is(select, textarea) {
+        color: var(--text) !important;
+        caret-color: var(--accent);
+    }
+
+    html[data-mode="system"] .mg-page button:not(
+        .primary
+    ):not(
+        .danger-button
+    ):not(
+        .decision-danger
+    ) {
+        color: var(--text) !important;
+    }
+}
+
+/* ---------------------------------------------------------------
+   Compact Settings profile preview
+   --------------------------------------------------------------- */
+
+.settings-page .profile-grid {
+    align-items: start !important;
+}
+
+.settings-page .profile-preview {
+    align-self: start !important;
+    justify-self: end;
+    width: min(100%, 360px);
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 16px !important;
+}
+
+.settings-page .profile-preview > p {
+    margin-bottom: 12px !important;
+}
+
+.settings-page .preview-achievement {
+    margin-top: 14px !important;
+    padding: 10px !important;
+}
+
+.settings-page .preview-identity {
+    min-height: 0;
+}
+
+@media (max-width: 780px) {
+    .settings-page .profile-preview {
+        justify-self: stretch;
+        width: 100%;
+        max-width: none;
+    }
+}

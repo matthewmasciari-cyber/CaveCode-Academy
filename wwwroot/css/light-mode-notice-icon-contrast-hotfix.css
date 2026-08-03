@@ -1,0 +1,151 @@
+/* ================================================================
+   CaveCode Academy
+   Light-mode notice + yellow-theme icon contrast hotfix
+   Loaded last so it can safely correct earlier page-local styles.
+   ================================================================ */
+
+/* The user requested the Appearance intro to use the same color as the title. */
+html[data-mode="light"] .settings-header > div > p:last-child {
+    color: var(--text-primary, var(--text, #172029)) !important;
+    opacity: 1 !important;
+}
+
+/* Shared light-mode surface for the username cooldown/cost notice.
+   The first selector is the exact runtime fallback class. The remaining
+   selectors cover class names used by prior username/rename passes. */
+html[data-mode="light"] .settings-page :where(
+    .cavecode-light-cooldown-notice,
+    [class*="rename-status"]:not([class*="modal"]),
+    [class*="rename-notice"]:not([class*="modal"]),
+    [class*="rename-policy"]:not([class*="modal"]),
+    [class*="rename-cooldown"]:not([class*="modal"]),
+    [class*="rename-cost"]:not([class*="modal"]),
+    [class*="name-change-status"]:not([class*="modal"]),
+    [class*="name-change-notice"]:not([class*="modal"]),
+    [class*="name-change-policy"]:not([class*="modal"]),
+    [class*="name-change-cooldown"]:not([class*="modal"]),
+    [class*="cooldown-card"]:not([class*="modal"]),
+    [class*="cooldown-box"]:not([class*="modal"]),
+    [class*="cooldown-notice"]:not([class*="modal"])
+) {
+    color: var(--text-primary, var(--text, #172029)) !important;
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--accent, #66a9ff) 8%, #ffffff),
+            var(--surface-soft, #f4f6f8)
+        ) !important;
+    border: 1px solid
+        color-mix(
+            in srgb,
+            var(--accent, #66a9ff) 42%,
+            var(--border-strong, #98a8b4)
+        ) !important;
+    box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 82%),
+        0 10px 28px var(--shadow, rgb(37 48 58 / 14%)) !important;
+}
+
+/* Keep every line inside the notice readable, including any text that an
+   earlier pass colored with dark-panel or muted variables. */
+html[data-mode="light"] .settings-page :where(
+    .cavecode-light-cooldown-notice,
+    [class*="rename-status"]:not([class*="modal"]),
+    [class*="rename-notice"]:not([class*="modal"]),
+    [class*="rename-policy"]:not([class*="modal"]),
+    [class*="rename-cooldown"]:not([class*="modal"]),
+    [class*="rename-cost"]:not([class*="modal"]),
+    [class*="name-change-status"]:not([class*="modal"]),
+    [class*="name-change-notice"]:not([class*="modal"]),
+    [class*="name-change-policy"]:not([class*="modal"]),
+    [class*="name-change-cooldown"]:not([class*="modal"]),
+    [class*="cooldown-card"]:not([class*="modal"]),
+    [class*="cooldown-box"]:not([class*="modal"]),
+    [class*="cooldown-notice"]:not([class*="modal"])
+) :where(p, span, small, label, time) {
+    color: var(--text-secondary, var(--text, #344556)) !important;
+    opacity: 1 !important;
+}
+
+html[data-mode="light"] .settings-page :where(
+    .cavecode-light-cooldown-notice,
+    [class*="rename-status"]:not([class*="modal"]),
+    [class*="rename-notice"]:not([class*="modal"]),
+    [class*="rename-policy"]:not([class*="modal"]),
+    [class*="rename-cooldown"]:not([class*="modal"]),
+    [class*="rename-cost"]:not([class*="modal"]),
+    [class*="name-change-status"]:not([class*="modal"]),
+    [class*="name-change-notice"]:not([class*="modal"]),
+    [class*="name-change-policy"]:not([class*="modal"]),
+    [class*="name-change-cooldown"]:not([class*="modal"]),
+    [class*="cooldown-card"]:not([class*="modal"]),
+    [class*="cooldown-box"]:not([class*="modal"]),
+    [class*="cooldown-notice"]:not([class*="modal"])
+) :where(strong, b, h2, h3, h4) {
+    color: var(--text-primary, var(--text, #172029)) !important;
+    opacity: 1 !important;
+}
+
+/* Code Crystals and other accent details remain visible without inheriting a
+   pale yellow text color on the light surface. */
+html[data-mode="light"] .cavecode-light-cooldown-notice :where(
+    [class*="crystal"],
+    [class*="currency"],
+    [class*="cost"]
+) {
+    color: var(--text-primary, var(--text, #172029)) !important;
+    font-weight: 900;
+}
+
+/* Yellow High Contrast theme:
+   Lucide strokes should be black on a solid yellow tile, not yellow on a
+   yellow-tinted tile. This covers Learning Path cards and the path wizard. */
+html[data-theme="high-contrast"] :where(
+    .real-world-uses__icon-tile,
+    .real-world-uses__heading-icon,
+    .path-wizard-option__icon
+) {
+    color: #000 !important;
+    background: #ffe600 !important;
+    border-color: #000 !important;
+    box-shadow:
+        0 0 0 1px #fff,
+        0 7px 15px rgb(0 0 0 / 24%) !important;
+}
+
+html[data-theme="high-contrast"] :where(
+    .real-world-uses__icon-tile,
+    .real-world-uses__heading-icon,
+    .path-wizard-option__icon
+) svg {
+    color: #000 !important;
+    stroke: #000 !important;
+    opacity: 1 !important;
+}
+
+/* The recommendation and language badges already use accent-contrast, but
+   this protects them against an inherited yellow foreground. */
+html[data-theme="high-contrast"] :where(
+    .path-card .language-mark,
+    .path-recommendation-rank,
+    .path-wizard-brand__mark,
+    .path-wizard-result__mark
+) {
+    color: #000 !important;
+    background: #ffe600 !important;
+    border-color: #000 !important;
+}
+
+/* Keep intentional dark preview/code surfaces unchanged in light mode. */
+html[data-mode="light"] :where(
+    .profile-preview,
+    .code-editor,
+    .editor-shell,
+    .terminal,
+    .console,
+    .code-block,
+    pre,
+    code
+) {
+    color: var(--dark-panel-text, #eef4f8);
+}

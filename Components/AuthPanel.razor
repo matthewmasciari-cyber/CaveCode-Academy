@@ -1,6 +1,7 @@
 @using Microsoft.JSInterop
 @using System.Text.Json.Serialization
 @inject IJSRuntime JS
+@inject ProfileService ProfileService
 
 <section class="auth-card @(Compact ? "compact" : "")">
     @if (!AuthReady)
@@ -35,6 +36,7 @@
     else
     {
         <div class="signed-in-user">
+            <span class="profile-emblem" aria-hidden="true">@ProfileEmblem</span>
             @if (!string.IsNullOrWhiteSpace(CurrentUser.AvatarUrl))
             {
                 <img src="@CurrentUser.AvatarUrl"
@@ -46,8 +48,14 @@
             }
 
             <div class="signed-in-copy">
-                <strong>@DisplayName</strong>
-                <small>@(Compact ? "Signed in" : "CaveCode account connected")</small>
+                <strong>@ProfileDisplayName</strong>
+                <small>@ProfileTitle</small>
+                @if (!Compact)
+                {
+                    <span class="featured-achievement">
+                        ◆ @ProfileAchievement
+                    </span>
+                }
             </div>
         </div>
 
@@ -63,6 +71,7 @@
             <p>@AuthMessage</p>
         }
     }
+    <ProgressIdentity Compact="@Compact" />
 </section>
 
 <style>
@@ -199,6 +208,27 @@
         justify-content: flex-end;
     }
 
+    .profile-emblem {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        place-items: center;
+        color: var(--accent-contrast, #08120c);
+        background: var(--accent, #71e49a);
+        border: 1px solid var(--accent-border, #3e8a59);
+        border-radius: 10px;
+        box-shadow: 0 0 18px var(--accent-glow, rgba(113, 228, 154, .35));
+        font-size: 13px;
+        font-weight: 950;
+    }
+
+    .compact .profile-emblem {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+    }
+
     .signed-in-user img,
     .avatar-fallback {
         width: 34px;
@@ -225,6 +255,18 @@
     }
 
     .signed-in-user strong,
+    .featured-achievement {
+        display: block;
+        max-width: 210px;
+        margin-top: 4px;
+        overflow: hidden;
+        color: var(--accent, #71e49a);
+        font-size: 9px;
+        font-weight: 800;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
     .signed-in-user small {
         display: block;
     }
@@ -259,6 +301,7 @@
         "sb_publishable_G3PbwitcUVImRp7dHW4CIQ_zgL8wf3F";
 
     private AuthUser? CurrentUser;
+    private ProfilePreferences Profile = new();
     private bool AuthReady;
     private bool AuthBusy;
     private string AuthMessage =
@@ -270,6 +313,30 @@
             : !string.IsNullOrWhiteSpace(CurrentUser?.Email)
                 ? CurrentUser.Email
                 : "CaveCode learner";
+
+    private string ProfileDisplayName =>
+        !string.IsNullOrWhiteSpace(Profile.DisplayName)
+            ? Profile.DisplayName.Trim()
+            : DisplayName;
+
+    private string ProfileTitle =>
+        string.IsNullOrWhiteSpace(Profile.Title)
+            ? "Cave Explorer"
+            : Profile.Title;
+
+    private string ProfileAchievement =>
+        string.IsNullOrWhiteSpace(Profile.FeaturedAchievement)
+            ? "First Steps"
+            : Profile.FeaturedAchievement;
+
+    private string ProfileEmblem =>
+        Profile.Emblem switch
+        {
+            "cave" => "△",
+            "terminal" => ">_",
+            "gear" => "⚙",
+            _ => "◆"
+        };
 
     private string DisplayInitial =>
         string.IsNullOrWhiteSpace(DisplayName)
@@ -285,6 +352,9 @@
 
         try
         {
+            Profile =
+                await ProfileService.GetPreferencesAsync();
+
             await JS.InvokeVoidAsync(
                 "caveCodeAuth.initialize",
                 SupabaseUrl,

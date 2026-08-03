@@ -1,0 +1,62 @@
+@inject AchievementService AchievementService
+
+<NavLink class="achievement-nav-link" href="/achievements">
+    <span>Achievements</span>
+
+    @if (UnclaimedCount > 0)
+    {
+        <strong aria-label="@UnclaimedCount unclaimed achievement rewards">
+            @UnclaimedCount
+        </strong>
+    }
+</NavLink>
+
+<style>
+    .achievement-nav-link {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+    }
+
+    .achievement-nav-link > strong {
+        display: grid;
+        min-width: 19px;
+        height: 19px;
+        padding: 0 5px;
+        place-items: center;
+        color: var(--accent-contrast, #07120b);
+        background: var(--accent, #71e49a);
+        border-radius: 99px;
+        box-shadow: 0 0 14px var(--accent-glow, rgba(113, 228, 154, .4));
+        font-size: 9px;
+        font-weight: 950;
+    }
+</style>
+
+@code {
+    private int UnclaimedCount;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            AchievementState state =
+                await AchievementService.GetStateAsync();
+
+            UnclaimedCount = state.UnclaimedCount;
+        }
+        catch
+        {
+            UnclaimedCount = 0;
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+}

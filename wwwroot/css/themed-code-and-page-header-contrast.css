@@ -1,0 +1,263 @@
+/* ================================================================
+   CaveCode Academy
+   Themed light-mode code panels + global page-header contrast
+   Loaded last so it can correct page-local Razor styles.
+   ================================================================ */
+
+/* ------------------------------------------------
+   1. Theme-aware code surfaces in LIGHT MODE ONLY
+   ------------------------------------------------
+
+   themes.css already gives each theme its own dark accent surface:
+   green, blue, rose, teal, salmon, purple, yellow, etc.
+   Reusing that value keeps editors dark enough for code while making
+   the selected theme immediately visible.
+*/
+html[data-mode="light"] {
+    --code-bg: var(--accent-surface);
+    --code-text: var(--accent-soft);
+    --code-muted:
+        color-mix(
+            in srgb,
+            var(--accent-soft) 72%,
+            var(--accent) 28%
+        );
+    --dark-panel-text: var(--accent-soft);
+    --dark-panel-muted:
+        color-mix(
+            in srgb,
+            var(--accent-soft) 68%,
+            var(--accent) 32%
+        );
+}
+
+/* Force every teaching/editor surface to consume the active theme.
+   Important is necessary because several course pages include local
+   <style> blocks after the global stylesheets. */
+html[data-mode="light"] :where(
+    .code-editor,
+    .typing-guide,
+    .reference-example,
+    .revealed-target,
+    .terminal,
+    .profile-preview,
+    .crystal-wallet,
+    .code-block,
+    .editor-shell,
+    .console
+) {
+    color: var(--dark-panel-text) !important;
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--accent-surface) 86%, #000),
+            var(--accent-surface)
+        ) !important;
+    border-color: var(--accent-border) !important;
+}
+
+/* PlayerTraining.cs / Target.cs editor bars. */
+html[data-mode="light"] :where(
+    .code-editor,
+    .typing-guide
+) .editor-bar {
+    color: var(--dark-panel-muted) !important;
+    background:
+        color-mix(
+            in srgb,
+            var(--accent-surface) 82%,
+            #000
+        ) !important;
+    border-color: var(--accent-border) !important;
+}
+
+/* The file name becomes the clearest theme-colored editor detail. */
+html[data-mode="light"] :where(
+    .code-editor,
+    .typing-guide
+) .editor-bar > span:first-child {
+    color: var(--accent) !important;
+    font-weight: 950 !important;
+}
+
+/* Keep the language/follow-along label readable but secondary. */
+html[data-mode="light"] :where(
+    .code-editor,
+    .typing-guide
+) .editor-bar > span:last-child {
+    color: var(--dark-panel-muted) !important;
+}
+
+/* Actual code and typing text. */
+html[data-mode="light"] :where(
+    .code-editor textarea,
+    .typing-guide .character-guide,
+    .reference-example code,
+    .revealed-target code,
+    pre code
+) {
+    color: var(--code-text) !important;
+    background: transparent !important;
+    caret-color: var(--accent) !important;
+}
+
+/* textarea has its own page-local background declaration. */
+html[data-mode="light"] .code-editor textarea {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--accent-surface) 90%, #000),
+            var(--accent-surface)
+        ) !important;
+}
+
+/* Typing statistics should stay connected to the themed editor rather than
+   returning to a plain white/light surface. */
+html[data-mode="light"] .code-editor .typing-stats {
+    color: var(--dark-panel-text) !important;
+    background:
+        color-mix(
+            in srgb,
+            var(--accent-surface) 78%,
+            #000
+        ) !important;
+    border-color: var(--accent-border) !important;
+}
+
+html[data-mode="light"] .code-editor .typing-stats span {
+    color: var(--dark-panel-muted) !important;
+}
+
+html[data-mode="light"] .code-editor .typing-stats strong {
+    color: var(--accent-soft) !important;
+}
+
+/* Reference labels and terminal labels. */
+html[data-mode="light"] :where(
+    .reference-example > span,
+    .revealed-target > span,
+    .terminal-title,
+    .profile-preview > p
+) {
+    color: var(--dark-panel-muted) !important;
+}
+
+/* Preserve red/error and character-state feedback. */
+html[data-mode="light"] .character-correct {
+    color: var(--accent) !important;
+}
+
+html[data-mode="light"] .character-current {
+    color: var(--accent-soft) !important;
+    background: var(--accent-border) !important;
+}
+
+html[data-mode="light"] :where(
+    .character-pending,
+    .newline-mark
+) {
+    color: var(--code-muted) !important;
+}
+
+/* High Contrast remains yellow/black rather than muddy olive. */
+html[data-mode="light"][data-theme="high-contrast"] :where(
+    .code-editor,
+    .typing-guide,
+    .reference-example,
+    .revealed-target,
+    .terminal,
+    .profile-preview,
+    .crystal-wallet,
+    .code-block,
+    .editor-shell,
+    .console
+) {
+    color: #fffbd1 !important;
+    background: #171600 !important;
+    border-color: #000 !important;
+    box-shadow: inset 0 0 0 1px #ffe600 !important;
+}
+
+html[data-mode="light"][data-theme="high-contrast"] :where(
+    .code-editor,
+    .typing-guide
+) .editor-bar,
+html[data-mode="light"][data-theme="high-contrast"] .code-editor .typing-stats {
+    background: #050500 !important;
+    border-color: #ffe600 !important;
+}
+
+/* ----------------------------------------------
+   2. Strong page-introduction text in LIGHT MODE
+   ----------------------------------------------
+
+   Any paragraph immediately following a page heading inside a header receives
+   the same primary color as the heading. Explicit CaveCode header classes and
+   the JavaScript fallback cover wrapped layouts.
+*/
+html[data-mode="light"] header :where(h1, h2) + p,
+html[data-mode="light"] :where(
+    .settings-header,
+    .achievement-header,
+    .leaderboard-header,
+    .minigame-header,
+    .learning-path-header,
+    .page-header,
+    .hero-header,
+    .header-copy,
+    .lesson-header
+) :where(h1, h2) + p,
+html[data-mode="light"] .cavecode-page-intro {
+    color: var(--text-primary, var(--text, #172029)) !important;
+    opacity: 1 !important;
+}
+
+/* Existing layouts sometimes target the last paragraph rather than h1 + p. */
+html[data-mode="light"] .settings-header > div > p:last-child,
+html[data-mode="light"] .achievement-header .header-copy > div > p:last-child,
+html[data-mode="light"] .leaderboard-header > div > p:last-child,
+html[data-mode="light"] .leaderboard-header .header-copy > div > p:last-child,
+html[data-mode="light"] .leaderboard-header .leaderboard-header-copy > p:last-child,
+html[data-mode="light"] .minigame-header > div > p:last-child,
+html[data-mode="light"] .page-header > div > p:last-child,
+html[data-mode="light"] .hero-header > div > p:last-child {
+    color: var(--text-primary, var(--text, #172029)) !important;
+    opacity: 1 !important;
+}
+
+/* The smaller section descriptions can remain visually secondary.
+   This pass intentionally changes only the page-level introductory copy. */
+
+/* ---------------------------------------
+   3. Cave Explorer light-mode title fix
+   --------------------------------------- */
+html[data-mode="light"] .academy .preview-header h2,
+html[data-mode="light"] .preview-panel .preview-header h2 {
+    color: var(--text-primary, var(--text, #172029)) !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+/* The preview eyebrow uses the theme accent, but gains a subtle dark outline
+   so pale accent colors remain legible on light surfaces. */
+html[data-mode="light"] .academy .preview-header .eyebrow,
+html[data-mode="light"] .preview-panel .preview-header .eyebrow {
+    color: var(--accent) !important;
+    text-shadow:
+        0 0 1px var(--text-primary, var(--text, #172029)) !important;
+}
+
+/* General protection for prominent light-mode page titles. */
+html[data-mode="light"] :where(
+    .settings-header,
+    .achievement-header,
+    .leaderboard-header,
+    .minigame-header,
+    .learning-path-header,
+    .page-header,
+    .hero-header,
+    .header-copy
+) :where(h1, h2) {
+    color: var(--text-primary, var(--text, #172029)) !important;
+    opacity: 1 !important;
+}

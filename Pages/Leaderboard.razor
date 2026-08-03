@@ -1,0 +1,755 @@
+@page "/leaderboard"
+@inject ProgressionService ProgressionService
+@inject ProfileService ProfileService
+
+<PageTitle>Leaderboard · CaveCode Academy</PageTitle>
+
+<div class="leaderboard-page">
+    <header class="leaderboard-header">
+        <AcademyHomeButton />
+
+        <div>
+            <p class="eyebrow">ACADEMY RANKINGS</p>
+            <h1>Leaderboard</h1>
+            <p>
+                Compare experience, level, equipped title, and validated
+                lines of code across CaveCode learning paths.
+            </p>
+        </div>
+
+        <ProgressIdentity Compact="true" />
+    </header>
+
+    @if (!Ready)
+    {
+        <section class="loading-card">Loading progression…</section>
+    }
+    else
+    {
+        <main class="leaderboard-layout">
+            <section class="player-summary">
+                <div class="level-orb">
+                    <span>LEVEL</span>
+                    <strong>@State.Level</strong>
+                </div>
+
+                <div class="summary-copy">
+                    <span>@DisplayName</span>
+                    <strong>@Profile.Title</strong>
+
+                    <div class="summary-xp-track">
+                        <i style="width: @(State.LevelProgress)%"></i>
+                    </div>
+
+                    <small>
+                        @State.XpIntoLevel / @State.XpForNextLevel XP
+                        toward Level @(State.Level + 1)
+                    </small>
+                </div>
+
+                <div class="summary-stats">
+                    <div>
+                        <span>Total XP</span>
+                        <strong>@State.TotalXp.ToString("N0")</strong>
+                    </div>
+
+                    <div>
+                        <span>Validated lines</span>
+                        <strong>@State.TotalLines.ToString("N0")</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="visibility-card">
+                <div>
+                    <strong>Public leaderboard profile</strong>
+                    <p>
+                        Public profiles show only your display name, emblem,
+                        title, level, XP, and validated-line totals.
+                    </p>
+                </div>
+
+                <label class="visibility-toggle">
+                    <input type="checkbox"
+                           checked="@State.PublicLeaderboard"
+                           @onchange="ToggleVisibility" />
+                    <i></i>
+                    <span>
+                        @(State.PublicLeaderboard ? "Public" : "Private")
+                    </span>
+                </label>
+            </section>
+
+            @if (!string.IsNullOrWhiteSpace(Result.Message))
+            {
+                <section class="leaderboard-message">
+                    @Result.Message
+                </section>
+            }
+
+            <section class="ranking-card">
+                <div class="ranking-toolbar">
+                    <div>
+                        <p class="eyebrow">RANKINGS</p>
+                        <h2>@FilterHeading</h2>
+                    </div>
+
+                    <div class="filter-tabs">
+                        <button type="button"
+                                class="@(Filter == "overall" ? "selected" : "")"
+                                @onclick='() => SelectFilter("overall")'>
+                            Overall
+                        </button>
+
+                        <button type="button"
+                                class="@(Filter == "csharp" ? "selected" : "")"
+                                @onclick='() => SelectFilter("csharp")'>
+                            C#
+                        </button>
+
+                        <button type="button"
+                                class="@(Filter == "python" ? "selected" : "")"
+                                @onclick='() => SelectFilter("python")'>
+                            Python
+                        </button>
+                    </div>
+                </div>
+
+                <div class="leaderboard-table">
+                    <div class="leaderboard-row table-head">
+                        <span>Rank</span>
+                        <span>Player</span>
+                        <span>Level</span>
+                        <span>Experience</span>
+                        <span>Validated lines</span>
+                    </div>
+
+                    @for (int index = 0;
+                          index < Result.Entries.Length;
+                          index++)
+                    {
+                        LeaderboardEntry entry = Result.Entries[index];
+
+                        <div class="leaderboard-row @(entry.IsCurrentUser ? "current-player" : "")">
+                            <strong class="rank">@(index + 1)</strong>
+
+                            <div class="player-cell">
+                                <span class="player-emblem">
+                                    @Emblem(entry.Emblem)
+                                </span>
+
+                                <span>
+                                    <strong class="level-colored-name"
+                                            style="@LevelNameStyle(entry.Level)"
+                                            title="@LevelColorTitle(entry.Level)">
+                                        @entry.DisplayName
+                                    </strong>
+                                    <TitleEffect Title="@entry.Title" />
+                                </span>
+                            </div>
+
+                            <strong>Lv @entry.Level</strong>
+                            <strong>@FilterXp(entry).ToString("N0") XP</strong>
+                            <strong>@FilterLines(entry).ToString("N0")</strong>
+                        </div>
+                    }
+                </div>
+            </section>
+
+            <section class="xp-rules">
+                <div><span>100 XP</span><strong>Regular module</strong></div>
+                <div><span>200 XP</span><strong>Chapter challenge</strong></div>
+                <div><span>250 XP</span><strong>Chapter completion bonus</strong></div>
+                <div><span>Unlimited</span><strong>Maximum level</strong></div>
+            </section>
+        </main>
+    }
+</div>
+
+<style>
+    .leaderboard-page {
+        min-height: 100vh;
+        padding: 34px 18px 70px;
+        color: var(--text);
+        background:
+            radial-gradient(
+                circle at 10% 0%,
+                var(--accent-surface),
+                transparent 32%
+            ),
+            var(--bg);
+        font-family: Inter, system-ui, sans-serif;
+    }
+
+    .leaderboard-header,
+    .leaderboard-layout {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+    }
+
+    .leaderboard-header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: start;
+        gap: 22px;
+    }
+
+    .leaderboard-header > a {
+        margin-top: 8px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 850;
+    }
+
+    .leaderboard-header h1 {
+        margin: 0;
+        font-size: clamp(36px, 6vw, 66px);
+        letter-spacing: -2px;
+    }
+
+    .leaderboard-header > div > p:last-child {
+        max-width: 700px;
+        margin: 12px 0 0;
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    .eyebrow {
+        margin: 0 0 6px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 1.2px;
+    }
+
+    .leaderboard-layout {
+        display: grid;
+        gap: 16px;
+        margin-top: 34px;
+    }
+
+    .loading-card,
+    .player-summary,
+    .visibility-card,
+    .ranking-card,
+    .leaderboard-message,
+    .xp-rules {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 18px 65px var(--shadow);
+    }
+
+    .loading-card {
+        width: min(1120px, 100%);
+        margin: 34px auto 0;
+        padding: 24px;
+        color: var(--text-muted);
+    }
+
+    .player-summary {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 18px;
+        padding: 20px;
+    }
+
+    .level-orb {
+        display: grid;
+        width: 82px;
+        height: 82px;
+        place-items: center;
+        align-content: center;
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 34px var(--accent-glow);
+    }
+
+    .level-orb span {
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .9px;
+    }
+
+    .level-orb strong {
+        font-size: 30px;
+        line-height: 1;
+    }
+
+    .summary-copy > span,
+    .summary-copy > strong,
+    .summary-copy > small {
+        display: block;
+    }
+
+    .summary-copy > span {
+        color: var(--text-muted);
+        font-size: 10px;
+    }
+
+    .summary-copy > strong {
+        margin-top: 3px;
+        font-size: 21px;
+    }
+
+    .summary-copy > small {
+        margin-top: 7px;
+        color: var(--text-muted);
+        font-size: 9px;
+    }
+
+    .summary-xp-track {
+        height: 8px;
+        margin-top: 13px;
+        overflow: hidden;
+        background: var(--surface-strong);
+        border-radius: 99px;
+    }
+
+    .summary-xp-track i {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+    }
+
+    .summary-stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(105px, 1fr));
+        gap: 9px;
+    }
+
+    .summary-stats div {
+        padding: 12px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .summary-stats span,
+    .summary-stats strong {
+        display: block;
+    }
+
+    .summary-stats span {
+        color: var(--text-muted);
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+
+    .summary-stats strong {
+        margin-top: 5px;
+        font-size: 17px;
+    }
+
+    .visibility-card,
+    .ranking-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 17px 20px;
+    }
+
+    .visibility-card strong {
+        font-size: 13px;
+    }
+
+    .visibility-card p {
+        max-width: 680px;
+        margin: 4px 0 0;
+        color: var(--text-muted);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .visibility-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 850;
+    }
+
+    .visibility-toggle input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .visibility-toggle i {
+        position: relative;
+        width: 45px;
+        height: 25px;
+        background: var(--surface-strong);
+        border: 1px solid var(--border-strong);
+        border-radius: 99px;
+    }
+
+    .visibility-toggle i::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 17px;
+        height: 17px;
+        background: var(--text-muted);
+        border-radius: 50%;
+        transition: .2s;
+    }
+
+    .visibility-toggle input:checked + i::after {
+        left: 23px;
+        background: var(--accent);
+    }
+
+    .leaderboard-message {
+        padding: 13px 16px;
+        color: var(--warning-text);
+        background: var(--warning-surface);
+        border-color: var(--warning-border);
+        font-size: 10px;
+    }
+
+    .ranking-card {
+        overflow: hidden;
+    }
+
+    .ranking-toolbar {
+        border-bottom: 1px solid var(--border);
+    }
+
+    .ranking-toolbar h2 {
+        margin: 0;
+        font-size: 21px;
+    }
+
+    .filter-tabs {
+        display: flex;
+        gap: 6px;
+    }
+
+    .filter-tabs button {
+        padding: 8px 12px;
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 850;
+    }
+
+    .filter-tabs button.selected {
+        color: var(--accent-soft);
+        background: var(--accent-surface);
+        border-color: var(--accent-border);
+    }
+
+    .leaderboard-table {
+        overflow-x: auto;
+    }
+
+    .leaderboard-row {
+        display: grid;
+        grid-template-columns: 60px minmax(210px, 1fr) 90px 135px 135px;
+        align-items: center;
+        min-width: 720px;
+        gap: 12px;
+        padding: 13px 18px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .table-head {
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        font-size: 8px;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .leaderboard-row.current-player {
+        background: var(--accent-surface);
+        box-shadow: inset 3px 0 var(--accent);
+    }
+
+    .rank {
+        color: var(--accent);
+        font-size: 16px;
+    }
+
+    .player-cell {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .player-emblem {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        place-items: center;
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-radius: 9px;
+        font-size: 12px;
+        font-weight: 950;
+    }
+
+    .player-cell strong,
+    .player-cell small {
+        display: block;
+    }
+
+    .player-cell small {
+        margin-top: 3px;
+        color: var(--text-muted);
+        font-size: 9px;
+    }
+
+    .xp-rules {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        overflow: hidden;
+        background: var(--border);
+    }
+
+    .xp-rules div {
+        padding: 15px;
+        background: var(--surface);
+    }
+
+    .xp-rules span,
+    .xp-rules strong {
+        display: block;
+    }
+
+    .xp-rules span {
+        color: var(--accent);
+        font-size: 16px;
+        font-weight: 900;
+    }
+
+    .xp-rules strong {
+        margin-top: 4px;
+        font-size: 9px;
+    }
+
+    @@media (max-width: 760px) {
+        .leaderboard-header {
+            grid-template-columns: 1fr;
+        }
+
+        .player-summary {
+            grid-template-columns: auto 1fr;
+        }
+
+        .summary-stats {
+            grid-column: 1 / -1;
+        }
+
+        .visibility-card,
+        .ranking-toolbar {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .xp-rules {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* Fixed dark leaderboard surface and level-name tiers */
+    .ranking-card {
+        color: var(--dark-panel-text, #eef4f8);
+        background: var(--code-bg, #0b1118);
+        border-color: var(--border-strong, #334252);
+    }
+
+    .ranking-toolbar,
+    .leaderboard-row {
+        border-color: var(--border-strong, #334252);
+    }
+
+    .table-head {
+        color: var(--dark-panel-muted, #aab7c4);
+        background: rgba(255, 255, 255, .045);
+    }
+
+    .player-cell strong,
+    .leaderboard-row > strong:not(.rank) {
+        color: var(--dark-panel-text, #eef4f8);
+    }
+
+    .player-cell small {
+        color: var(--dark-panel-muted, #aab7c4);
+    }
+
+    .level-colored-name {
+        font-weight: 950;
+        text-shadow: 0 0 12px rgba(255, 255, 255, .12);
+    }
+
+</style>
+
+@code {
+    private ProfilePreferences Profile = new();
+    private ProgressionState State = new();
+    private LeaderboardResult Result = new();
+    private bool Ready;
+    private string Filter = "overall";
+
+    private string DisplayName =>
+        string.IsNullOrWhiteSpace(Profile.DisplayName)
+            ? "CaveCode Learner"
+            : Profile.DisplayName.Trim();
+
+    private string FilterHeading =>
+        Filter switch
+        {
+            "csharp" => "C# Cave Adventure",
+            "python" => "Python Automation Quest",
+            _ => "Overall academy"
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        Profile = await ProfileService.GetPreferencesAsync();
+        State = await ProgressionService.GetStateAsync();
+        await RefreshLeaderboard();
+        Ready = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task SelectFilter(string filter)
+    {
+        Filter = filter;
+        await RefreshLeaderboard();
+    }
+
+    private async Task ToggleVisibility(ChangeEventArgs args)
+    {
+        bool isPublic =
+            args.Value is bool value
+                ? value
+                : bool.TryParse(
+                    args.Value?.ToString(),
+                    out bool parsed
+                ) && parsed;
+
+        State =
+            await ProgressionService
+                .SetPublicLeaderboardAsync(isPublic);
+
+        await RefreshLeaderboard();
+    }
+
+    private async Task RefreshLeaderboard()
+    {
+        Result =
+            await ProgressionService.GetLeaderboardAsync(
+                Filter,
+                Profile
+            );
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private int FilterXp(LeaderboardEntry entry) =>
+        Filter switch
+        {
+            "csharp" => entry.CSharpXp,
+            "python" => entry.PythonXp,
+            _ => entry.TotalXp
+        };
+
+    private int FilterLines(LeaderboardEntry entry) =>
+        Filter switch
+        {
+            "csharp" => entry.CSharpLines,
+            "python" => entry.PythonLines,
+            _ => entry.TotalLines
+        };
+
+
+    private static readonly string[] LevelTierColors =
+    {
+        "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+        "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+        "#EEF3F8", "#DDE8F2", "#CCDDEA", "#B9D1E3", "#A8C6DC",
+        "#FFF0B0", "#FFE58A", "#FFDA66", "#F7CB42", "#E9BA22",
+        "#B8F3D3", "#95EAB8", "#72E09E", "#50D284", "#34C16D",
+        "#B9D8FF", "#9CC7FF", "#7CB5FF", "#5D9FFF", "#4088F0",
+        "#E4C8FF", "#D4AEFF", "#C393FF", "#B27BEE", "#9D63DB",
+        "#FFC6EA", "#FFACE0", "#FF91D3", "#F978C7", "#EE5DB9"
+    };
+
+    private static readonly string[] LevelFamilies =
+    {
+        "Stone",
+        "Bronze",
+        "Silver",
+        "Gold",
+        "Emerald",
+        "Sapphire",
+        "Amethyst",
+        "Prismatic"
+    };
+
+    private static string LevelNameStyle(int level)
+    {
+        if (level > 200)
+        {
+            return "color: #FFF8D6;";
+        }
+
+        int tier = Math.Clamp(
+            (Math.Max(1, level) - 1) / 5,
+            0,
+            LevelTierColors.Length - 1
+        );
+
+        return $"color: {LevelTierColors[tier]};";
+    }
+
+    private static string LevelColorTitle(int level)
+    {
+        if (level > 200)
+        {
+            return "Mythic · Level 201+";
+        }
+
+        int tier = Math.Clamp(
+            (Math.Max(1, level) - 1) / 5,
+            0,
+            39
+        );
+
+        int family = tier / 5;
+        int startLevel = tier * 5 + 1;
+        int endLevel = startLevel + 4;
+
+        return
+            $"{LevelFamilies[family]} · " +
+            $"Levels {startLevel}–{endLevel}";
+    }
+
+    private static string Emblem(string emblem) =>
+        emblem switch
+        {
+            "cave" => "△",
+            "terminal" => ">_",
+            "gear" => "⚙",
+            _ => "◆"
+        };
+}

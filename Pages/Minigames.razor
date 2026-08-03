@@ -1,0 +1,500 @@
+@page "/minigames"
+@inject MinigameService MinigameService
+
+<PageTitle>Minigames · CaveCode Academy</PageTitle>
+
+<div class="minigame-hub">
+    <header class="hub-header">
+        @if (HasAcademyHomeButton)
+        {
+            <AcademyHomeButton />
+        }
+        else
+        {
+            <NavLink class="fallback-home" href="/">
+                ← Academy Home
+            </NavLink>
+        }
+
+        <div>
+            <p class="eyebrow">PLAY WHAT YOU LEARNED</p>
+            <h1>Code Minigames</h1>
+            <p>
+                Enter defined five-room runs generated from large themed vocabulary
+                pools and your unlocked chapter mechanics.
+            </p>
+        </div>
+
+        <ProgressIdentity Compact="true" />
+    </header>
+
+    @if (!Ready)
+    {
+        <section class="loading-card">
+            Loading minigame checkpoints…
+        </section>
+    }
+    else
+    {
+        <main>
+            <section class="mode-grid">
+                <article class="mode-card cave-mode">
+                    <div class="mode-topline">
+                        <span class="mode-mark">C#</span>
+                        <span>@CSharpAvailability</span>
+                    </div>
+
+                    <p class="eyebrow">C# CAVE ADVENTURE</p>
+                    <h2>Cave Defense</h2>
+
+                    <p>
+                        Repair defenses, open gates, manage inventory, and
+                        defeat a slime boss using C# systems from all five
+                        chapters.
+                    </p>
+
+                    <div class="mode-stats">
+                        <div>
+                            <span>Chapter pools</span>
+                            <strong>
+                                @State.CSharp.UnlockedChapters / 5
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Best score</span>
+                            <strong>
+                                @State.CSharp.BestScore.ToString("N0")
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Minigame XP</span>
+                            <strong>
+                                @State.CSharp.TotalXpEarned.ToString("N0")
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="chapter-track">
+                        @for (int chapter = 1; chapter <= 5; chapter++)
+                        {
+                            <span class="@(chapter <= State.CSharp.CompletedChapters ? "complete" : "")">
+                                @chapter
+                            </span>
+                        }
+                    </div>
+
+                    
+                    @if (State.CSharp.PracticeUnlocked)
+                    {
+                        <NavLink class="mode-action"
+                                 href="/minigames/csharp">
+                            Enter Cave Defense →
+                        </NavLink>
+                    }
+                    else
+                    {
+                        <span class="mode-action locked-action">
+                            Complete Chapter 1 to unlock
+                        </span>
+                    }
+                </article>
+
+                <article class="mode-card control-mode">
+                    <div class="mode-topline">
+                        <span class="mode-mark">Py</span>
+                        <span>@PythonAvailability</span>
+                    </div>
+
+                    <p class="eyebrow">PYTHON AUTOMATION QUEST</p>
+                    <h2>Control Room</h2>
+
+                    <p>
+                        Restore sensors, commission safety interlocks, run
+                        equipment sequences, and stabilize the underground
+                        facility.
+                    </p>
+
+                    <div class="mode-stats">
+                        <div>
+                            <span>Chapter pools</span>
+                            <strong>
+                                @State.Python.UnlockedChapters / 5
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Best score</span>
+                            <strong>
+                                @State.Python.BestScore.ToString("N0")
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Minigame XP</span>
+                            <strong>
+                                @State.Python.TotalXpEarned.ToString("N0")
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="chapter-track">
+                        @for (int chapter = 1; chapter <= 5; chapter++)
+                        {
+                            <span class="@(chapter <= State.Python.CompletedChapters ? "complete" : "")">
+                                @chapter
+                            </span>
+                        }
+                    </div>
+
+                    
+                    @if (State.Python.PracticeUnlocked)
+                    {
+                        <NavLink class="mode-action"
+                                 href="/minigames/python">
+                            Enter the Control Room →
+                        </NavLink>
+                    }
+                    else
+                    {
+                        <span class="mode-action locked-action">
+                            Complete Chapter 1 to unlock
+                        </span>
+                    }
+                </article>
+            </section>
+
+            <section class="reward-guide">
+                <div>
+                    <span>FIRST CLEAR</span>
+                    <strong>100 base XP · ◆ 6 crystals</strong>
+                </div>
+
+                <div>
+                    <span>REPEAT CLEAR</span>
+                    <strong>40 base XP · ◆ 2 crystals</strong>
+                </div>
+
+                <div>
+                    <span>FULL CAMPAIGN</span>
+                    <strong>+200 XP · ◆ 15 crystals</strong>
+                </div>
+
+                <div>
+                    <span>ENDLESS MODE</span>
+                    <strong>Unlocks after Chapter 5</strong>
+                </div>
+            </section>
+        </main>
+    }
+</div>
+
+<style>
+    .minigame-hub {
+        min-height: 100vh;
+        padding: 34px 18px 72px;
+        color: var(--text);
+        background:
+            radial-gradient(
+                circle at 10% 0%,
+                var(--accent-surface),
+                transparent 30%
+            ),
+            var(--bg);
+        font-family: Inter, system-ui, sans-serif;
+    }
+
+    .hub-header,
+    .minigame-hub main {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+    }
+
+    .hub-header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: start;
+        gap: 22px;
+    }
+
+    .fallback-home {
+        padding: 10px 13px;
+        color: var(--text);
+        text-decoration: none;
+        background: var(--surface-raised);
+        border: 1px solid var(--accent-border);
+        border-radius: 9px;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .hub-header h1 {
+        margin: 0;
+        font-size: clamp(38px, 6vw, 66px);
+        letter-spacing: -2px;
+    }
+
+    .hub-header > div > p:last-child {
+        max-width: 680px;
+        color: var(--text-muted);
+        line-height: 1.65;
+    }
+
+    .eyebrow {
+        margin: 0 0 7px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 950;
+        letter-spacing: 1.1px;
+    }
+
+    .minigame-hub main {
+        margin-top: 34px;
+    }
+
+    .loading-card,
+    .mode-card,
+    .reward-guide {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        box-shadow: 0 18px 65px var(--shadow);
+    }
+
+    .loading-card {
+        width: min(1120px, 100%);
+        margin: 34px auto 0;
+        padding: 24px;
+        color: var(--text-muted);
+    }
+
+    .mode-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .mode-card {
+        display: flex;
+        min-height: 470px;
+        flex-direction: column;
+        padding: 24px;
+        overflow: hidden;
+    }
+
+    .cave-mode {
+        background:
+            radial-gradient(
+                circle at 85% 0%,
+                rgba(255, 145, 74, .16),
+                transparent 34%
+            ),
+            var(--surface);
+    }
+
+    .control-mode {
+        background:
+            radial-gradient(
+                circle at 85% 0%,
+                rgba(85, 216, 255, .16),
+                transparent 34%
+            ),
+            var(--surface);
+    }
+
+    .mode-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 24px;
+        color: var(--text-muted);
+        font-size: 9px;
+        font-weight: 850;
+    }
+
+    .mode-mark {
+        display: grid;
+        min-width: 49px;
+        height: 49px;
+        padding: 0 10px;
+        place-items: center;
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 950;
+    }
+
+    .mode-card h2 {
+        margin: 0;
+        font-size: 34px;
+    }
+
+    .mode-card > p:not(.eyebrow) {
+        color: var(--text-muted);
+        line-height: 1.7;
+    }
+
+    .mode-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .mode-stats div {
+        padding: 11px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .mode-stats span,
+    .mode-stats strong {
+        display: block;
+    }
+
+    .mode-stats span {
+        color: var(--text-muted);
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+
+    .mode-stats strong {
+        margin-top: 5px;
+        font-size: 15px;
+    }
+
+    .chapter-track {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 7px;
+        margin: 18px 0;
+    }
+
+    .chapter-track span {
+        display: grid;
+        height: 32px;
+        place-items: center;
+        color: var(--text-dim);
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        font-size: 9px;
+        font-weight: 900;
+    }
+
+    .chapter-track span.complete {
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-color: var(--accent);
+    }
+
+    .chapter-track span.preview {
+        color: var(--accent);
+        background: var(--accent-surface);
+        border-color: var(--accent-border);
+    }
+
+    .locked-action {
+        color: var(--text-muted) !important;
+        background: var(--surface-strong) !important;
+        border-color: var(--border) !important;
+        cursor: not-allowed;
+        opacity: .72;
+    }
+
+    .mode-action {
+        width: 100%;
+        padding: 13px;
+        margin-top: auto;
+        color: var(--accent-contrast);
+        text-align: center;
+        text-decoration: none;
+        background: var(--accent);
+        border-radius: 9px;
+        font-weight: 900;
+    }
+
+    .reward-guide {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        margin-top: 16px;
+        overflow: hidden;
+        background: var(--border);
+    }
+
+    .reward-guide div {
+        padding: 15px;
+        background: var(--surface);
+    }
+
+    .reward-guide span,
+    .reward-guide strong {
+        display: block;
+    }
+
+    .reward-guide span {
+        color: var(--accent);
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .8px;
+    }
+
+    .reward-guide strong {
+        margin-top: 5px;
+        font-size: 10px;
+    }
+
+    @@media (max-width: 800px) {
+        .hub-header {
+            grid-template-columns: 1fr;
+        }
+
+        .mode-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .reward-guide {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+
+@code {
+    private MinigameHubState State = new();
+    private bool Ready;
+
+    private static bool HasAcademyHomeButton => true;
+
+    private string CSharpAvailability =>
+        State.CSharp.CompletedChapters == 0
+            ? "Complete Chapter 1 to unlock"
+            : State.CSharp.EndlessUnlocked
+                ? "Full campaign · Endless unlocked"
+                : $"{State.CSharp.CompletedChapters} chapter mechanics unlocked";
+
+    private string PythonAvailability =>
+        State.Python.CompletedChapters == 0
+            ? "Complete Chapter 1 to unlock"
+            : State.Python.EndlessUnlocked
+                ? "Full campaign · Endless unlocked"
+                : $"{State.Python.CompletedChapters} chapter mechanics unlocked";
+
+    protected override async Task OnAfterRenderAsync(
+        bool firstRender
+    )
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        State = await MinigameService.GetHubStateAsync();
+        Ready = true;
+        await InvokeAsync(StateHasChanged);
+    }
+}

@@ -1,0 +1,57 @@
+<NavLink href="/"
+         Match="NavLinkMatch.All"
+         class="@(Compact ? "academy-home-button compact" : "academy-home-button")">
+    <span class="academy-home-arrow" aria-hidden="true">←</span>
+    <span>Academy Home</span>
+</NavLink>
+
+<style>
+    .academy-home-button {
+        display: inline-flex;
+        width: fit-content;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 14px;
+        color: var(--text, #eef4f8);
+        text-decoration: none;
+        background: linear-gradient(145deg, var(--accent-surface), var(--surface-raised));
+        border: 1px solid var(--accent-border, #3e8a59);
+        border-radius: 10px;
+        box-shadow: 0 8px 24px var(--shadow);
+        font-size: 11px;
+        font-weight: 900;
+        transition: transform .16s ease, border-color .16s ease;
+    }
+
+    .academy-home-button:hover,
+    .academy-home-button:focus-visible {
+        color: var(--text, #eef4f8);
+        border-color: var(--accent, #71e49a);
+        transform: translateY(-1px);
+        outline: none;
+    }
+
+    .academy-home-button.compact {
+        width: 100%;
+        min-height: 38px;
+        justify-content: flex-start;
+        padding: 9px 11px;
+        font-size: 10px;
+    }
+
+    .academy-home-arrow {
+        color: var(--accent, #71e49a);
+        font-size: 15px;
+    }
+
+    html[data-reduced-motion="true"] .academy-home-button {
+        transition: none;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public bool Compact { get; set; }
+}
