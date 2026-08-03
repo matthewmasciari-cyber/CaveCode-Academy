@@ -4,6 +4,7 @@
 @using CaveCode.CourseEngine
 @inject CourseEngineService CourseEngine
 @inject IJSRuntime JS
+@using CaveCode.Components
 
 <PageTitle>Minigames · CaveCode Academy</PageTitle>
 
@@ -58,7 +59,8 @@
                         <span>@CSharpAvailability</span>
                     </div>
 
-                    <p class="eyebrow">C# CAVE ADVENTURE</p>
+                    <p class="eyebrow">CHAPTER 1 COMPLETE
+C# CAVE ADVENTURE</p>
                     <h2>Cave Defense</h2>
 
                     <p>
@@ -228,49 +230,8 @@
                     }
                 </article>
 
-                @* CAVECODE_CPP_MINIGAME_FOUNDATION_CARD_V1 *@
-                <article class="mode-card cpp-foundry-mode">
-                    <div class="mode-topline">
-                        <span class="mode-mark cpp-foundry-mark">C++</span>
-                        <span>2 missions active</span>
-                    </div>
-
-                    <p class="eyebrow">C++ ENGINE FOUNDRY</p>
-                    <h2>Engine Foundry</h2>
-                    <p>
-                        Restore a damaged engine startup sequence using
-                        variables, boolean state, control flow, console output,
-                        and safe browser-based simulated diagnostics.
-                    </p>
-
-                    <div class="mode-stats">
-                        <div>
-                            <span>Missions</span>
-                            <strong>2 active</strong>
-                        </div>
-                        <div>
-                            <span>Profiles</span>
-                            <strong>6 incidents</strong>
-                        </div>
-                        <div>
-                            <span>Rewards</span>
-                            <strong>XP + crystals</strong>
-                        </div>
-                    </div>
-
-                    <div class="chapter-track">
-                        <span class="preview">1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span>4</span>
-                        <span>5</span>
-                    </div>
-
-                    <NavLink class="mode-action cpp-foundry-action"
-                             href="/minigames/cpp">
-                        Play Engine Foundry →
-                    </NavLink>
-                </article>
+                @* CAVECODE_CPP_MINIGAME_DYNAMIC_CARD_V2 *@
+                <CppMinigameHubCard />
             </section>
 
             <section class="reward-guide">

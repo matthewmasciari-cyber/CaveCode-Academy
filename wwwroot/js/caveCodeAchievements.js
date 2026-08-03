@@ -201,6 +201,46 @@
             description: "Complete Engine Foundry Mission 2 with all six cooling-loop requirements.",
             titleReward: "Cooling Systems Programmer",
             crystals: 0
+        },
+        {
+            id: "cpp-minigame-3",
+            course: "cpp-minigame",
+            courseName: "Engine Foundry",
+            chapter: 3,
+            name: "Pump Logic Restored",
+            description: "Complete Engine Foundry Mission 3.",
+            titleReward: "Pump Control Programmer",
+            crystals: 0
+        },
+        {
+            id: "cpp-minigame-4",
+            course: "cpp-minigame",
+            courseName: "Engine Foundry",
+            chapter: 4,
+            name: "Sensor Package Restored",
+            description: "Complete Engine Foundry Mission 4 with all six sensor-package requirements.",
+            titleReward: "Systems Data Builder",
+            crystals: 0
+        },
+        {
+            id: "cpp-minigame-5",
+            course: "cpp-minigame",
+            courseName: "Engine Foundry",
+            chapter: 5,
+            name: "Full System Recovered",
+            description: "Complete Engine Foundry Mission 5 with all six finale requirements.",
+            titleReward: "Control Systems Programmer",
+            crystals: 0
+        },
+        {
+            id: "cpp-minigame-campaign-1",
+            course: "cpp-minigame-campaign",
+            courseName: "Engine Foundry Campaign",
+            chapter: 1,
+            name: "Engine Foundry Restored",
+            description: "Complete all five Engine Foundry Chapter 1 missions.",
+            titleReward: "Foundry Systems Engineer",
+            crystals: 0
         }
     ];
 

@@ -1,0 +1,1441 @@
+@page "/minigames/cpp/mission-3"
+@using CaveCode.CourseEngine
+@using Microsoft.JSInterop
+@inject CourseEngineService CourseEngine
+@inject ProgressionService ProgressionService
+@inject AchievementService AchievementService
+@inject IJSRuntime JS
+
+<PageTitle>C++ Engine Foundry Mission 3 | CaveCode Academy</PageTitle>
+
+@if (!AccessReady)
+{
+    <main class="pump-mission-gate">
+        <section>
+            <span class="pump-mission-mark">C++</span>
+            <p class="pump-eyebrow">ENGINE FOUNDRY</p>
+            <h1>Preparing Mission 3</h1>
+            <p>Checking Chapter 1 and Mission 2 completion.</p>
+        </section>
+    </main>
+}
+else if (!AccessGranted)
+{
+    <main class="pump-mission-gate">
+        <section>
+            <span class="pump-mission-mark">C++</span>
+            <p class="pump-eyebrow">MISSION ACCESS GATE</p>
+            <h1>Pump Control Recovery is locked</h1>
+            <p>
+                Complete C++ Chapter 1 and clear Engine Foundry Mission 2
+                before entering this mission.
+            </p>
+
+            <div class="pump-gate-checks">
+                <div>
+                    <strong>@(ChapterReady ? "✓" : "○")</strong>
+                    <span>C++ Chapter 1</span>
+                </div>
+                <div>
+                    <strong>@(MissionTwoReady ? "✓" : "○")</strong>
+                    <span>Engine Foundry Mission 2</span>
+                </div>
+            </div>
+
+            <div class="pump-gate-actions">
+                <NavLink class="pump-primary" href="/minigames/cpp/mission-2">
+                    Open Mission 2 →
+                </NavLink>
+                <NavLink class="pump-secondary" href="/cpp">
+                    Open C++ Course
+                </NavLink>
+            </div>
+        </section>
+    </main>
+}
+else
+{
+    <main class="pump-mission-shell">
+        <header class="pump-mission-header">
+            <div>
+                <p class="pump-eyebrow">ENGINE FOUNDRY · MISSION 3 · PASS 7E-2B-2</p>
+                <h1>Restore the Pump Control Function</h1>
+                <p>
+                    Repair a reusable C++ function that evaluates pressure,
+                    valve position, and motor readiness before commanding a pump.
+                </p>
+            </div>
+
+            <nav aria-label="Engine Foundry missions">
+                <NavLink href="/minigames/cpp">Mission 1</NavLink>
+                <NavLink href="/minigames/cpp/mission-2">Mission 2</NavLink>
+                <NavLink class="selected" href="/minigames/cpp/mission-3">
+                    Mission 3
+                </NavLink>
+                <NavLink href="/minigames/cpp/mission-4">Mission 4</NavLink>
+                <NavLink href="/minigames">Hub</NavLink>
+            </nav>
+        </header>
+
+        <section class="pump-foundation-notice">
+            <strong>Mission foundation</strong>
+            <span>
+                Mission 3 scoring, saved records, C++ XP, validated lines,
+                crystals, achievement rewards, and leaderboard synchronization
+                are active.
+            </span>
+        </section>
+
+        <section class="pump-record-summary" aria-label="Saved Mission 3 record">
+            <div><span>Best score</span><strong>@SavedState.BestScore.ToString("N0")</strong></div>
+            <div><span>Fastest clear</span><strong>@FastestClearLabel</strong></div>
+            <div><span>Total clears</span><strong>@SavedState.TotalClears</strong></div>
+            <div><span>Mission XP</span><strong>@SavedState.TotalXpEarned.ToString("N0")</strong></div>
+        </section>
+
+        <section class="pump-profile-selector">
+            <div>
+                <p class="pump-eyebrow">INCIDENT PROFILE</p>
+                <h2>@CurrentProfile.Title</h2>
+                <p>@CurrentProfile.Description</p>
+            </div>
+
+            <div class="pump-profile-buttons">
+                @foreach (DamageProfile profile in Profiles)
+                {
+                    <button type="button"
+                            class="@(SelectedProfile == profile.Id ? "selected" : "")"
+                            aria-pressed="@(SelectedProfile == profile.Id)"
+                            @onclick="() => SelectProfile(profile.Id)">
+                        <strong>@profile.ShortName</strong>
+                        <span>@profile.Focus</span>
+                    </button>
+                }
+            </div>
+        </section>
+
+        <div class="pump-mission-grid">
+            <aside class="pump-objectives">
+                <div class="pump-panel-title">
+                    <div>
+                        <p class="pump-eyebrow">REPAIR REQUIREMENTS</p>
+                        <h2>Pump permissive checklist</h2>
+                    </div>
+                    <span>@Checks.Count(check => check.Met) / 6</span>
+                </div>
+
+                @foreach (MissionCheck check in Checks)
+                {
+                    <div class="pump-check @(check.Met ? "met" : "")">
+                        <span>@(check.Met ? "✓" : "○")</span>
+                        <div>
+                            <strong>@check.Label</strong>
+                            <small>@check.Description</small>
+                            <em>@(check.Met ? "Requirement satisfied" : "Repair pending")</em>
+                        </div>
+                    </div>
+                }
+
+                <section class="pump-status">
+                    <span>MISSION STATUS</span>
+                    <strong>@MissionStatus</strong>
+                    <small>@WorkspaceMessage</small>
+                </section>
+
+                <section class="pump-score-panel" aria-label="Mission 3 score">
+                    <div>
+                        <span>Projected</span>
+                        <strong>@ProjectedScore / 1000</strong>
+                    </div>
+                    <div>
+                        <span>Requirements</span>
+                        <strong>@RequirementPoints / 840</strong>
+                    </div>
+                    <div>
+                        <span>Time bonus</span>
+                        <strong>@CurrentTimeBonus / 160</strong>
+                    </div>
+                    <div>
+                        <span>Hint penalty</span>
+                        <strong>-@HintPenalty</strong>
+                    </div>
+                    <div>
+                        <span>Elapsed</span>
+                        <strong>@ElapsedLabel</strong>
+                    </div>
+                </section>
+
+                @if (SubmissionComplete)
+                {
+                    <section class="pump-result @(MissionPassed ? "passed" : "failed")"
+                             role="status">
+                        <strong>@(MissionPassed ? "MISSION PASSED" : "MISSION FAILED")</strong>
+                        <span>@FinalScore / 1000 · @FinalElapsedLabel</span>
+                        <p>@ResultMessage</p>
+                        @if (RewardProcessing)
+                        {
+                            <small>Saving Mission 3 rewards…</small>
+                        }
+                        else if (!string.IsNullOrWhiteSpace(RewardMessage))
+                        {
+                            <small>@RewardMessage</small>
+                        }
+                        @if (MissionAchievement?.NewlyUnlocked == true)
+                        {
+                            <small>Achievement unlocked: Pump Logic Restored · Title available: Pump Control Programmer</small>
+                        }
+                    </section>
+                }
+
+                <div class="pump-target">
+                    <span>FUNCTION TARGET</span>
+                    <code>
+                        bool canStartPump(int pressure, bool valveOpen, bool motorReady)
+                    </code>
+                </div>
+            </aside>
+
+            <section class="pump-editor-panel">
+                <div class="pump-toolbar">
+                    <strong>PumpControl.cpp</strong>
+                    <span>@LineCount lines</span>
+                </div>
+
+                <textarea class="pump-editor"
+                          aria-label="C++ Mission 3 editor"
+                          spellcheck="false"
+                          @bind="EditorCode"
+                          @bind:event="oninput"></textarea>
+
+                <div class="pump-controls">
+                    <button type="button"
+                            class="pump-primary"
+                            @onclick="RunSimulation">
+                        Run simulation
+                    </button>
+                    <button type="button"
+                            class="pump-secondary"
+                            @onclick="ResetWorkspace">
+                        Reset profile
+                    </button>
+                    <button type="button"
+                            class="pump-secondary"
+                            aria-pressed="@HintVisible"
+                            @onclick="ToggleHint">
+                        @(HintVisible ? "Hide hint" : "Hint")
+                    </button>
+
+                    <button type="button"
+                            class="pump-submit"
+                            disabled="@SubmissionComplete"
+                            @onclick="SubmitMission">
+                        Submit mission
+                    </button>
+
+                    @if (SubmissionComplete)
+                    {
+                        <button type="button"
+                                class="pump-secondary"
+                                @onclick="NewAttempt">
+                            New attempt
+                        </button>
+                    }
+                </div>
+
+                @if (HintVisible)
+                {
+                    <aside class="pump-hint">
+                        <strong>@CurrentProfile.HintTitle</strong>
+                        <p>@CurrentProfile.HintText</p>
+                    </aside>
+                }
+            </section>
+
+            <aside class="pump-side">
+                <section class="pump-reference">
+                    <p class="pump-eyebrow">FUNCTION REFERENCE</p>
+                    <h2>Reusable control logic</h2>
+
+                    <dl>
+                        <div>
+                            <dt><code>bool functionName(...)</code></dt>
+                            <dd>Declares a function that returns true or false.</dd>
+                        </div>
+                        <div>
+                            <dt><code>int pressure</code></dt>
+                            <dd>Receives a whole-number process reading.</dd>
+                        </div>
+                        <div>
+                            <dt><code>&amp;&amp;</code></dt>
+                            <dd>Requires every permissive condition to be true.</dd>
+                        </div>
+                        <div>
+                            <dt><code>return permissive;</code></dt>
+                            <dd>Sends the function result back to the caller.</dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="pump-console">
+                    <div class="pump-console-title">
+                        <strong>SIMULATED OUTPUT</strong>
+                    </div>
+
+                    <div role="log" aria-live="polite">
+                        @if (ConsoleLines.Count == 0)
+                        {
+                            <p class="console-muted">
+                                [READY] Run the simulation to inspect the function.
+                            </p>
+                        }
+                        else
+                        {
+                            @foreach (string line in ConsoleLines)
+                            {
+                                <p class="@ConsoleClass(line)">@line</p>
+                            }
+                        }
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+}
+
+<style>
+    .pump-mission-shell,
+    .pump-mission-gate {
+        box-sizing: border-box;
+        min-height: 100vh;
+        color: var(--text, #edf4ff);
+        background: var(--bg, #08111f);
+        font-family: Inter, system-ui, sans-serif;
+    }
+
+    .pump-mission-shell *,
+    .pump-mission-gate * {
+        box-sizing: border-box;
+    }
+
+    .pump-mission-gate {
+        display: grid;
+        place-items: center;
+        padding: 24px;
+    }
+
+    .pump-mission-gate > section {
+        width: min(620px, 100%);
+        padding: 32px;
+        text-align: center;
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 17px;
+    }
+
+    .pump-mission-mark {
+        display: grid;
+        width: 72px;
+        height: 62px;
+        place-items: center;
+        margin: 0 auto 16px;
+        color: var(--accent-contrast, #07111f);
+        background: var(--accent, #61dafb);
+        border-radius: 14px;
+        font-weight: 950;
+    }
+
+    .pump-eyebrow {
+        margin: 0 0 5px;
+        color: var(--accent, #61dafb);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: .1em;
+    }
+
+    .pump-mission-gate h1,
+    .pump-mission-header h1,
+    .pump-profile-selector h2,
+    .pump-panel-title h2,
+    .pump-reference h2 {
+        margin: 0;
+    }
+
+    .pump-mission-gate p,
+    .pump-mission-header p,
+    .pump-profile-selector p {
+        color: var(--text-muted, #aab8cb);
+        line-height: 1.55;
+    }
+
+    .pump-gate-checks {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        margin: 20px 0;
+    }
+
+    .pump-gate-checks > div {
+        display: grid;
+        gap: 4px;
+        padding: 12px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 9px;
+    }
+
+    .pump-gate-actions,
+    .pump-mission-header nav,
+    .pump-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .pump-gate-actions {
+        justify-content: center;
+    }
+
+    .pump-primary,
+    .pump-secondary,
+    .pump-mission-header a {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 13px;
+        text-decoration: none;
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .pump-primary {
+        color: var(--accent-contrast, #07111f);
+        background: var(--accent, #61dafb);
+        border: 1px solid var(--accent-border, #9ae8ff);
+    }
+
+    .pump-secondary,
+    .pump-mission-header a {
+        color: var(--text, #edf4ff);
+        background: var(--surface-strong, #172539);
+        border: 1px solid var(--border, #2b3b52);
+    }
+
+    .pump-mission-header a.selected {
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border-color: var(--accent-border, #4f7990);
+    }
+
+    .pump-mission-shell {
+        padding: 22px;
+    }
+
+    .pump-mission-header {
+        display: flex;
+        max-width: 1600px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin: 0 auto 16px;
+    }
+
+    .pump-mission-header > div {
+        max-width: 850px;
+    }
+
+    .pump-foundation-notice {
+        display: flex;
+        max-width: 1600px;
+        gap: 12px;
+        padding: 12px 15px;
+        margin: 0 auto 15px;
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border: 1px solid var(--accent-border, #4f7990);
+        border-radius: 10px;
+    }
+
+    .pump-foundation-notice strong {
+        flex: 0 0 auto;
+        color: var(--accent-soft, #9feaff);
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
+    .pump-foundation-notice span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 11px;
+        line-height: 1.45;
+    }
+
+    .pump-profile-selector {
+        display: grid;
+        grid-template-columns: minmax(250px, .8fr) minmax(520px, 1.2fr);
+        max-width: 1600px;
+        gap: 16px;
+        padding: 16px;
+        margin: 0 auto 15px;
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 13px;
+    }
+
+    .pump-profile-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .pump-profile-buttons button {
+        padding: 10px;
+        text-align: left;
+        color: var(--text, #edf4ff);
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 9px;
+        cursor: pointer;
+    }
+
+    .pump-profile-buttons button.selected {
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border-color: var(--accent-border, #4f7990);
+    }
+
+    .pump-profile-buttons strong,
+    .pump-profile-buttons span {
+        display: block;
+    }
+
+    .pump-profile-buttons span {
+        margin-top: 4px;
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        line-height: 1.35;
+    }
+
+    .pump-mission-grid {
+        display: grid;
+        grid-template-columns: 265px minmax(470px, 1fr) 345px;
+        max-width: 1600px;
+        gap: 14px;
+        margin: 0 auto;
+    }
+
+    .pump-objectives,
+    .pump-editor-panel,
+    .pump-reference,
+    .pump-console {
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 13px;
+    }
+
+    .pump-objectives,
+    .pump-reference {
+        padding: 16px;
+    }
+
+    .pump-panel-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .pump-panel-title > span {
+        color: var(--accent, #61dafb);
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .pump-check {
+        display: grid;
+        grid-template-columns: 24px 1fr;
+        gap: 8px;
+        padding: 9px;
+        margin-bottom: 7px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 8px;
+    }
+
+    .pump-check.met {
+        background: var(--accent-surface, rgba(97, 218, 251, .08));
+        border-color: var(--accent-border, #4f7990);
+    }
+
+    .pump-check strong,
+    .pump-check small,
+    .pump-check em {
+        display: block;
+    }
+
+    .pump-check small {
+        margin-top: 3px;
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        line-height: 1.4;
+    }
+
+    .pump-check em {
+        margin-top: 4px;
+        color: var(--accent-soft, #9feaff);
+        font-size: 8px;
+        font-style: normal;
+        font-weight: 800;
+    }
+
+    .pump-record-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        max-width: 1600px;
+        gap: 10px;
+        margin: 0 auto 15px;
+    }
+    .pump-record-summary > div {
+        display: grid;
+        gap: 4px;
+        padding: 12px;
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 10px;
+    }
+    .pump-record-summary span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+    .pump-result small {
+        color: var(--accent-soft, #9feaff);
+        font-size: 9px;
+    }
+    .pump-score-panel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 10px;
+    }
+
+    .pump-score-panel > div {
+        display: grid;
+        gap: 3px;
+        padding: 9px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 8px;
+    }
+
+    .pump-score-panel span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    .pump-score-panel strong {
+        font-size: 11px;
+    }
+
+    .pump-result {
+        display: grid;
+        gap: 5px;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+
+    .pump-result.passed {
+        background: rgba(64, 190, 110, .12);
+        border: 1px solid rgba(96, 230, 140, .55);
+    }
+
+    .pump-result.failed {
+        background: rgba(230, 90, 90, .11);
+        border: 1px solid rgba(255, 120, 120, .55);
+    }
+
+    .pump-result span,
+    .pump-result p {
+        margin: 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .pump-submit {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 13px;
+        color: #fff;
+        background: #1769d2;
+        border: 1px solid #7eb8ff;
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .pump-submit:disabled {
+        cursor: not-allowed;
+        opacity: .5;
+    }
+
+    .pump-submit:focus-visible {
+        outline: 3px solid var(--focus, #ffd166);
+        outline-offset: 2px;
+    }
+
+    .pump-status,
+    .pump-target {
+        display: grid;
+        gap: 4px;
+        padding: 10px;
+        margin-top: 10px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 8px;
+    }
+
+    .pump-status span,
+    .pump-target span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        letter-spacing: .06em;
+    }
+
+    .pump-status small {
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        line-height: 1.4;
+    }
+
+    .pump-target code {
+        overflow-wrap: anywhere;
+        color: var(--accent-soft, #9feaff);
+        font-size: 8px;
+        line-height: 1.4;
+    }
+
+    .pump-editor-panel {
+        display: flex;
+        min-width: 0;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .pump-toolbar {
+        display: flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 13px;
+        background: var(--surface, #0d1726);
+        border-bottom: 1px solid var(--border, #2b3b52);
+    }
+
+    .pump-toolbar span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+    }
+
+    .pump-editor {
+        width: 100%;
+        min-height: 565px;
+        flex: 1;
+        resize: none;
+        padding: 18px;
+        color: var(--text, #edf4ff);
+        background: var(--surface-strong, #172539);
+        border: 0;
+        outline: 0;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .pump-controls {
+        padding: 12px;
+        background: var(--surface, #0d1726);
+        border-top: 1px solid var(--border, #2b3b52);
+    }
+
+    .pump-hint {
+        padding: 12px 14px;
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border-top: 1px solid var(--accent-border, #4f7990);
+    }
+
+    .pump-hint p {
+        margin: 5px 0 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .pump-side {
+        display: grid;
+        gap: 14px;
+        grid-template-rows: auto 1fr;
+    }
+
+    .pump-reference dl {
+        display: grid;
+        gap: 8px;
+        margin: 12px 0 0;
+    }
+
+    .pump-reference dl > div {
+        padding: 9px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 8px;
+    }
+
+    .pump-reference dd {
+        margin: 4px 0 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .pump-console {
+        display: flex;
+        min-height: 300px;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .pump-console-title {
+        padding: 12px;
+        background: var(--surface, #0d1726);
+        border-bottom: 1px solid var(--border, #2b3b52);
+        font-size: 9px;
+        letter-spacing: .08em;
+    }
+
+    .pump-console > div:last-child {
+        flex: 1;
+        overflow: auto;
+        padding: 12px;
+        background: #07100c;
+        font-family: Consolas, monospace;
+        font-size: 9px;
+    }
+
+    .pump-console p {
+        margin: 0 0 5px;
+    }
+
+    .console-ok { color: #78e29a; }
+    .console-warn { color: #ffd166; }
+    .console-muted,
+    .console-sim { color: #a6b3ad; }
+
+    @@media (max-width: 1240px) {
+        .pump-mission-grid {
+            grid-template-columns: 240px minmax(430px, 1fr);
+        }
+
+        .pump-side {
+            grid-column: 1 / -1;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+        }
+    }
+
+    @@media (max-width: 820px) {
+        .pump-mission-shell {
+            padding: 15px;
+        }
+
+        .pump-mission-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .pump-foundation-notice {
+            flex-direction: column;
+        }
+
+        .pump-profile-selector {
+            grid-template-columns: 1fr;
+        }
+
+        .pump-profile-buttons {
+            grid-template-columns: 1fr;
+        }
+
+        .pump-mission-grid,
+        .pump-side {
+            grid-template-columns: 1fr;
+        }
+
+        .pump-side {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .pump-gate-checks,
+        .pump-gate-actions,
+        .pump-controls {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .pump-editor {
+            min-height: 430px;
+            font-size: 12px;
+        }
+    }
+</style>
+
+@code {
+    private const string FullFailureCode =
+        "#include <iostream>\n\n" +
+        "bool canStartPump(int pressure, bool valveOpen)\n" +
+        "{\n" +
+        "    bool pressureOk = pressure > 20;\n" +
+        "    bool permissive = pressureOk || valveOpen;\n" +
+        "}\n\n" +
+        "int main()\n" +
+        "{\n" +
+        "    int pressure = 48;\n" +
+        "    bool valveOpen = true;\n" +
+        "    bool motorReady = true;\n\n" +
+        "    bool pumpAllowed = canStartPump(pressure, valveOpen);\n" +
+        "    std::cout << \"Pump allowed: \" << pressure << \"\\n\";\n" +
+        "    return 0;\n" +
+        "}\n";
+
+    private const string SignatureFailureCode =
+        "#include <iostream>\n\n" +
+        "int canStartPump(int pressure, bool valveOpen)\n" +
+        "{\n" +
+        "    bool pressureOk = pressure >= 30 && pressure <= 70;\n" +
+        "    bool permissive = pressureOk && valveOpen && motorReady;\n" +
+        "    return permissive;\n" +
+        "}\n\n" +
+        "int main()\n" +
+        "{\n" +
+        "    int pressure = 48;\n" +
+        "    bool valveOpen = true;\n" +
+        "    bool motorReady = true;\n" +
+        "    bool pumpAllowed = canStartPump(pressure, valveOpen, motorReady);\n" +
+        "    std::cout << \"Pump allowed: \" << pumpAllowed << \"\\n\";\n" +
+        "    return 0;\n" +
+        "}\n";
+
+    private const string LogicFailureCode =
+        "#include <iostream>\n\n" +
+        "bool canStartPump(int pressure, bool valveOpen, bool motorReady)\n" +
+        "{\n" +
+        "    bool pressureOk = pressure < 30 || pressure > 70;\n" +
+        "    bool permissive = pressureOk || valveOpen || motorReady;\n" +
+        "    return pressureOk;\n" +
+        "}\n\n" +
+        "int main()\n" +
+        "{\n" +
+        "    int pressure = 48;\n" +
+        "    bool valveOpen = true;\n" +
+        "    bool motorReady = true;\n" +
+        "    bool pumpAllowed = canStartPump(pressure, valveOpen, motorReady);\n" +
+        "    std::cout << \"Pump allowed: \" << pumpAllowed << \"\\n\";\n" +
+        "    return 0;\n" +
+        "}\n";
+
+    private bool AccessReady;
+    private bool AccessGranted;
+    private bool ChapterReady;
+    private bool MissionTwoReady;
+
+    private string SelectedProfile = "full";
+    private string EditorCode = FullFailureCode;
+    private bool HintVisible;
+    private bool HasRun;
+    private int HintsUsed;
+    private bool SubmissionComplete;
+    private bool MissionPassed;
+    private int FinalScore;
+    private int FinalElapsedSeconds;
+    private string ResultMessage = "";
+    private string RewardMessage = "";
+    private bool RewardProcessing;
+    private bool RewardsProcessed;
+    private string AttemptId = Guid.NewGuid().ToString("N");
+    private MissionThreeState SavedState = new();
+    private AchievementUnlockResult? MissionAchievement;
+    private DateTimeOffset? AttemptStartedAt;
+    private int AccumulatedSeconds;
+    private string WorkspaceMessage =
+        "Select a profile and repair all six function requirements.";
+    private List<string> ConsoleLines = new();
+
+    private IReadOnlyList<DamageProfile> Profiles =>
+        new[]
+        {
+            new DamageProfile(
+                "full",
+                "Full Pump Control Failure",
+                "Full Incident",
+                "Repair the complete function contract and permissive logic",
+                "The function signature, parameters, pressure window, boolean logic, return value, call, and output are damaged.",
+                "Build the function contract first",
+                "The function should return bool and receive pressure, valveOpen, and motorReady. Then combine a 30–70 PSI pressure window with both boolean permissives using &&."),
+            new DamageProfile(
+                "signature",
+                "Function Signature Failure",
+                "Signature & Parameters",
+                "Repair the return type and complete parameter list",
+                "The internal logic is nearly correct, but the function cannot access all required inputs through its declaration.",
+                "Match the call to the definition",
+                "Use bool as the return type and include bool motorReady as the third parameter so the definition matches the call."),
+            new DamageProfile(
+                "logic",
+                "Permissive Logic Failure",
+                "Boolean Logic",
+                "Repair the pressure window, AND logic, and returned value",
+                "The function receives the correct inputs, but unsafe pressure and permissive logic allow improper starts.",
+                "Every permissive must be true",
+                "pressureOk should use pressure >= 30 && pressure <= 70. Then permissive should require pressureOk, valveOpen, and motorReady with &&, and the function should return permissive.")
+        };
+
+    private DamageProfile CurrentProfile =>
+        Profiles.First(
+            profile => profile.Id == SelectedProfile);
+
+    private int LineCount =>
+        EditorCode
+            .Replace("\r\n", "\n")
+            .Split('\n')
+            .Length;
+
+    private string MissionStatus =>
+        Checks.All(check => check.Met)
+            ? "Function structurally ready"
+            : HasRun
+                ? "Diagnostics found unresolved repairs"
+                : "Incident loaded";
+
+    private int PassedRequirementCount =>
+        Checks.Count(check => check.Met);
+
+    private int RequirementPoints =>
+        PassedRequirementCount * 140;
+
+    private int ElapsedSeconds =>
+        SubmissionComplete
+            ? FinalElapsedSeconds
+            : AccumulatedSeconds +
+              (AttemptStartedAt.HasValue
+                  ? Math.Max(
+                      0,
+                      (int)(DateTimeOffset.UtcNow - AttemptStartedAt.Value)
+                          .TotalSeconds)
+                  : 0);
+
+    private int CurrentTimeBonus =>
+        Math.Clamp(
+            160 - (ElapsedSeconds / 5) * 5,
+            0,
+            160);
+
+    private int HintPenalty =>
+        HintsUsed * 40;
+
+    private int ProjectedScore =>
+        Math.Clamp(
+            RequirementPoints +
+            CurrentTimeBonus -
+            HintPenalty,
+            0,
+            1000);
+
+    private string ElapsedLabel =>
+        FormatTime(ElapsedSeconds);
+
+    private string FinalElapsedLabel =>
+        FormatTime(FinalElapsedSeconds);
+
+    private string FastestClearLabel =>
+        SavedState.FastestSeconds.HasValue
+            ? FormatTime((int)Math.Round(SavedState.FastestSeconds.Value))
+            : "--:--";
+
+    private IReadOnlyList<MissionCheck> Checks =>
+        new[]
+        {
+            new MissionCheck(
+                "Boolean function signature",
+                "Return bool from canStartPump.",
+                HasPattern(
+                    @"bool\s+canStartPump\s*\(")),
+            new MissionCheck(
+                "Complete parameter list",
+                "Receive pressure, valveOpen, and motorReady.",
+                HasPattern(
+                    @"canStartPump\s*\(\s*int\s+pressure\s*,\s*bool\s+valveOpen\s*,\s*bool\s+motorReady\s*\)")),
+            new MissionCheck(
+                "Safe pressure window",
+                "Require pressure from 30 through 70.",
+                HasPattern(
+                    @"pressure\s*>=\s*30\s*&&\s*pressure\s*<=\s*70")),
+            new MissionCheck(
+                "All permissives required",
+                "Combine pressureOk, valveOpen, and motorReady with &&.",
+                HasPattern(
+                    @"pressureOk\s*&&\s*valveOpen\s*&&\s*motorReady")),
+            new MissionCheck(
+                "Return function result",
+                "Return the permissive boolean.",
+                HasPattern(
+                    @"return\s+permissive\s*;")),
+            new MissionCheck(
+                "Call and report result",
+                "Call with all three values and print pumpAllowed.",
+                HasPattern(
+                    @"canStartPump\s*\(\s*pressure\s*,\s*valveOpen\s*,\s*motorReady\s*\)") &&
+                HasExact("\"Pump allowed: \"") &&
+                HasExact("pumpAllowed"))
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            CourseProgressSnapshot progress =
+                await CourseEngine.GetProgressAsync(
+                    CourseIds.Cpp);
+
+            ChapterReady =
+                progress.ModuleCompleted.Length > 7 &&
+                progress.ModuleCompleted[7];
+
+            MissionTwoState missionTwo =
+                await JS.InvokeAsync<MissionTwoState>(
+                    "caveCodeCppMinigame.getMissionTwoState");
+
+            MissionTwoReady =
+                missionTwo.Completed;
+
+            SavedState =
+                await JS.InvokeAsync<MissionThreeState>(
+                    "caveCodeCppMinigame.getMissionThreeState");
+
+            AccessGranted =
+                ChapterReady &&
+                MissionTwoReady;
+        }
+        catch
+        {
+            AccessGranted = false;
+        }
+
+        AccessReady = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void SelectProfile(string id)
+    {
+        DamageProfile? profile =
+            Profiles.FirstOrDefault(
+                item => item.Id == id);
+
+        if (profile is null)
+        {
+            return;
+        }
+
+        SelectedProfile = profile.Id;
+        EditorCode =
+            id switch
+            {
+                "signature" => SignatureFailureCode,
+                "logic" => LogicFailureCode,
+                _ => FullFailureCode
+            };
+
+        HintVisible = false;
+        HasRun = false;
+        HintsUsed = 0;
+        SubmissionComplete = false;
+        MissionPassed = false;
+        FinalScore = 0;
+        FinalElapsedSeconds = 0;
+        ResultMessage = "";
+        RewardMessage = "";
+        RewardProcessing = false;
+        RewardsProcessed = false;
+        MissionAchievement = null;
+        AttemptId = Guid.NewGuid().ToString("N");
+        AttemptStartedAt = null;
+        AccumulatedSeconds = 0;
+        ConsoleLines.Clear();
+        WorkspaceMessage =
+            profile.Title +
+            " restored to its original damaged state.";
+    }
+
+    private void RunSimulation()
+    {
+        if (SubmissionComplete)
+        {
+            return;
+        }
+
+        EnsureClock();
+        HasRun = true;
+        ConsoleLines.Clear();
+        ConsoleLines.Add(
+            "[SIM] Pump Control Recovery diagnostics started.");
+        ConsoleLines.Add(
+            "[SIM] No native C++ compiler is running.");
+
+        foreach (MissionCheck check in Checks)
+        {
+            ConsoleLines.Add(
+                check.Met
+                    ? $"[OK] {check.Label}"
+                    : $"[WARN] Unresolved: {check.Label}");
+        }
+
+        if (Checks.All(check => check.Met))
+        {
+            ConsoleLines.Add(
+                "[SIM] pressureOk = true");
+            ConsoleLines.Add(
+                "[SIM] valveOpen = true");
+            ConsoleLines.Add(
+                "[SIM] motorReady = true");
+            ConsoleLines.Add(
+                "[SIM] Pump allowed: true");
+            ConsoleLines.Add(
+                "[SIM] Pump control function restored.");
+            WorkspaceMessage =
+                "All six authored requirements are present.";
+        }
+        else
+        {
+            ConsoleLines.Add(
+                "[WARN] Pump permissive function remains incomplete.");
+            WorkspaceMessage =
+                $"{Checks.Count(check => check.Met)} of 6 requirements currently pass.";
+        }
+    }
+
+    private void ResetWorkspace()
+    {
+        SelectProfile(SelectedProfile);
+    }
+
+    private void ToggleHint()
+    {
+        bool opening = !HintVisible;
+        HintVisible = opening;
+
+        if (opening && !SubmissionComplete)
+        {
+            HintsUsed += 1;
+            EnsureClock();
+        }
+    }
+
+    private async Task SubmitMission()
+    {
+        if (SubmissionComplete)
+        {
+            return;
+        }
+
+        StopClock();
+
+        FinalElapsedSeconds =
+            AccumulatedSeconds;
+
+        MissionPassed =
+            Checks.All(check => check.Met);
+
+        FinalScore =
+            Math.Clamp(
+                RequirementPoints +
+                Math.Clamp(
+                    160 -
+                    (FinalElapsedSeconds / 5) * 5,
+                    0,
+                    160) -
+                HintPenalty,
+                0,
+                1000);
+
+        SubmissionComplete = true;
+        HasRun = true;
+
+        ResultMessage =
+            MissionPassed
+                ? "All six pump-control requirements passed. Rewards remain disabled until Pass 7E-2B-2."
+                : $"{PassedRequirementCount} of 6 requirements passed. Start a new attempt after repairing the remaining checks.";
+
+        ConsoleLines.Add(
+            MissionPassed
+                ? $"[RESULT] PASS · {FinalScore}/1000"
+                : $"[RESULT] FAIL · {FinalScore}/1000");
+
+        if (MissionPassed)
+        {
+            await ProcessRewardsAsync();
+        }
+    }
+
+    private async Task ProcessRewardsAsync()
+    {
+        if (RewardProcessing || RewardsProcessed) return;
+        RewardProcessing = true;
+        try
+        {
+            MissionThreeRecord result =
+                await JS.InvokeAsync<MissionThreeRecord>(
+                    "caveCodeCppMinigame.recordMissionThreeClear",
+                    AttemptId, FinalScore, FinalElapsedSeconds, SelectedProfile);
+
+            int validatedLines = EditorCode.Replace("\r\n", "\n")
+                .Split('\n').Count(line => !string.IsNullOrWhiteSpace(line));
+
+            await ProgressionService.AwardMinigameRunAsync(
+                CourseIds.Cpp, result.RewardKey, result.XpAwarded, validatedLines);
+
+            await AchievementService.AwardMinigameCrystalsAsync(
+                result.RewardKey, result.CrystalsAwarded);
+
+            MissionAchievement =
+                await AchievementService.UnlockChapterAsync("cpp-minigame", 3);
+
+            SavedState = result.State;
+            RewardsProcessed = true;
+            RewardMessage =
+                $"+{result.XpAwarded} C++ XP, ◆ {result.CrystalsAwarded} crystals, and {validatedLines} validated C++ lines saved.";
+
+            try
+            {
+                await JS.InvokeVoidAsync("caveCodeProgression.syncLeaderboardProfile");
+            }
+            catch { }
+        }
+        catch (Exception error)
+        {
+            RewardMessage = "Mission passed, but reward saving failed: " + error.Message;
+        }
+        finally
+        {
+            RewardProcessing = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void NewAttempt()
+    {
+        SelectProfile(SelectedProfile);
+
+        WorkspaceMessage =
+            CurrentProfile.Title +
+            " loaded as a new scored attempt.";
+    }
+
+    private void EnsureClock()
+    {
+        if (!AttemptStartedAt.HasValue)
+        {
+            AttemptStartedAt =
+                DateTimeOffset.UtcNow;
+        }
+    }
+
+    private void StopClock()
+    {
+        if (!AttemptStartedAt.HasValue)
+        {
+            return;
+        }
+
+        AccumulatedSeconds +=
+            Math.Max(
+                0,
+                (int)(DateTimeOffset.UtcNow - AttemptStartedAt.Value)
+                    .TotalSeconds);
+
+        AttemptStartedAt = null;
+    }
+
+    private static string FormatTime(int seconds) =>
+        $"{seconds / 60:00}:{seconds % 60:00}";
+
+    private bool HasExact(string value) =>
+        EditorCode.Contains(
+            value,
+            StringComparison.Ordinal);
+
+    private bool HasPattern(string pattern) =>
+        System.Text.RegularExpressions.Regex.IsMatch(
+            EditorCode,
+            pattern,
+            System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+    private static string ConsoleClass(string line)
+    {
+        if (line.StartsWith("[OK]", StringComparison.Ordinal))
+        {
+            return "console-ok";
+        }
+
+        if (line.StartsWith("[WARN]", StringComparison.Ordinal))
+        {
+            return "console-warn";
+        }
+
+        return "console-sim";
+    }
+
+    private sealed record MissionCheck(
+        string Label,
+        string Description,
+        bool Met);
+
+    private sealed record DamageProfile(
+        string Id,
+        string Title,
+        string ShortName,
+        string Focus,
+        string Description,
+        string HintTitle,
+        string HintText);
+
+    private sealed class MissionTwoState
+    {
+        public bool Completed { get; set; }
+    }
+
+    private sealed class MissionThreeState
+    {
+        public bool Completed { get; set; }
+        public int BestScore { get; set; }
+        public double? FastestSeconds { get; set; }
+        public int TotalClears { get; set; }
+        public int TotalXpEarned { get; set; }
+        public int TotalCrystalsEarned { get; set; }
+    }
+
+    private sealed class MissionThreeRecord
+    {
+        public string RewardKey { get; set; } = "";
+        public int XpAwarded { get; set; }
+        public int CrystalsAwarded { get; set; }
+        public MissionThreeState State { get; set; } = new();
+    }
+}

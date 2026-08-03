@@ -1,0 +1,173 @@
+@using System.Linq
+@using CaveCode.CourseEngine
+@using Microsoft.JSInterop
+@inject CourseEngineService CourseEngine
+@inject IJSRuntime JS
+
+<article class="mode-card cpp-foundry-mode @(!IsUnlocked ? "locked" : "")"
+         title="@CardTooltip">
+    <div class="mode-topline">
+        <span class="mode-mark cpp-foundry-mark">C++</span>
+        <span>@StatusText</span>
+    </div>
+
+    <p class="eyebrow">C++ ENGINE FOUNDRY</p>
+    <h2>Engine Foundry</h2>
+    <p>
+        Restore damaged engine systems using variables, boolean state,
+        control flow, functions, arrays, structs, console output, and
+        safe browser-based simulated diagnostics.
+    </p>
+
+    <div class="mode-stats">
+        <div>
+            <span>Missions</span>
+            <strong>@CompletedMissions / 5</strong>
+        </div>
+        <div>
+            <span>Campaign</span>
+            <strong>@CampaignLabel</strong>
+        </div>
+        <div>
+            <span>Rewards</span>
+            <strong>XP + crystals</strong>
+        </div>
+    </div>
+
+    <div class="chapter-track" aria-label="Engine Foundry mission progress">
+        @for (int mission = 1; mission <= 5; mission++)
+        {
+            int missionNumber = mission;
+            <span class="@MissionClass(missionNumber)">
+                @missionNumber
+            </span>
+        }
+    </div>
+
+    @if (!StateLoaded)
+    {
+        <span class="mode-action locked-action">
+            Checking C++ Chapter 1 progress…
+        </span>
+    }
+    else if (!IsUnlocked)
+    {
+        <span class="mode-action locked-action"
+              title="Complete C++ Chapter 1 modules 1–8 to unlock Engine Foundry">
+            Complete C++ Chapter 1 to unlock
+        </span>
+    }
+    else
+    {
+        <NavLink class="mode-action cpp-foundry-action"
+                 href="/minigames/cpp">
+            @(CampaignCompleted
+                ? "Replay Engine Foundry →"
+                : "Play Engine Foundry →")
+        </NavLink>
+    }
+</article>
+
+@code {
+    private bool StateLoaded;
+    private bool IsUnlocked;
+    private CppHubState HubState = new();
+
+    private bool CampaignCompleted => HubState.CampaignCompleted;
+
+    private int CompletedMissions =>
+        new[]
+        {
+            HubState.Mission1Completed,
+            HubState.Mission2Completed,
+            HubState.Mission3Completed,
+            HubState.Mission4Completed,
+            HubState.Mission5Completed
+        }.Count(completed => completed);
+
+    private string StatusText =>
+        !StateLoaded
+            ? "Checking unlock status"
+            : !IsUnlocked
+                ? "Complete Chapter 1 to unlock"
+                : CampaignCompleted
+                    ? "Engine Foundry campaign complete"
+                    : "Chapter 1 unlocked";
+
+    private string CampaignLabel =>
+        !IsUnlocked
+            ? "Locked"
+            : CampaignCompleted
+                ? "Complete"
+                : "Chapter 1";
+
+    private string CardTooltip =>
+        !StateLoaded
+            ? "Checking C++ progress"
+            : !IsUnlocked
+                ? "Complete C++ Chapter 1 modules 1–8 to unlock this minigame"
+                : CampaignCompleted
+                    ? "Replay the completed Engine Foundry campaign"
+                    : "Play the unlocked Engine Foundry campaign";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            CourseProgressSnapshot progress =
+                await CourseEngine.GetProgressAsync(CourseIds.Cpp);
+
+            IsUnlocked =
+                progress.ModuleCompleted.Length >= 8 &&
+                Enumerable.Range(0, 8)
+                    .All(index => progress.ModuleCompleted[index]);
+
+            HubState =
+                await JS.InvokeAsync<CppHubState>(
+                    "caveCodeCppMinigame.getHubState");
+        }
+        catch
+        {
+            IsUnlocked = false;
+            HubState = new();
+        }
+
+        StateLoaded = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private string MissionClass(int mission)
+    {
+        bool completed =
+            mission switch
+            {
+                1 => HubState.Mission1Completed,
+                2 => HubState.Mission2Completed,
+                3 => HubState.Mission3Completed,
+                4 => HubState.Mission4Completed,
+                5 => HubState.Mission5Completed,
+                _ => false
+            };
+
+        return completed
+            ? "completed"
+            : IsUnlocked
+                ? ""
+                : "locked";
+    }
+
+    private sealed class CppHubState
+    {
+        public bool Mission1Completed { get; set; }
+        public bool Mission2Completed { get; set; }
+        public bool Mission3Completed { get; set; }
+        public bool Mission4Completed { get; set; }
+        public bool Mission5Completed { get; set; }
+        public bool CampaignCompleted { get; set; }
+    }
+}
