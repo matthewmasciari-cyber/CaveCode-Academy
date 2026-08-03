@@ -1,0 +1,1824 @@
+@page "/minigames/cpp"
+@using CaveCode.CourseEngine
+@using Microsoft.JSInterop
+@inject CourseEngineService CourseEngine
+@inject ProgressionService ProgressionService
+@inject AchievementService AchievementService
+@inject IJSRuntime JS
+
+<PageTitle>C++ Engine Foundry Minigame | CaveCode Academy</PageTitle>
+
+@if (!AccessReady)
+{
+    <main class="foundry-access-screen">
+        <section>
+            <span class="foundry-access-mark">C++</span>
+            <p class="foundry-eyebrow">ENGINE FOUNDRY</p>
+            <h1>Preparing the minigame workshop</h1>
+            <p>Checking your C++ Chapter 1 checkpoint on this device.</p>
+        </section>
+    </main>
+}
+else if (!AccessGranted)
+{
+    <main class="foundry-access-screen">
+        <section>
+            <span class="foundry-access-mark">C++</span>
+            <p class="foundry-eyebrow">CHAPTER 1 ACCESS GATE</p>
+            <h1>Engine Foundry is still locked</h1>
+
+            @if (ProgressLoadFailed)
+            {
+                <p>
+                    CaveCode could not read the local C++ course checkpoint.
+                    Open the C++ course once, then return to this page.
+                </p>
+            }
+            else
+            {
+                <p>
+                    Complete all eight C++ Foundry Foundations modules before
+                    entering the minigame workshop.
+                </p>
+
+                <div class="foundry-gate-progress">
+                    <strong>@CompletedChapterModules / 8</strong>
+                    <span>Chapter 1 modules complete</span>
+                </div>
+            }
+
+            <div class="foundry-access-actions">
+                <NavLink class="foundry-primary" href="/cpp">
+                    Open C++ Chapter 1 →
+                </NavLink>
+                <NavLink class="foundry-secondary" href="/minigames">
+                    Back to Minigames
+                </NavLink>
+            </div>
+        </section>
+    </main>
+}
+else
+{
+    <main class="cpp-foundry-shell">
+        <header class="foundry-header">
+            <div class="foundry-title-group">
+                <span class="foundry-logo">C++</span>
+                <div>
+                    <p class="foundry-eyebrow">MISSION 1 REWARDS · PASS 7D</p>
+                    <h1>Engine Foundry</h1>
+                    <p>
+                        Restore a damaged engine startup sequence using C++
+                        variables, boolean state, control flow, and console output.
+                    </p>
+                </div>
+            </div>
+
+            <nav class="foundry-header-actions" aria-label="Engine Foundry navigation">
+                <NavLink href="/minigames">Minigames</NavLink>
+                <NavLink href="/minigames/cpp/mission-2">Mission 2</NavLink>
+                <NavLink href="/cpp">C++ Course</NavLink>
+            </nav>
+        </header>
+
+        <section class="foundry-phase-notice" aria-label="Mission preview limitations">
+            <strong>Authored mission preview</strong>
+            <span>
+                Persistent records, C++ XP, validated lines, crystals,
+                achievements, and leaderboard synchronization are active.
+            </span>
+        </section>
+
+        <section class="foundry-record-summary" aria-label="Saved Engine Foundry record">
+            <div>
+                <span>Best score</span>
+                <strong>@SavedState.BestScore.ToString("N0")</strong>
+            </div>
+            <div>
+                <span>Fastest clear</span>
+                <strong>@FastestClearLabel</strong>
+            </div>
+            <div>
+                <span>Total clears</span>
+                <strong>@SavedState.TotalClears</strong>
+            </div>
+            <div>
+                <span>Foundry XP</span>
+                <strong>@SavedState.TotalXpEarned.ToString("N0")</strong>
+            </div>
+        </section>
+
+        <section class="foundry-incident-selector" aria-label="Mission damage profile">
+            <div>
+                <p class="foundry-eyebrow">MISSION 1 · RESTORE THE ENGINE STARTUP SEQUENCE</p>
+                <h2>@CurrentProfile.Title</h2>
+                <p>@CurrentProfile.IncidentReport</p>
+            </div>
+
+            <div class="foundry-profile-buttons">
+                @foreach (DamageProfile profile in DamageProfiles)
+                {
+                    <button type="button"
+                            class="foundry-profile-button @(SelectedProfile == profile.Id ? "selected" : "")"
+                            aria-pressed="@(SelectedProfile == profile.Id)"
+                            @onclick="() => SelectProfile(profile.Id)">
+                        <strong>@profile.ShortName</strong>
+                        <span>@profile.Focus</span>
+                    </button>
+                }
+            </div>
+        </section>
+
+        <div class="foundry-workspace">
+            <aside class="foundry-objectives">
+                <div class="foundry-panel-heading">
+                    <div>
+                        <p class="foundry-eyebrow">MISSION REQUIREMENTS</p>
+                        <h2>Startup repair checklist</h2>
+                    </div>
+                    <span>@PreviewChecks.Count(check => check.Met) / @PreviewChecks.Count</span>
+                </div>
+
+                <p class="foundry-panel-copy">
+                    Repair all six authored requirements. Live evidence and
+                    projected scoring update as you edit. All six must pass.
+                </p>
+
+                <div class="foundry-check-list">
+                    @foreach (PreviewCheck check in PreviewChecks)
+                    {
+                        <div class="foundry-check @(check.Met ? "met" : "")">
+                            <span>@(check.Met ? "✓" : "○")</span>
+                            <div>
+                                <strong>@check.Label</strong>
+                                <small>@check.Description</small>
+                                <em>@(check.Met ? "Requirement satisfied" : "Pending repair")</em>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="foundry-build-status">
+                    <span>WORKSHOP STATUS</span>
+                    <strong>@WorkshopStatus</strong>
+                    <small>@WorkspaceMessage</small>
+                </div>
+
+                <section class="foundry-score-panel" aria-label="Mission score">
+                    <div>
+                        <span>Projected score</span>
+                        <strong>@ProjectedScore / 1000</strong>
+                    </div>
+                    <div>
+                        <span>Requirements</span>
+                        <strong>@RequirementPoints / 840</strong>
+                    </div>
+                    <div>
+                        <span>Time bonus</span>
+                        <strong>@CurrentTimeBonus / 160</strong>
+                    </div>
+                    <div>
+                        <span>Hint penalty</span>
+                        <strong>-@HintPenalty</strong>
+                    </div>
+                    <div>
+                        <span>Elapsed</span>
+                        <strong>@ElapsedLabel</strong>
+                    </div>
+                </section>
+
+                @if (SubmissionComplete)
+                {
+                    <section class="foundry-result @(MissionPassed ? "passed" : "failed")"
+                             role="status">
+                        <strong>@(MissionPassed ? "MISSION PASSED" : "MISSION FAILED")</strong>
+                        <span>@FinalScore / 1000 · @FinalElapsedLabel</span>
+                        <p>@ResultMessage</p>
+
+                        @if (RewardProcessing)
+                        {
+                            <small>Saving rewards and mission record…</small>
+                        }
+                        else if (!string.IsNullOrWhiteSpace(RewardMessage))
+                        {
+                            <small>@RewardMessage</small>
+                        }
+
+                        @if (MissionAchievement?.NewlyUnlocked == true)
+                        {
+                            <small>
+                                Achievement unlocked: Engine Restored ·
+                                Title available: Engine Technician
+                            </small>
+                        }
+                    </section>
+                }
+
+                <div class="foundry-objective-footer">
+                    <span>Target blueprint</span>
+                    <strong>Read temperature → inspect pump state → report startup status</strong>
+                </div>
+            </aside>
+
+            <section class="foundry-editor-panel" aria-label="C++ editor">
+                <div class="foundry-editor-toolbar">
+                    <div>
+                        <span class="foundry-file-dot"></span>
+                        <strong>EngineStartup.cpp</strong>
+                    </div>
+                    <span>@EditorLineCount line@(EditorLineCount == 1 ? "" : "s")</span>
+                </div>
+
+                <textarea class="foundry-editor"
+                          aria-label="C++ practice editor"
+                          spellcheck="false"
+                          @bind="EditorCode"
+                          @bind:event="oninput"></textarea>
+
+                <div class="foundry-control-bar">
+                    <button type="button"
+                            class="foundry-primary"
+                            @onclick="StartSimulation">
+                        @(IsRunning
+                            ? "Restart simulation"
+                            : HasRun
+                                ? "Run again"
+                                : "Start simulation")
+                    </button>
+
+                    <button type="button"
+                            class="foundry-secondary"
+                            disabled="@(!IsRunning)"
+                            @onclick="PauseSimulation">
+                        Pause
+                    </button>
+
+                    <button type="button"
+                            class="foundry-secondary"
+                            @onclick="ResetWorkspace">
+                        Reset
+                    </button>
+
+                    <button type="button"
+                            class="foundry-secondary"
+                            aria-pressed="@HintVisible"
+                            @onclick="ToggleHint">
+                        @(HintVisible ? "Hide hint" : "Hint")
+                    </button>
+
+                    <button type="button"
+                            class="foundry-submit"
+                            disabled="@SubmissionComplete"
+                            @onclick="SubmitMission">
+                        Submit mission
+                    </button>
+
+                    @if (SubmissionComplete)
+                    {
+                        <button type="button"
+                                class="foundry-secondary"
+                                @onclick="NewAttempt">
+                            New attempt
+                        </button>
+                    }
+                </div>
+
+                @if (HintVisible)
+                {
+                    <aside class="foundry-hint" role="note">
+                        <strong>@CurrentProfile.HintTitle</strong>
+                        <p>@CurrentProfile.HintText</p>
+                    </aside>
+                }
+            </section>
+
+            <aside class="foundry-side-stack">
+                <section class="foundry-reference-panel">
+                    <div class="foundry-panel-heading">
+                        <div>
+                            <p class="foundry-eyebrow">MISSION REFERENCE</p>
+                            <h2>Startup control logic</h2>
+                        </div>
+                    </div>
+
+                    <dl class="foundry-reference-list">
+                        <div>
+                            <dt><code>int engineTemperature = 85;</code></dt>
+                            <dd>Stores a whole-number sensor reading.</dd>
+                        </div>
+                        <div>
+                            <dt><code>bool coolingPumpReady = true;</code></dt>
+                            <dd>Stores whether the cooling pump is available.</dd>
+                        </div>
+                        <div>
+                            <dt><code>if (coolingPumpReady)</code></dt>
+                            <dd>Selects the correct startup message.</dd>
+                        </div>
+                        <div>
+                            <dt><code>std::cout &lt;&lt; value;</code></dt>
+                            <dd>Reports values and status to the simulated console.</dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="foundry-console-panel" aria-label="Simulated output console">
+                    <div class="foundry-console-toolbar">
+                        <div>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <strong>SIMULATED OUTPUT</strong>
+                    </div>
+
+                    <div class="foundry-console"
+                         role="log"
+                         aria-live="polite">
+                        @if (ConsoleLines.Count == 0)
+                        {
+                            <p class="console-muted">
+                                [READY] Start the simulation to inspect the
+                                current editor contents.
+                            </p>
+                        }
+                        else
+                        {
+                            @foreach (string line in ConsoleLines)
+                            {
+                                <p class="@ConsoleLineClass(line)">@line</p>
+                            }
+                        }
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+}
+
+<style>
+    .cpp-foundry-shell,
+    .foundry-access-screen {
+        box-sizing: border-box;
+        min-height: 100vh;
+        color: var(--text, #edf4ff);
+        background: var(--bg, #08111f);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .cpp-foundry-shell *,
+    .foundry-access-screen * {
+        box-sizing: border-box;
+    }
+
+    .cpp-foundry-shell button,
+    .cpp-foundry-shell textarea,
+    .foundry-access-screen a {
+        font: inherit;
+    }
+
+    .foundry-access-screen {
+        display: grid;
+        place-items: center;
+        padding: 28px;
+    }
+
+    .foundry-access-screen > section {
+        width: min(620px, 100%);
+        padding: 34px;
+        text-align: center;
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 18px;
+        box-shadow: 0 24px 70px var(--shadow, rgba(0, 0, 0, .35));
+    }
+
+    .foundry-access-screen h1 {
+        margin: 8px 0 12px;
+        font-size: clamp(28px, 5vw, 42px);
+    }
+
+    .foundry-access-screen p {
+        margin: 0 auto;
+        max-width: 520px;
+        color: var(--text-muted, #aab8cb);
+        line-height: 1.65;
+    }
+
+    .foundry-access-mark,
+    .foundry-logo {
+        display: grid;
+        place-items: center;
+        color: var(--accent-contrast, #061120);
+        background: var(--accent, #61dafb);
+        border: 1px solid var(--accent-border, #9ae8ff);
+        box-shadow: 0 12px 35px var(--shadow, rgba(0, 0, 0, .3));
+        font-weight: 950;
+        letter-spacing: -.05em;
+    }
+
+    .foundry-access-mark {
+        width: 70px;
+        height: 64px;
+        margin: 0 auto 18px;
+        border-radius: 15px;
+        font-size: 18px;
+    }
+
+    .foundry-gate-progress {
+        display: grid;
+        gap: 3px;
+        width: min(260px, 100%);
+        padding: 16px;
+        margin: 22px auto 0;
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border: 1px solid var(--accent-border, #4f7990);
+        border-radius: 12px;
+    }
+
+    .foundry-gate-progress strong {
+        font-size: 24px;
+    }
+
+    .foundry-gate-progress span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 12px;
+    }
+
+    .foundry-access-actions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .cpp-foundry-shell {
+        padding: 24px;
+    }
+
+    .foundry-header {
+        display: flex;
+        max-width: 1600px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 22px;
+        margin: 0 auto 18px;
+    }
+
+    .foundry-title-group {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .foundry-logo {
+        flex: 0 0 64px;
+        height: 58px;
+        border-radius: 13px;
+        font-size: 16px;
+    }
+
+    .foundry-title-group h1 {
+        margin: 0;
+        font-size: clamp(26px, 4vw, 38px);
+    }
+
+    .foundry-title-group p:last-child {
+        max-width: 760px;
+        margin: 6px 0 0;
+        color: var(--text-muted, #aab8cb);
+        line-height: 1.5;
+    }
+
+    .foundry-eyebrow {
+        margin: 0 0 5px;
+        color: var(--accent, #61dafb);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: .12em;
+    }
+
+    .foundry-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .foundry-header-actions a {
+        padding: 9px 12px;
+        color: var(--text, #edf4ff);
+        text-decoration: none;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 9px;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .foundry-header-actions a:hover,
+    .foundry-header-actions a:focus-visible {
+        border-color: var(--accent-border, #6ecde9);
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+    }
+
+    .foundry-phase-notice {
+        display: flex;
+        max-width: 1600px;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 15px;
+        margin: 0 auto 16px;
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border: 1px solid var(--accent-border, #4f7990);
+        border-radius: 11px;
+    }
+
+    .foundry-phase-notice strong {
+        flex: 0 0 auto;
+        color: var(--accent-soft, #9feaff);
+        font-size: 11px;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+    }
+
+    .foundry-phase-notice span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .foundry-incident-selector {
+        display: grid;
+        grid-template-columns: minmax(260px, .8fr) minmax(460px, 1.2fr);
+        max-width: 1600px;
+        gap: 18px;
+        padding: 17px;
+        margin: 0 auto 16px;
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 14px;
+    }
+
+    .foundry-incident-selector h2 {
+        margin: 0 0 7px;
+        font-size: 18px;
+    }
+
+    .foundry-incident-selector > div > p:last-child {
+        margin: 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+    .foundry-profile-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .foundry-profile-button {
+        min-width: 0;
+        padding: 11px;
+        text-align: left;
+        color: var(--text, #edf4ff);
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .foundry-profile-button strong,
+    .foundry-profile-button span {
+        display: block;
+    }
+
+    .foundry-profile-button strong {
+        font-size: 10px;
+    }
+
+    .foundry-profile-button span {
+        margin-top: 4px;
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        line-height: 1.35;
+    }
+
+    .foundry-profile-button.selected {
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border-color: var(--accent-border, #4f7990);
+        box-shadow: inset 0 0 0 1px var(--accent-border, #4f7990);
+    }
+
+    .foundry-profile-button:focus-visible {
+        outline: 3px solid var(--focus, #ffd166);
+        outline-offset: 2px;
+    }
+
+    .foundry-workspace {
+        display: grid;
+        grid-template-columns: 255px minmax(460px, 1fr) 350px;
+        max-width: 1600px;
+        min-height: 690px;
+        gap: 14px;
+        margin: 0 auto;
+    }
+
+    .foundry-objectives,
+    .foundry-editor-panel,
+    .foundry-reference-panel,
+    .foundry-console-panel {
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 14px;
+    }
+
+    .foundry-objectives {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        padding: 17px;
+    }
+
+    .foundry-panel-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .foundry-panel-heading h2 {
+        margin: 0;
+        font-size: 17px;
+    }
+
+    .foundry-panel-heading > span {
+        padding: 5px 8px;
+        color: var(--accent-soft, #9feaff);
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border: 1px solid var(--accent-border, #4f7990);
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 900;
+    }
+
+    .foundry-panel-copy {
+        margin: 10px 0 15px;
+        color: var(--text-muted, #aab8cb);
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+    .foundry-check-list {
+        display: grid;
+        gap: 8px;
+    }
+
+    .foundry-check {
+        display: grid;
+        grid-template-columns: 24px 1fr;
+        gap: 9px;
+        padding: 10px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 9px;
+    }
+
+    .foundry-check > span {
+        display: grid;
+        width: 23px;
+        height: 23px;
+        place-items: center;
+        color: var(--text-muted, #aab8cb);
+        background: var(--surface-strong, #172539);
+        border-radius: 50%;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .foundry-check.met {
+        border-color: var(--accent-border, #4f7990);
+        background: var(--accent-surface, rgba(97, 218, 251, .08));
+    }
+
+    .foundry-check.met > span {
+        color: var(--accent-contrast, #061120);
+        background: var(--accent, #61dafb);
+    }
+
+    .foundry-check strong,
+    .foundry-check small {
+        display: block;
+    }
+
+    .foundry-check strong {
+        font-size: 11px;
+    }
+
+    .foundry-check small {
+        margin-top: 3px;
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .foundry-record-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        max-width: 1600px;
+        gap: 10px;
+        margin: 0 auto 16px;
+    }
+
+    .foundry-record-summary > div {
+        display: grid;
+        gap: 4px;
+        padding: 12px;
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 10px;
+    }
+
+    .foundry-record-summary span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        font-weight: 850;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .foundry-record-summary strong {
+        font-size: 13px;
+    }
+
+    .foundry-result small {
+        color: var(--accent-soft, #9feaff);
+        font-size: 9px;
+        line-height: 1.45;
+    }
+
+    .foundry-score-panel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 10px;
+    }
+
+    .foundry-score-panel > div {
+        display: grid;
+        gap: 3px;
+        padding: 9px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 8px;
+    }
+
+    .foundry-score-panel span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    .foundry-score-panel strong {
+        font-size: 11px;
+    }
+
+    .foundry-result {
+        display: grid;
+        gap: 5px;
+        padding: 11px;
+        margin-top: 10px;
+        border-radius: 9px;
+    }
+
+    .foundry-result.passed {
+        background: rgba(64, 190, 110, .12);
+        border: 1px solid rgba(96, 230, 140, .55);
+    }
+
+    .foundry-result.failed {
+        background: rgba(230, 90, 90, .11);
+        border: 1px solid rgba(255, 120, 120, .55);
+    }
+
+    .foundry-result strong {
+        font-size: 11px;
+    }
+
+    .foundry-result span,
+    .foundry-result p {
+        margin: 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .foundry-check em {
+        display: block;
+        margin-top: 4px;
+        color: var(--accent-soft, #9feaff);
+        font-size: 8px;
+        font-style: normal;
+        font-weight: 800;
+    }
+
+    .foundry-submit {
+        min-height: 40px;
+        padding: 9px 13px;
+        color: #fff;
+        background: #1769d2;
+        border: 1px solid #7eb8ff;
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .foundry-submit:disabled {
+        cursor: not-allowed;
+        opacity: .5;
+    }
+
+    .foundry-submit:focus-visible {
+        outline: 3px solid var(--focus, #ffd166);
+        outline-offset: 2px;
+    }
+
+    .foundry-build-status {
+        display: grid;
+        gap: 4px;
+        padding: 12px;
+        margin-top: 15px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 9px;
+    }
+
+    .foundry-build-status > span,
+    .foundry-objective-footer span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        font-weight: 850;
+        letter-spacing: .08em;
+    }
+
+    .foundry-build-status strong {
+        color: var(--accent-soft, #9feaff);
+        font-size: 12px;
+    }
+
+    .foundry-build-status small {
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        line-height: 1.45;
+    }
+
+    .foundry-objective-footer {
+        display: grid;
+        gap: 4px;
+        margin-top: auto;
+        padding-top: 18px;
+    }
+
+    .foundry-objective-footer strong {
+        font-size: 10px;
+    }
+
+    .foundry-editor-panel {
+        display: flex;
+        min-width: 0;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .foundry-editor-toolbar,
+    .foundry-console-toolbar {
+        display: flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 0 14px;
+        background: var(--surface, #0d1726);
+        border-bottom: 1px solid var(--border, #2b3b52);
+    }
+
+    .foundry-editor-toolbar > div {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .foundry-editor-toolbar strong {
+        font-size: 12px;
+    }
+
+    .foundry-editor-toolbar > span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 10px;
+    }
+
+    .foundry-file-dot {
+        width: 9px;
+        height: 9px;
+        background: var(--accent, #61dafb);
+        border-radius: 50%;
+        box-shadow: 0 0 12px var(--accent, #61dafb);
+    }
+
+    .foundry-editor {
+        width: 100%;
+        min-height: 520px;
+        flex: 1;
+        resize: none;
+        padding: 20px;
+        color: var(--text, #edf4ff);
+        caret-color: var(--accent, #61dafb);
+        background: var(--surface-strong, #172539);
+        border: 0;
+        outline: 0;
+        tab-size: 4;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .foundry-editor:focus-visible {
+        box-shadow: inset 0 0 0 3px var(--focus, #ffd166);
+    }
+
+    .foundry-control-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        padding: 13px;
+        background: var(--surface, #0d1726);
+        border-top: 1px solid var(--border, #2b3b52);
+    }
+
+    .foundry-primary,
+    .foundry-secondary {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 13px;
+        text-decoration: none;
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .foundry-primary {
+        color: var(--accent-contrast, #061120);
+        background: var(--accent, #61dafb);
+        border: 1px solid var(--accent-border, #9ae8ff);
+    }
+
+    .foundry-secondary {
+        color: var(--text, #edf4ff);
+        background: var(--surface-strong, #172539);
+        border: 1px solid var(--border, #2b3b52);
+    }
+
+    .foundry-primary:hover,
+    .foundry-secondary:hover:not(:disabled) {
+        filter: brightness(1.08);
+    }
+
+    .foundry-primary:focus-visible,
+    .foundry-secondary:focus-visible,
+    .foundry-header-actions a:focus-visible {
+        outline: 3px solid var(--focus, #ffd166);
+        outline-offset: 2px;
+    }
+
+    .foundry-secondary:disabled {
+        cursor: not-allowed;
+        opacity: .45;
+    }
+
+    .foundry-hint {
+        padding: 13px 15px;
+        color: var(--text, #edf4ff);
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border-top: 1px solid var(--accent-border, #4f7990);
+    }
+
+    .foundry-hint strong {
+        color: var(--accent-soft, #9feaff);
+        font-size: 11px;
+    }
+
+    .foundry-hint p {
+        margin: 5px 0 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .foundry-side-stack {
+        display: grid;
+        min-width: 0;
+        grid-template-rows: auto 1fr;
+        gap: 14px;
+    }
+
+    .foundry-reference-panel {
+        padding: 17px;
+    }
+
+    .foundry-reference-list {
+        display: grid;
+        gap: 8px;
+        margin: 14px 0 0;
+    }
+
+    .foundry-reference-list > div {
+        padding: 10px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 9px;
+    }
+
+    .foundry-reference-list dt {
+        color: var(--accent-soft, #9feaff);
+        font-size: 11px;
+        font-weight: 850;
+    }
+
+    .foundry-reference-list dd {
+        margin: 5px 0 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 10px;
+        line-height: 1.45;
+    }
+
+    .foundry-console-panel {
+        display: flex;
+        min-height: 310px;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .foundry-console-toolbar {
+        min-height: 43px;
+    }
+
+    .foundry-console-toolbar > div {
+        display: flex;
+        gap: 5px;
+    }
+
+    .foundry-console-toolbar > div span {
+        width: 8px;
+        height: 8px;
+        background: var(--text-dim, #607087);
+        border-radius: 50%;
+    }
+
+    .foundry-console-toolbar strong {
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        letter-spacing: .09em;
+    }
+
+    .foundry-console {
+        flex: 1;
+        overflow: auto;
+        padding: 14px;
+        background: #07100c;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 10px;
+        line-height: 1.55;
+    }
+
+    .foundry-console p {
+        margin: 0 0 5px;
+        overflow-wrap: anywhere;
+    }
+
+    .console-muted,
+    .console-sim {
+        color: #a6b3ad;
+    }
+
+    .console-ok {
+        color: #78e29a;
+    }
+
+    .console-warn {
+        color: #ffd166;
+    }
+
+    .console-pause {
+        color: #9dc9ff;
+    }
+
+    @@media (max-width: 1260px) {
+        .foundry-workspace {
+            grid-template-columns: 230px minmax(420px, 1fr);
+        }
+
+        .foundry-side-stack {
+            grid-column: 1 / -1;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            grid-template-rows: auto;
+        }
+
+        .foundry-console-panel {
+            min-height: 280px;
+        }
+    }
+
+    @@media (max-width: 820px) {
+        .cpp-foundry-shell {
+            padding: 16px;
+        }
+
+        .foundry-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .foundry-title-group {
+            align-items: flex-start;
+        }
+
+        .foundry-header-actions {
+            width: 100%;
+        }
+
+        .foundry-header-actions a {
+            flex: 1;
+            text-align: center;
+        }
+
+        .foundry-phase-notice {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .foundry-record-summary {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .foundry-incident-selector {
+            grid-template-columns: 1fr;
+        }
+
+        .foundry-workspace,
+        .foundry-side-stack {
+            grid-template-columns: 1fr;
+        }
+
+        .foundry-side-stack {
+            grid-column: auto;
+        }
+
+        .foundry-editor {
+            min-height: 430px;
+        }
+    }
+
+    @@media (max-width: 540px) {
+        .foundry-access-screen {
+            padding: 14px;
+        }
+
+        .foundry-access-screen > section {
+            padding: 24px 18px;
+        }
+
+        .foundry-title-group {
+            flex-direction: column;
+        }
+
+        .foundry-logo {
+            width: 58px;
+            flex-basis: 52px;
+        }
+
+        .foundry-record-summary,
+        .foundry-profile-buttons,
+        .foundry-control-bar,
+        .foundry-access-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .foundry-primary,
+        .foundry-secondary {
+            width: 100%;
+        }
+
+        .foundry-editor {
+            min-height: 370px;
+            padding: 15px;
+            font-size: 12px;
+        }
+    }
+</style>
+
+@code {
+    private const string FullIncidentCode =
+        "#include <iostrem>\n\n" +
+        "int main\n" +
+        "{\n" +
+        "    int engineTemperature = \"85\";\n" +
+        "    bool coolingPumpReady = yes;\n\n" +
+        "    cout << \"Engine temperature: \" << engineTemperature << \"\\n\"\n\n" +
+        "    if coolingPumpReady\n" +
+        "    {\n" +
+        "        std::cout << \"Cooling pump ready.\\n\";\n" +
+        "    }\n\n" +
+        "    return;\n" +
+        "}\n";
+
+    private const string VariablesIncidentCode =
+        "#include <iostream>\n\n" +
+        "int main()\n" +
+        "{\n" +
+        "    double engineTemperature = 85;\n" +
+        "    int coolingPumpReady = 1;\n\n" +
+        "    std::cout << \"Engine temperature: \" << engineTemperature << \"\\n\";\n\n" +
+        "    if (coolingPumpReady)\n" +
+        "    {\n" +
+        "        std::cout << \"Cooling pump ready.\\n\";\n" +
+        "    }\n\n" +
+        "    return 0;\n" +
+        "}\n";
+
+    private const string ControlFlowIncidentCode =
+        "#include <iostream>\n\n" +
+        "int main()\n" +
+        "{\n" +
+        "    int engineTemperature = 85;\n" +
+        "    bool coolingPumpReady = true;\n\n" +
+        "    std::cout << \"Temperature available.\\n\";\n\n" +
+        "    if (engineTemperature)\n" +
+        "    {\n" +
+        "        std::cout << \"Cooling status unknown.\\n\";\n" +
+        "    }\n\n" +
+        "    return 0;\n" +
+        "}\n";
+
+    private bool AccessReady;
+    private bool AccessGranted;
+    private bool ProgressLoadFailed;
+    private int CompletedChapterModules;
+
+    private string SelectedProfile = "full";
+    private string EditorCode = FullIncidentCode;
+    private bool IsRunning;
+    private bool HasRun;
+    private bool HintVisible;
+    private int HintsUsed;
+    private bool SubmissionComplete;
+    private bool MissionPassed;
+    private int FinalScore;
+    private int FinalElapsedSeconds;
+    private string ResultMessage = "";
+    private string RewardMessage = "";
+    private bool RewardProcessing;
+    private bool RewardsProcessed;
+    private string AttemptId = Guid.NewGuid().ToString("N");
+    private CppMinigameState SavedState = new();
+    private AchievementUnlockResult? MissionAchievement;
+    private DateTimeOffset? AttemptStartedAt;
+    private int AccumulatedSeconds;
+    private string WorkspaceMessage =
+        "Select an incident profile and restore the startup sequence.";
+
+    private List<string> ConsoleLines = new();
+
+    private IReadOnlyList<DamageProfile> DamageProfiles =>
+        new[]
+        {
+            new DamageProfile(
+                "full",
+                "Full Startup Failure",
+                "Full Incident",
+                "Repair the complete startup program",
+                "Headers, entry point, variables, output, control flow, and exit logic are damaged.",
+                "Start with the program frame",
+                "Repair the iostream header and int main() first. Then use an int for temperature, a bool for pump readiness, valid std::cout statements, an if condition, and return 0."),
+            new DamageProfile(
+                "variables",
+                "Variables & Types Failure",
+                "Variables & Types",
+                "Repair int and bool declarations",
+                "The program runs structurally, but the engine values use the wrong C++ types.",
+                "Match the value to its type",
+                "The temperature is a whole number, so use int. Pump readiness has only true or false states, so use bool."),
+            new DamageProfile(
+                "control",
+                "Control Flow & Output Failure",
+                "Control Flow & Output",
+                "Repair output and the if condition",
+                "The variables are correct, but the program reports the wrong information and checks the wrong condition.",
+                "Report and test the stored values",
+                "Print engineTemperature in the temperature line. The if statement should inspect coolingPumpReady and report that the cooling pump is ready.")
+        };
+
+    private DamageProfile CurrentProfile =>
+        DamageProfiles.First(
+            profile =>
+                profile.Id == SelectedProfile);
+
+    private int EditorLineCount =>
+        string.IsNullOrEmpty(EditorCode)
+            ? 1
+            : EditorCode
+                .Replace("\r\n", "\n")
+                .Split('\n')
+                .Length;
+
+    private string WorkshopStatus =>
+        SubmissionComplete
+            ? MissionPassed
+                ? "Mission passed"
+                : "Mission failed"
+            : IsRunning
+                ? "Mission simulation active"
+                : HasRun
+                    ? "Mission simulation stopped"
+                    : "Incident loaded";
+
+    private int PassedRequirementCount =>
+        PreviewChecks.Count(check => check.Met);
+
+    private int RequirementPoints =>
+        PassedRequirementCount * 140;
+
+    private int ElapsedSeconds =>
+        SubmissionComplete
+            ? FinalElapsedSeconds
+            : AccumulatedSeconds +
+              (AttemptStartedAt.HasValue
+                  ? Math.Max(
+                      0,
+                      (int)(DateTimeOffset.UtcNow - AttemptStartedAt.Value)
+                          .TotalSeconds)
+                  : 0);
+
+    private int CurrentTimeBonus =>
+        Math.Clamp(160 - (ElapsedSeconds / 5) * 5, 0, 160);
+
+    private int HintPenalty =>
+        HintsUsed * 40;
+
+    private int ProjectedScore =>
+        Math.Clamp(
+            RequirementPoints + CurrentTimeBonus - HintPenalty,
+            0,
+            1000);
+
+    private string ElapsedLabel =>
+        FormatTime(ElapsedSeconds);
+
+    private string FinalElapsedLabel =>
+        FormatTime(FinalElapsedSeconds);
+
+    private string FastestClearLabel =>
+        SavedState.FastestSeconds.HasValue
+            ? FormatTime(
+                Math.Max(
+                    0,
+                    (int)Math.Round(
+                        SavedState.FastestSeconds.Value)))
+            : "--:--";
+
+    private IReadOnlyList<PreviewCheck> PreviewChecks =>
+        new[]
+        {
+            new PreviewCheck(
+                "Program frame",
+                "Use #include <iostream> and int main().",
+                HasExactText("#include <iostream>") &&
+                HasPattern(@"int\s+main\s*\(\s*\)")),
+            new PreviewCheck(
+                "Temperature variable",
+                "Declare int engineTemperature = 85.",
+                HasPattern(
+                    @"int\s+engineTemperature\s*=\s*85\s*;")),
+            new PreviewCheck(
+                "Pump-ready variable",
+                "Declare bool coolingPumpReady = true.",
+                HasPattern(
+                    @"bool\s+coolingPumpReady\s*=\s*true\s*;")),
+            new PreviewCheck(
+                "Temperature report",
+                "Print the label and engineTemperature value.",
+                HasExactText("std::cout") &&
+                HasExactText("\"Engine temperature: \"") &&
+                HasExactText("engineTemperature")),
+            new PreviewCheck(
+                "Pump control flow",
+                "Check coolingPumpReady and report the ready state.",
+                HasPattern(
+                    @"if\s*\(\s*coolingPumpReady\s*\)") &&
+                HasExactText("\"Cooling pump ready.")),
+            new PreviewCheck(
+                "Successful exit",
+                "Return zero from main.",
+                HasPattern(@"return\s+0\s*;"))
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            CourseProgressSnapshot progress =
+                await CourseEngine.GetProgressAsync(
+                    CourseIds.Cpp);
+
+            CompletedChapterModules =
+                progress.ModuleCompleted
+                    .Take(8)
+                    .Count(completed => completed);
+
+            AccessGranted =
+                progress.ModuleCompleted.Length > 7 &&
+                progress.ModuleCompleted[7];
+
+            SavedState =
+                await JS.InvokeAsync<CppMinigameState>(
+                    "caveCodeCppMinigame.getState");
+        }
+        catch
+        {
+            ProgressLoadFailed = true;
+            AccessGranted = false;
+        }
+
+        AccessReady = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void SelectProfile(string profileId)
+    {
+        DamageProfile? profile =
+            DamageProfiles.FirstOrDefault(
+                item =>
+                    item.Id == profileId);
+
+        if (profile is null)
+        {
+            return;
+        }
+
+        SelectedProfile = profile.Id;
+        EditorCode =
+            profile.Id switch
+            {
+                "variables" =>
+                    VariablesIncidentCode,
+                "control" =>
+                    ControlFlowIncidentCode,
+                _ =>
+                    FullIncidentCode
+            };
+
+        IsRunning = false;
+        HasRun = false;
+        HintVisible = false;
+        HintsUsed = 0;
+        SubmissionComplete = false;
+        MissionPassed = false;
+        FinalScore = 0;
+        FinalElapsedSeconds = 0;
+        ResultMessage = "";
+        RewardMessage = "";
+        RewardProcessing = false;
+        RewardsProcessed = false;
+        MissionAchievement = null;
+        AttemptId = Guid.NewGuid().ToString("N");
+        AttemptStartedAt = null;
+        AccumulatedSeconds = 0;
+        ConsoleLines.Clear();
+        WorkspaceMessage =
+            profile.Title +
+            " loaded. Restore all six requirements.";
+    }
+
+    private void StartSimulation()
+    {
+        if (SubmissionComplete)
+        {
+            return;
+        }
+
+        if (!AttemptStartedAt.HasValue)
+        {
+            AttemptStartedAt = DateTimeOffset.UtcNow;
+        }
+
+        IsRunning = true;
+        HasRun = true;
+        WorkspaceMessage =
+            "Mission preview inspected the current startup sequence.";
+
+        ConsoleLines.Clear();
+        ConsoleLines.Add(
+            "[SIM] Engine Foundry Mission 1 preview started.");
+        ConsoleLines.Add(
+            "[SIM] No native compiler or executable is running.");
+        ConsoleLines.Add(
+            $"[PROFILE] {CurrentProfile.Title}");
+
+        foreach (PreviewCheck check in PreviewChecks)
+        {
+            ConsoleLines.Add(
+                check.Met
+                    ? $"[OK] {check.Label}"
+                    : $"[WARN] Unresolved requirement: {check.Label}");
+        }
+
+        if (PreviewChecks.All(check => check.Met))
+        {
+            ConsoleLines.Add(
+                "[SIM] All authored startup requirements are present.");
+            ConsoleLines.Add(
+                "[SIM] Engine temperature: 85");
+            ConsoleLines.Add(
+                "[SIM] Cooling pump ready.");
+            ConsoleLines.Add(
+                "[SIM] Startup sequence restored.");
+        }
+        else
+        {
+            ConsoleLines.Add(
+                "[WARN] Startup sequence remains incomplete.");
+        }
+    }
+
+    private void PauseSimulation()
+    {
+        if (!IsRunning)
+        {
+            return;
+        }
+
+        StopAttemptClock();
+        IsRunning = false;
+        WorkspaceMessage =
+            "Mission simulation paused. Editor contents are unchanged.";
+        ConsoleLines.Add(
+            "[PAUSED] Simulated startup loop paused.");
+    }
+
+    private void ResetWorkspace()
+    {
+        SelectProfile(SelectedProfile);
+        WorkspaceMessage =
+            CurrentProfile.Title +
+            " restored to its original damaged state.";
+    }
+
+    private void ToggleHint()
+    {
+        bool opening = !HintVisible;
+        HintVisible = opening;
+
+        if (opening && !SubmissionComplete)
+        {
+            HintsUsed += 1;
+
+            if (!AttemptStartedAt.HasValue)
+            {
+                AttemptStartedAt = DateTimeOffset.UtcNow;
+            }
+        }
+    }
+
+    private async Task SubmitMission()
+    {
+        if (SubmissionComplete)
+        {
+            return;
+        }
+
+        StopAttemptClock();
+        FinalElapsedSeconds = ElapsedSeconds;
+        MissionPassed =
+            PreviewChecks.All(check => check.Met);
+        FinalScore = Math.Clamp(
+            RequirementPoints +
+            Math.Clamp(
+                160 - (FinalElapsedSeconds / 5) * 5,
+                0,
+                160) -
+            HintPenalty,
+            0,
+            1000);
+        SubmissionComplete = true;
+        IsRunning = false;
+        HasRun = true;
+
+        ResultMessage =
+            MissionPassed
+                ? "All six startup requirements passed. Rewards remain disabled until Pass 7D."
+                : $"{PassedRequirementCount} of 6 requirements passed. Repair the pending evidence and start a new attempt.";
+
+        ConsoleLines.Add(
+            MissionPassed
+                ? $"[RESULT] PASS · {FinalScore}/1000"
+                : $"[RESULT] FAIL · {FinalScore}/1000");
+
+        if (MissionPassed)
+        {
+            await ProcessRewardsAsync();
+        }
+    }
+
+    private async Task ProcessRewardsAsync()
+    {
+        if (RewardsProcessed || RewardProcessing)
+        {
+            return;
+        }
+
+        RewardProcessing = true;
+        RewardMessage = "";
+
+        try
+        {
+            CppMinigameRecordResult record =
+                await JS.InvokeAsync<CppMinigameRecordResult>(
+                    "caveCodeCppMinigame.recordClear",
+                    AttemptId,
+                    FinalScore,
+                    Math.Max(0, FinalElapsedSeconds),
+                    SelectedProfile);
+
+            int validatedLines =
+                EditorCode
+                    .Replace("\r\n", "\n")
+                    .Split('\n')
+                    .Count(
+                        line =>
+                            !string.IsNullOrWhiteSpace(line));
+
+            await ProgressionService.AwardMinigameRunAsync(
+                CourseIds.Cpp,
+                record.RewardKey,
+                record.XpAwarded,
+                validatedLines);
+
+            await AchievementService
+                .AwardMinigameCrystalsAsync(
+                    record.RewardKey,
+                    record.CrystalsAwarded);
+
+            MissionAchievement =
+                await AchievementService
+                    .UnlockChapterAsync(
+                        "cpp-minigame",
+                        1);
+
+            SavedState = record.State;
+            RewardsProcessed = true;
+
+            string recordText =
+                record.NewBestScore &&
+                record.NewFastestTime
+                    ? " New best score and fastest clear."
+                    : record.NewBestScore
+                        ? " New best score."
+                        : record.NewFastestTime
+                            ? " New fastest clear."
+                            : "";
+
+            RewardMessage =
+                $"+{record.XpAwarded} C++ XP, " +
+                $"◆ {record.CrystalsAwarded} crystals, and " +
+                $"{validatedLines} validated C++ lines saved." +
+                recordText;
+
+            try
+            {
+                await JS.InvokeVoidAsync(
+                    "caveCodeProgression.syncLeaderboardProfile");
+            }
+            catch
+            {
+                // Local rewards remain valid if cloud sync is unavailable.
+            }
+        }
+        catch (Exception error)
+        {
+            RewardMessage =
+                "The mission passed, but the local reward save " +
+                "did not finish: " +
+                error.Message;
+        }
+        finally
+        {
+            RewardProcessing = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void NewAttempt()
+    {
+        SelectProfile(SelectedProfile);
+        WorkspaceMessage =
+            CurrentProfile.Title +
+            " loaded as a new scored attempt.";
+    }
+
+    private void StopAttemptClock()
+    {
+        if (!AttemptStartedAt.HasValue)
+        {
+            return;
+        }
+
+        AccumulatedSeconds += Math.Max(
+            0,
+            (int)(DateTimeOffset.UtcNow - AttemptStartedAt.Value)
+                .TotalSeconds);
+        AttemptStartedAt = null;
+    }
+
+    private static string FormatTime(int seconds) =>
+        $"{seconds / 60:00}:{seconds % 60:00}";
+
+    private bool HasExactText(string value) =>
+        EditorCode.Contains(
+            value,
+            StringComparison.Ordinal);
+
+    private bool HasPattern(string pattern) =>
+        System.Text.RegularExpressions.Regex.IsMatch(
+            EditorCode,
+            pattern,
+            System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+    private static string ConsoleLineClass(string line)
+    {
+        if (line.StartsWith("[OK]", StringComparison.Ordinal))
+        {
+            return "console-ok";
+        }
+
+        if (line.StartsWith("[WARN]", StringComparison.Ordinal))
+        {
+            return "console-warn";
+        }
+
+        if (line.StartsWith("[PAUSED]", StringComparison.Ordinal))
+        {
+            return "console-pause";
+        }
+
+        return "console-sim";
+    }
+
+    private sealed record PreviewCheck(
+        string Label,
+        string Description,
+        bool Met);
+
+    private sealed record DamageProfile(
+        string Id,
+        string Title,
+        string ShortName,
+        string Focus,
+        string IncidentReport,
+        string HintTitle,
+        string HintText);
+
+    private sealed class CppMinigameState
+    {
+        public bool Mission1Completed { get; set; }
+        public int BestScore { get; set; }
+        public double? FastestSeconds { get; set; }
+        public int TotalClears { get; set; }
+        public int TotalXpEarned { get; set; }
+        public int TotalCrystalsEarned { get; set; }
+        public int LastScore { get; set; }
+        public double LastElapsedSeconds { get; set; }
+        public string LastProfile { get; set; } = "";
+    }
+
+    private sealed class CppMinigameRecordResult
+    {
+        public string RewardKey { get; set; } = "";
+        public int XpAwarded { get; set; }
+        public int CrystalsAwarded { get; set; }
+        public bool FirstClear { get; set; }
+        public bool NewBestScore { get; set; }
+        public bool NewFastestTime { get; set; }
+        public bool DuplicateAttempt { get; set; }
+        public CppMinigameState State { get; set; } = new();
+    }
+}

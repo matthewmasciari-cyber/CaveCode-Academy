@@ -181,6 +181,26 @@
             description: "Complete all five Interface Rescue missions and claim the full campaign reward.",
             titleReward: "Interface Guardian",
             crystals: 0
+        },
+        {
+            id: "cpp-minigame-1",
+            course: "cpp-minigame",
+            courseName: "Engine Foundry",
+            chapter: 1,
+            name: "Engine Restored",
+            description: "Complete Engine Foundry Mission 1 with all six startup requirements.",
+            titleReward: "Engine Technician",
+            crystals: 0
+        },
+        {
+            id: "cpp-minigame-2",
+            course: "cpp-minigame",
+            courseName: "Engine Foundry",
+            chapter: 2,
+            name: "Cooling Loop Stabilized",
+            description: "Complete Engine Foundry Mission 2 with all six cooling-loop requirements.",
+            titleReward: "Cooling Systems Programmer",
+            crystals: 0
         }
     ];
 

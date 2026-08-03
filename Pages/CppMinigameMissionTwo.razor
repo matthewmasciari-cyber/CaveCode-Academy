@@ -1,0 +1,1315 @@
+@page "/minigames/cpp/mission-2"
+@using CaveCode.CourseEngine
+@using Microsoft.JSInterop
+@inject CourseEngineService CourseEngine
+@inject ProgressionService ProgressionService
+@inject AchievementService AchievementService
+@inject IJSRuntime JS
+
+<PageTitle>C++ Engine Foundry Mission 2 | CaveCode Academy</PageTitle>
+
+@if (!AccessReady)
+{
+    <main class="cpp-m2-gate">
+        <section>
+            <span class="cpp-m2-mark">C++</span>
+            <p class="cpp-m2-eyebrow">ENGINE FOUNDRY</p>
+            <h1>Preparing Mission 2</h1>
+            <p>Checking Chapter 1 access and your Mission 1 record.</p>
+        </section>
+    </main>
+}
+else if (!AccessGranted)
+{
+    <main class="cpp-m2-gate">
+        <section>
+            <span class="cpp-m2-mark">C++</span>
+            <p class="cpp-m2-eyebrow">ACCESS GATE</p>
+            <h1>Cooling Loop Recovery is locked</h1>
+            <p>
+                Complete C++ Chapter 1 and clear Engine Foundry Mission 1
+                before entering Mission 2.
+            </p>
+            <div class="cpp-m2-gate-status">
+                <strong>@(ChapterReady ? "✓" : "○")</strong>
+                <span>C++ Chapter 1</span>
+            </div>
+            <div class="cpp-m2-gate-status">
+                <strong>@(MissionOneReady ? "✓" : "○")</strong>
+                <span>Engine Foundry Mission 1</span>
+            </div>
+            <div class="cpp-m2-actions">
+                <NavLink class="cpp-m2-primary" href="/minigames/cpp">
+                    Open Mission 1 →
+                </NavLink>
+                <NavLink class="cpp-m2-secondary" href="/cpp">
+                    Open C++ Course
+                </NavLink>
+            </div>
+        </section>
+    </main>
+}
+else
+{
+    <main class="cpp-m2-shell">
+        <header class="cpp-m2-header">
+            <div>
+                <p class="cpp-m2-eyebrow">ENGINE FOUNDRY · MISSION 2</p>
+                <h1>Stabilize the Cooling Loop</h1>
+                <p>
+                    Repair array data, calculate the average temperature,
+                    count alarms, and decide whether the cooling loop is safe.
+                </p>
+            </div>
+
+            <nav aria-label="Engine Foundry missions">
+                <NavLink href="/minigames/cpp">Mission 1</NavLink>
+                <NavLink class="selected" href="/minigames/cpp/mission-2">
+                    Mission 2
+                </NavLink>
+                <NavLink href="/minigames">Hub</NavLink>
+            </nav>
+        </header>
+
+        <section class="cpp-m2-records">
+            <div>
+                <span>Best score</span>
+                <strong>@State.BestScore.ToString("N0")</strong>
+            </div>
+            <div>
+                <span>Fastest clear</span>
+                <strong>@FastestLabel</strong>
+            </div>
+            <div>
+                <span>Total clears</span>
+                <strong>@State.TotalClears</strong>
+            </div>
+            <div>
+                <span>Mission XP</span>
+                <strong>@State.TotalXpEarned.ToString("N0")</strong>
+            </div>
+        </section>
+
+        <section class="cpp-m2-profile">
+            <div>
+                <p class="cpp-m2-eyebrow">INCIDENT PROFILE</p>
+                <h2>@CurrentProfile.Title</h2>
+                <p>@CurrentProfile.Description</p>
+            </div>
+
+            <div class="cpp-m2-profile-buttons">
+                @foreach (Profile profile in Profiles)
+                {
+                    <button type="button"
+                            class="@(SelectedProfile == profile.Id ? "selected" : "")"
+                            @onclick="() => SelectProfile(profile.Id)">
+                        <strong>@profile.ShortName</strong>
+                        <span>@profile.Focus</span>
+                    </button>
+                }
+            </div>
+        </section>
+
+        <div class="cpp-m2-grid">
+            <aside class="cpp-m2-objectives">
+                <div class="cpp-m2-panel-title">
+                    <div>
+                        <p class="cpp-m2-eyebrow">REQUIREMENTS</p>
+                        <h2>Cooling-loop checklist</h2>
+                    </div>
+                    <span>@Checks.Count(check => check.Met) / 6</span>
+                </div>
+
+                @foreach (Check check in Checks)
+                {
+                    <div class="cpp-m2-check @(check.Met ? "met" : "")">
+                        <span>@(check.Met ? "✓" : "○")</span>
+                        <div>
+                            <strong>@check.Label</strong>
+                            <small>@check.Description</small>
+                        </div>
+                    </div>
+                }
+
+                <section class="cpp-m2-score">
+                    <div>
+                        <span>Projected</span>
+                        <strong>@ProjectedScore / 1000</strong>
+                    </div>
+                    <div>
+                        <span>Requirements</span>
+                        <strong>@RequirementPoints / 840</strong>
+                    </div>
+                    <div>
+                        <span>Time bonus</span>
+                        <strong>@TimeBonus / 160</strong>
+                    </div>
+                    <div>
+                        <span>Hint penalty</span>
+                        <strong>-@HintPenalty</strong>
+                    </div>
+                    <div>
+                        <span>Elapsed</span>
+                        <strong>@ElapsedLabel</strong>
+                    </div>
+                </section>
+
+                @if (Submitted)
+                {
+                    <section class="cpp-m2-result @(Passed ? "passed" : "failed")">
+                        <strong>@(Passed ? "MISSION PASSED" : "MISSION FAILED")</strong>
+                        <span>@FinalScore / 1000 · @FinalElapsedLabel</span>
+                        <p>@ResultMessage</p>
+                        @if (RewardProcessing)
+                        {
+                            <small>Saving Mission 2 rewards…</small>
+                        }
+                        else if (!string.IsNullOrWhiteSpace(RewardMessage))
+                        {
+                            <small>@RewardMessage</small>
+                        }
+                    </section>
+                }
+            </aside>
+
+            <section class="cpp-m2-editor-panel">
+                <div class="cpp-m2-toolbar">
+                    <strong>CoolingLoop.cpp</strong>
+                    <span>@LineCount lines</span>
+                </div>
+
+                <textarea class="cpp-m2-editor"
+                          aria-label="C++ Mission 2 editor"
+                          spellcheck="false"
+                          @bind="EditorCode"
+                          @bind:event="oninput"></textarea>
+
+                <div class="cpp-m2-controls">
+                    <button type="button"
+                            class="cpp-m2-primary"
+                            @onclick="RunSimulation">
+                        Run simulation
+                    </button>
+                    <button type="button"
+                            class="cpp-m2-secondary"
+                            @onclick="ResetAttempt">
+                        Reset
+                    </button>
+                    <button type="button"
+                            class="cpp-m2-secondary"
+                            @onclick="ToggleHint">
+                        @(HintVisible ? "Hide hint" : "Hint")
+                    </button>
+                    <button type="button"
+                            class="cpp-m2-submit"
+                            disabled="@Submitted"
+                            @onclick="SubmitMission">
+                        Submit mission
+                    </button>
+                    @if (Submitted)
+                    {
+                        <button type="button"
+                                class="cpp-m2-secondary"
+                                @onclick="NewAttempt">
+                            New attempt
+                        </button>
+                    }
+                </div>
+
+                @if (HintVisible)
+                {
+                    <aside class="cpp-m2-hint">
+                        <strong>@CurrentProfile.HintTitle</strong>
+                        <p>@CurrentProfile.HintText</p>
+                    </aside>
+                }
+            </section>
+
+            <aside class="cpp-m2-side">
+                <section class="cpp-m2-reference">
+                    <p class="cpp-m2-eyebrow">REFERENCE</p>
+                    <h2>Cooling-loop tools</h2>
+                    <dl>
+                        <div>
+                            <dt><code>int temperatures[4]</code></dt>
+                            <dd>Stores four whole-number readings.</dd>
+                        </div>
+                        <div>
+                            <dt><code>for (int value : temperatures)</code></dt>
+                            <dd>Visits each reading once.</dd>
+                        </div>
+                        <div>
+                            <dt><code>total += value;</code></dt>
+                            <dd>Adds each temperature to the running total.</dd>
+                        </div>
+                        <div>
+                            <dt><code>average = total / 4;</code></dt>
+                            <dd>Calculates the average reading.</dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="cpp-m2-console">
+                    <div class="cpp-m2-console-title">
+                        <strong>SIMULATED OUTPUT</strong>
+                    </div>
+                    <div role="log" aria-live="polite">
+                        @if (ConsoleLines.Count == 0)
+                        {
+                            <p class="muted">
+                                [READY] Run the simulation to inspect the repair.
+                            </p>
+                        }
+                        else
+                        {
+                            @foreach (string line in ConsoleLines)
+                            {
+                                <p class="@ConsoleClass(line)">@line</p>
+                            }
+                        }
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+}
+
+<style>
+    .cpp-m2-shell,
+    .cpp-m2-gate {
+        box-sizing: border-box;
+        min-height: 100vh;
+        color: var(--text, #edf4ff);
+        background: var(--bg, #08111f);
+        font-family: Inter, system-ui, sans-serif;
+    }
+
+    .cpp-m2-shell *,
+    .cpp-m2-gate * {
+        box-sizing: border-box;
+    }
+
+    .cpp-m2-gate {
+        display: grid;
+        place-items: center;
+        padding: 24px;
+    }
+
+    .cpp-m2-gate > section {
+        width: min(620px, 100%);
+        padding: 32px;
+        text-align: center;
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 16px;
+    }
+
+    .cpp-m2-mark {
+        display: grid;
+        width: 70px;
+        height: 60px;
+        place-items: center;
+        margin: 0 auto 16px;
+        color: var(--accent-contrast, #07111f);
+        background: var(--accent, #61dafb);
+        border-radius: 13px;
+        font-weight: 950;
+    }
+
+    .cpp-m2-eyebrow {
+        margin: 0 0 5px;
+        color: var(--accent, #61dafb);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: .1em;
+    }
+
+    .cpp-m2-gate h1,
+    .cpp-m2-header h1,
+    .cpp-m2-profile h2,
+    .cpp-m2-panel-title h2,
+    .cpp-m2-reference h2 {
+        margin: 0;
+    }
+
+    .cpp-m2-gate p,
+    .cpp-m2-header p,
+    .cpp-m2-profile p {
+        color: var(--text-muted, #aab8cb);
+        line-height: 1.55;
+    }
+
+    .cpp-m2-gate-status {
+        display: inline-grid;
+        min-width: 170px;
+        gap: 4px;
+        padding: 12px;
+        margin: 8px 4px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 9px;
+    }
+
+    .cpp-m2-actions,
+    .cpp-m2-header nav,
+    .cpp-m2-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .cpp-m2-actions {
+        justify-content: center;
+        margin-top: 18px;
+    }
+
+    .cpp-m2-primary,
+    .cpp-m2-secondary,
+    .cpp-m2-submit,
+    .cpp-m2-header a {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 13px;
+        text-decoration: none;
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .cpp-m2-primary {
+        color: var(--accent-contrast, #07111f);
+        background: var(--accent, #61dafb);
+        border: 1px solid var(--accent-border, #9ae8ff);
+    }
+
+    .cpp-m2-secondary,
+    .cpp-m2-header a {
+        color: var(--text, #edf4ff);
+        background: var(--surface-strong, #172539);
+        border: 1px solid var(--border, #2b3b52);
+    }
+
+    .cpp-m2-submit {
+        color: #fff;
+        background: #1769d2;
+        border: 1px solid #7eb8ff;
+    }
+
+    .cpp-m2-submit:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+
+    .cpp-m2-header a.selected {
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border-color: var(--accent-border, #4f7990);
+    }
+
+    .cpp-m2-shell {
+        padding: 22px;
+    }
+
+    .cpp-m2-header {
+        display: flex;
+        max-width: 1600px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin: 0 auto 16px;
+    }
+
+    .cpp-m2-header > div {
+        max-width: 850px;
+    }
+
+    .cpp-m2-records {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        max-width: 1600px;
+        gap: 10px;
+        margin: 0 auto 15px;
+    }
+
+    .cpp-m2-records > div,
+    .cpp-m2-profile,
+    .cpp-m2-objectives,
+    .cpp-m2-editor-panel,
+    .cpp-m2-reference,
+    .cpp-m2-console {
+        background: var(--surface-soft, #111c2c);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 13px;
+    }
+
+    .cpp-m2-records > div {
+        display: grid;
+        gap: 4px;
+        padding: 12px;
+    }
+
+    .cpp-m2-records span,
+    .cpp-m2-score span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    .cpp-m2-profile {
+        display: grid;
+        grid-template-columns: minmax(250px, .8fr) minmax(500px, 1.2fr);
+        max-width: 1600px;
+        gap: 16px;
+        padding: 16px;
+        margin: 0 auto 15px;
+    }
+
+    .cpp-m2-profile-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .cpp-m2-profile-buttons button {
+        padding: 10px;
+        text-align: left;
+        color: var(--text, #edf4ff);
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 9px;
+        cursor: pointer;
+    }
+
+    .cpp-m2-profile-buttons button.selected {
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border-color: var(--accent-border, #4f7990);
+    }
+
+    .cpp-m2-profile-buttons strong,
+    .cpp-m2-profile-buttons span {
+        display: block;
+    }
+
+    .cpp-m2-profile-buttons span {
+        margin-top: 4px;
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+    }
+
+    .cpp-m2-grid {
+        display: grid;
+        grid-template-columns: 260px minmax(460px, 1fr) 340px;
+        max-width: 1600px;
+        gap: 14px;
+        margin: 0 auto;
+    }
+
+    .cpp-m2-objectives,
+    .cpp-m2-reference {
+        padding: 16px;
+    }
+
+    .cpp-m2-panel-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .cpp-m2-panel-title > span {
+        color: var(--accent, #61dafb);
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .cpp-m2-check {
+        display: grid;
+        grid-template-columns: 24px 1fr;
+        gap: 8px;
+        padding: 9px;
+        margin-bottom: 7px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 8px;
+    }
+
+    .cpp-m2-check.met {
+        background: var(--accent-surface, rgba(97, 218, 251, .08));
+        border-color: var(--accent-border, #4f7990);
+    }
+
+    .cpp-m2-check strong,
+    .cpp-m2-check small {
+        display: block;
+    }
+
+    .cpp-m2-check small {
+        margin-top: 3px;
+        color: var(--text-muted, #aab8cb);
+        font-size: 8px;
+        line-height: 1.4;
+    }
+
+    .cpp-m2-score {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 10px;
+    }
+
+    .cpp-m2-score > div {
+        display: grid;
+        gap: 3px;
+        padding: 8px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 8px;
+    }
+
+    .cpp-m2-result {
+        display: grid;
+        gap: 5px;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+
+    .cpp-m2-result.passed {
+        background: rgba(64, 190, 110, .12);
+        border: 1px solid rgba(96, 230, 140, .55);
+    }
+
+    .cpp-m2-result.failed {
+        background: rgba(230, 90, 90, .11);
+        border: 1px solid rgba(255, 120, 120, .55);
+    }
+
+    .cpp-m2-result span,
+    .cpp-m2-result p,
+    .cpp-m2-result small {
+        margin: 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .cpp-m2-editor-panel {
+        display: flex;
+        min-width: 0;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .cpp-m2-toolbar {
+        display: flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 13px;
+        background: var(--surface, #0d1726);
+        border-bottom: 1px solid var(--border, #2b3b52);
+    }
+
+    .cpp-m2-toolbar span {
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+    }
+
+    .cpp-m2-editor {
+        width: 100%;
+        min-height: 570px;
+        flex: 1;
+        resize: none;
+        padding: 18px;
+        color: var(--text, #edf4ff);
+        background: var(--surface-strong, #172539);
+        border: 0;
+        outline: 0;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .cpp-m2-controls {
+        padding: 12px;
+        background: var(--surface, #0d1726);
+        border-top: 1px solid var(--border, #2b3b52);
+    }
+
+    .cpp-m2-hint {
+        padding: 12px 14px;
+        background: var(--accent-surface, rgba(97, 218, 251, .1));
+        border-top: 1px solid var(--accent-border, #4f7990);
+    }
+
+    .cpp-m2-hint p {
+        margin: 5px 0 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .cpp-m2-side {
+        display: grid;
+        gap: 14px;
+        grid-template-rows: auto 1fr;
+    }
+
+    .cpp-m2-reference dl {
+        display: grid;
+        gap: 8px;
+    }
+
+    .cpp-m2-reference dl > div {
+        padding: 9px;
+        background: var(--surface, #0d1726);
+        border: 1px solid var(--border, #2b3b52);
+        border-radius: 8px;
+    }
+
+    .cpp-m2-reference dd {
+        margin: 4px 0 0;
+        color: var(--text-muted, #aab8cb);
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .cpp-m2-console {
+        display: flex;
+        min-height: 300px;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .cpp-m2-console-title {
+        padding: 12px;
+        background: var(--surface, #0d1726);
+        border-bottom: 1px solid var(--border, #2b3b52);
+        font-size: 9px;
+        letter-spacing: .08em;
+    }
+
+    .cpp-m2-console > div:last-child {
+        flex: 1;
+        overflow: auto;
+        padding: 12px;
+        background: #07100c;
+        font-family: Consolas, monospace;
+        font-size: 9px;
+    }
+
+    .cpp-m2-console p {
+        margin: 0 0 5px;
+    }
+
+    .ok { color: #78e29a; }
+    .warn { color: #ffd166; }
+    .muted, .sim { color: #a6b3ad; }
+
+    @@media (max-width: 1240px) {
+        .cpp-m2-grid {
+            grid-template-columns: 240px minmax(420px, 1fr);
+        }
+
+        .cpp-m2-side {
+            grid-column: 1 / -1;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+        }
+    }
+
+    @@media (max-width: 820px) {
+        .cpp-m2-shell {
+            padding: 15px;
+        }
+
+        .cpp-m2-header,
+        .cpp-m2-profile {
+            grid-template-columns: 1fr;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .cpp-m2-records {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cpp-m2-profile-buttons {
+            grid-template-columns: 1fr;
+        }
+
+        .cpp-m2-grid,
+        .cpp-m2-side {
+            grid-template-columns: 1fr;
+        }
+
+        .cpp-m2-side {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .cpp-m2-records,
+        .cpp-m2-controls,
+        .cpp-m2-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .cpp-m2-editor {
+            min-height: 430px;
+            font-size: 12px;
+        }
+    }
+</style>
+
+@code {
+    private const string FullCode =
+        "#include <iostream>\n\n" +
+        "int main()\n" +
+        "{\n" +
+        "    int temperatures[4] = { 82, 88, 91 };\n" +
+        "    int total = 0;\n" +
+        "    int alarms = 0;\n\n" +
+        "    for (int value : temperature)\n" +
+        "    {\n" +
+        "        total = value;\n" +
+        "        if (value > 90)\n" +
+        "        {\n" +
+        "            alarms = 1;\n" +
+        "        }\n" +
+        "    }\n\n" +
+        "    int average = total;\n" +
+        "    bool loopSafe = alarms > 0;\n\n" +
+        "    std::cout << \"Average: \" << total << \"\\n\";\n" +
+        "    std::cout << \"Loop safe: \" << loopSafe << \"\\n\";\n" +
+        "    return 0;\n" +
+        "}\n";
+
+    private const string DataCode =
+        "#include <iostream>\n\n" +
+        "int main()\n" +
+        "{\n" +
+        "    int temperatures[3] = { 82, 88, 91, 84 };\n" +
+        "    int total = 0;\n" +
+        "    int alarms = 0;\n\n" +
+        "    for (int value : temperatures)\n" +
+        "    {\n" +
+        "        total += value;\n" +
+        "        if (value >= 90)\n" +
+        "        {\n" +
+        "            alarms++;\n" +
+        "        }\n" +
+        "    }\n\n" +
+        "    int average = total / 4;\n" +
+        "    bool loopSafe = alarms == 0;\n\n" +
+        "    std::cout << \"Average: \" << average << \"\\n\";\n" +
+        "    std::cout << \"Loop safe: \" << loopSafe << \"\\n\";\n" +
+        "    return 0;\n" +
+        "}\n";
+
+    private const string LogicCode =
+        "#include <iostream>\n\n" +
+        "int main()\n" +
+        "{\n" +
+        "    int temperatures[4] = { 82, 88, 91, 84 };\n" +
+        "    int total = 0;\n" +
+        "    int alarms = 0;\n\n" +
+        "    for (int value : temperatures)\n" +
+        "    {\n" +
+        "        total += value;\n" +
+        "        if (value < 90)\n" +
+        "        {\n" +
+        "            alarms--;\n" +
+        "        }\n" +
+        "    }\n\n" +
+        "    int average = total / 3;\n" +
+        "    bool loopSafe = alarms > 0;\n\n" +
+        "    std::cout << \"Average: \" << average << \"\\n\";\n" +
+        "    std::cout << \"Loop safe: \" << loopSafe << \"\\n\";\n" +
+        "    return 0;\n" +
+        "}\n";
+
+    private bool AccessReady;
+    private bool AccessGranted;
+    private bool ChapterReady;
+    private bool MissionOneReady;
+
+    private string SelectedProfile = "full";
+    private string EditorCode = FullCode;
+    private List<string> ConsoleLines = new();
+
+    private bool HintVisible;
+    private int HintsUsed;
+    private bool Submitted;
+    private bool Passed;
+    private int FinalScore;
+    private int FinalElapsedSeconds;
+    private string ResultMessage = "";
+    private string RewardMessage = "";
+    private bool RewardProcessing;
+    private bool RewardsProcessed;
+    private string AttemptId = Guid.NewGuid().ToString("N");
+    private DateTimeOffset? StartedAt;
+    private int StoredSeconds;
+    private CppMissionTwoState State = new();
+
+    private IReadOnlyList<Profile> Profiles =>
+        new[]
+        {
+            new Profile(
+                "full",
+                "Full Cooling Loop Failure",
+                "Full Incident",
+                "Repair the complete cooling-loop program",
+                "Repair array data, loop logic, alarm counting, average calculation, and safety output.",
+                "Repair the complete calculation chain",
+                "Start with four array values. The loop must add each value, count readings at or above 90, divide the total by 4, and mark the loop safe only when alarms equal zero."),
+            new Profile(
+                "data",
+                "Array Data Failure",
+                "Array & Data",
+                "Repair the array size and stored readings",
+                "The calculation logic works, but the array declaration cannot correctly hold all four readings.",
+                "Match the array size to the values",
+                "The array contains four readings, so declare temperatures[4] and keep all four values inside the initializer."),
+            new Profile(
+                "logic",
+                "Loop Logic Failure",
+                "Loop & Logic",
+                "Repair counting, averaging, and safety logic",
+                "The array is correct, but alarm counting, averaging, and the final safety decision are wrong.",
+                "Follow each reading through the loop",
+                "Add each value to total, increment alarms when value >= 90, divide by 4, and use alarms == 0 for loopSafe.")
+        };
+
+    private Profile CurrentProfile =>
+        Profiles.First(profile => profile.Id == SelectedProfile);
+
+    private IReadOnlyList<Check> Checks =>
+        new[]
+        {
+            new Check(
+                "Four-value array",
+                "Declare temperatures[4] with 82, 88, 91, and 84.",
+                HasPattern(
+                    @"int\s+temperatures\s*\[\s*4\s*\]\s*=\s*\{\s*82\s*,\s*88\s*,\s*91\s*,\s*84\s*\}\s*;")),
+            new Check(
+                "Range-based loop",
+                "Visit each temperature with a range-based for loop.",
+                HasPattern(
+                    @"for\s*\(\s*int\s+value\s*:\s*temperatures\s*\)")),
+            new Check(
+                "Running total",
+                "Add each value to total with +=.",
+                HasPattern(
+                    @"total\s*\+=\s*value\s*;")),
+            new Check(
+                "Alarm counter",
+                "Increment alarms for readings at or above 90.",
+                HasPattern(
+                    @"if\s*\(\s*value\s*>=\s*90\s*\)") &&
+                HasPattern(
+                    @"alarms\s*\+\+\s*;")),
+            new Check(
+                "Average calculation",
+                "Calculate average as total divided by 4.",
+                HasPattern(
+                    @"int\s+average\s*=\s*total\s*/\s*4\s*;")),
+            new Check(
+                "Safety decision and output",
+                "Use alarms == 0 and print average and loopSafe.",
+                HasPattern(
+                    @"bool\s+loopSafe\s*=\s*alarms\s*==\s*0\s*;") &&
+                HasExact("\"Average: \"") &&
+                HasExact("average") &&
+                HasExact("\"Loop safe: \"") &&
+                HasExact("loopSafe"))
+        };
+
+    private int LineCount =>
+        EditorCode
+            .Replace("\r\n", "\n")
+            .Split('\n')
+            .Length;
+
+    private int PassedCount =>
+        Checks.Count(check => check.Met);
+
+    private int RequirementPoints =>
+        PassedCount * 140;
+
+    private int ElapsedSeconds =>
+        Submitted
+            ? FinalElapsedSeconds
+            : StoredSeconds +
+              (StartedAt.HasValue
+                  ? Math.Max(
+                      0,
+                      (int)(DateTimeOffset.UtcNow - StartedAt.Value)
+                          .TotalSeconds)
+                  : 0);
+
+    private int TimeBonus =>
+        Math.Clamp(
+            160 - (ElapsedSeconds / 5) * 5,
+            0,
+            160);
+
+    private int HintPenalty =>
+        HintsUsed * 40;
+
+    private int ProjectedScore =>
+        Math.Clamp(
+            RequirementPoints +
+            TimeBonus -
+            HintPenalty,
+            0,
+            1000);
+
+    private string ElapsedLabel =>
+        FormatTime(ElapsedSeconds);
+
+    private string FinalElapsedLabel =>
+        FormatTime(FinalElapsedSeconds);
+
+    private string FastestLabel =>
+        State.FastestSeconds.HasValue
+            ? FormatTime(
+                (int)Math.Round(
+                    State.FastestSeconds.Value))
+            : "--:--";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            CourseProgressSnapshot progress =
+                await CourseEngine.GetProgressAsync(
+                    CourseIds.Cpp);
+
+            ChapterReady =
+                progress.ModuleCompleted.Length > 7 &&
+                progress.ModuleCompleted[7];
+
+            CppMissionTwoState loaded =
+                await JS.InvokeAsync<CppMissionTwoState>(
+                    "caveCodeCppMinigame.getMissionTwoState");
+
+            State = loaded;
+
+            MissionOneReady =
+                await JS.InvokeAsync<bool>(
+                    "caveCodeCppMinigame.isMissionOneComplete");
+
+            AccessGranted =
+                ChapterReady &&
+                MissionOneReady;
+        }
+        catch
+        {
+            AccessGranted = false;
+        }
+
+        AccessReady = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void SelectProfile(string id)
+    {
+        Profile? profile =
+            Profiles.FirstOrDefault(
+                item => item.Id == id);
+
+        if (profile is null)
+        {
+            return;
+        }
+
+        SelectedProfile = profile.Id;
+        EditorCode =
+            id switch
+            {
+                "data" => DataCode,
+                "logic" => LogicCode,
+                _ => FullCode
+            };
+
+        ResetAttemptState();
+    }
+
+    private void RunSimulation()
+    {
+        EnsureClock();
+        ConsoleLines.Clear();
+        ConsoleLines.Add(
+            "[SIM] Cooling Loop Recovery diagnostics started.");
+        ConsoleLines.Add(
+            "[SIM] No native C++ compiler is running.");
+
+        foreach (Check check in Checks)
+        {
+            ConsoleLines.Add(
+                check.Met
+                    ? $"[OK] {check.Label}"
+                    : $"[WARN] Unresolved: {check.Label}");
+        }
+
+        if (Checks.All(check => check.Met))
+        {
+            ConsoleLines.Add("[SIM] Average: 86");
+            ConsoleLines.Add("[SIM] Loop safe: false");
+            ConsoleLines.Add("[SIM] Cooling-loop logic restored.");
+        }
+        else
+        {
+            ConsoleLines.Add(
+                "[WARN] Cooling-loop logic remains incomplete.");
+        }
+    }
+
+    private void ResetAttempt()
+    {
+        SelectProfile(SelectedProfile);
+    }
+
+    private void ToggleHint()
+    {
+        bool opening = !HintVisible;
+        HintVisible = opening;
+
+        if (opening && !Submitted)
+        {
+            HintsUsed += 1;
+            EnsureClock();
+        }
+    }
+
+    private async Task SubmitMission()
+    {
+        if (Submitted)
+        {
+            return;
+        }
+
+        StopClock();
+        FinalElapsedSeconds = ElapsedSeconds;
+        Passed = Checks.All(check => check.Met);
+        FinalScore = Math.Clamp(
+            RequirementPoints +
+            Math.Clamp(
+                160 -
+                (FinalElapsedSeconds / 5) * 5,
+                0,
+                160) -
+            HintPenalty,
+            0,
+            1000);
+
+        Submitted = true;
+
+        ResultMessage =
+            Passed
+                ? "All six cooling-loop requirements passed."
+                : $"{PassedCount} of 6 requirements passed. Start a new attempt after repairing the remaining checks.";
+
+        ConsoleLines.Add(
+            Passed
+                ? $"[RESULT] PASS · {FinalScore}/1000"
+                : $"[RESULT] FAIL · {FinalScore}/1000");
+
+        if (Passed)
+        {
+            await ProcessRewardsAsync();
+        }
+    }
+
+    private async Task ProcessRewardsAsync()
+    {
+        if (RewardProcessing || RewardsProcessed)
+        {
+            return;
+        }
+
+        RewardProcessing = true;
+
+        try
+        {
+            CppMissionTwoRecord result =
+                await JS.InvokeAsync<CppMissionTwoRecord>(
+                    "caveCodeCppMinigame.recordMissionTwoClear",
+                    AttemptId,
+                    FinalScore,
+                    FinalElapsedSeconds,
+                    SelectedProfile);
+
+            int validatedLines =
+                EditorCode
+                    .Replace("\r\n", "\n")
+                    .Split('\n')
+                    .Count(
+                        line =>
+                            !string.IsNullOrWhiteSpace(line));
+
+            await ProgressionService.AwardMinigameRunAsync(
+                CourseIds.Cpp,
+                result.RewardKey,
+                result.XpAwarded,
+                validatedLines);
+
+            await AchievementService
+                .AwardMinigameCrystalsAsync(
+                    result.RewardKey,
+                    result.CrystalsAwarded);
+
+            await AchievementService
+                .UnlockChapterAsync(
+                    "cpp-minigame",
+                    2);
+
+            State = result.State;
+            RewardsProcessed = true;
+
+            RewardMessage =
+                $"+{result.XpAwarded} C++ XP, " +
+                $"◆ {result.CrystalsAwarded} crystals, and " +
+                $"{validatedLines} validated C++ lines saved.";
+
+            try
+            {
+                await JS.InvokeVoidAsync(
+                    "caveCodeProgression.syncLeaderboardProfile");
+            }
+            catch
+            {
+            }
+        }
+        catch (Exception error)
+        {
+            RewardMessage =
+                "Mission passed, but reward saving failed: " +
+                error.Message;
+        }
+        finally
+        {
+            RewardProcessing = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void NewAttempt()
+    {
+        SelectProfile(SelectedProfile);
+    }
+
+    private void ResetAttemptState()
+    {
+        ConsoleLines.Clear();
+        HintVisible = false;
+        HintsUsed = 0;
+        Submitted = false;
+        Passed = false;
+        FinalScore = 0;
+        FinalElapsedSeconds = 0;
+        ResultMessage = "";
+        RewardMessage = "";
+        RewardProcessing = false;
+        RewardsProcessed = false;
+        AttemptId = Guid.NewGuid().ToString("N");
+        StartedAt = null;
+        StoredSeconds = 0;
+    }
+
+    private void EnsureClock()
+    {
+        if (!StartedAt.HasValue)
+        {
+            StartedAt = DateTimeOffset.UtcNow;
+        }
+    }
+
+    private void StopClock()
+    {
+        if (!StartedAt.HasValue)
+        {
+            return;
+        }
+
+        StoredSeconds += Math.Max(
+            0,
+            (int)(DateTimeOffset.UtcNow - StartedAt.Value)
+                .TotalSeconds);
+
+        StartedAt = null;
+    }
+
+    private bool HasExact(string text) =>
+        EditorCode.Contains(
+            text,
+            StringComparison.Ordinal);
+
+    private bool HasPattern(string pattern) =>
+        System.Text.RegularExpressions.Regex.IsMatch(
+            EditorCode,
+            pattern,
+            System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+    private static string FormatTime(int seconds) =>
+        $"{seconds / 60:00}:{seconds % 60:00}";
+
+    private static string ConsoleClass(string line)
+    {
+        if (line.StartsWith("[OK]", StringComparison.Ordinal))
+        {
+            return "ok";
+        }
+
+        if (line.StartsWith("[WARN]", StringComparison.Ordinal))
+        {
+            return "warn";
+        }
+
+        return "sim";
+    }
+
+    private sealed record Check(
+        string Label,
+        string Description,
+        bool Met);
+
+    private sealed record Profile(
+        string Id,
+        string Title,
+        string ShortName,
+        string Focus,
+        string Description,
+        string HintTitle,
+        string HintText);
+
+    private sealed class CppMissionTwoState
+    {
+        public bool Completed { get; set; }
+        public int BestScore { get; set; }
+        public double? FastestSeconds { get; set; }
+        public int TotalClears { get; set; }
+        public int TotalXpEarned { get; set; }
+        public int TotalCrystalsEarned { get; set; }
+    }
+
+    private sealed class CppMissionTwoRecord
+    {
+        public string RewardKey { get; set; } = "";
+        public int XpAwarded { get; set; }
+        public int CrystalsAwarded { get; set; }
+        public bool FirstClear { get; set; }
+        public CppMissionTwoState State { get; set; } = new();
+    }
+}
