@@ -1,0 +1,1 @@
+(()=>{"use strict";const r=()=>window.lucide?.createIcons?.({attrs:{"aria-hidden":"true"}});const s=()=>{r();const o=new MutationObserver(()=>{clearTimeout(s.t);s.t=setTimeout(r,60)});o.observe(document.documentElement,{childList:true,subtree:true})};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",s,{once:true}):s()})();

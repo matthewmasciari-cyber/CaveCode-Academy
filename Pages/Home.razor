@@ -49,34 +49,72 @@
                 <p class="terminal-muted">Advanced paths unlock through mastery.</p>
             </div>
         </section>
-        <section class="path-section" id="paths">
-            <div class="section-heading">
+                <section class="path-section" id="paths">
+            <!-- CAVECODE_LANGUAGE_ICON_REFINEMENT_81C -->
+            <!-- CAVECODE_REPLACED_LEARNING_PATHS_SECTION_V1 -->
+            <div class="section-heading learning-paths-heading-centered-v2">
                 <div>
-                    <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
-                    <div class="cavecode-learning-path-brandline"
-                         aria-label="CaveCode Academy learning paths">
-                        <span class="cavecode-context-logo-surface cavecode-context-logo-surface--learning">
-                            <img class="cavecode-context-logo-image"
-                                 src="branding/cavecode-academy-logo.svg?v=1"
-                                 alt="" />
-                        </span>
-                        <p class="eyebrow">LEARNING PATHS</p>
-                    </div>
                     <h2>Choose what you want to build</h2>
                 </div>
                 <span class="path-count">4 available · 6 in development · 10 total</span>
+            <!-- CAVECODE_LANGUAGE_FINDER_81D -->
+            <div class="language-finder-launcher">
+                <button type="button"
+                        class="language-finder-launcher__button"
+                        data-language-finder-open>
+                    <i data-lucide="wand-sparkles" aria-hidden="true"></i>
+                    <span class="language-finder-launcher__copy">
+                        <strong>Not sure which language fits you?</strong>
+                        <small>Tell CaveCode what you want to build.</small>
+                    </span>
+                    <i data-lucide="arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+
             </div>
 
             <div class="path-grid path-grid--static">
-                <article class="path-card available csharp-card">
+                <article class="path-card available csharp-card" data-cavecode-language="csharp">
                     <div class="path-topline">
                         <span class="language-mark">C#</span>
                         <span class="status available-status">Available now</span>
                     </div>
                     <h3>C# Cave Adventure</h3>
                     <p>Build a growing cave-exploration game while mastering C# foundations, logic, collections, classes, and combat.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> Unity games, Windows applications, ASP.NET websites, APIs, and business software.</p>
                     <CourseResume Course="csharp" />
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="gamepad-2"></i></span>
+                                <span>Unity game development</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="monitor"></i></span>
+                                <span>Windows desktop applications</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="globe-2"></i></span>
+                                <span>ASP.NET websites and web APIs</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="cloud"></i></span>
+                                <span>Enterprise and cloud software</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="smartphone"></i></span>
+                                <span>Cross-platform apps with .NET MAUI</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="blocks"></i></span>
+                                <span>Tools, simulations, and business systems</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> RimWorld, Stardew Valley, Hollow Knight, Cities: Skylines, Lethal Company, Subnautica</p>
+                    </section>
                     <div class="skill-tags">
                         <span>40 modules</span>
                         <span>8-stage practice</span>
@@ -85,15 +123,47 @@
                     <NavLink class="path-action" href="/csharp">Enter the cave →</NavLink>
                 </article>
 
-                <article class="path-card available python-card">
+                <article class="path-card available python-card" data-cavecode-language="python">
                     <div class="path-topline">
                         <span class="language-mark">Py</span>
                         <span class="status available-status">Available now</span>
                     </div>
                     <h3>Python Automation Quest</h3>
                     <p>Restore an underground facility while learning Python through sensors, alarms, sequences, data, files, and Raspberry Pi concepts.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> automation, artificial intelligence, data analysis, scripting, cybersecurity, and Raspberry Pi projects.</p>
                     <CourseResume Course="python" />
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="bot"></i></span>
+                                <span>Artificial intelligence and machine learning</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="workflow"></i></span>
+                                <span>Automation and scripting</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="chart-no-axes-combined"></i></span>
+                                <span>Data analysis and visualization</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="factory"></i></span>
+                                <span>Building automation and BMS integrations</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="shield"></i></span>
+                                <span>Cybersecurity and administration tools</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="wrench"></i></span>
+                                <span>Robotics and Raspberry Pi projects</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> Instagram, Dropbox, Home Assistant, TensorFlow, PyTorch</p>
+                    </section>
                     <div class="skill-tags">
                         <span>40 modules</span>
                         <span>Automation simulation</span>
@@ -102,14 +172,46 @@
                     <NavLink class="path-action" href="/python">Enter the control room →</NavLink>
                 </article>
 
-                <article class="path-card available cpp-card">
+                <article class="path-card available cpp-card" data-cavecode-language="cpp">
                     <div class="path-topline">
                         <span class="language-mark">C++</span>
                         <span class="status available-status">Available now</span>
                     </div>
                     <h3>C++ Engine Foundry</h3>
                     <p>Build a real-time engine workshop while learning program structure, variables, input, output, operators, debugging, and systems thinking.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> Unreal Engine, game engines, embedded systems, simulations, robotics, and high-performance software.</p>
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="gamepad-2"></i></span>
+                                <span>AAA game development</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="anvil"></i></span>
+                                <span>Unreal Engine and custom game engines</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="microchip"></i></span>
+                                <span>Operating systems and system software</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="plug-zap"></i></span>
+                                <span>Embedded systems and device software</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="rocket"></i></span>
+                                <span>High-performance applications</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="bot"></i></span>
+                                <span>Robotics, graphics, and real-time simulation</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> Baldur&#x27;s Gate 3, Elden Ring, Counter-Strike 2, Half-Life 2, Cyberpunk 2077</p>
+                    </section>
                     <div class="skill-tags">
                         <span>40 modules</span>
                         <span>Engine simulation</span>
@@ -118,14 +220,46 @@
                     <NavLink class="path-action" href="/cpp">Enter the foundry →</NavLink>
                 </article>
 
-                <article class="path-card available htmlcss-card">
+                <article class="path-card available htmlcss-card" data-cavecode-language="htmlcss">
                     <div class="path-topline">
                         <span class="language-mark">HTML</span>
                         <span class="status available-status">Available now</span>
                     </div>
                     <h3>HTML &amp; CSS Workshop</h3>
                     <p>Build the structure and visual systems behind polished websites, responsive interfaces, landing pages, dashboards, and browser-game menus.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> websites, responsive layouts, portfolios, dashboards, email templates, and user interfaces.</p>
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="layout-dashboard"></i></span>
+                                <span>Website structure and page layout</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="palette"></i></span>
+                                <span>Visual design, themes, and animation</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="smartphone"></i></span>
+                                <span>Responsive phone and tablet layouts</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="panel-top"></i></span>
+                                <span>User interfaces and landing pages</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="mail"></i></span>
+                                <span>Styled email templates</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="gamepad-2"></i></span>
+                                <span>Browser-game menus and HUDs</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> The visible structure and styling behind nearly every website</p>
+                    </section>
                     <div class="skill-tags">
                         <span>40 modules</span>
                         <span>Live browser preview</span>
@@ -134,14 +268,46 @@
                     <NavLink class="path-action" href="/html-css">Enter the workshop →</NavLink>
                 </article>
 
-                <article class="path-card locked javascript-card">
+                <article class="path-card locked javascript-card" data-cavecode-language="javascript">
                     <div class="path-topline">
                         <span class="language-mark">JS</span>
                         <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
                     </div>
                     <h3>JavaScript Web Forge</h3>
                     <p>Create interactive websites and browser games while learning the language of the modern web.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> interactive websites, browser games, web applications, Node.js servers, and extensions.</p>
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="globe-2"></i></span>
+                                <span>Interactive websites</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="gamepad-2"></i></span>
+                                <span>Browser games</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="panel-top"></i></span>
+                                <span>Front-end web applications</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="server-cog"></i></span>
+                                <span>Node.js servers and APIs</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="smartphone"></i></span>
+                                <span>Mobile and desktop apps</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="blocks"></i></span>
+                                <span>Browser extensions and interface tools</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> Google Maps web features, Discord web, Netflix interfaces, interactive pages across the web</p>
+                    </section>
                     <div class="skill-tags">
                         <span>Web apps</span>
                         <span>Browser games</span>
@@ -150,14 +316,46 @@
                     <button class="path-action locked-action" type="button" disabled>Course in development</button>
                 </article>
 
-                <article class="path-card locked sql-card">
+                <article class="path-card locked sql-card" data-cavecode-language="sql">
                     <div class="path-topline">
                         <span class="language-mark">SQL</span>
                         <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
                     </div>
                     <h3>SQL Database Dungeon</h3>
                     <p>Master queries by managing players, items, quests, and persistent world data.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> databases, reporting, analytics, application backends, inventories, and saved game data.</p>
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="database-zap"></i></span>
+                                <span>Storing and retrieving application data</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="chart-no-axes-combined"></i></span>
+                                <span>Reports, dashboards, and analytics</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="gamepad-2"></i></span>
+                                <span>Player accounts, inventories, and save data</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="factory"></i></span>
+                                <span>Business and enterprise databases</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="server-cog"></i></span>
+                                <span>Website and application backends</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="search"></i></span>
+                                <span>Searching, filtering, and combining large data sets</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> PostgreSQL, Microsoft SQL Server, MySQL, SQLite, Oracle Database</p>
+                    </section>
                     <div class="skill-tags">
                         <span>Queries</span>
                         <span>Databases</span>
@@ -166,14 +364,46 @@
                     <button class="path-action locked-action" type="button" disabled>Course in development</button>
                 </article>
 
-                <article class="path-card locked typescript-card">
+                <article class="path-card locked typescript-card" data-cavecode-language="typescript">
                     <div class="path-topline">
                         <span class="language-mark">TS</span>
                         <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
                     </div>
                     <h3>TypeScript Application Architect</h3>
                     <p>Scale JavaScript into dependable applications with types, reusable systems, and safer team workflows.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> React, Angular, Vue, large web applications, Node.js services, and developer tools.</p>
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="factory"></i></span>
+                                <span>Large, maintainable web applications</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="braces"></i></span>
+                                <span>React, Angular, and Vue projects</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="server-cog"></i></span>
+                                <span>Node.js servers and APIs</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="smartphone"></i></span>
+                                <span>Cross-platform desktop and mobile apps</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="cloud"></i></span>
+                                <span>Cloud services and development tools</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="flask-conical"></i></span>
+                                <span>Safer team projects with type checking</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> Visual Studio Code, Angular, Deno, modern web-development tooling</p>
+                    </section>
                     <div class="skill-tags">
                         <span>Typed JavaScript</span>
                         <span>Large applications</span>
@@ -182,14 +412,46 @@
                     <button class="path-action locked-action" type="button" disabled>Course in development</button>
                 </article>
 
-                <article class="path-card locked java-card">
+                <article class="path-card locked java-card" data-cavecode-language="java">
                     <div class="path-topline">
                         <span class="language-mark">Java</span>
                         <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
                     </div>
                     <h3>Java Enterprise Expedition</h3>
                     <p>Build durable applications while learning the language behind Android systems, business software, and large backends.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> Android applications, enterprise systems, web backends, cloud services, and developer platforms.</p>
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="smartphone"></i></span>
+                                <span>Android applications</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="factory"></i></span>
+                                <span>Enterprise business software</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="server-cog"></i></span>
+                                <span>Back-end services and APIs</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="cloud"></i></span>
+                                <span>Large cloud and distributed systems</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="gamepad-2"></i></span>
+                                <span>Desktop games and tools</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="wrench"></i></span>
+                                <span>Build tools and developer platforms</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> Minecraft: Java Edition, IntelliJ IDEA, Jenkins, Hadoop</p>
+                    </section>
                     <div class="skill-tags">
                         <span>Android</span>
                         <span>Enterprise</span>
@@ -198,14 +460,46 @@
                     <button class="path-action locked-action" type="button" disabled>Course in development</button>
                 </article>
 
-                <article class="path-card locked go-card">
+                <article class="path-card locked go-card" data-cavecode-language="go">
                     <div class="path-topline">
                         <span class="language-mark">Go</span>
                         <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
                     </div>
                     <h3>Go Cloud Command</h3>
                     <p>Build fast network services and infrastructure tools while learning clear, practical concurrent programming.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> cloud infrastructure, APIs, DevOps tools, networking, containers, and monitoring services.</p>
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="cloud"></i></span>
+                                <span>Cloud infrastructure</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="server-cog"></i></span>
+                                <span>Fast web APIs and services</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="square-terminal"></i></span>
+                                <span>DevOps and command-line tools</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="waypoints"></i></span>
+                                <span>Networking and distributed systems</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="container"></i></span>
+                                <span>Containers and deployment platforms</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="chart-no-axes-combined"></i></span>
+                                <span>Monitoring and backend systems</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> Docker, Kubernetes, Terraform, Prometheus</p>
+                    </section>
                     <div class="skill-tags">
                         <span>Cloud</span>
                         <span>DevOps</span>
@@ -214,14 +508,46 @@
                     <button class="path-action locked-action" type="button" disabled>Course in development</button>
                 </article>
 
-                <article class="path-card locked rust-card">
+                <article class="path-card locked rust-card" data-cavecode-language="rust">
                     <div class="path-topline">
                         <span class="language-mark">Rust</span>
                         <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
                     </div>
                     <h3>Rust Systems Frontier</h3>
                     <p>Explore memory-safe systems programming through reliable tools, embedded projects, WebAssembly, and performance work.</p>
-                    <p class="path-examples"><strong>Common uses:</strong> systems software, command-line tools, WebAssembly, embedded development, and performance tools.</p>
+                    <section class="static-language-panel">
+                        <h4 class="static-language-panel__title">
+                            <span class="static-language-panel__title-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+                            What this language is used for
+                        </h4>
+                        <ul class="static-language-panel__list">
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="shield-check"></i></span>
+                                <span>Fast and memory-safe system software</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="square-terminal"></i></span>
+                                <span>Command-line tools</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="globe-2"></i></span>
+                                <span>WebAssembly applications</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="plug-zap"></i></span>
+                                <span>Embedded and low-level development</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="server-cog"></i></span>
+                                <span>Reliable servers and networking</span>
+                            </li>
+                            <li class="static-language-panel__item">
+                                <span class="static-language-panel__icon" aria-hidden="true"><i data-lucide="gamepad-2"></i></span>
+                                <span>Game engines and performance-heavy tools</span>
+                            </li>
+                        </ul>
+                        <p class="static-language-panel__examples"><strong>Famous examples:</strong> Firefox components, ripgrep, parts of Deno, Linux kernel support</p>
+                    </section>
                     <div class="skill-tags">
                         <span>Memory safety</span>
                         <span>Systems</span>
@@ -546,6 +872,38 @@
     /* CAVECODE_HOME_HEADER_CLEANUP_V1 */
     .academy-home .home-header {
         justify-content: flex-end;
+    }
+
+
+    /* CAVECODE_HOME_LEARNING_PATHS_CENTER_V2 */
+    .learning-paths-heading-centered-v2 {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .learning-paths-heading-centered-v2 > div,
+    .learning-paths-heading-centered-v2 .path-count {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .learning-paths-heading-centered-v2 .eyebrow,
+    .learning-paths-heading-centered-v2 h2,
+    .learning-paths-heading-centered-v2 .path-count {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .learning-paths-heading-centered-v2 .path-count {
+        display: block;
+        margin-top: 2px;
     }
 
 </style>
