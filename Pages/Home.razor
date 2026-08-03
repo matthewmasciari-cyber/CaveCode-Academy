@@ -16,6 +16,8 @@
             <nav aria-label="Academy navigation">
                 <NavLink href="/settings">Appearance</NavLink>
                 <AchievementNavLink />
+                <LeaderboardNavLink />
+                <MinigameNavLink />
                 <a href="#paths">Learning paths</a>
             </nav>
             <AuthPanel Compact="true" />
@@ -62,6 +64,7 @@
                     </div>
                     <h3>C# Cave Adventure</h3>
                     <p>Build a growing cave-exploration game while mastering C# foundations, logic, collections, classes, and combat.</p>
+                    <CourseResume Course="csharp" />
                     <div class="skill-tags"><span>40 modules</span><span>8-stage practice</span><span>Live game preview</span></div>
                     <NavLink class="path-action" href="/csharp">Enter the cave →</NavLink>
                 </article>
@@ -72,6 +75,7 @@
                     </div>
                     <h3>Python Automation Quest</h3>
                     <p>Restore an underground facility while learning Python through sensors, alarms, sequences, data, files, and Raspberry Pi concepts.</p>
+                    <CourseResume Course="python" />
                     <div class="skill-tags"><span>40 modules</span><span>Automation simulation</span><span>Optional hardware path</span></div>
                     <NavLink class="path-action" href="/python">Enter the control room →</NavLink>
                 </article>
@@ -81,7 +85,7 @@
                     <article class="path-card locked">
                         <div class="path-topline">
                             <span class="language-mark">@path.Mark</span>
-                            <span class="status locked-status">🔒 Coming soon</span>
+                            <span class="status locked-status"><LockMark Compact="true" /> Coming soon</span>
                         </div>
                         <h3>@path.Title</h3>
                         <p>@path.Description</p>
@@ -94,6 +98,60 @@
                         <button class="path-action locked-action" type="button" disabled>Course in development</button>
                     </article>
                 }
+            </div>
+        </section>
+
+        <section class="minigame-section" id="minigames">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">MINIGAMES</p>
+                    <h2>Use everything you have learned</h2>
+                </div>
+
+                <NavLink class="minigame-hub-link"
+                         href="/minigames">
+                    View minigame hub →
+                </NavLink>
+            </div>
+
+            <div class="minigame-card-grid">
+                <article class="minigame-home-card csharp-minigame-card">
+                    <span>C# CAVE ADVENTURE</span>
+                    <h3>Cave Defense</h3>
+                    <p>
+                        Open gates, manage supplies, control movement,
+                        and defeat the slime commander with C#.
+                    </p>
+
+                    <div>
+                        <small>5 chapter events</small>
+                        <small>XP and Code Crystals</small>
+                        <small>Endless mode</small>
+                    </div>
+
+                    <NavLink href="/minigames/csharp">
+                        Play Cave Defense →
+                    </NavLink>
+                </article>
+
+                <article class="minigame-home-card python-minigame-card">
+                    <span>PYTHON AUTOMATION QUEST</span>
+                    <h3>Control Room</h3>
+                    <p>
+                        Restore sensors, safety logic, sequences,
+                        monitoring, and emergency controls with Python.
+                    </p>
+
+                    <div>
+                        <small>5 facility events</small>
+                        <small>Validated lines</small>
+                        <small>Endless mode</small>
+                    </div>
+
+                    <NavLink href="/minigames/python">
+                        Enter the Control Room →
+                    </NavLink>
+                </article>
             </div>
         </section>
 
@@ -189,6 +247,110 @@
     .hero-terminal .terminal-bar {
         background: var(--code-bg);
         border-color: var(--border-strong);
+    }
+
+
+    .locked-status { display: inline-flex; align-items: center; gap: 6px; }
+    .locked-status .lock-mark { color: var(--text-muted); }
+
+    .minigame-section {
+        padding: 72px 0;
+        border-top: 1px solid var(--border);
+    }
+
+    .minigame-hub-link {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .minigame-card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .minigame-home-card {
+        display: flex;
+        min-height: 310px;
+        flex-direction: column;
+        padding: 23px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        box-shadow: 0 18px 60px var(--shadow);
+    }
+
+    .csharp-minigame-card {
+        background:
+            radial-gradient(
+                circle at 90% 0%,
+                rgba(255, 145, 74, .15),
+                transparent 35%
+            ),
+            var(--surface);
+    }
+
+    .python-minigame-card {
+        background:
+            radial-gradient(
+                circle at 90% 0%,
+                rgba(85, 216, 255, .15),
+                transparent 35%
+            ),
+            var(--surface);
+    }
+
+    .minigame-home-card > span {
+        color: var(--accent);
+        font-size: 9px;
+        font-weight: 950;
+        letter-spacing: .9px;
+    }
+
+    .minigame-home-card h3 {
+        margin: 11px 0 8px;
+        font-size: 26px;
+    }
+
+    .minigame-home-card p {
+        color: var(--text-muted);
+        line-height: 1.65;
+    }
+
+    .minigame-home-card > div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 15px 0;
+    }
+
+    .minigame-home-card small {
+        padding: 6px 8px;
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 9px;
+    }
+
+    .minigame-home-card > a {
+        width: 100%;
+        padding: 12px;
+        margin-top: auto;
+        color: var(--accent-contrast);
+        text-align: center;
+        text-decoration: none;
+        background: var(--accent);
+        border-radius: 9px;
+        font-weight: 900;
+    }
+
+    @@media (max-width: 760px) {
+        .minigame-card-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
 </style>

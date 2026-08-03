@@ -1,0 +1,279 @@
+@inject ProgressionService ProgressionService
+
+<div class="course-resume">
+    @if (!Ready)
+    {
+        <span class="resume-label">CHECKING PROGRESS</span>
+        <strong>Loading your checkpoint…</strong>
+    }
+    else
+    {
+        <span class="resume-label">
+            @(Resume.CourseComplete
+                ? "COURSE COMPLETE"
+                : Resume.HasProgress
+                    ? "CONTINUE WHERE YOU LEFT OFF"
+                    : "STARTING CHECKPOINT")
+        </span>
+
+        <strong>@CurrentChapter</strong>
+
+        <p>
+            Module @(Resume.CurrentModuleIndex + 1)
+            of @Resume.TotalModules · @CurrentTitle
+        </p>
+
+        <small>
+            @if (Resume.CourseComplete)
+            {
+                <text>
+                    40 of 40 modules complete · 100% mastery
+                </text>
+            }
+            else
+            {
+                <text>
+                    Stage @(Resume.CurrentStage + 1) of 8
+                    · @CurrentStageLabel
+                    · @Resume.ModuleMastery% mastery
+                </text>
+            }
+        </small>
+
+        <span class="resume-progress">
+            <i style="width: @(CourseProgressPercent)%"></i>
+        </span>
+    }
+</div>
+
+<style>
+    .course-resume {
+        display: grid;
+        gap: 4px;
+        padding: 12px;
+        margin: 18px 0 2px;
+        color: var(--dark-panel-text, #eef4f8);
+        background: var(--code-bg, #0b1118);
+        border: 1px solid var(--border-strong, #334252);
+        border-radius: 10px;
+    }
+
+    .resume-label {
+        color: var(--accent);
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .9px;
+    }
+
+    .course-resume strong {
+        font-size: 12px;
+    }
+
+    .course-resume p {
+        margin: 1px 0 0;
+        color: var(--dark-panel-text, #eef4f8);
+        font-size: 10px;
+        line-height: 1.45;
+    }
+
+    .course-resume small {
+        color: var(--dark-panel-muted, #aab7c4);
+        font-size: 9px;
+    }
+
+    .resume-progress {
+        display: block;
+        height: 5px;
+        margin-top: 6px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, .09);
+        border-radius: 99px;
+    }
+
+    .resume-progress i {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+    }
+</style>
+
+@code {
+    [Parameter]
+    public string Course { get; set; } = "csharp";
+
+    private CourseResumeState Resume = new();
+    private bool Ready;
+
+    private static readonly string[] StageLabels =
+    {
+        "Learn",
+        "Guided",
+        "Fill",
+        "Predict",
+        "Debug",
+        "Recall",
+        "Transfer",
+        "Complete"
+    };
+
+    private static readonly string[] CSharpTitles =
+    {
+        "Store Player Health",
+        "Count Collected Stone",
+        "Store the Player Name",
+        "Remember Whether a Pickaxe Exists",
+        "Store Movement Speed",
+        "Change an Existing Value",
+        "Add Collected Resources",
+        "Foundation Challenge",
+        "Compare Player Health",
+        "Check the Pickaxe State",
+        "Run Code Only When Allowed",
+        "Provide a Fallback Path",
+        "Create Multiple Health States",
+        "Require Two Conditions",
+        "Allow Either Condition",
+        "Decision Challenge: Mining Permission",
+        "Create a Reusable Method",
+        "Pass Information Into a Method",
+        "Return a Result",
+        "Track Horizontal Position",
+        "Track Vertical Position",
+        "Move One Tile Right",
+        "Keep the Player Inside the Cave",
+        "Movement Challenge: WASD",
+        "Create a Fixed Inventory",
+        "Create a Flexible Rock List",
+        "Add a Rock",
+        "Remove a Mined Rock",
+        "Visit Every Rock",
+        "Repeat With an Index",
+        "Create the Cave Grid",
+        "World Challenge: Mine a Rock",
+        "Define a Player Class",
+        "Add Player Properties",
+        "Initialize New Players",
+        "Create a Player Object",
+        "Create Slime Health",
+        "Deal Damage",
+        "Model an Inventory Item",
+        "Final Challenge: Defeat the Slime"
+    };
+
+    private static readonly string[] PythonTitles =
+    {
+        "Boot the Control Terminal",
+        "Name the Facility",
+        "Read the Temperature",
+        "Track Equipment Status",
+        "Identify the Operator",
+        "Convert a Pressure Reading",
+        "Calculate an Average",
+        "Control-Room Startup Challenge",
+        "Trigger a Temperature Alarm",
+        "Classify Oxygen Safety",
+        "Create Alarm Levels",
+        "Combine Safety Conditions",
+        "Build an Emergency-Stop Interlock",
+        "Compare a Tank Level",
+        "Add HAND-OFF-AUTO",
+        "Safety-Control Challenge",
+        "Poll a Sensor Until Target",
+        "Inspect Every Zone",
+        "Count Pump Cycles",
+        "Stop an Unsafe Sequence",
+        "Skip Offline Sensors",
+        "Warn Before Motor Start",
+        "Run an Equipment Sequence",
+        "Automated Ventilation Challenge",
+        "Store Multiple Readings",
+        "Examine Every Reading",
+        "Summarize Sensor Values",
+        "Describe a Pump",
+        "Update Equipment Status",
+        "Group Multiple Devices",
+        "Create a Maintenance Report",
+        "Facility Monitoring Challenge",
+        "Create a Sensor Function",
+        "Check Different Readings",
+        "Build a Start-Permissive Function",
+        "Organize the Facility Program",
+        "Log Sensor Readings",
+        "Review Historical Data",
+        "Simulate a Raspberry Pi Relay",
+        "Cave Facility Automation Capstone"
+    };
+
+    private static readonly string[] CSharpChapters =
+    {
+        "Chapter 1 · Foundations",
+        "Chapter 2 · Decisions",
+        "Chapter 3 · Methods and Movement",
+        "Chapter 4 · Collections and World",
+        "Chapter 5 · Objects and Combat"
+    };
+
+    private static readonly string[] PythonChapters =
+    {
+        "Chapter 1 · Control-Room Foundations",
+        "Chapter 2 · Decisions, Alarms, and Safety",
+        "Chapter 3 · Repeating Processes and Sequences",
+        "Chapter 4 · Sensors, Devices, and Data",
+        "Chapter 5 · Functions, Files, and Raspberry Pi"
+    };
+
+    private string[] Titles =>
+        Course == "python"
+            ? PythonTitles
+            : CSharpTitles;
+
+    private string[] Chapters =>
+        Course == "python"
+            ? PythonChapters
+            : CSharpChapters;
+
+    private string CurrentTitle =>
+        Titles[Math.Clamp(
+            Resume.CurrentModuleIndex,
+            0,
+            Titles.Length - 1
+        )];
+
+    private string CurrentChapter =>
+        Chapters[Math.Clamp(
+            Resume.CurrentModuleIndex / 8,
+            0,
+            Chapters.Length - 1
+        )];
+
+    private string CurrentStageLabel =>
+        StageLabels[Math.Clamp(
+            Resume.CurrentStage,
+            0,
+            StageLabels.Length - 1
+        )];
+
+    private int CourseProgressPercent =>
+        Resume.TotalModules == 0
+            ? 0
+            : Resume.CompletedModules * 100 /
+              Resume.TotalModules;
+
+    protected override async Task OnAfterRenderAsync(
+        bool firstRender
+    )
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        Resume =
+            await ProgressionService.GetCourseResumeAsync(
+                Course
+            );
+
+        Ready = true;
+        await InvokeAsync(StateHasChanged);
+    }
+}

@@ -1,0 +1,208 @@
+/* ================================================================
+   CaveCode Academy - Light-mode contrast pass
+   Loaded after themes.css so these values are the final light-mode
+   readability layer. Dark mode and dark code/editor panels are untouched.
+   ================================================================ */
+
+/* Shared semantic text levels for the default light palette. */
+html[data-mode="light"] {
+    --text-primary: var(--text, #172029);
+    --text-secondary: #344556;
+    --text-muted: #46586a;
+    --text-dim: #5d6d7c;
+    --text-disabled: #687785;
+    --text-placeholder: #657482;
+    --notice-text: #344556;
+    --notice-strong: #172029;
+}
+
+/* Preserve each light theme's personality while increasing contrast. */
+html[data-mode="light"][data-theme="rose-quartz"] {
+    --text-secondary: #4d2f3a;
+    --text-muted: #60404c;
+    --text-dim: #755764;
+    --text-disabled: #826673;
+    --text-placeholder: #755764;
+    --notice-text: #60404c;
+    --notice-strong: #371522;
+}
+
+html[data-mode="light"][data-theme="teal-blossom"] {
+    --text-secondary: #244f48;
+    --text-muted: #345e56;
+    --text-dim: #4d716a;
+    --text-disabled: #5d7f78;
+    --text-placeholder: #4d716a;
+    --notice-text: #345e56;
+    --notice-strong: #0f302b;
+}
+
+html[data-mode="light"][data-theme="salmon-sunset"] {
+    --text-secondary: #553730;
+    --text-muted: #68453e;
+    --text-dim: #7f5d56;
+    --text-disabled: #8b6a63;
+    --text-placeholder: #7f5d56;
+    --notice-text: #68453e;
+    --notice-strong: #3b1d18;
+}
+
+html[data-mode="light"][data-theme="orchid-glow"] {
+    --text-secondary: #493356;
+    --text-muted: #5a406a;
+    --text-dim: #70577e;
+    --text-disabled: #7e668a;
+    --text-placeholder: #70577e;
+    --notice-text: #5a406a;
+    --notice-strong: #2d173b;
+}
+
+html[data-mode="light"][data-theme="blush-garden"] {
+    --text-secondary: #3c4e40;
+    --text-muted: #4d6051;
+    --text-dim: #68786b;
+    --text-disabled: #748477;
+    --text-placeholder: #68786b;
+    --notice-text: #4d6051;
+    --notice-strong: #272f29;
+}
+
+/* High contrast already has intentionally stronger values. */
+html[data-mode="light"][data-theme="high-contrast"] {
+    --text-secondary: #111;
+    --text-muted: #222;
+    --text-dim: #333;
+    --text-disabled: #444;
+    --text-placeholder: #333;
+    --notice-text: #111;
+    --notice-strong: #000;
+}
+
+/* Browser controls and fallback text. */
+html[data-mode="light"] body {
+    color: var(--text-primary);
+}
+
+html[data-mode="light"] input,
+html[data-mode="light"] textarea,
+html[data-mode="light"] select {
+    color: var(--text-primary);
+}
+
+html[data-mode="light"] input::placeholder,
+html[data-mode="light"] textarea::placeholder {
+    color: var(--text-placeholder);
+    opacity: 1;
+}
+
+html[data-mode="light"] :disabled,
+html[data-mode="light"] [aria-disabled="true"] {
+    color: var(--text-disabled);
+    opacity: 1;
+}
+
+/* Shared descriptive-text naming patterns used across CaveCode pages. */
+html[data-mode="light"] :where(
+    .muted,
+    .text-muted,
+    .subtitle,
+    .sub-title,
+    .description,
+    .helper-text,
+    .supporting-text,
+    .caption,
+    .fine-print,
+    .secondary-text,
+    .card-description,
+    .section-description,
+    .page-description
+) {
+    color: var(--text-muted) !important;
+}
+
+/* Appearance/settings page: explicit coverage for the reported examples. */
+html[data-mode="light"] .settings-header > div > p:last-child,
+html[data-mode="light"] .setting-heading > p,
+html[data-mode="light"] .field-label > span,
+html[data-mode="light"] .field-label small,
+html[data-mode="light"] .theme-choice small,
+html[data-mode="light"] .toggle-row > span small,
+html[data-mode="light"] .panel-footer,
+html[data-mode="light"] .settings-footer,
+html[data-mode="light"] .loading-card {
+    color: var(--text-muted) !important;
+}
+
+/* Keep the numbered 01-05 badges crisp instead of washed out. */
+html[data-mode="light"] .setting-heading > div > span {
+    color: var(--accent-contrast) !important;
+    opacity: 1 !important;
+}
+
+/* Username/name-change cooldown and cost notices.
+   Several previous passes used slightly different class names, so this
+   deliberately covers the known naming patterns without touching buttons. */
+html[data-mode="light"] .settings-page :where(
+    [class*="rename-status"],
+    [class*="rename-notice"],
+    [class*="rename-policy"],
+    [class*="rename-cooldown"],
+    [class*="name-change-status"],
+    [class*="name-change-notice"],
+    [class*="name-change-policy"],
+    [class*="name-change-cooldown"],
+    [class*="cooldown-card"],
+    [class*="cooldown-box"],
+    [class*="cooldown-notice"]
+) {
+    color: var(--notice-text) !important;
+}
+
+html[data-mode="light"] .settings-page :where(
+    [class*="rename-status"],
+    [class*="rename-notice"],
+    [class*="rename-policy"],
+    [class*="rename-cooldown"],
+    [class*="name-change-status"],
+    [class*="name-change-notice"],
+    [class*="name-change-policy"],
+    [class*="name-change-cooldown"],
+    [class*="cooldown-card"],
+    [class*="cooldown-box"],
+    [class*="cooldown-notice"]
+) :where(strong, b, h3, h4) {
+    color: var(--notice-strong) !important;
+}
+
+/* Common cards, notices, and account panels should inherit the improved
+   semantic variables rather than keeping a pale local gray. */
+html[data-mode="light"] :where(
+    .auth-card,
+    .settings-panel,
+    .achievement-card,
+    .course-card,
+    .chapter-card,
+    .module-card,
+    .leaderboard-card,
+    .profile-card,
+    .notice-card,
+    .status-card
+) {
+    --local-muted-text: var(--text-muted);
+    --local-dim-text: var(--text-dim);
+}
+
+/* Do not brighten text inside intentionally dark surfaces. */
+html[data-mode="light"] :where(
+    .profile-preview,
+    .code-editor,
+    .editor-shell,
+    .terminal,
+    .console,
+    .code-block,
+    pre,
+    code
+) {
+    --text-muted: var(--code-muted, #9aabba);
+    --text-dim: var(--code-muted, #9aabba);
+}

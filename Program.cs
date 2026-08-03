@@ -10,6 +10,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<AchievementService>();
 builder.Services.AddScoped<ProfileService>();
+builder.Services.AddScoped<ProgressionService>();
+builder.Services.AddScoped<MinigameService>();
 builder.Services.AddScoped<ThemeService>();
 
 await builder.Build().RunAsync();

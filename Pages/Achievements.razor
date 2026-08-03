@@ -7,18 +7,15 @@
 
 <div class="achievement-page">
     <header class="achievement-header">
-        <div class="header-nav">
-            <NavLink href="/">← Academy home</NavLink>
-            <NavLink href="/settings">Appearance & profile</NavLink>
-        </div>
+        <AcademyHomeButton />
 
         <div class="header-copy">
             <div>
                 <p class="eyebrow">ACHIEVEMENTS</p>
                 <h1>Claim your chapter rewards.</h1>
                 <p>
-                    Complete chapters, claim Code Crystals, unlock titles,
-                    and choose which accomplishment represents your profile.
+                    Complete chapters, claim Code Crystals, and unlock
+                    new profile titles.
                 </p>
             </div>
 
@@ -87,7 +84,18 @@
                                 </div>
 
                                 <div class="achievement-medal">
-                                    @(achievement.Claimed ? "✓" : achievement.Unlocked ? "◆" : "🔒")
+                                    @if (achievement.Claimed)
+                                    {
+                                        <span class="medal-complete">✓</span>
+                                    }
+                                    else if (achievement.Unlocked)
+                                    {
+                                        <span class="medal-ready">◆</span>
+                                    }
+                                    else
+                                    {
+                                        <LockMark />
+                                    }
                                 </div>
 
                                 <h3>@achievement.Name</h3>
@@ -96,7 +104,7 @@
                                 <div class="reward-list">
                                     <div>
                                         <span>Title</span>
-                                        <strong>@achievement.TitleReward</strong>
+                                        <TitleEffect Title="@achievement.TitleReward" />
                                     </div>
                                     <div>
                                         <span>Reward</span>
@@ -124,10 +132,6 @@
                                         <button type="button"
                                                 @onclick="() => EquipTitle(achievement)">
                                             Equip title
-                                        </button>
-                                        <button type="button"
-                                                @onclick="() => FeatureAchievement(achievement)">
-                                            Feature
                                         </button>
                                     </div>
                                 }
@@ -412,6 +416,10 @@
     .achievement-topline strong {
         color: var(--accent);
     }
+
+    .achievement-medal .lock-mark { color: var(--text-muted); }
+    .medal-complete, .medal-ready { color: var(--accent); }
+    .medal-ready { filter: drop-shadow(0 0 7px var(--accent-glow)); }
 
     .achievement-medal {
         display: grid;

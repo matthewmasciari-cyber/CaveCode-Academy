@@ -1,68 +1,107 @@
+@implements IDisposable
 @inject AchievementService AchievementService
 @inject ProfileService ProfileService
+@inject ProgressionService ProgressionService
 
-<NavLink class="@(Compact ? "progress-identity compact" : "progress-identity")"
-         href="/achievements">
-    @if (!Compact)
-    {
-        <span class="identity-emblem" aria-hidden="true">
-            @EmblemSymbol
-        </span>
+<div class="@(Compact ? "progress-identity compact" : "progress-identity")">
+    <NavLink class="identity-main" href="/leaderboard">
+        @if (!Compact)
+        {
+            <span class="identity-emblem">@EmblemSymbol</span>
 
-        <span class="identity-copy">
-            <strong>@Title</strong>
-            <small>◆ @State.Crystals Code Crystals</small>
-        </span>
-    }
-    else
-    {
-        <span class="compact-crystals">◆ @State.Crystals</span>
-    }
+            <span class="identity-copy">
+                <TitleEffect Title="@Title" />
+                <small>
+                    Level @Progress.Level · @Progress.TotalXp XP
+                </small>
 
-    @if (State.UnclaimedCount > 0)
+                <span class="identity-xp-track">
+                    <i style="width: @(Progress.LevelProgress)%"></i>
+                </span>
+
+                <span class="identity-resources">
+                    ◆ @AchievementState.Crystals crystals
+                    · @Progress.TotalLines validated lines
+                </span>
+            </span>
+        }
+        else
+        {
+            <span class="compact-level">
+                LV @Progress.Level
+            </span>
+
+            <span class="compact-xp">
+                @Progress.TotalXp XP
+            </span>
+
+            <span>
+                ◆ @AchievementState.Crystals
+            </span>
+        }
+    </NavLink>
+
+    @if (AchievementState.UnclaimedCount > 0)
     {
-        <span class="identity-notification">
-            @State.UnclaimedCount
-        </span>
+        <NavLink class="identity-notification"
+                 href="/achievements">
+            @AchievementState.UnclaimedCount
+        </NavLink>
     }
-</NavLink>
+</div>
 
 <style>
     .progress-identity {
+        position: relative;
         display: flex;
-        align-items: center;
-        gap: 9px;
+        align-items: stretch;
         margin-top: 10px;
-        padding: 10px;
-        color: var(--text, #eef4f8);
-        text-decoration: none;
-        background: var(--surface-raised, #202c38);
-        border: 1px solid var(--border, #2b3948);
+        color: var(--text);
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
         border-radius: 9px;
     }
 
-    .progress-identity:hover {
-        border-color: var(--accent-border, #3e8a59);
+    .identity-main {
+        display: flex;
+        min-width: 0;
+        flex: 1;
+        align-items: center;
+        gap: 9px;
+        padding: 10px;
+        color: inherit;
+        text-decoration: none;
     }
 
     .progress-identity.compact {
-        position: relative;
-        width: auto;
         margin: 0;
-        padding: 9px 10px;
-        color: var(--text-muted, #9ba8b5);
         font-size: 10px;
         font-weight: 900;
     }
 
+    .compact .identity-main {
+        gap: 8px;
+        padding: 9px 10px;
+        color: var(--text-muted);
+    }
+
+    .compact-level,
+    .identity-copy small {
+        color: var(--accent);
+    }
+
+    .compact-xp {
+        color: var(--text);
+    }
+
     .identity-emblem {
         display: grid;
-        width: 34px;
-        height: 34px;
-        flex: 0 0 34px;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
         place-items: center;
-        color: var(--accent-contrast, #07120b);
-        background: var(--accent, #71e49a);
+        color: var(--accent-contrast);
+        background: var(--accent);
         border-radius: 9px;
         font-size: 13px;
         font-weight: 950;
@@ -74,7 +113,8 @@
     }
 
     .identity-copy strong,
-    .identity-copy small {
+    .identity-copy small,
+    .identity-resources {
         display: block;
     }
 
@@ -87,20 +127,41 @@
 
     .identity-copy small {
         margin-top: 3px;
-        color: var(--accent, #71e49a);
         font-size: 9px;
-        font-weight: 800;
+        font-weight: 850;
+    }
+
+    .identity-xp-track {
+        display: block;
+        height: 5px;
+        margin-top: 7px;
+        overflow: hidden;
+        background: var(--surface-strong);
+        border-radius: 99px;
+    }
+
+    .identity-xp-track i {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+        transition: width .18s ease;
+    }
+
+    .identity-resources {
+        margin-top: 6px;
+        color: var(--text-muted);
+        font-size: 8px;
     }
 
     .identity-notification {
         display: grid;
-        min-width: 19px;
-        height: 19px;
-        padding: 0 5px;
+        min-width: 24px;
         place-items: center;
-        color: var(--accent-contrast, #07120b);
-        background: var(--accent, #71e49a);
-        border-radius: 99px;
+        padding: 0 7px;
+        color: var(--accent-contrast);
+        text-decoration: none;
+        background: var(--accent);
+        border-radius: 0 8px 8px 0;
         font-size: 9px;
         font-weight: 950;
     }
@@ -109,6 +170,10 @@
         position: absolute;
         top: -7px;
         right: -7px;
+        min-width: 19px;
+        height: 19px;
+        padding: 0 5px;
+        border-radius: 99px;
     }
 </style>
 
@@ -117,7 +182,8 @@
     public bool Compact { get; set; }
 
     private ProfilePreferences Profile = new();
-    private AchievementState State = new();
+    private AchievementState AchievementState = new();
+    private ProgressionState Progress = new();
 
     private string Title =>
         string.IsNullOrWhiteSpace(Profile.Title)
@@ -133,23 +199,53 @@
             _ => "◆"
         };
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnInitialized()
+    {
+        ProgressionService.StateChanged +=
+            HandleProgressionChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(
+        bool firstRender
+    )
     {
         if (!firstRender)
         {
             return;
         }
 
+        await RefreshAsync();
+    }
+
+    private async void HandleProgressionChanged()
+    {
+        await RefreshAsync();
+    }
+
+    private async Task RefreshAsync()
+    {
         try
         {
-            Profile = await ProfileService.GetPreferencesAsync();
-            State = await AchievementService.GetStateAsync();
+            Profile =
+                await ProfileService.GetPreferencesAsync();
+
+            AchievementState =
+                await AchievementService.GetStateAsync();
+
+            Progress =
+                await ProgressionService.GetStateAsync();
+
+            await InvokeAsync(StateHasChanged);
         }
         catch
         {
             // Local progression remains optional.
         }
+    }
 
-        await InvokeAsync(StateHasChanged);
+    public void Dispose()
+    {
+        ProgressionService.StateChanged -=
+            HandleProgressionChanged;
     }
 }

@@ -1,0 +1,157 @@
+/* ================================================================
+   CaveCode Academy - Learning Path real-world uses
+   This stylesheet is intentionally separate from the course and wizard CSS.
+   ================================================================ */
+
+.real-world-uses {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 20px;
+    padding: 16px;
+    color: var(--text, #e8edf2);
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--accent-surface, transparent) 72%, var(--surface, #151a20)),
+            var(--surface-soft, var(--surface, #151a20))
+        );
+    border: 1px solid var(--accent-border, var(--border, #35404a));
+    border-radius: 12px;
+}
+
+.real-world-uses__heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: var(--text, #e8edf2);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.real-world-uses__heading::before {
+    content: "↳";
+    color: var(--accent, currentColor);
+    font-size: 15px;
+    line-height: 1;
+}
+
+.real-world-uses__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 14px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.real-world-uses__item {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 7px;
+    align-items: start;
+    min-width: 0;
+    color: var(--text-muted, #bac5cf);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.real-world-uses__icon {
+    display: inline-grid;
+    width: 22px;
+    min-height: 22px;
+    place-items: center;
+    font-size: 15px;
+    line-height: 1;
+}
+
+.real-world-uses__examples {
+    padding-top: 11px;
+    margin: 0;
+    color: var(--text-muted, #bac5cf);
+    border-top: 1px solid var(--border, #35404a);
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.real-world-uses__examples strong {
+    color: var(--text, #e8edf2);
+    font-weight: 900;
+}
+
+/* Existing CaveCode cards should grow naturally instead of clipping content. */
+.path-card:has(.real-world-uses),
+.language-card:has(.real-world-uses),
+.learning-path-card:has(.real-world-uses),
+[class*="path-card"]:has(.real-world-uses),
+[class*="language-card"]:has(.real-world-uses) {
+    min-height: max-content;
+}
+
+/* Keep course tags visually separate from the explanation panel. */
+.real-world-uses + .skill-tags,
+.real-world-uses + [class*="tag"] {
+    margin-top: 0;
+}
+
+/* Light mode: explicit readable values even when a theme has a pale gradient. */
+html[data-mode="light"] .real-world-uses,
+html.light .real-world-uses,
+body.light-mode .real-world-uses {
+    color: var(--text-primary, var(--text, #172029));
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--accent-surface, #edf4fa) 60%, #ffffff),
+            color-mix(in srgb, var(--surface, #ffffff) 92%, #e9eef3)
+        );
+    border-color: var(--accent-border, var(--border-strong, #8b9bab));
+    box-shadow: 0 8px 22px rgb(28 43 56 / 8%);
+}
+
+html[data-mode="light"] .real-world-uses__heading,
+html[data-mode="light"] .real-world-uses__examples strong,
+html.light .real-world-uses__heading,
+html.light .real-world-uses__examples strong,
+body.light-mode .real-world-uses__heading,
+body.light-mode .real-world-uses__examples strong {
+    color: var(--text-primary, var(--text, #172029));
+}
+
+html[data-mode="light"] .real-world-uses__item,
+html[data-mode="light"] .real-world-uses__examples,
+html.light .real-world-uses__item,
+html.light .real-world-uses__examples,
+body.light-mode .real-world-uses__item,
+body.light-mode .real-world-uses__examples {
+    color: var(--text-muted, #46586a);
+}
+
+html[data-mode="light"] .real-world-uses__examples,
+html.light .real-world-uses__examples,
+body.light-mode .real-world-uses__examples {
+    border-top-color: var(--border, #aeb9c3);
+}
+
+/* Card-level fallback for the gray-on-gradient problem reported in light mode. */
+html[data-mode="light"] :where(
+    .path-card,
+    .language-card,
+    .learning-path-card,
+    [class*="path-card"],
+    [class*="language-card"]
+) :where(p, small, .description, .subtitle, .supporting-text) {
+    color: var(--text-muted, #46586a);
+}
+
+@media (max-width: 620px) {
+    .real-world-uses__list {
+        grid-template-columns: 1fr;
+    }
+}

@@ -171,8 +171,94 @@ window.caveCodeAuth = {
     },
 
     syncLocalProgressToCloud: async function (courseKey = "csharp") {
-        // Local checkpoints are preserved now. The Supabase database
-        // synchronization pass will connect these snapshots to the cloud.
         return readLocalProgress(courseKey);
+    },
+
+    upsertLeaderboardProfile: async function (profile) {
+        if (!supabaseClient) {
+            return { available: false, message: "Supabase is not initialized." };
+        }
+
+        const user = await currentUser();
+
+        if (!user) {
+            return { available: false, message: "Sign in to publish rankings." };
+        }
+
+        const payload = {
+            id: user.id,
+            display_name: String(profile.displayName || "CaveCode Learner").slice(0, 24),
+            emblem: profile.emblem || "crystal",
+            title: profile.title || "Cave Explorer",
+            total_xp: Number(profile.totalXp || 0),
+            csharp_xp: Number(profile.cSharpXp || 0),
+            python_xp: Number(profile.pythonXp || 0),
+            total_lines: Number(profile.totalLines || 0),
+            csharp_lines: Number(profile.cSharpLines || 0),
+            python_lines: Number(profile.pythonLines || 0),
+            is_public: Boolean(profile.isPublic),
+            updated_at: new Date().toISOString()
+        };
+
+        const { error } = await supabaseClient
+            .from("leaderboard_profiles")
+            .upsert(payload, { onConflict: "id" });
+
+        return error
+            ? { available: false, message: error.message }
+            : { available: true, message: "" };
+    },
+
+    getLeaderboardProfiles: async function (filter = "overall") {
+        if (!supabaseClient) {
+            return { available: false, entries: [], message: "Supabase is not initialized." };
+        }
+
+        const orderColumn =
+            filter === "csharp"
+                ? "csharp_xp"
+                : filter === "python"
+                    ? "python_xp"
+                    : "total_xp";
+
+        const { data, error } = await supabaseClient
+            .from("leaderboard_profiles")
+            .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+            .eq("is_public", true)
+            .order(orderColumn, { ascending: false })
+            .limit(100);
+
+        if (error) {
+            return { available: false, entries: [], message: error.message };
+        }
+
+        const entries = (data || []).map(row => {
+            let level = 1;
+            let remaining = Number(row.total_xp || 0);
+            let required = 500;
+
+            while (remaining >= required) {
+                remaining -= required;
+                level += 1;
+                required = 400 + level * 100;
+            }
+
+            return {
+                id: row.id,
+                displayName: row.display_name,
+                emblem: row.emblem,
+                title: row.title,
+                totalXp: Number(row.total_xp || 0),
+                cSharpXp: Number(row.csharp_xp || 0),
+                pythonXp: Number(row.python_xp || 0),
+                totalLines: Number(row.total_lines || 0),
+                cSharpLines: Number(row.csharp_lines || 0),
+                pythonLines: Number(row.python_lines || 0),
+                level,
+                isCurrentUser: false
+            };
+        });
+
+        return { available: true, entries, message: "" };
     }
 };

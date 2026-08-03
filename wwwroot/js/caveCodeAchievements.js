@@ -292,6 +292,91 @@
             return buildView(state);
         },
 
+        awardMinigameCrystals: function (
+            rewardKey,
+            amount
+        ) {
+            const dedupeKey =
+                "cavecode.minigame.crystal-rewards.v1";
+
+            let claimed = [];
+
+            try {
+                const parsed = JSON.parse(
+                    localStorage.getItem(dedupeKey) || "[]"
+                );
+
+                claimed = Array.isArray(parsed)
+                    ? parsed
+                    : [];
+            } catch {
+                claimed = [];
+            }
+
+            const key = String(rewardKey);
+            const state = syncFromCourseProgress(load());
+
+            if (!claimed.includes(key)) {
+                claimed.push(key);
+
+                localStorage.setItem(
+                    dedupeKey,
+                    JSON.stringify(claimed)
+                );
+
+                state.crystals += Math.max(
+                    0,
+                    Math.floor(Number(amount) || 0)
+                );
+
+                save(state);
+            }
+
+            return buildView(state);
+        },
+
+        spendCrystals: function (
+            amount,
+            reason
+        ) {
+            const cost = Math.max(
+                0,
+                Math.floor(Number(amount) || 0)
+            );
+
+            const state = syncFromCourseProgress(load());
+
+            if (cost === 0) {
+                return {
+                    success: true,
+                    amountSpent: 0,
+                    balance: state.crystals,
+                    reason: String(reason || "")
+                };
+            }
+
+            if (state.crystals < cost) {
+                return {
+                    success: false,
+                    amountSpent: 0,
+                    balance: state.crystals,
+                    reason: String(reason || ""),
+                    message:
+                        `You need ${cost} Code Crystals but have ${state.crystals}.`
+                };
+            }
+
+            state.crystals -= cost;
+            save(state);
+
+            return {
+                success: true,
+                amountSpent: cost,
+                balance: state.crystals,
+                reason: String(reason || "")
+            };
+        },
+
         getTitleOptions: function () {
             const state = syncFromCourseProgress(load());
 

@@ -26,6 +26,17 @@ public sealed class AchievementService(IJSRuntime js)
             chapter
         );
 
+    public ValueTask<AchievementState>
+        AwardMinigameCrystalsAsync(
+            string rewardKey,
+            int amount
+        ) =>
+        js.InvokeAsync<AchievementState>(
+            "caveCodeAchievements.awardMinigameCrystals",
+            rewardKey,
+            amount
+        );
+
     public ValueTask<TitleUnlockOption[]> GetTitleOptionsAsync() =>
         js.InvokeAsync<TitleUnlockOption[]>(
             "caveCodeAchievements.getTitleOptions"

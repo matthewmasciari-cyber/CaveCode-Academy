@@ -5,6 +5,7 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
 @inject AchievementService AchievementService
+@inject ProgressionService ProgressionService
 
 <PageTitle>CaveCode Academy</PageTitle>
 
@@ -19,9 +20,7 @@
         </div>
 
         <nav class="course-nav" aria-label="Course navigation">
-            <NavLink href="/" Match="NavLinkMatch.All">← Academy home</NavLink>
-            <NavLink href="/settings">⚙ Appearance settings</NavLink>
-            <AchievementNavLink />
+            <AcademyHomeButton Compact="true" />
         </nav>
 
         <AuthPanel />
@@ -60,7 +59,18 @@
                         disabled="@(!unlocked)"
                         @onclick="() => SelectLesson(lessonIndex)">
                     <span class="lesson-number">
-                        @(ModuleCompleted[index] ? "✓" : unlocked ? (index + 1).ToString() : "🔒")
+                        @if (ModuleCompleted[index])
+                        {
+                            <span class="lesson-complete-mark">✓</span>
+                        }
+                        else if (unlocked)
+                        {
+                            <span>@(index + 1)</span>
+                        }
+                        else
+                        {
+                            <LockMark Compact="true" />
+                        }
                     </span>
                     <span class="lesson-copy">
                         <strong>@lesson.Title</strong>
@@ -344,6 +354,19 @@
     </aside>
 </div>
 
+@if (ShowXpAward && LastProgressAward is not null)
+{
+    <button type="button"
+            class="xp-award-toast"
+            @onclick="DismissXpAward">
+        <span>MODULE REWARD</span>
+        <strong>+@LastProgressAward.XpAwarded XP</strong>
+        <small>
+            Level @LastProgressAward.State.Level
+            · @LastProgressAward.State.TotalXp total XP
+        </small>
+    </button>
+}
 @if (ShowAchievementUnlock && ChapterAchievement is not null)
 {
     <div class="achievement-unlock-overlay"
@@ -378,7 +401,22 @@
                 Reward unlocked. Visit Achievements to claim it.
             </small>
 
-            <div class="achievement-unlock-actions">
+                        <div class="minigame-unlock-note">
+                <span>MINIGAME PRACTICE UNLOCKED</span>
+                <strong>
+                    Chapter @ChapterAchievement.Chapter ·
+                    8 unique randomized rooms
+                </strong>
+                <small>
+                    Focus on this chapter or combine every completed
+                    chapter in a cumulative mastery campaign.
+                </small>
+            </div>
+
+            <div class="achievement-unlock-actions mastery-actions">
+                <NavLink href="/minigames/csharp">
+                    Practice chapter
+                </NavLink>
                 <NavLink href="/achievements">
                     View achievement
                 </NavLink>
@@ -436,7 +474,7 @@
 
     .course-nav {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
         margin: 0 0 14px;
     }
@@ -776,6 +814,40 @@
     }
 
 
+    .xp-award-toast {
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        z-index: 80;
+        display: grid;
+        min-width: 210px;
+        gap: 3px;
+        padding: 13px 15px;
+        color: var(--text);
+        text-align: left;
+        background: var(--surface-raised);
+        border: 1px solid var(--accent-border);
+        border-radius: 11px;
+        box-shadow: 0 18px 60px var(--shadow);
+        cursor: pointer;
+    }
+
+    .xp-award-toast span {
+        color: var(--text-muted);
+        font-size: 8px;
+        font-weight: 900;
+    }
+
+    .xp-award-toast strong {
+        color: var(--accent);
+        font-size: 20px;
+    }
+
+    .xp-award-toast small {
+        color: var(--text-muted);
+        font-size: 9px;
+    }
+
     .achievement-unlock-overlay {
         position: fixed;
         inset: 0;
@@ -872,6 +944,50 @@
         font-size: 9px;
     }
 
+    .minigame-unlock-note {
+        display: grid;
+        gap: 5px;
+        margin-top: 14px;
+        padding: 12px;
+        text-align: left;
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 10px;
+    }
+
+    .minigame-unlock-note span,
+    .minigame-unlock-note strong,
+    .minigame-unlock-note small {
+        display: block;
+    }
+
+    .minigame-unlock-note span {
+        color: var(--accent);
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .8px;
+    }
+
+    .minigame-unlock-note strong {
+        color: var(--dark-panel-text, #eef4f8);
+        font-size: 12px;
+    }
+
+    .minigame-unlock-note small {
+        color: var(--code-muted, #aab7c4);
+        line-height: 1.5;
+    }
+
+    .mastery-actions {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    @@media (max-width: 620px) {
+        .mastery-actions {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
     .achievement-unlock-actions {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -938,6 +1054,9 @@
     }
     .save-progress-dialog > small { display: block; margin-top: 11px; color: var(--text-muted); text-align: center; line-height: 1.45; }
 
+
+    .lesson-number .lock-mark { color: var(--text-dim); }
+    .lesson-complete-mark { color: var(--accent); font-weight: 950; }
 </style>
 
 @code {
@@ -1781,6 +1900,8 @@
     private bool ShowChapterOneSignInPrompt;
     private AchievementUnlockResult? ChapterAchievement;
     private bool ShowAchievementUnlock;
+    private ProgressionAwardResult? LastProgressAward;
+    private bool ShowXpAward;
     private bool PendingChapterOneSignInPrompt;
     private bool ProgressRestored;
 
@@ -1990,7 +2111,7 @@
         AdvanceStage();
     }
 
-    private void CheckCode()
+    private async Task CheckCode()
     {
         HintVisible = false;
 
@@ -2004,6 +2125,12 @@
                 TrainingStage.Transfer => "Correct transfer. You applied the concept to a new situation.",
                 _ => "Correct. Every required part of the code is present."
             };
+            await ProgressionService.AwardStageAsync(
+                "csharp",
+                CurrentModuleIndex,
+                (int)CurrentStage,
+                StudentCode
+            );
         }
         else
         {
@@ -2093,6 +2220,19 @@
         HighestCompletedStage[finishedModuleIndex] = 7;
         ModuleCompleted[finishedModuleIndex] = true;
 
+        ProgressionAwardResult progressionAward =
+            await ProgressionService.AwardModuleAsync(
+                "csharp",
+                finishedModuleIndex
+            );
+
+        if (progressionAward.NewlyAwarded)
+        {
+            LastProgressAward = progressionAward;
+            ShowXpAward = true;
+        }
+
+
         if (CurrentModuleIndex < Lessons.Count - 1)
         {
             CurrentModuleIndex++;
@@ -2135,6 +2275,12 @@
                 }
             }
         }
+    }
+
+    private void DismissXpAward()
+    {
+        ShowXpAward = false;
+        LastProgressAward = null;
     }
 
     private async Task HandleChapterCompletionAsync(

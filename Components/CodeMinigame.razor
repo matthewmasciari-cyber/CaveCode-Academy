@@ -1,0 +1,2217 @@
+@using Microsoft.AspNetCore.Components.Routing
+@inject MinigameService MinigameService
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<NavigationLock ConfirmExternalNavigation="@State.ActiveRun"
+                OnBeforeInternalNavigation="HandleInternalNavigation" />
+
+<div class="mg-page">
+    <header class="mg-header">
+        <AcademyHomeButton />
+
+        <div>
+            <p class="eyebrow">@Eyebrow</p>
+            <h1>@Title</h1>
+            <p>@Subtitle</p>
+        </div>
+
+        <ProgressIdentity Compact="true" />
+    </header>
+
+    @if (!Ready)
+    {
+        <section class="card loading-card">
+            Loading minigame state…
+        </section>
+    }
+    else if (!State.ActiveRun)
+    {
+        <main class="launch">
+            @if (State.RunComplete || State.RunFailed)
+            {
+                <section class="card result @(State.RunComplete ? "good" : "bad")">
+                    <p class="eyebrow">
+                        @(State.RunComplete
+                            ? "RUN COMPLETE"
+                            : "RUN ENDED")
+                    </p>
+
+                    <h2>
+                        @(State.RunComplete
+                            ? "Campaign stabilized"
+                            : "System stability reached zero")
+                    </h2>
+
+                    <div class="stats">
+                        <div>
+                            <span>Last score</span>
+                            <strong>@State.LastScore.ToString("N0")</strong>
+                        </div>
+
+                        <div>
+                            <span>Best score</span>
+                            <strong>@State.BestScore.ToString("N0")</strong>
+                        </div>
+
+                        <div>
+                            <span>Completed runs</span>
+                            <strong>@State.CompletedRuns</strong>
+                        </div>
+
+                        <div>
+                            <span>Failed runs</span>
+                            <strong>@State.FailedRuns</strong>
+                        </div>
+                    </div>
+                </section>
+            }
+
+            <section class="card launch-card chapter-practice-launch">
+                <p class="eyebrow">
+                    CHAPTER MASTERY PRACTICE
+                </p>
+
+                @if (!State.PracticeUnlocked)
+                {
+                    <div class="practice-locked-panel">
+                        <span class="practice-lock-icon">🔒</span>
+                        <div>
+                            <h2>Complete Chapter 1 to unlock</h2>
+                            <p>
+                                Minigames open only after a full learning
+                                chapter is complete. Finish Chapter 1 to
+                                unlock its eight-room focused practice run.
+                            </p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <h2>
+                        @State.CompletedChapters chapter
+                        @(State.CompletedChapters == 1 ? "section" : "sections")
+                        unlocked
+                    </h2>
+
+                    <p>
+                        Every completed chapter contributes eight different
+                        coding structures. A run uses each selected structure
+                        exactly once, then randomizes its order, names, values,
+                        entities, locations, and story details.
+                    </p>
+
+                    <label>
+                        <span>Difficulty</span>
+
+                        <select value="@SelectedDifficulty"
+                                @onchange="ChangeDifficulty">
+                            <option value="training">
+                                Training — direct guidance and starter code
+                            </option>
+
+                            <option value="standard">
+                                Standard — balanced guidance
+                            </option>
+
+                            <option value="advanced">
+                                Advanced — minimal structure
+                            </option>
+
+                            <option value="expert">
+                                Expert — blank editor
+                            </option>
+                        </select>
+                    </label>
+
+                    <div class="practice-summary">
+                        <div>
+                            <span>Unlocked styles</span>
+                            <strong>@(State.CompletedChapters * 8)</strong>
+                        </div>
+                        <div>
+                            <span>Focused run</span>
+                            <strong>8 rooms</strong>
+                        </div>
+                        <div>
+                            <span>Mastery run</span>
+                            <strong>@MasteryRoomCount rooms</strong>
+                        </div>
+                        <div>
+                            <span>Best score</span>
+                            <strong>@State.BestScore.ToString("N0")</strong>
+                        </div>
+                    </div>
+
+                    <div class="practice-grid">
+                        @for (int chapter = 1; chapter <= 5; chapter++)
+                        {
+                            int chapterNumber = chapter;
+                            bool unlocked =
+                                chapterNumber <= State.CompletedChapters;
+
+                            <article class="practice-card @(unlocked ? "unlocked" : "locked")">
+                                <div class="practice-card-topline">
+                                    <span>CHAPTER @chapterNumber</span>
+                                    <strong>
+                                        @(unlocked ? "UNLOCKED" : "LOCKED")
+                                    </strong>
+                                </div>
+
+                                <h3>@ChapterName(chapterNumber)</h3>
+                                <p>@ChapterDescription(chapterNumber)</p>
+
+                                <div class="practice-card-facts">
+                                    <span>8 unique structures</span>
+                                    <span>Randomized every run</span>
+                                </div>
+
+                                <button type="button"
+                                        class="@(unlocked ? "primary" : "secondary")"
+                                        disabled="@(!unlocked)"
+                                        @onclick="() => StartFocused(chapterNumber)">
+                                    @(unlocked
+                                        ? $"Practice Chapter {chapterNumber} →"
+                                        : $"Complete Chapter {chapterNumber}")
+                                </button>
+                            </article>
+                        }
+                    </div>
+
+                    <section class="mastery-card">
+                        <div>
+                            <span class="eyebrow">CUMULATIVE MASTERY</span>
+                            <h3>
+                                Chapters 1–@State.CompletedChapters
+                                Mastery Campaign
+                            </h3>
+                            <p>
+                                @MasteryRoomCount rooms ·
+                                @MasteryRoomCount unique structures ·
+                                no repeated question style
+                            </p>
+                        </div>
+
+                        <button type="button"
+                                class="primary"
+                                @onclick="StartMastery">
+                            Begin @MasteryRoomCount-room mastery run →
+                        </button>
+                    </section>
+                }
+            </section>
+        </main>
+    }
+    else if (State.Scenario is not null)
+    {
+        <main class="game">
+            <aside class="card side">
+                <div class="row">
+                    <span>ROOM</span>
+                    <strong>
+                        @State.RoomNumber / @State.RoomsTotal
+                    </strong>
+                </div>
+
+                <div class="rooms">
+                    @for (
+                        int room = 1;
+                        room <= State.RoomsTotal;
+                        room++
+                    )
+                    {
+                        <i class="@(room < State.RoomNumber ? "done" : room == State.RoomNumber ? "now" : "")">
+                            @(room < State.RoomNumber
+                                ? "✓"
+                                : room.ToString())
+                        </i>
+                    }
+                </div>
+
+                <div class="meter">
+                    <div class="row">
+                        <span>@PrimaryName</span>
+                        <strong>@State.PrimaryResource%</strong>
+                    </div>
+
+                    <b>
+                        <i style="width:@State.PrimaryResource%"></i>
+                    </b>
+
+                    <small>
+                        Wrong submissions reduce this.
+                        Reaching zero ends the run.
+                    </small>
+                </div>
+
+                <div class="meter threat">
+                    <div class="row">
+                        <span>@ThreatName</span>
+                        <strong>@State.Threat%</strong>
+                    </div>
+
+                    <b>
+                        <i style="width:@State.Threat%"></i>
+                    </b>
+                </div>
+
+                <div class="stats two">
+                    <div>
+                        <span>Score</span>
+                        <strong>@State.Score.ToString("N0")</strong>
+                    </div>
+
+                    <div>
+                        <span>Streak</span>
+                        <strong>@State.Streak</strong>
+                    </div>
+
+                    <div>
+                        <span>Mistakes</span>
+                        <strong>@State.Mistakes</strong>
+                    </div>
+
+                    <div>
+                        <span>@SecondaryName</span>
+                        <strong>@State.SecondaryResource</strong>
+                    </div>
+                </div>
+
+                <div class="run-controls">
+                    <button class="secondary"
+                            @onclick="OpenResetModal">
+                        Reset full run
+                    </button>
+
+                    <button class="secondary danger-button"
+                            @onclick="OpenQuitModal">
+                        Quit run
+                    </button>
+                </div>
+            </aside>
+
+            <section class="card challenge">
+                <div class="practice-pool-banner">
+                    <div>
+                        <span>QUESTION POOL</span>
+                        <strong>@State.PracticeLabel</strong>
+                    </div>
+                    <div>
+                        <span>RUN PLAN</span>
+                        <strong>
+                            @State.RoomsTotal unique rooms · no style repeats
+                        </strong>
+                    </div>
+                </div>
+                <section class="mission-card">
+                    <div class="mission-topline">
+                        <span>
+                            ROOM @State.RoomNumber MISSION ·
+                            CHAPTER @State.Scenario.Chapter
+                        </span>
+
+                        <div class="mission-labels">
+                            <strong>Task: @TaskTypeLabel</strong>
+                            <strong>Concept: @ConceptLabel</strong>
+                        </div>
+                    </div>
+
+                    <h2>@State.Scenario.Title</h2>
+
+                    <div class="mission-story">
+                        <span>MISSION BRIEF</span>
+                        <p>@State.Scenario.Brief</p>
+                    </div>
+                </section>
+
+                @if (State.Difficulty != "training")
+                {
+                    <div class="objective">
+                        <span>OBJECTIVE</span>
+                        <strong>@State.Scenario.Objective</strong>
+                    </div>
+                }
+
+                @if (ShowCoaching)
+                {
+                    <section class="coaching-panel">
+                        <div class="coaching-heading">
+                            <div>
+                                <span>LIVE CODING GUIDANCE</span>
+
+                                <strong>
+                                    @Analysis.MatchedElements of
+                                    @Analysis.RequiredElements required
+                                    elements found
+                                </strong>
+                            </div>
+
+                            <button type="button"
+                                    class="hint-button"
+                                    disabled="@State.HintUsed"
+                                    @onclick="UseHint">
+                                @(State.HintUsed
+                                    ? "Hint used"
+                                    : $"Reveal {HintRevealPercent}% of missing code")
+                            </button>
+                        </div>
+
+                        <div class="coaching-grid">
+                            <div>
+                                <span>Solution characters</span>
+                                <strong>
+                                    @Analysis.SolutionCharacters
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Expected range</span>
+                                <strong>
+                                    @Analysis.TargetMinimum–@Analysis.TargetMaximum
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Editor total</span>
+                                <strong>
+                                    @Analysis.EditorCharacters
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Hint cost</span>
+                                <strong>@HintCostLabel</strong>
+                            </div>
+                        </div>
+
+                        <div class="completion-row">
+                            <span>Completion estimate</span>
+                            <strong>
+                                @Analysis.CompletionPercent%
+                            </strong>
+                        </div>
+
+                        <div class="accuracy-track">
+                            <i style="width:@Analysis.CompletionPercent%"></i>
+                        </div>
+
+                        <div class="syntax-status @(SystemSuccess ? "validated" : "")">
+                            <span>Challenge check</span>
+                            <strong>
+                                @(SystemSuccess
+                                    ? "Passed"
+                                    : "Not yet run")
+                            </strong>
+                        </div>
+
+                        @if (State.HintUsed)
+                        {
+                            <div class="hint-reveal">
+                                <span>
+                                    @State.HintPercent% OF MISSING STRUCTURE REVEALED
+                                </span>
+
+                                <pre>@State.HintReveal</pre>
+
+                                <small>
+                                    The displayed hint uses normal
+                                    C# or Python spacing. It reduced
+                                    this room's score and XP and
+                                    removed perfect-run eligibility.
+                                </small>
+                            </div>
+                        }
+                    </section>
+                }
+
+                <label class="editor">
+                    <span>@Language EDITOR</span>
+
+                    <textarea rows="17"
+                              spellcheck="false"
+                              value="@StudentCode"
+                              @oninput="UpdateCode"
+                              placeholder="@Placeholder"></textarea>
+                </label>
+
+                <div class="actions">
+                    <button class="secondary"
+                            @onclick="ResetCode">
+                        Reset room
+                    </button>
+
+                    <button class="primary"
+                            @onclick="RunCode">
+                        Run system
+                    </button>
+                </div>
+
+                <div class="feedback @FeedbackClass">
+                    <strong>@FeedbackHeading</strong>
+                    <span>@FeedbackMessage</span>
+                </div>
+            </section>
+
+            <aside class="card sim">
+                <div class="sim-head">
+                    <span>LIVE CONSEQUENCE</span>
+
+                    <strong>
+                        @(SystemSuccess ? "STABLE" : "ACTIVE")
+                    </strong>
+                </div>
+
+                <div class="scene @(SystemSuccess ? "success" : "")">
+                    <span>@State.Scenario.VisualIcon</span>
+                    <strong>@State.Scenario.SystemName</strong>
+                    <small>@SystemStatus</small>
+                </div>
+
+                <div class="stats two pad">
+                    <div>
+                        <span>Primary term</span>
+                        <strong>@State.Scenario.PrimaryTerm</strong>
+                    </div>
+
+                    <div>
+                        <span>Entity</span>
+                        <strong>@State.Scenario.Entity</strong>
+                    </div>
+
+                    <div>
+                        <span>Difficulty</span>
+                        <strong>@DifficultyLabel</strong>
+                    </div>
+
+                    <div>
+                        <span>Possible score</span>
+                        <strong>@PotentialScore.ToString("N0")</strong>
+                    </div>
+                </div>
+
+                <div class="anti">
+                    <span>ANTI-REPETITION ACTIVE</span>
+
+                    <p>
+                        Avoids the last 12 templates, six primary
+                        terms, eight entities, five values, and
+                        repeated task structures.
+                    </p>
+                </div>
+            </aside>
+        </main>
+    }
+
+    @if (ShowReward && LastReward is not null)
+    {
+        <div class="overlay">
+            <section class="reward">
+                <p class="eyebrow">
+                    @(LastReward.NewVariation
+                        ? "NEW VARIATION CLEARED"
+                        : "REPEATED VARIATION")
+                </p>
+
+                <h2>@LastReward.ScenarioTitle</h2>
+
+                <div class="stats">
+                    <div>
+                        <span>Room score</span>
+                        <strong>
+                            +@LastReward.EventScore.ToString("N0")
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Experience</span>
+                        <strong>+@LastReward.XpAwarded XP</strong>
+                    </div>
+
+                    <div>
+                        <span>Crystals</span>
+                        <strong>
+                            +@LastReward.CrystalsAwarded ◆
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Validated lines</span>
+                        <strong>
+                            +@LastReward.ValidatedLines
+                        </strong>
+                    </div>
+                </div>
+
+                @if (!LastReward.NewVariation)
+                {
+                    <p class="note">
+                        Exact repeats receive reduced XP,
+                        no crystals, and no duplicate line credit.
+                    </p>
+                }
+
+                @if (LastReward.RunCompleted)
+                {
+                    <p class="bonus">
+                        RUN COMPLETION BONUS INCLUDED
+                    </p>
+                }
+
+                @if (LastReward.PerfectRun)
+                {
+                    <p class="bonus">
+                        PERFECT-RUN BONUS INCLUDED
+                    </p>
+                }
+
+                <button class="primary"
+                        @onclick="Continue">
+                    @(LastReward.RunCompleted
+                        ? "View run results →"
+                        : "Enter next room →")
+                </button>
+            </section>
+        </div>
+    }
+
+    @if (ActiveModal is not null)
+    {
+        <div class="overlay decision-overlay">
+            <section class="decision-modal">
+                <div class="decision-icon">
+                    @ModalIcon
+                </div>
+
+                <p class="eyebrow">@ModalEyebrow</p>
+                <h2>@ModalTitle</h2>
+                <p class="decision-copy">@ModalMessage</p>
+
+                <div class="decision-stats">
+                    <div>
+                        <span>Current room</span>
+                        <strong>
+                            @State.RoomNumber / @State.RoomsTotal
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Score</span>
+                        <strong>@State.Score.ToString("N0")</strong>
+                    </div>
+
+                    <div>
+                        <span>Streak</span>
+                        <strong>@State.Streak</strong>
+                    </div>
+
+                    <div>
+                        <span>@PrimaryName</span>
+                        <strong>@State.PrimaryResource%</strong>
+                    </div>
+
+                    <div>
+                        <span>Difficulty</span>
+                        <strong>@DifficultyLabel</strong>
+                    </div>
+                </div>
+
+                <div class="decision-actions">
+                    <button class="secondary"
+                            @onclick="CloseDecisionModal">
+                        @ModalCancelLabel
+                    </button>
+
+                    <button class="@ModalConfirmClass"
+                            @onclick="ConfirmDecision">
+                        @ModalConfirmLabel
+                    </button>
+                </div>
+            </section>
+        </div>
+    }
+</div>
+
+<style>
+    .mg-page {
+        min-height: 100vh;
+        padding: 24px 18px 54px;
+        color: var(--text);
+        background:
+            radial-gradient(
+                circle at 8% 0%,
+                var(--accent-surface),
+                transparent 29%
+            ),
+            var(--bg);
+        font-family: Inter, system-ui, sans-serif;
+    }
+
+    .mg-header,
+    .launch,
+    .game {
+        width: min(1480px, 100%);
+        margin: 0 auto;
+    }
+
+    .mg-header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 20px;
+        align-items: start;
+    }
+
+    .mg-header h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 58px);
+    }
+
+    .mg-header p:last-child,
+    .launch-card > p {
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    .eyebrow {
+        margin: 0 0 6px;
+        color: var(--accent);
+        font-size: 9px;
+        font-weight: 950;
+        letter-spacing: 1px;
+    }
+
+    .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 16px 54px var(--shadow);
+    }
+
+    .loading-card {
+        width: min(1480px, 100%);
+        margin: 24px auto;
+        padding: 20px;
+        color: var(--text-muted);
+    }
+
+    .launch {
+        display: grid;
+        gap: 14px;
+        margin-top: 26px;
+    }
+
+    .launch-card,
+    .result {
+        padding: 24px;
+    }
+
+    .launch-card h2,
+    .result h2,
+    .reward h2,
+    .decision-modal h2 {
+        margin: 0;
+    }
+
+    .launch-card label {
+        display: grid;
+        gap: 6px;
+        margin: 18px 0;
+    }
+
+    .launch-card select {
+        padding: 11px;
+        color: var(--text);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin: 14px 0;
+    }
+
+    .stats div {
+        padding: 10px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+    }
+
+    .stats span,
+    .stats strong {
+        display: block;
+    }
+
+    .stats span {
+        color: var(--text-muted);
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+
+    .stats strong {
+        margin-top: 4px;
+        font-size: 13px;
+    }
+
+    .stats.two {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    button {
+        padding: 11px 13px;
+        border-radius: 8px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+    .primary {
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border: 1px solid var(--accent);
+    }
+
+    .secondary {
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+    }
+
+    button:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+
+    .launch-card > button {
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .result.good {
+        border-color: var(--success-border);
+        background:
+            linear-gradient(
+                135deg,
+                var(--success-surface),
+                var(--surface)
+            );
+    }
+
+    .result.bad {
+        border-color: var(--danger-border);
+        background:
+            linear-gradient(
+                135deg,
+                var(--danger-surface),
+                var(--surface)
+            );
+    }
+
+    .game {
+        display: grid;
+        grid-template-columns:
+            minmax(230px, .72fr)
+            minmax(440px, 1.5fr)
+            minmax(285px, .86fr);
+        gap: 13px;
+        margin-top: 24px;
+    }
+
+    .side {
+        display: flex;
+        min-height: 720px;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .row span {
+        color: var(--text-muted);
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+
+    .rooms {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+    }
+
+    .rooms i {
+        display: grid;
+        height: 30px;
+        place-items: center;
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        font-style: normal;
+        font-size: 9px;
+    }
+
+    .rooms i.done {
+        color: var(--accent-contrast);
+        background: var(--accent);
+    }
+
+    .rooms i.now {
+        color: var(--accent);
+        background: var(--accent-surface);
+        border-color: var(--accent);
+    }
+
+    .meter,
+    .anti {
+        padding: 10px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+    }
+
+    .meter b {
+        display: block;
+        height: 8px;
+        margin-top: 7px;
+        overflow: hidden;
+        background: var(--surface-strong);
+        border-radius: 99px;
+    }
+
+    .meter b i {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+    }
+
+    .meter.threat b i {
+        background: var(--danger-text);
+    }
+
+    .meter small {
+        display: block;
+        margin-top: 6px;
+        color: var(--text-muted);
+        font-size: 8px;
+    }
+
+    .run-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        margin-top: auto;
+    }
+
+    .danger-button {
+        color: var(--danger-text);
+        border-color: var(--danger-border);
+        background: var(--danger-surface);
+    }
+
+    .challenge {
+        padding: 19px;
+    }
+
+    .mission-card {
+        padding: 17px;
+        background:
+            linear-gradient(
+                135deg,
+                var(--accent-surface),
+                var(--surface-soft)
+            );
+        border: 1px solid var(--accent-border);
+        border-radius: 12px;
+    }
+
+    .mission-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--text-muted);
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .7px;
+    }
+
+    .mission-topline strong {
+        padding: 6px 8px;
+        color: var(--accent);
+        background: var(--surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 7px;
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+
+    .mission-card h2 {
+        margin: 10px 0 0;
+        font-size: clamp(28px, 3vw, 38px);
+        line-height: 1.05;
+        letter-spacing: -.6px;
+    }
+
+    .mission-story {
+        margin-top: 14px;
+        padding: 13px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--accent);
+        border-radius: 9px;
+    }
+
+    .mission-story span {
+        display: block;
+        color: var(--accent);
+        font-size: 8px;
+        font-weight: 950;
+        letter-spacing: .8px;
+    }
+
+    .mission-story p {
+        margin: 6px 0 0;
+        color: var(--text);
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1.45;
+    }
+
+    .objective,
+    .hint {
+        margin-top: 10px;
+        padding: 12px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .objective span,
+    .hint span,
+    .anti span,
+    .coaching-heading span,
+    .coaching-grid span,
+    .hint-reveal > span,
+    .syntax-status span,
+    .completion-row span {
+        display: block;
+        color: var(--accent);
+        font-size: 8px;
+        font-weight: 950;
+        text-transform: uppercase;
+    }
+
+    .objective strong,
+    .hint strong {
+        display: block;
+        margin-top: 5px;
+        font-size: 11px;
+    }
+
+    .training-guidance {
+        color: var(--warning-text);
+        background: var(--warning-surface);
+        border-color: var(--warning-border);
+    }
+
+    .coaching-panel {
+        margin-top: 10px;
+        padding: 13px;
+        background: var(--surface-soft);
+        border: 1px solid var(--accent-border);
+        border-radius: 10px;
+    }
+
+    .coaching-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .coaching-heading strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--text);
+        font-size: 13px;
+    }
+
+    .hint-button {
+        padding: 8px 10px;
+        color: var(--accent);
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        font-size: 9px;
+    }
+
+    .hint-button:disabled {
+        color: var(--text-muted);
+        background: var(--surface-strong);
+        border-color: var(--border);
+    }
+
+    .coaching-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    .coaching-grid div {
+        padding: 9px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+    }
+
+    .coaching-grid strong {
+        display: block;
+        margin-top: 4px;
+        font-size: 11px;
+    }
+
+    .completion-row,
+    .syntax-status {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .completion-row strong,
+    .syntax-status strong {
+        font-size: 10px;
+    }
+
+    .accuracy-track {
+        height: 8px;
+        margin-top: 7px;
+        overflow: hidden;
+        background: var(--surface-strong);
+        border-radius: 99px;
+    }
+
+    .accuracy-track i {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+        transition: width .16s ease;
+    }
+
+    .syntax-status {
+        padding: 9px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+    }
+
+    .syntax-status.validated {
+        color: var(--success-text);
+        background: var(--success-surface);
+        border-color: var(--success-border);
+    }
+
+    .hint-reveal {
+        margin-top: 10px;
+        padding: 10px;
+        color: var(--warning-text);
+        background: var(--warning-surface);
+        border: 1px solid var(--warning-border);
+        border-radius: 8px;
+    }
+
+    .hint-reveal pre {
+        margin: 7px 0;
+        padding: 10px;
+        overflow: auto;
+        color: var(--code-text, #e9f1f7);
+        background: var(--code-bg, #0b1118);
+        border-radius: 7px;
+        font: 12px/1.5 Consolas, monospace;
+        white-space: pre-wrap;
+    }
+
+    .hint-reveal small {
+        color: var(--warning-text);
+        font-size: 8px;
+        line-height: 1.45;
+    }
+
+    .editor {
+        display: grid;
+        gap: 7px;
+        margin-top: 12px;
+    }
+
+    .editor > span {
+        color: var(--text-muted);
+        font-size: 8px;
+        font-weight: 950;
+    }
+
+    .editor textarea {
+        width: 100%;
+        padding: 14px;
+        resize: vertical;
+        color: var(--code-text, #e9f1f7);
+        background: var(--code-bg, #0b1118);
+        border: 1px solid var(--border-strong);
+        border-radius: 10px;
+        font: 12px/1.55 Consolas, monospace;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .feedback {
+        display: grid;
+        gap: 3px;
+        margin-top: 11px;
+        padding: 10px;
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+    }
+
+    .feedback strong {
+        font-size: 10px;
+    }
+
+    .feedback span {
+        font-size: 9px;
+    }
+
+    .feedback.success {
+        color: var(--success-text);
+        background: var(--success-surface);
+        border-color: var(--success-border);
+    }
+
+    .feedback.error {
+        color: var(--danger-text);
+        background: var(--danger-surface);
+        border-color: var(--danger-border);
+    }
+
+    .sim {
+        overflow: hidden;
+    }
+
+    .sim-head {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px;
+        color: var(--dark-panel-muted, #aab7c4);
+        background: var(--code-bg, #0b1118);
+        font-size: 8px;
+    }
+
+    .sim-head strong {
+        color: var(--accent);
+    }
+
+    .scene {
+        display: grid;
+        height: 330px;
+        place-items: center;
+        align-content: center;
+        text-align: center;
+        color: var(--dark-panel-text, #eef4f8);
+        background:
+            radial-gradient(
+                circle,
+                rgba(255,255,255,.05),
+                transparent 35%
+            ),
+            var(--code-bg, #0b1118);
+    }
+
+    .scene > span {
+        font-size: 42px;
+    }
+
+    .scene strong,
+    .scene small {
+        display: block;
+        margin-top: 7px;
+    }
+
+    .scene small {
+        color: var(--dark-panel-muted, #aab7c4);
+    }
+
+    .scene.success {
+        box-shadow:
+            inset 0 0 60px var(--accent-glow);
+    }
+
+    .pad {
+        padding: 12px;
+    }
+
+    .anti {
+        margin: 0 12px 12px;
+    }
+
+    .anti p {
+        margin: 5px 0 0;
+        color: var(--text-muted);
+        font-size: 9px;
+        line-height: 1.45;
+    }
+
+    .overlay {
+        position: fixed;
+        z-index: 100;
+        inset: 0;
+        display: grid;
+        padding: 20px;
+        place-items: center;
+        background: rgba(3, 7, 10, .78);
+        backdrop-filter: blur(8px);
+    }
+
+    .reward,
+    .decision-modal {
+        width: min(650px, 100%);
+        padding: 26px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 16px;
+        box-shadow:
+            0 30px 100px rgba(0, 0, 0, .48);
+    }
+
+    .reward button {
+        width: 100%;
+    }
+
+    .note,
+    .bonus {
+        padding: 10px;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .note {
+        color: var(--text-muted);
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+    }
+
+    .bonus {
+        color: var(--accent);
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        font-weight: 900;
+    }
+
+    .decision-overlay {
+        z-index: 120;
+    }
+
+    .decision-modal {
+        width: min(590px, 100%);
+        text-align: center;
+    }
+
+    .decision-icon {
+        display: grid;
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 12px;
+        place-items: center;
+        color: var(--accent);
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 50%;
+        font-size: 26px;
+        font-weight: 950;
+    }
+
+    .decision-copy {
+        max-width: 470px;
+        margin: 10px auto 0;
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    .decision-stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 7px;
+        margin-top: 18px;
+        text-align: left;
+    }
+
+    .decision-stats div {
+        padding: 9px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+    }
+
+    .decision-stats span,
+    .decision-stats strong {
+        display: block;
+    }
+
+    .decision-stats span {
+        color: var(--text-muted);
+        font-size: 7px;
+        text-transform: uppercase;
+    }
+
+    .decision-stats strong {
+        margin-top: 4px;
+        font-size: 11px;
+    }
+
+    .decision-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        margin-top: 18px;
+    }
+
+    .decision-actions button {
+        width: 100%;
+    }
+
+    .decision-danger {
+        color: var(--danger-text);
+        background: var(--danger-surface);
+        border: 1px solid var(--danger-border);
+    }
+
+    .chapter-practice-launch {
+        display: grid;
+        gap: 18px;
+    }
+
+    .practice-locked-panel {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 22px;
+        background: var(--surface-soft);
+        border: 1px dashed var(--border-strong);
+        border-radius: 12px;
+    }
+
+    .practice-locked-panel h2,
+    .practice-locked-panel p,
+    .practice-card h3,
+    .practice-card p,
+    .mastery-card h3,
+    .mastery-card p {
+        margin: 0;
+    }
+
+    .practice-locked-panel p,
+    .practice-card p,
+    .mastery-card p {
+        margin-top: 7px;
+        color: var(--text-muted);
+        line-height: 1.55;
+    }
+
+    .practice-lock-icon {
+        display: grid;
+        width: 52px;
+        height: 52px;
+        flex: 0 0 auto;
+        place-items: center;
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        font-size: 23px;
+    }
+
+    .practice-summary {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .practice-summary > div {
+        padding: 11px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .practice-summary span,
+    .practice-summary strong {
+        display: block;
+    }
+
+    .practice-summary span,
+    .practice-card-topline,
+    .practice-card-facts,
+    .practice-pool-banner span {
+        color: var(--text-muted);
+        font-size: 8px;
+        font-weight: 900;
+        letter-spacing: .65px;
+        text-transform: uppercase;
+    }
+
+    .practice-summary strong {
+        margin-top: 5px;
+        font-size: 14px;
+    }
+
+    .practice-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 10px;
+    }
+
+    .practice-card {
+        display: grid;
+        align-content: start;
+        gap: 10px;
+        min-height: 260px;
+        padding: 16px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 11px;
+    }
+
+    .practice-card.unlocked {
+        border-color: var(--accent-border);
+        box-shadow: inset 0 0 28px var(--accent-surface);
+    }
+
+    .practice-card.locked {
+        opacity: .64;
+    }
+
+    .practice-card-topline {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .practice-card.unlocked .practice-card-topline strong {
+        color: var(--accent);
+    }
+
+    .practice-card-facts {
+        display: grid;
+        gap: 4px;
+        margin-top: auto;
+    }
+
+    .practice-card button {
+        width: 100%;
+    }
+
+    .mastery-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 18px;
+        background:
+            linear-gradient(
+                135deg,
+                var(--accent-surface),
+                var(--surface-soft)
+            );
+        border: 1px solid var(--accent-border);
+        border-radius: 12px;
+    }
+
+    .mastery-card button {
+        flex: 0 0 auto;
+    }
+
+    .practice-pool-banner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .practice-pool-banner > div {
+        padding: 10px 12px;
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 9px;
+    }
+
+    .practice-pool-banner span,
+    .practice-pool-banner strong {
+        display: block;
+    }
+
+    .practice-pool-banner strong {
+        margin-top: 4px;
+        color: var(--text);
+        font-size: 11px;
+    }
+
+    .mission-labels {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 6px;
+    }
+
+    .mission-labels strong {
+        padding: 5px 8px;
+        color: var(--accent);
+        background: var(--accent-surface);
+        border: 1px solid var(--accent-border);
+        border-radius: 999px;
+        font-size: 8px;
+        letter-spacing: .45px;
+        text-transform: uppercase;
+    }
+
+    @@media (max-width: 1100px) {
+        .game {
+            grid-template-columns: 250px 1fr;
+        }
+
+        .sim {
+            grid-column: 1 / -1;
+        }
+    }
+
+    @@media (max-width: 780px) {
+        .mg-header,
+        .game {
+            grid-template-columns: 1fr;
+        }
+
+        .stats,
+        .coaching-grid,
+        .decision-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .practice-summary,
+        .practice-pool-banner {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .mastery-card {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .mastery-card button {
+            width: 100%;
+        }
+
+        .side {
+            min-height: auto;
+        }
+
+        .mission-topline {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+</style>
+
+@code {
+    [Parameter]
+    public string Course { get; set; } = "csharp";
+
+    private MinigameCourseState State = new();
+    private MinigameCompletionResult? LastReward;
+    private MinigameAnalysisResult Analysis = new();
+
+    private bool Ready;
+    private bool ShowReward;
+    private bool SystemSuccess;
+    private bool AllowNavigation;
+
+    private string SelectedDifficulty = "standard";
+    private string StudentCode = "";
+    private string FeedbackHeading = "System waiting";
+    private string FeedbackMessage =
+        "Complete the objective, then run the system.";
+    private string FeedbackClass = "";
+    private string SystemStatus =
+        "Awaiting challenge check";
+
+    private string? ActiveModal;
+    private string? PendingNavigationLocation;
+
+    private string Title =>
+        Course == "python"
+            ? "Python Control Room"
+            : "C# Cave Defense";
+
+    private string Eyebrow =>
+        Course == "python"
+            ? "UNDERGROUND FACILITY RESPONSE"
+            : "CAVE DEFENSE CAMPAIGN";
+
+    private string Subtitle =>
+        Course == "python"
+            ? "Solve randomized facility incidents with variables, alarms, loops, data, functions, files, and controls."
+            : "Survive randomized cave rooms with variables, decisions, methods, collections, objects, movement, and combat.";
+
+    private string Language =>
+        Course == "python"
+            ? "PYTHON"
+            : "C#";
+
+    private string PrimaryName =>
+        Course == "python"
+            ? "Facility stability"
+            : "Explorer health";
+
+    private string SecondaryName =>
+        Course == "python"
+            ? "Systems restored"
+            : "Relics secured";
+
+    private string ThreatName =>
+        Course == "python"
+            ? "Alarm severity"
+            : "Enemy threat";
+
+    private string DifficultyLabel =>
+        string.IsNullOrWhiteSpace(State.Difficulty)
+            ? "Standard"
+            : char.ToUpperInvariant(State.Difficulty[0]) +
+              State.Difficulty[1..];
+
+    private string Placeholder =>
+        State.Difficulty == "expert"
+            ? "Expert mode begins blank."
+            : "Write your solution here.";
+
+    private bool ShowCoaching =>
+        State.Difficulty is "training" or "standard";
+
+    private int HintRevealPercent =>
+        State.Difficulty == "training"
+            ? 50
+            : 35;
+
+    private string HintCostLabel =>
+        State.Difficulty == "training"
+            ? "150 points · 10 XP"
+            : "200 points · 15 XP";
+
+    private int PotentialScore =>
+        Math.Max(
+            250,
+            (State.Difficulty switch
+            {
+                "training" => 600,
+                "advanced" => 1000,
+                "expert" => 1250,
+                _ => 800
+            }) -
+            State.Mistakes * 75 -
+            State.HintPenalty
+        );
+
+    private string TaskTypeLabel =>
+        State.Scenario?.TaskType switch
+        {
+            "declare" => "Variable Declaration",
+            "update" => "Value Update",
+            "debug" => "Debugging",
+            "condition" => "Conditional Logic",
+            "decision" => "Decision Branch",
+            "method" => "Method Design",
+            "movement" => "Movement Logic",
+            "collection" => "Collections",
+            "loop" => "Loop Logic",
+            "object" => "Object Design",
+            "combat" => "Combat Logic",
+            "data" => "Data Processing",
+            "function" => "Function Design",
+            "file" => "File Handling",
+            "automation" => "Automation Logic",
+            _ => Humanize(
+                State.Scenario?.TaskType ??
+                "Coding Challenge"
+            )
+        };
+
+    private string ConceptLabel =>
+        string.IsNullOrWhiteSpace(State.Scenario?.Concept)
+            ? Humanize(
+                State.Scenario?.TemplateId ??
+                State.Scenario?.Skill ??
+                "Coding structure"
+            )
+            : State.Scenario.Concept;
+
+    private string ModalIcon =>
+        ActiveModal switch
+        {
+            "reset" => "↻",
+            "leave" => "←",
+            _ => "!"
+        };
+
+    private string ModalEyebrow =>
+        ActiveModal switch
+        {
+            "reset" => "RESET ACTIVE RUN",
+            "leave" => "LEAVE MINIGAME",
+            _ => "QUIT ACTIVE RUN"
+        };
+
+    private string ModalTitle =>
+        ActiveModal switch
+        {
+            "reset" => "Reset the entire campaign?",
+            "leave" => "Leave and end this run?",
+            _ => "Quit this minigame run?"
+        };
+
+    private string ModalMessage =>
+        ActiveModal switch
+        {
+            "reset" =>
+                $"A new shuffled practice plan will be generated using {DifficultyLabel} difficulty. Your current score, streak, health or stability, mistakes, hints, and room progress will be erased.",
+            "leave" =>
+                "Leaving the minigame will immediately end this active run. Its room progress and score cannot be resumed when you return.",
+            _ =>
+                "The active run will end immediately. Its current room, score, streak, and remaining health or stability cannot be resumed."
+        };
+
+    private string ModalCancelLabel =>
+        ActiveModal switch
+        {
+            "reset" => "Keep current run",
+            "leave" => "Stay in minigame",
+            _ => "Continue playing"
+        };
+
+    private string ModalConfirmLabel =>
+        ActiveModal switch
+        {
+            "reset" => "Reset run",
+            "leave" => "Leave and end run",
+            _ => "Quit run"
+        };
+
+    private string ModalConfirmClass =>
+        ActiveModal == "reset"
+            ? "primary"
+            : "decision-danger";
+
+    protected override async Task OnAfterRenderAsync(
+        bool firstRender
+    )
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        State =
+            await MinigameService
+                .GetCourseStateAsync(Course);
+
+        LoadCode();
+        await RefreshAnalysis();
+
+        if (State.ActiveRun)
+        {
+            await JS.InvokeVoidAsync(
+                "caveCodeMinigames.bindExitGuard",
+                Course
+            );
+        }
+
+        Ready = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private static string Humanize(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return "Coding Challenge";
+        }
+
+        return string.Join(
+            " ",
+            value
+                .Replace("_", " ")
+                .Replace("-", " ")
+                .Split(
+                    ' ',
+                    StringSplitOptions
+                        .RemoveEmptyEntries
+                )
+                .Select(word =>
+                    char.ToUpperInvariant(word[0]) +
+                    word[1..]
+                )
+        );
+    }
+
+    private void ChangeDifficulty(
+        ChangeEventArgs args
+    )
+    {
+        SelectedDifficulty =
+            args.Value?.ToString() ??
+            "standard";
+    }
+
+    private int MasteryRoomCount =>
+        Math.Max(0, State.CompletedChapters * 8);
+
+    private string ChapterName(int chapter) =>
+        Course == "python"
+            ? chapter switch
+            {
+                1 => "Variables and Data Types",
+                2 => "Conditions and Safety",
+                3 => "Loops and Sequences",
+                4 => "Collections and Data",
+                5 => "Functions and Automation",
+                _ => "Locked Chapter"
+            }
+            : chapter switch
+            {
+                1 => "Variables and Data Types",
+                2 => "Conditions and Decisions",
+                3 => "Methods and Movement",
+                4 => "Collections and Loops",
+                5 => "Classes and Objects",
+                _ => "Locked Chapter"
+            };
+
+    private string ChapterDescription(int chapter) =>
+        Course == "python"
+            ? chapter switch
+            {
+                1 => "Assignments, numeric values, Boolean states, text, and updates.",
+                2 => "Comparisons, combined conditions, ranges, branches, and safety decisions.",
+                3 => "For loops, while loops, counting, control flow, and ordered sequences.",
+                4 => "Lists, dictionaries, indexing, updates, filtering, and summaries.",
+                5 => "Functions, parameters, files, classes, relays, and emergency automation.",
+                _ => "Complete this learning chapter to reveal its practice pool."
+            }
+            : chapter switch
+            {
+                1 => "Whole numbers, fractional values, Boolean states, strings, and value updates.",
+                2 => "Comparisons, combined conditions, ranges, branches, and decisions.",
+                3 => "Methods, parameters, return values, calls, movement, and sequencing.",
+                4 => "Arrays, lists, dictionaries, indexing, counts, and iteration.",
+                5 => "Classes, constructors, properties, objects, state, and combat behavior.",
+                _ => "Complete this learning chapter to reveal its practice pool."
+            };
+
+    private async Task StartFocused(int chapter) =>
+        await StartPractice("focused", chapter);
+
+    private async Task StartMastery() =>
+        await StartPractice(
+            "mastery",
+            State.CompletedChapters
+        );
+
+    private async Task StartPractice(
+        string mode,
+        int chapter
+    )
+    {
+        State =
+            await MinigameService.StartPracticeAsync(
+                Course,
+                SelectedDifficulty,
+                mode,
+                chapter
+            );
+
+        SystemSuccess = false;
+        FeedbackClass = "";
+        FeedbackHeading = "Run initialized";
+        FeedbackMessage =
+            $"A fixed {State.RoomsTotal}-room shuffle bag was generated. Every structural style will appear exactly once.";
+        SystemStatus =
+            "Awaiting challenge check";
+
+        LoadCode();
+        await RefreshAnalysis();
+
+        await JS.InvokeVoidAsync(
+            "caveCodeMinigames.bindExitGuard",
+            Course
+        );
+    }
+
+    private async Task UpdateCode(
+        ChangeEventArgs args
+    )
+    {
+        StudentCode =
+            args.Value?.ToString() ?? "";
+
+        SystemSuccess = false;
+        await RefreshAnalysis();
+    }
+
+    private async Task ResetCode()
+    {
+        LoadCode();
+        SystemSuccess = false;
+        FeedbackClass = "";
+        FeedbackHeading = "Room reset";
+        FeedbackMessage =
+            "Starter code restored for this difficulty.";
+        SystemStatus =
+            "Awaiting challenge check";
+
+        await RefreshAnalysis();
+    }
+
+    private async Task RunCode()
+    {
+        MinigameValidationResult check =
+            await MinigameService
+                .ValidateAsync(
+                    Course,
+                    StudentCode
+                );
+
+        State = check.State;
+        SystemStatus = check.SystemStatus;
+
+        if (!check.Valid)
+        {
+            SystemSuccess = false;
+            FeedbackClass = "error";
+            FeedbackHeading = check.Heading;
+            FeedbackMessage = check.Message;
+
+            if (State.RunFailed)
+            {
+                StudentCode = "";
+                await JS.InvokeVoidAsync(
+                    "caveCodeMinigames.unbindExitGuard"
+                );
+            }
+
+            await RefreshAnalysis();
+            return;
+        }
+
+        SystemSuccess = true;
+        FeedbackClass = "success";
+        FeedbackHeading = check.Heading;
+        FeedbackMessage = check.Message;
+
+        LastReward =
+            await MinigameService.CompleteAsync(
+                Course,
+                StudentCode
+            );
+
+        State = LastReward.State;
+        ShowReward = true;
+
+        if (State.RunComplete)
+        {
+            await JS.InvokeVoidAsync(
+                "caveCodeMinigames.unbindExitGuard"
+            );
+        }
+    }
+
+    private async Task Continue()
+    {
+        ShowReward = false;
+        SystemSuccess = false;
+        FeedbackClass = "";
+        FeedbackHeading =
+            State.RunComplete
+                ? "Run complete"
+                : "Next room ready";
+        FeedbackMessage =
+            State.RunComplete
+                ? "Review your results."
+                : "Complete the new randomized objective.";
+        SystemStatus =
+            State.RunComplete
+                ? "Campaign stabilized"
+                : "Awaiting challenge check";
+
+        LoadCode();
+        await RefreshAnalysis();
+    }
+
+    private async Task UseHint()
+    {
+        MinigameHintResult result =
+            await MinigameService
+                .UseHintAsync(Course, StudentCode);
+
+        State = result.State;
+        FeedbackClass =
+            result.Allowed
+                ? ""
+                : "error";
+        FeedbackHeading =
+            result.Allowed
+                ? $"{result.RevealPercent}% readable hint revealed"
+                : "Hint unavailable";
+        FeedbackMessage = result.Message;
+
+        await RefreshAnalysis();
+    }
+
+    private void OpenResetModal()
+    {
+        ActiveModal = "reset";
+        PendingNavigationLocation = null;
+    }
+
+    private void OpenQuitModal()
+    {
+        ActiveModal = "quit";
+        PendingNavigationLocation = null;
+    }
+
+    private void CloseDecisionModal()
+    {
+        ActiveModal = null;
+        PendingNavigationLocation = null;
+    }
+
+    private async Task ConfirmDecision()
+    {
+        string? decision = ActiveModal;
+        string? target =
+            PendingNavigationLocation;
+
+        ActiveModal = null;
+        PendingNavigationLocation = null;
+
+        if (decision == "reset")
+        {
+            await ResetRun();
+            return;
+        }
+
+        await TerminateRun();
+
+        if (
+            decision == "leave" &&
+            !string.IsNullOrWhiteSpace(target)
+        )
+        {
+            AllowNavigation = true;
+            Navigation.NavigateTo(target);
+        }
+    }
+
+    private async Task ResetRun()
+    {
+        State =
+            await MinigameService
+                .ResetRunAsync(Course);
+
+        LastReward = null;
+        ShowReward = false;
+        SystemSuccess = false;
+        FeedbackClass = "";
+        FeedbackHeading = "Run reset";
+        FeedbackMessage =
+            "A new no-repeat practice plan was generated using the same difficulty and chapter pool.";
+        SystemStatus =
+            "Awaiting challenge check";
+
+        LoadCode();
+        await RefreshAnalysis();
+    }
+
+    private Task HandleInternalNavigation(
+        LocationChangingContext context
+    )
+    {
+        if (
+            !State.ActiveRun ||
+            AllowNavigation
+        )
+        {
+            return Task.CompletedTask;
+        }
+
+        context.PreventNavigation();
+        PendingNavigationLocation =
+            context.TargetLocation;
+        ActiveModal = "leave";
+
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private async Task TerminateRun()
+    {
+        State =
+            await MinigameService
+                .EndRunAsync(Course);
+
+        await JS.InvokeVoidAsync(
+            "caveCodeMinigames.unbindExitGuard"
+        );
+
+        StudentCode = "";
+        SystemSuccess = false;
+        ShowReward = false;
+        FeedbackClass = "";
+        FeedbackHeading = "Run ended";
+        FeedbackMessage =
+            "The active minigame session has been closed.";
+        SystemStatus = "Run inactive";
+    }
+
+    private async Task RefreshAnalysis()
+    {
+        if (
+            !State.ActiveRun ||
+            State.Scenario is null ||
+            !ShowCoaching
+        )
+        {
+            Analysis =
+                new MinigameAnalysisResult();
+
+            return;
+        }
+
+        Analysis =
+            await MinigameService.AnalyzeAsync(
+                Course,
+                StudentCode
+            );
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void LoadCode()
+    {
+        StudentCode =
+            State.Scenario?.StarterCode ?? "";
+    }
+}
