@@ -1,0 +1,239 @@
+/* CAVECODE_MODERN_LOADING_SCREEN_V1 */
+
+#app {
+    min-height: 100vh;
+}
+
+.cavecode-startup-shell {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 18px;
+    padding: 28px;
+    color: var(--text, #edf4ff);
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            color-mix(
+                in srgb,
+                var(--accent, #61dafb) 12%,
+                transparent
+            ) 0,
+            transparent 34%
+        ),
+        var(--bg, #08111f);
+    text-align: center;
+    overflow: hidden;
+}
+
+.cavecode-startup-shell::before {
+    content: "";
+    position: absolute;
+    width: min(64vw, 560px);
+    aspect-ratio: 1;
+    border: 1px solid
+        color-mix(
+            in srgb,
+            var(--accent, #61dafb) 14%,
+            transparent
+        );
+    border-radius: 50%;
+    opacity: .55;
+    animation:
+        cavecode-startup-breathe 3.2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.cavecode-startup-logo-wrap {
+    position: relative;
+    display: grid;
+    width: clamp(130px, 18vw, 190px);
+    aspect-ratio: 1;
+    place-items: center;
+    border-radius: 34px;
+    filter:
+        drop-shadow(
+            0 0 24px
+            color-mix(
+                in srgb,
+                var(--accent, #61dafb) 32%,
+                transparent
+            )
+        );
+    animation:
+        cavecode-startup-logo-enter .55s ease-out both;
+}
+
+.cavecode-startup-logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cavecode-startup-copy {
+    position: relative;
+    display: grid;
+    gap: 5px;
+    animation:
+        cavecode-startup-copy-enter .6s .08s ease-out both;
+}
+
+.cavecode-startup-copy strong {
+    font-size: clamp(21px, 3vw, 30px);
+    font-weight: 900;
+    letter-spacing: -.035em;
+}
+
+.cavecode-startup-copy small {
+    color: var(--text-muted, #aab8cb);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .025em;
+}
+
+.cavecode-startup-progress {
+    position: relative;
+    width: min(340px, 72vw);
+    height: 5px;
+    overflow: hidden;
+    background:
+        color-mix(
+            in srgb,
+            var(--text, #edf4ff) 10%,
+            transparent
+        );
+    border:
+        1px solid
+        color-mix(
+            in srgb,
+            var(--text, #edf4ff) 12%,
+            transparent
+        );
+    border-radius: 999px;
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, .2);
+}
+
+.cavecode-startup-progress span {
+    display: block;
+    width: var(--blazor-load-percentage, 0%);
+    height: 100%;
+    background:
+        linear-gradient(
+            90deg,
+            color-mix(
+                in srgb,
+                var(--accent, #61dafb) 74%,
+                white
+            ),
+            var(--accent, #61dafb)
+        );
+    border-radius: inherit;
+    box-shadow:
+        0 0 16px
+        color-mix(
+            in srgb,
+            var(--accent, #61dafb) 58%,
+            transparent
+        );
+    transition: width .12s ease-out;
+}
+
+.cavecode-startup-percentage {
+    min-height: 16px;
+    color: var(--text-dim, #7f8fa6);
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.cavecode-startup-percentage::after {
+    content:
+        var(
+            --blazor-load-percentage-text,
+            "Loading"
+        );
+}
+
+.loading-progress,
+.loading-progress-text,
+.cavecode-loading-brand {
+    display: none !important;
+}
+
+@keyframes cavecode-startup-logo-enter {
+    from {
+        opacity: 0;
+        transform:
+            translateY(8px)
+            scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+@keyframes cavecode-startup-copy-enter {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cavecode-startup-breathe {
+    0%,
+    100% {
+        transform: scale(.96);
+        opacity: .28;
+    }
+
+    50% {
+        transform: scale(1.04);
+        opacity: .58;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cavecode-startup-shell::before,
+    .cavecode-startup-logo-wrap,
+    .cavecode-startup-copy {
+        animation: none;
+    }
+
+    .cavecode-startup-progress span {
+        transition: none;
+    }
+}
+
+@media (max-width: 520px) {
+    .cavecode-startup-shell {
+        gap: 15px;
+    }
+
+    .cavecode-startup-logo-wrap {
+        width: 132px;
+        border-radius: 26px;
+    }
+
+    .cavecode-startup-copy strong {
+        font-size: 23px;
+    }
+}

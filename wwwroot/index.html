@@ -13,6 +13,7 @@
     <link rel="preload" id="webassembly" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/cavecode-modern-loading-screen.css?v=1" />
     <link rel="stylesheet" href="css/themes.css" />
     <link rel="stylesheet" href="css/light-mode-contrast.css?v=1" />
     <link href="CaveCode.styles.css" rel="stylesheet" />
@@ -42,23 +43,27 @@
 </head>
 <body>
     <div id="app">
-        <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
-        <div class="cavecode-loading-brand">
-            <span class="cavecode-context-logo-surface cavecode-context-logo-surface--loading">
-                <img class="cavecode-context-logo-image"
+        <!-- CAVECODE_MODERN_LOADING_SCREEN_V1 -->
+        <div class="cavecode-startup-shell" aria-live="polite">
+            <div class="cavecode-startup-logo-wrap" aria-hidden="true">
+                <img class="cavecode-startup-logo"
                      src="branding/cavecode-academy-logo.svg?v=1"
-                     alt="CaveCode Academy" />
-            </span>
-            <div>
-                <strong>Loading CaveCode Academy</strong>
-                <small>Preparing your learning paths…</small>
+                     alt="" />
             </div>
+
+            <div class="cavecode-startup-copy">
+                <strong>CaveCode Academy</strong>
+                <small>Preparing your learning paths</small>
+            </div>
+
+            <div class="cavecode-startup-progress"
+                 role="progressbar"
+                 aria-label="Loading CaveCode Academy">
+                <span></span>
+            </div>
+
+            <div class="cavecode-startup-percentage"></div>
         </div>
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
     </div>
     <div id="blazor-error-ui">
         An unhandled error has occurred.
