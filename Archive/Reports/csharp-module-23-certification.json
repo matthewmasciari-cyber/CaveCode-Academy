@@ -1,0 +1,160 @@
+{
+  "pass": "C# Module 23 certification",
+  "created_utc": "2026-08-04T13:01:08.324139+00:00",
+  "source": "Pages/CSharp.razor",
+  "module_number": 23,
+  "module": {
+    "Chapter": "Chapter 3 \u00b7 Methods and Movement",
+    "Topic": "Boundaries",
+    "Title": "Keep the Player Inside the Cave",
+    "Teaching": "A boundary check prevents movement when the next position would leave the map.",
+    "ExampleCode": "if (playerX > 0)\n{\n    playerX--;\n}",
+    "TargetCode": "if (playerX < 9)\n{\n    playerX++;\n}",
+    "FillStarter": "if (playerX ___ 9)\n{\n    playerX++;\n}",
+    "PredictionQuestion": "Why compare playerX with 9?",
+    "PredictionOptions": [
+      "9 is the last allowed column",
+      "9 is player health",
+      "Every map has 9 rocks",
+      "It creates a loop"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "The check allows movement only while X is below the rightmost column.",
+    "BrokenCode": "if (playerX > 9)\n{\n    playerX++;\n}",
+    "DebugPrompt": "The comparison points the wrong way. Movement is allowed while X is less than 9.",
+    "RecallPrompt": "Write the right boundary check from memory. Use the exact identifier playerX. Use the exact value 9.",
+    "TransferPrompt": "Prevent upward movement unless playerY is greater than zero. Use the exact value 0.",
+    "TransferCode": "if (playerY > 0)\n{\n    playerY--;\n}",
+    "PreviewMessage": "Movement now respects a map boundary."
+  },
+  "checks": [
+    {
+      "name": "Module identity",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Chapter, topic, and title must all be present."
+    },
+    {
+      "name": "Teaching content",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Teaching explanation should be complete enough for a beginner."
+    },
+    {
+      "name": "Example and target code",
+      "passed": true,
+      "severity": "PASS",
+      "details": "ExampleCode and TargetCode must both contain code."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "PASS",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction option count",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Found 4 prediction options."
+    },
+    {
+      "name": "Prediction index",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Correct index is 0."
+    },
+    {
+      "name": "Prediction options unique",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Every prediction answer must be meaningfully different."
+    },
+    {
+      "name": "Prediction explanation",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Prediction question and explanation must both be present."
+    },
+    {
+      "name": "Broken code differs from target",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Debug code must contain a real defect."
+    },
+    {
+      "name": "Debug prompt",
+      "passed": true,
+      "severity": "PASS",
+      "details": "DebugPrompt must explain what the learner should inspect."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in RecallPrompt."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in RecallPrompt."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Transfer wording is exact."
+    },
+    {
+      "name": "Preview message",
+      "passed": true,
+      "severity": "PASS",
+      "details": "PreviewMessage must describe the visible outcome."
+    },
+    {
+      "name": "Project build",
+      "passed": true,
+      "severity": "PASS",
+      "details": "dotnet build succeeded."
+    }
+  ],
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [],
+    "errors": [],
+    "tail": [
+      "Determining projects to restore...",
+      "  All projects are up-to-date for restore.",
+      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
+      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
+      "",
+      "Build succeeded.",
+      "    0 Warning(s)",
+      "    0 Error(s)",
+      "",
+      "Time Elapsed 00:00:04.09"
+    ]
+  },
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

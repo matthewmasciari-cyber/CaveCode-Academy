@@ -1,0 +1,158 @@
+====================================================================================================
+CAVECODE C# MODULE 34 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 5 · Objects and Combat
+Topic: Properties
+Title: Add Player Properties
+
+COMPLETE MODULE 34 CONTENT
+------------------------------
+
+Chapter:
+Chapter 5 · Objects and Combat
+
+Topic:
+Properties
+
+Title:
+Add Player Properties
+
+Teaching:
+Properties expose data on an object. Auto-properties use get and set to read and change values.
+
+ExampleCode:
+public int Value { get; set; }
+
+TargetCode:
+class Player
+{
+    public string Name { get; set; }
+    public int Health { get; set; }
+}
+
+FillStarter:
+class Player
+{
+    public string ___ { get; set; }
+    public int ___ { get; set; }
+}
+
+PredictionQuestion:
+What does get allow?
+
+PredictionOptions:
+['Reading the property', 'Deleting the class', 'Starting a loop', 'Comparing strings']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+get returns the property's current value; set allows assignment.
+
+BrokenCode:
+class Player
+{
+    string Name
+    int Health
+}
+
+DebugPrompt:
+Add public auto-property syntax, including braces, get, set, and semicolons.
+
+RecallPrompt:
+Add Name and Health properties to Player. Use these exact identifiers: get, set.
+
+TransferPrompt:
+Create a Slime class with an int Health property. Use these exact identifiers: get, set.
+
+TransferCode:
+class Slime
+{
+    public int Health { get; set; }
+}
+
+PreviewMessage:
+Player objects can now carry name and health properties.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-34-certification.txt
+JSON report: Archive/Reports/csharp-module-34-certification.json

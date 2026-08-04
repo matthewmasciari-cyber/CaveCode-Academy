@@ -1,0 +1,143 @@
+====================================================================================================
+CAVECODE C# MODULE 25 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 4 · Collections and World
+Topic: Arrays
+Title: Create a Fixed Inventory
+
+COMPLETE MODULE 25 CONTENT
+------------------------------
+
+Chapter:
+Chapter 4 · Collections and World
+
+Topic:
+Arrays
+
+Title:
+Create a Fixed Inventory
+
+Teaching:
+An array stores several values of the same type. Its size is fixed after creation.
+
+ExampleCode:
+int[] damageValues = { 5, 10, 15 };
+
+TargetCode:
+string[] inventory = { "Stone", "Wood" };
+
+FillStarter:
+string[] inventory = { "___", "___" };
+
+PredictionQuestion:
+What does [] indicate?
+
+PredictionOptions:
+['An array', 'A method', 'A comment', 'A bool']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+Square brackets after a type indicate an array of that type.
+
+BrokenCode:
+string inventory = { "Stone", "Wood" };
+
+DebugPrompt:
+The declaration needs [] because it stores multiple string values.
+
+RecallPrompt:
+Create the Stone and Wood inventory array from memory.
+
+TransferPrompt:
+Create an int array containing 5, 10, and 15. Use the exact identifier damageValues.
+
+TransferCode:
+int[] damageValues = { 5, 10, 15 };
+
+PreviewMessage:
+The preview now has a basic inventory.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-25-certification.txt
+JSON report: Archive/Reports/csharp-module-25-certification.json

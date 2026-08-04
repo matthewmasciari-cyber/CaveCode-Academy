@@ -1,0 +1,62 @@
+====================================================================================================
+CAVECODE COURSE ENGINE REGRESSION GATE — PASS 87F
+====================================================================================================
+
+[PASS] Python: shared UI components
+       OK
+[PASS] Python: shared session foundation
+       OK
+[PASS] Python: shared session transitions
+       OK
+[FAIL] Python: snapshot export and restore
+       Missing: Session.RestoreState(
+[PASS] Python: parent-owned behavior retained
+       OK
+[PASS] Python: original duplicated UI removed
+       OK
+[FAIL] Python: basic Razor tag balance
+       <nav/</nav>: 3/1
+[PASS] CSharp: shared UI components
+       OK
+[PASS] CSharp: shared session foundation
+       OK
+[PASS] CSharp: shared session transitions
+       OK
+[FAIL] CSharp: snapshot export and restore
+       Missing: Session.RestoreState(
+[PASS] CSharp: parent-owned behavior retained
+       OK
+[PASS] CSharp: original duplicated UI removed
+       OK
+[FAIL] CSharp: basic Razor tag balance
+       <nav/</nav>: 3/1
+[PASS] CourseSession: shared state and calculations
+       OK
+[PASS] CourseSession: transitions and lifecycle
+       OK
+[FAIL] CourseSession: persistence
+       Missing: public void RestoreState( | Enumerable.Repeat(-1, totalModules) | Array.Copy(
+[PASS] CourseSessionSnapshot: stable JSON contract
+       OK
+[PASS] _Imports: shared engine namespaces
+       OK
+[PASS] dotnet build
+       Build succeeded.
+
+BUILD WARNINGS
+--------------
+None.
+
+BUILD ERRORS
+------------
+None.
+
+SUMMARY
+-------
+Overall: FAIL
+Checks passed: 15 / 20
+Build warnings: 0
+Build errors: 0
+
+Text report: Archive/Reports/course-engine-regression-gate-pass-87f.txt
+JSON report: Archive/Reports/course-engine-regression-gate-pass-87f.json

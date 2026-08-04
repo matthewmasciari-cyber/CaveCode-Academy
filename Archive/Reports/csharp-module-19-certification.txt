@@ -1,0 +1,158 @@
+====================================================================================================
+CAVECODE C# MODULE 19 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 3 · Methods and Movement
+Topic: Return values
+Title: Return a Result
+
+COMPLETE MODULE 19 CONTENT
+------------------------------
+
+Chapter:
+Chapter 3 · Methods and Movement
+
+Topic:
+Return values
+
+Title:
+Return a Result
+
+Teaching:
+A method with a non-void return type sends a value back to the code that called it.
+
+ExampleCode:
+int Double(int value)
+{
+    return value * 2;
+}
+
+TargetCode:
+bool IsAlive(int health)
+{
+    return health > 0;
+}
+
+FillStarter:
+bool IsAlive(int health)
+{
+    return health ___ 0;
+}
+
+PredictionQuestion:
+What type must IsAlive return?
+
+PredictionOptions:
+['bool', 'int', 'string', 'void']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+The method declaration begins with bool, so every return path must provide true or false.
+
+BrokenCode:
+bool IsAlive(int health)
+{
+    health > 0;
+}
+
+DebugPrompt:
+The comparison is calculated but never returned. Add the return keyword.
+
+RecallPrompt:
+Write IsAlive from memory. Use the exact identifier health. Use the exact value 0.
+
+TransferPrompt:
+Create HasStone that returns whether count is greater than zero. Use the exact value 0.
+
+TransferCode:
+bool HasStone(int count)
+{
+    return count > 0;
+}
+
+PreviewMessage:
+Game rules can now return answers.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-19-certification.txt
+JSON report: Archive/Reports/csharp-module-19-certification.json

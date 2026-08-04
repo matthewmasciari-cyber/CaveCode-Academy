@@ -1,0 +1,132 @@
+{
+  "pass": "87F",
+  "created_utc": "2026-08-04T02:12:16.958575+00:00",
+  "passed": false,
+  "checks": [
+    {
+      "check": "Python: shared UI components",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "Python: shared session foundation",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "Python: shared session transitions",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "Python: snapshot export and restore",
+      "passed": false,
+      "details": "Missing: Session.RestoreState("
+    },
+    {
+      "check": "Python: parent-owned behavior retained",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "Python: original duplicated UI removed",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "Python: basic Razor tag balance",
+      "passed": false,
+      "details": "<nav/</nav>: 3/1"
+    },
+    {
+      "check": "CSharp: shared UI components",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "CSharp: shared session foundation",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "CSharp: shared session transitions",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "CSharp: snapshot export and restore",
+      "passed": false,
+      "details": "Missing: Session.RestoreState("
+    },
+    {
+      "check": "CSharp: parent-owned behavior retained",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "CSharp: original duplicated UI removed",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "CSharp: basic Razor tag balance",
+      "passed": false,
+      "details": "<nav/</nav>: 3/1"
+    },
+    {
+      "check": "CourseSession: shared state and calculations",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "CourseSession: transitions and lifecycle",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "CourseSession: persistence",
+      "passed": false,
+      "details": "Missing: public void RestoreState( | Enumerable.Repeat(-1, totalModules) | Array.Copy("
+    },
+    {
+      "check": "CourseSessionSnapshot: stable JSON contract",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "_Imports: shared engine namespaces",
+      "passed": true,
+      "details": "OK"
+    },
+    {
+      "check": "dotnet build",
+      "passed": true,
+      "details": "Build succeeded."
+    }
+  ],
+  "build": {
+    "exit_code": 0,
+    "passed": true,
+    "errors": [],
+    "warnings": [],
+    "tail": [
+      "Determining projects to restore...",
+      "  All projects are up-to-date for restore.",
+      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
+      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
+      "",
+      "Build succeeded.",
+      "    0 Warning(s)",
+      "    0 Error(s)",
+      "",
+      "Time Elapsed 00:00:03.58"
+    ]
+  },
+  "summary": {
+    "total_checks": 20,
+    "passed_checks": 15,
+    "failed_checks": 5,
+    "build_warnings": 0,
+    "build_errors": 0
+  }
+}

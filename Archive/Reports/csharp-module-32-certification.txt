@@ -1,0 +1,177 @@
+====================================================================================================
+CAVECODE C# MODULE 32 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 4 · Collections and World
+Topic: Challenge
+Title: World Challenge: Mine a Rock
+
+COMPLETE MODULE 32 CONTENT
+------------------------------
+
+Chapter:
+Chapter 4 · Collections and World
+
+Topic:
+Challenge
+
+Title:
+World Challenge: Mine a Rock
+
+Teaching:
+Combine a List check, removal, and resource reward into one reusable method.
+
+ExampleCode:
+void Collect(string item)
+{
+    if (items.Contains(item))
+    {
+        items.Remove(item);
+    }
+}
+
+TargetCode:
+void MineRock(string rock)
+{
+    if (rocks.Contains(rock))
+    {
+        rocks.Remove(rock);
+        stoneCount++;
+    }
+}
+
+FillStarter:
+void MineRock(string rock)
+{
+    if (rocks.___(rock))
+    {
+        rocks.___(rock);
+        stoneCount___;
+    }
+}
+
+PredictionQuestion:
+Why call Contains before Remove?
+
+PredictionOptions:
+['To verify the rock exists', 'To create a new List', 'To change the player name', 'To start a loop']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+The check prevents rewarding a rock that was not present.
+
+BrokenCode:
+void MineRock(string rock)
+{
+    if (rocks.Contains(rock))
+    {
+        rocks.Add(rock);
+        stoneCount--;
+    }
+}
+
+DebugPrompt:
+Mining should remove the rock and increase the collected resource count.
+
+RecallPrompt:
+Rebuild MineRock from memory. Use these exact identifiers: Contains, Remove, rocks, stoneCount.
+
+TransferPrompt:
+Create DefeatEnemy that removes an enemy and adds one coin. Use these exact identifiers: Contains, coinCount, enemies.
+
+TransferCode:
+void DefeatEnemy(string enemy)
+{
+    if (enemies.Contains(enemy))
+    {
+        enemies.Remove(enemy);
+        coinCount++;
+    }
+}
+
+PreviewMessage:
+The world collection and inventory reward now work together.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-32-certification.txt
+JSON report: Archive/Reports/csharp-module-32-certification.json

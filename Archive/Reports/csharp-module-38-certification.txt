@@ -1,0 +1,158 @@
+====================================================================================================
+CAVECODE C# MODULE 38 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 5 · Objects and Combat
+Topic: Damage
+Title: Deal Damage
+
+COMPLETE MODULE 38 CONTENT
+------------------------------
+
+Chapter:
+Chapter 5 · Objects and Combat
+
+Topic:
+Damage
+
+Title:
+Deal Damage
+
+Teaching:
+A damage method subtracts an amount while keeping the operation reusable.
+
+ExampleCode:
+void HurtPlayer(int damage)
+{
+    playerHealth -= damage;
+}
+
+TargetCode:
+void DamageSlime(int damage)
+{
+    slimeHealth -= damage;
+}
+
+FillStarter:
+void DamageSlime(int ___)
+{
+    slimeHealth -= ___;
+}
+
+PredictionQuestion:
+What happens when DamageSlime(10) runs?
+
+PredictionOptions:
+['slimeHealth decreases by 10', 'slimeHealth becomes 10', 'The slime name changes', 'A List is created']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+Compound subtraction removes the supplied damage amount from current health.
+
+BrokenCode:
+void DamageSlime(int damage)
+{
+    slimeHealth += damage;
+}
+
+DebugPrompt:
+Damage should subtract health, not add it.
+
+RecallPrompt:
+Write DamageSlime from memory. Use the exact identifier slimeHealth.
+
+TransferPrompt:
+Create HealPlayer that adds an amount to playerHealth.
+
+TransferCode:
+void HealPlayer(int amount)
+{
+    playerHealth += amount;
+}
+
+PreviewMessage:
+The combat system can now reduce enemy health.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-38-certification.txt
+JSON report: Archive/Reports/csharp-module-38-certification.json

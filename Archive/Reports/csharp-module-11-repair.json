@@ -1,0 +1,19 @@
+{
+  "module_number": 11,
+  "module_title": "Run Code Only When Allowed",
+  "created_utc": "2026-08-04T12:56:09.572850+00:00",
+  "changes": [
+    "RecallPrompt: added missing exact identifiers stoneCount",
+    "RecallPrompt: added missing exact values 1",
+    "TransferPrompt: added missing exact identifiers playerHealth"
+  ],
+  "backup": ".csharp-curriculum-repair-backups/module-11-20260804-125554/Pages/CSharp.razor",
+  "final_checks": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

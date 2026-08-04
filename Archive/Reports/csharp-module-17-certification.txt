@@ -1,0 +1,158 @@
+====================================================================================================
+CAVECODE C# MODULE 17 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 3 · Methods and Movement
+Topic: Methods
+Title: Create a Reusable Method
+
+COMPLETE MODULE 17 CONTENT
+------------------------------
+
+Chapter:
+Chapter 3 · Methods and Movement
+
+Topic:
+Methods
+
+Title:
+Create a Reusable Method
+
+Teaching:
+A method gives a named block of code one job. Calling the method runs that job.
+
+ExampleCode:
+void ShowMap()
+{
+    Console.WriteLine("Map opened");
+}
+
+TargetCode:
+void ShowMessage()
+{
+    Console.WriteLine("Ready!");
+}
+
+FillStarter:
+void ShowMessage()
+{
+    Console.WriteLine(___);
+}
+
+PredictionQuestion:
+What does void mean here?
+
+PredictionOptions:
+['The method returns no value', 'The method is empty forever', 'The method stores text', 'The method is private']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+void means the method performs work without returning a result.
+
+BrokenCode:
+void ShowMessage
+{
+    Console.WriteLine("Ready!");
+}
+
+DebugPrompt:
+A method declaration needs parentheses after its name.
+
+RecallPrompt:
+Write ShowMessage from memory. Use these exact identifiers: Console, Ready, WriteLine. Use the exact value "Ready!".
+
+TransferPrompt:
+Create ShowInventory that prints "Inventory opened". Use these exact identifiers: Console, WriteLine.
+
+TransferCode:
+void ShowInventory()
+{
+    Console.WriteLine("Inventory opened");
+}
+
+PreviewMessage:
+The project now contains a reusable method.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-17-certification.txt
+JSON report: Archive/Reports/csharp-module-17-certification.json

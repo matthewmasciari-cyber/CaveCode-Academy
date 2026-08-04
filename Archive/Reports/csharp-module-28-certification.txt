@@ -1,0 +1,143 @@
+====================================================================================================
+CAVECODE C# MODULE 28 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 4 · Collections and World
+Topic: List methods
+Title: Remove a Mined Rock
+
+COMPLETE MODULE 28 CONTENT
+------------------------------
+
+Chapter:
+Chapter 4 · Collections and World
+
+Topic:
+List methods
+
+Title:
+Remove a Mined Rock
+
+Teaching:
+The Remove method deletes the first matching value from a List.
+
+ExampleCode:
+enemies.Remove("Slime");
+
+TargetCode:
+rocks.Remove("Stone");
+
+FillStarter:
+rocks.___("Stone");
+
+PredictionQuestion:
+What should happen after a rock is mined?
+
+PredictionOptions:
+['Remove it from the rock list', 'Add a duplicate', 'Change it to a bool', 'Rename the player']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+Removing the collected rock keeps the world state accurate.
+
+BrokenCode:
+rocks.Delete("Stone");
+
+DebugPrompt:
+List<T> uses Remove, not Delete, to remove a matching value.
+
+RecallPrompt:
+Remove "Stone" from rocks from memory.
+
+TransferPrompt:
+Remove "Slime" from enemies.
+
+TransferCode:
+enemies.Remove("Slime");
+
+PreviewMessage:
+Mined rocks can now disappear from the collection.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-28-certification.txt
+JSON report: Archive/Reports/csharp-module-28-certification.json

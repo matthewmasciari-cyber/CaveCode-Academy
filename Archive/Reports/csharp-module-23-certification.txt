@@ -1,0 +1,158 @@
+====================================================================================================
+CAVECODE C# MODULE 23 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 3 · Methods and Movement
+Topic: Boundaries
+Title: Keep the Player Inside the Cave
+
+COMPLETE MODULE 23 CONTENT
+------------------------------
+
+Chapter:
+Chapter 3 · Methods and Movement
+
+Topic:
+Boundaries
+
+Title:
+Keep the Player Inside the Cave
+
+Teaching:
+A boundary check prevents movement when the next position would leave the map.
+
+ExampleCode:
+if (playerX > 0)
+{
+    playerX--;
+}
+
+TargetCode:
+if (playerX < 9)
+{
+    playerX++;
+}
+
+FillStarter:
+if (playerX ___ 9)
+{
+    playerX++;
+}
+
+PredictionQuestion:
+Why compare playerX with 9?
+
+PredictionOptions:
+['9 is the last allowed column', '9 is player health', 'Every map has 9 rocks', 'It creates a loop']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+The check allows movement only while X is below the rightmost column.
+
+BrokenCode:
+if (playerX > 9)
+{
+    playerX++;
+}
+
+DebugPrompt:
+The comparison points the wrong way. Movement is allowed while X is less than 9.
+
+RecallPrompt:
+Write the right boundary check from memory. Use the exact identifier playerX. Use the exact value 9.
+
+TransferPrompt:
+Prevent upward movement unless playerY is greater than zero. Use the exact value 0.
+
+TransferCode:
+if (playerY > 0)
+{
+    playerY--;
+}
+
+PreviewMessage:
+Movement now respects a map boundary.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-23-certification.txt
+JSON report: Archive/Reports/csharp-module-23-certification.json

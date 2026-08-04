@@ -1,0 +1,160 @@
+{
+  "pass": "C# Module 29 certification",
+  "created_utc": "2026-08-04T13:02:37.501047+00:00",
+  "source": "Pages/CSharp.razor",
+  "module_number": 29,
+  "module": {
+    "Chapter": "Chapter 4 \u00b7 Collections and World",
+    "Topic": "Foreach loops",
+    "Title": "Visit Every Rock",
+    "Teaching": "A foreach loop runs once for every element in a collection.",
+    "ExampleCode": "foreach (string enemy in enemies)\n{\n    Console.WriteLine(enemy);\n}",
+    "TargetCode": "foreach (string rock in rocks)\n{\n    Console.WriteLine(rock);\n}",
+    "FillStarter": "foreach (string ___ in rocks)\n{\n    Console.WriteLine(___);\n}",
+    "PredictionQuestion": "How many times does the loop run?",
+    "PredictionOptions": [
+      "Once per item in rocks",
+      "Exactly once",
+      "Forever",
+      "Only when rocks is text"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "foreach automatically visits each element in the collection.",
+    "BrokenCode": "foreach (rocks)\n{\n    Console.WriteLine(rock);\n}",
+    "DebugPrompt": "The loop header needs an element type and a temporary variable name.",
+    "RecallPrompt": "Write the rock foreach loop from memory. Use these exact identifiers: Console, WriteLine, in, rocks.",
+    "TransferPrompt": "Print every enemy in enemies. Use these exact identifiers: Console, WriteLine, foreach.",
+    "TransferCode": "foreach (string enemy in enemies)\n{\n    Console.WriteLine(enemy);\n}",
+    "PreviewMessage": "The renderer can now visit every rock."
+  },
+  "checks": [
+    {
+      "name": "Module identity",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Chapter, topic, and title must all be present."
+    },
+    {
+      "name": "Teaching content",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Teaching explanation should be complete enough for a beginner."
+    },
+    {
+      "name": "Example and target code",
+      "passed": true,
+      "severity": "PASS",
+      "details": "ExampleCode and TargetCode must both contain code."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "PASS",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction option count",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Found 4 prediction options."
+    },
+    {
+      "name": "Prediction index",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Correct index is 0."
+    },
+    {
+      "name": "Prediction options unique",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Every prediction answer must be meaningfully different."
+    },
+    {
+      "name": "Prediction explanation",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Prediction question and explanation must both be present."
+    },
+    {
+      "name": "Broken code differs from target",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Debug code must contain a real defect."
+    },
+    {
+      "name": "Debug prompt",
+      "passed": true,
+      "severity": "PASS",
+      "details": "DebugPrompt must explain what the learner should inspect."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in RecallPrompt."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in RecallPrompt."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Transfer wording is exact."
+    },
+    {
+      "name": "Preview message",
+      "passed": true,
+      "severity": "PASS",
+      "details": "PreviewMessage must describe the visible outcome."
+    },
+    {
+      "name": "Project build",
+      "passed": true,
+      "severity": "PASS",
+      "details": "dotnet build succeeded."
+    }
+  ],
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [],
+    "errors": [],
+    "tail": [
+      "Determining projects to restore...",
+      "  All projects are up-to-date for restore.",
+      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
+      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
+      "",
+      "Build succeeded.",
+      "    0 Warning(s)",
+      "    0 Error(s)",
+      "",
+      "Time Elapsed 00:00:03.40"
+    ]
+  },
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

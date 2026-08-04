@@ -1,0 +1,181 @@
+====================================================================================================
+CAVECODE C# MODULE 40 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 5 · Objects and Combat
+Topic: Final challenge
+Title: Final Challenge: Defeat the Slime
+
+COMPLETE MODULE 40 CONTENT
+------------------------------
+
+Chapter:
+Chapter 5 · Objects and Combat
+
+Topic:
+Final challenge
+
+Title:
+Final Challenge: Defeat the Slime
+
+Teaching:
+Combine variables, a method, a condition, and rewards into a small combat result.
+
+ExampleCode:
+void Attack(int damage)
+{
+    enemyHealth -= damage;
+    if (enemyHealth <= 0)
+    {
+        coinCount += 1;
+    }
+}
+
+TargetCode:
+void AttackSlime(int damage)
+{
+    slimeHealth -= damage;
+    if (slimeHealth <= 0)
+    {
+        stoneCount += 5;
+        status = "Slime defeated";
+    }
+}
+
+FillStarter:
+void AttackSlime(int ___)
+{
+    slimeHealth -= ___;
+    if (slimeHealth __ 0)
+    {
+        stoneCount += ___;
+        status = "___";
+    }
+}
+
+PredictionQuestion:
+When is the reward granted?
+
+PredictionOptions:
+['When slimeHealth is zero or lower', 'Every time the method is declared', 'Only while the slime has full health', 'Before damage is applied']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+The <= comparison detects defeat after damage has been subtracted.
+
+BrokenCode:
+void AttackSlime(int damage)
+{
+    slimeHealth += damage;
+    if (slimeHealth >= 0)
+    {
+        stoneCount -= 5;
+    }
+}
+
+DebugPrompt:
+Repair the damage direction, defeat comparison, and reward direction.
+
+RecallPrompt:
+Rebuild AttackSlime from memory. Use these exact identifiers: damage, defeated, slimeHealth, status, stoneCount. Use these exact values: 0, 5, "Slime defeated".
+
+TransferPrompt:
+Create AttackBoss that grants 20 coins when bossHealth reaches zero or less. Use these exact identifiers: coinCount, damage, defeated, status. Use the exact value "Boss defeated".
+
+TransferCode:
+void AttackBoss(int damage)
+{
+    bossHealth -= damage;
+    if (bossHealth <= 0)
+    {
+        coinCount += 20;
+        status = "Boss defeated";
+    }
+}
+
+PreviewMessage:
+The course ends with a complete combat-and-reward rule.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-40-certification.txt
+JSON report: Archive/Reports/csharp-module-40-certification.json

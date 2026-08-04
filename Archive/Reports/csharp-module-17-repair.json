@@ -1,0 +1,19 @@
+{
+  "module_number": 17,
+  "module_title": "Create a Reusable Method",
+  "created_utc": "2026-08-04T12:58:29.910282+00:00",
+  "changes": [
+    "RecallPrompt: added missing exact identifiers Console, Ready, WriteLine",
+    "RecallPrompt: added missing exact values Ready!",
+    "TransferPrompt: added missing exact identifiers Console, WriteLine"
+  ],
+  "backup": ".csharp-curriculum-repair-backups/module-17-20260804-125815/Pages/CSharp.razor",
+  "final_checks": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

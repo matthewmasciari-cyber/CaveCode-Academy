@@ -1,0 +1,160 @@
+{
+  "pass": "C# Module 28 certification",
+  "created_utc": "2026-08-04T13:02:13.797392+00:00",
+  "source": "Pages/CSharp.razor",
+  "module_number": 28,
+  "module": {
+    "Chapter": "Chapter 4 \u00b7 Collections and World",
+    "Topic": "List methods",
+    "Title": "Remove a Mined Rock",
+    "Teaching": "The Remove method deletes the first matching value from a List.",
+    "ExampleCode": "enemies.Remove(\"Slime\");",
+    "TargetCode": "rocks.Remove(\"Stone\");",
+    "FillStarter": "rocks.___(\"Stone\");",
+    "PredictionQuestion": "What should happen after a rock is mined?",
+    "PredictionOptions": [
+      "Remove it from the rock list",
+      "Add a duplicate",
+      "Change it to a bool",
+      "Rename the player"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "Removing the collected rock keeps the world state accurate.",
+    "BrokenCode": "rocks.Delete(\"Stone\");",
+    "DebugPrompt": "List<T> uses Remove, not Delete, to remove a matching value.",
+    "RecallPrompt": "Remove \"Stone\" from rocks from memory.",
+    "TransferPrompt": "Remove \"Slime\" from enemies.",
+    "TransferCode": "enemies.Remove(\"Slime\");",
+    "PreviewMessage": "Mined rocks can now disappear from the collection."
+  },
+  "checks": [
+    {
+      "name": "Module identity",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Chapter, topic, and title must all be present."
+    },
+    {
+      "name": "Teaching content",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Teaching explanation should be complete enough for a beginner."
+    },
+    {
+      "name": "Example and target code",
+      "passed": true,
+      "severity": "PASS",
+      "details": "ExampleCode and TargetCode must both contain code."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "PASS",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction option count",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Found 4 prediction options."
+    },
+    {
+      "name": "Prediction index",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Correct index is 0."
+    },
+    {
+      "name": "Prediction options unique",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Every prediction answer must be meaningfully different."
+    },
+    {
+      "name": "Prediction explanation",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Prediction question and explanation must both be present."
+    },
+    {
+      "name": "Broken code differs from target",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Debug code must contain a real defect."
+    },
+    {
+      "name": "Debug prompt",
+      "passed": true,
+      "severity": "PASS",
+      "details": "DebugPrompt must explain what the learner should inspect."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in RecallPrompt."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in RecallPrompt."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Transfer wording is exact."
+    },
+    {
+      "name": "Preview message",
+      "passed": true,
+      "severity": "PASS",
+      "details": "PreviewMessage must describe the visible outcome."
+    },
+    {
+      "name": "Project build",
+      "passed": true,
+      "severity": "PASS",
+      "details": "dotnet build succeeded."
+    }
+  ],
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [],
+    "errors": [],
+    "tail": [
+      "Determining projects to restore...",
+      "  All projects are up-to-date for restore.",
+      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
+      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
+      "",
+      "Build succeeded.",
+      "    0 Warning(s)",
+      "    0 Error(s)",
+      "",
+      "Time Elapsed 00:00:03.50"
+    ]
+  },
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

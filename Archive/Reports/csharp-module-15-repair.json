@@ -1,0 +1,17 @@
+{
+  "module_number": 15,
+  "module_title": "Allow Either Condition",
+  "created_utc": "2026-08-04T12:57:44.398560+00:00",
+  "changes": [
+    "FillStarter: changed 'bool hasLight = hasTorch __ nearCore;' to 'bool hasLight = hasTorch ___ nearCore;'"
+  ],
+  "backup": ".csharp-curriculum-repair-backups/module-15-20260804-125729/Pages/CSharp.razor",
+  "final_checks": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

@@ -1,0 +1,158 @@
+====================================================================================================
+CAVECODE C# MODULE 29 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 4 · Collections and World
+Topic: Foreach loops
+Title: Visit Every Rock
+
+COMPLETE MODULE 29 CONTENT
+------------------------------
+
+Chapter:
+Chapter 4 · Collections and World
+
+Topic:
+Foreach loops
+
+Title:
+Visit Every Rock
+
+Teaching:
+A foreach loop runs once for every element in a collection.
+
+ExampleCode:
+foreach (string enemy in enemies)
+{
+    Console.WriteLine(enemy);
+}
+
+TargetCode:
+foreach (string rock in rocks)
+{
+    Console.WriteLine(rock);
+}
+
+FillStarter:
+foreach (string ___ in rocks)
+{
+    Console.WriteLine(___);
+}
+
+PredictionQuestion:
+How many times does the loop run?
+
+PredictionOptions:
+['Once per item in rocks', 'Exactly once', 'Forever', 'Only when rocks is text']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+foreach automatically visits each element in the collection.
+
+BrokenCode:
+foreach (rocks)
+{
+    Console.WriteLine(rock);
+}
+
+DebugPrompt:
+The loop header needs an element type and a temporary variable name.
+
+RecallPrompt:
+Write the rock foreach loop from memory. Use these exact identifiers: Console, WriteLine, in, rocks.
+
+TransferPrompt:
+Print every enemy in enemies. Use these exact identifiers: Console, WriteLine, foreach.
+
+TransferCode:
+foreach (string enemy in enemies)
+{
+    Console.WriteLine(enemy);
+}
+
+PreviewMessage:
+The renderer can now visit every rock.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-29-certification.txt
+JSON report: Archive/Reports/csharp-module-29-certification.json

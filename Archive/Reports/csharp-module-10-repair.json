@@ -1,0 +1,18 @@
+{
+  "module_number": 10,
+  "module_title": "Check the Pickaxe State",
+  "created_utc": "2026-08-04T12:51:02.606673+00:00",
+  "changes": [
+    "TransferPrompt: added missing exact values 0",
+    "FillStarter: changed 'bool canMine = hasPickaxe __ true;' to 'bool canMine = hasPickaxe ___ true;'"
+  ],
+  "backup": ".csharp-curriculum-repair-backups/module-10-20260804-125043/Pages/CSharp.razor",
+  "final_checks": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

@@ -1136,7 +1136,8 @@
             "A new player has not collected stone yet, so the starting count is zero.",
             "int stoneCount = 0",
             "Every C# statement needs a semicolon at the end.",
-            "From memory, create stoneCount and start it at zero.",
+        /* CAVECODE_CSHARP_MODULE_2_RECALL_VALUE_QA2C */
+        "From memory, create stoneCount and start it at zero. Start the stone count at 0.",
             "Create torchCount and start it at 4.",
             "int torchCount = 4;",
             "The stone counter is now part of the game state."
@@ -1155,7 +1156,8 @@
             "Double quotation marks tell C# that \"Miner\" is text.",
             "string playerName = Miner;",
             "Miner needs quotation marks because it is text, not another variable name.",
-            "From memory, store the player name \"Miner\".",
+            /* CAVECODE_CSHARP_MODULE_3_RECALL_NAME_QA2E_V3 */
+        "From memory, store the player name \"Miner\". Use the exact variable name playerName.",
             "Create worldName with the text \"Deep Hollow\".",
             "string worldName = \"Deep Hollow\";",
             "The explorer now has a visible name."
@@ -1174,7 +1176,8 @@
             "A bool represents a yes-or-no state with true or false.",
             "bool hasPickaxe = \"true\";",
             "true is a Boolean keyword, so it should not have quotation marks.",
-            "From memory, record that the player has a pickaxe.",
+            /* CAVECODE_CSHARP_MODULE_4_RECALL_DETAILS_QA2F */
+        "From memory, record that the player has a pickaxe. Use the exact variable name hasPickaxe. Set its starting value to true.",
             "Create doorOpen and set it to false.",
             "bool doorOpen = false;",
             "The player can now carry a pickaxe state."
@@ -1224,7 +1227,8 @@
             "The += operator adds a value to a variable and stores the new result back in the same variable.",
             "coinCount += 2;",
             "stoneCount += 3;",
-            "stoneCount __ 3;",
+            /* CAVECODE_CSHARP_MODULE_7_FILL_PLACEHOLDER_QA2G */
+        "stoneCount ___ 3;",
             "What does += do?",
             new[] { "Adds and stores the result", "Compares two values", "Creates a string", "Ends a method" },
             0,
@@ -1250,8 +1254,10 @@
             "hasPickaxe uses bool, which stores true or false.",
             "int playerHealth = 100\nint stoneCount = \"0\";\nstring playerName = Miner;\nbool hasPickaxe = \"true\";",
             "Repair the missing semicolon and the incorrect types or quotation marks.",
-            "Rebuild all four player variables from memory.",
-            "Create enemyHealth, enemyName, and enemyActive with sensible starting values.",
+            /* CAVECODE_CSHARP_MODULE_8_CURRICULUM_REPAIR_RECALL */
+        "Rebuild all four player variables from memory. Use these exact identifiers: Miner, hasPickaxe, playerHealth, playerName, stoneCount. Use these exact values: 0, 100, \"Miner\", true.",
+            /* CAVECODE_CSHARP_MODULE_8_CURRICULUM_REPAIR_TRANSFER */
+        "Create enemyHealth, enemyName, and enemyActive. Use the exact identifier Slime. Use these exact values: 30, \"Slime\", true.",
             "int enemyHealth = 30;\nstring enemyName = \"Slime\";\nbool enemyActive = true;",
             "The complete foundation state is ready."
         ),
@@ -1262,15 +1268,18 @@
             "Comparison operators produce a bool. The > operator asks whether the value on the left is greater than the value on the right.",
             "bool hasStone = stoneCount > 0;",
             "bool isAlive = playerHealth > 0;",
-            "bool isAlive = playerHealth __ 0;",
+            /* CAVECODE_CSHARP_MODULE_9_CURRICULUM_REPAIR_FILL */
+        "bool isAlive = playerHealth ___ 0;",
             "What is the result type of playerHealth > 0?",
             new[] { "bool", "int", "string", "double" },
             0,
             "Comparisons answer true or false, so their result is a bool.",
             "bool isAlive = playerHealth = 0;",
             "A single equals sign assigns a value. Use > to test whether health is above zero.",
-            "Create isAlive by checking whether playerHealth is greater than zero.",
-            "Create hasStone by checking whether stoneCount is greater than zero.",
+            /* CAVECODE_CSHARP_MODULE_9_CURRICULUM_REPAIR_RECALL */
+        "Create isAlive by checking whether playerHealth is greater than zero. Use the exact value 0.",
+            /* CAVECODE_CSHARP_MODULE_9_CURRICULUM_REPAIR_TRANSFER */
+        "Create hasStone by checking whether stoneCount is greater than zero. Use the exact value 0.",
             "bool hasStone = stoneCount > 0;",
             "The game can now determine whether the player is alive."
         ),
@@ -1281,7 +1290,8 @@
             "The == operator compares two values. It is different from =, which assigns a value.",
             "bool atExit = playerX == 9;",
             "bool canMine = hasPickaxe == true;",
-            "bool canMine = hasPickaxe __ true;",
+            /* CAVECODE_CSHARP_MODULE_10_CURRICULUM_REPAIR_FILL */
+        "bool canMine = hasPickaxe ___ true;",
             "Which operator compares for equality?",
             new[] { "==", "=", "+=", "!=" },
             0,
@@ -1289,7 +1299,8 @@
             "bool canMine = hasPickaxe = true;",
             "The line assigns true instead of comparing. Replace = with ==.",
             "Create canMine by comparing hasPickaxe with true.",
-            "Create isEmpty by checking whether stoneCount equals zero.",
+            /* CAVECODE_CSHARP_MODULE_10_CURRICULUM_REPAIR_TRANSFER */
+        "Create isEmpty by checking whether stoneCount equals zero. Use the exact value 0.",
             "bool isEmpty = stoneCount == 0;",
             "Mining permission can now depend on equipment."
         ),
@@ -1307,8 +1318,10 @@
             "The condition controls whether the block executes.",
             "if canMine\n{\n    stoneCount += 1;\n}",
             "An if condition must be placed inside parentheses.",
-            "Write an if statement that adds one stone when canMine is true.",
-            "Write an if statement that subtracts 10 health when touchingLava is true.",
+            /* CAVECODE_CSHARP_MODULE_11_CURRICULUM_REPAIR_RECALL */
+        "Write an if statement that adds one stone when canMine is true. Use the exact identifier stoneCount. Use the exact value 1.",
+            /* CAVECODE_CSHARP_MODULE_11_CURRICULUM_REPAIR_TRANSFER */
+        "Write an if statement that subtracts 10 health when touchingLava is true. Use the exact identifier playerHealth.",
             "if (touchingLava)\n{\n    playerHealth -= 10;\n}",
             "The game can now make a conditional mining decision."
         ),
@@ -1326,8 +1339,10 @@
             "else provides the alternative path when the if condition fails.",
             "if (hasPickaxe)\n{\n    status = \"Ready\";\n}\nif\n{\n    status = \"Find a pickaxe\";\n}",
             "The fallback block should use else, not a second if without a condition.",
-            "Write the pickaxe if/else decision from memory.",
-            "Show Safe when isAlive is true, otherwise show Defeated.",
+            /* CAVECODE_CSHARP_MODULE_12_CURRICULUM_REPAIR_RECALL */
+        "Write the pickaxe if/else decision from memory. Use these exact identifiers: Find, Ready, hasPickaxe, mine, status, to. Use these exact values: \"Find a pickaxe\", \"Ready to mine\".",
+            /* CAVECODE_CSHARP_MODULE_12_CURRICULUM_REPAIR_TRANSFER */
+        "Show Safe when isAlive is true, otherwise show Defeated. Use the exact identifier status.",
             "if (isAlive)\n{\n    status = \"Safe\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
             "The game now has a fallback path."
         ),
@@ -1338,15 +1353,18 @@
             "Use else if to test another condition when the first condition is false.",
             "if (score >= 100)\n{\n    rank = \"Gold\";\n}\nelse if (score >= 50)\n{\n    rank = \"Silver\";\n}",
             "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse if (playerHealth > 0)\n{\n    status = \"Hurt\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
-            "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse if (playerHealth __ 0)\n{\n    status = \"Hurt\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
+            /* CAVECODE_CSHARP_MODULE_13_CURRICULUM_REPAIR_FILL */
+        "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse if (playerHealth ___ 0)\n{\n    status = \"Hurt\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
             "Why is the Hurt condition checked second?",
             new[] { "Healthy players were already handled", "else if always runs first", "Health is text", "The final else requires it" },
             0,
             "Once the first condition succeeds, the remaining branches are skipped.",
             "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse (playerHealth > 0)\n{\n    status = \"Hurt\";\n}",
             "A conditional fallback branch is written else if, not else followed by parentheses.",
-            "Recreate the Healthy, Hurt, and Defeated branches.",
-            "Create Full, Low, and Empty states for torchCount.",
+            /* CAVECODE_CSHARP_MODULE_13_CURRICULUM_REPAIR_RECALL */
+        "Recreate the Healthy, Hurt, and Defeated branches. Use these exact identifiers: playerHealth, status. Use these exact values: 0, 75.",
+            /* CAVECODE_CSHARP_MODULE_13_CURRICULUM_REPAIR_TRANSFER */
+        "Create Full, Low, and Empty states for torchCount. Use the exact identifier status. Use these exact values: 0, 5.",
             "if (torchCount >= 5)\n{\n    status = \"Full\";\n}\nelse if (torchCount > 0)\n{\n    status = \"Low\";\n}\nelse\n{\n    status = \"Empty\";\n}",
             "Health can now produce three distinct states."
         ),
@@ -1357,7 +1375,8 @@
             "The && operator means AND. Both conditions must be true for the complete expression to be true.",
             "bool canOpen = hasKey && atDoor;",
             "bool safeToMine = hasPickaxe && isAlive;",
-            "bool safeToMine = hasPickaxe __ isAlive;",
+            /* CAVECODE_CSHARP_MODULE_14_CURRICULUM_REPAIR_FILL */
+        "bool safeToMine = hasPickaxe ___ isAlive;",
             "When is A && B true?",
             new[] { "Only when both are true", "When either one is true", "Only when both are false", "Whenever A is a number" },
             0,
@@ -1376,7 +1395,8 @@
             "The || operator means OR. The expression is true when at least one connected condition is true.",
             "bool canHeal = hasPotion || nearCampfire;",
             "bool hasLight = hasTorch || nearCore;",
-            "bool hasLight = hasTorch __ nearCore;",
+            /* CAVECODE_CSHARP_MODULE_15_CURRICULUM_REPAIR_FILL */
+        "bool hasLight = hasTorch ___ nearCore;",
             "When is A || B true?",
             new[] { "When at least one is true", "Only when both are true", "Only when both are false", "Never" },
             0,
@@ -1402,8 +1422,10 @@
             "The rule requires hasPickaxe to be true and health to remain above zero.",
             "bool canMine = hasPickaxe || playerHealth = 0;\nif canMine\n{\n    stoneCount += 1\n}",
             "Repair the logical operator, comparison, parentheses, and missing semicolon.",
-            "Rebuild the complete mining permission rule.",
-            "Create canFight from hasWeapon and playerHealth > 0, then set status accordingly.",
+            /* CAVECODE_CSHARP_MODULE_16_CURRICULUM_REPAIR_RECALL */
+        "Rebuild the complete mining permission rule. Use these exact identifiers: blocked, canMine, hasPickaxe, playerHealth, status, stoneCount. Use these exact values: 0, 1, \"Mining blocked\".",
+            /* CAVECODE_CSHARP_MODULE_16_CURRICULUM_REPAIR_TRANSFER */
+        "Create canFight from hasWeapon and playerHealth > 0, then set status accordingly. Use these exact identifiers: Battle, Cannot, ready. Use these exact values: \"Battle ready\", \"Cannot fight\".",
             "bool canFight = hasWeapon && playerHealth > 0;\nif (canFight)\n{\n    status = \"Battle ready\";\n}\nelse\n{\n    status = \"Cannot fight\";\n}",
             "The first complete gameplay rule is active."
         ),
@@ -1421,8 +1443,10 @@
             "void means the method performs work without returning a result.",
             "void ShowMessage\n{\n    Console.WriteLine(\"Ready!\");\n}",
             "A method declaration needs parentheses after its name.",
-            "Write ShowMessage from memory.",
-            "Create ShowInventory that prints \"Inventory opened\".",
+            /* CAVECODE_CSHARP_MODULE_17_CURRICULUM_REPAIR_RECALL */
+        "Write ShowMessage from memory. Use these exact identifiers: Console, Ready, WriteLine. Use the exact value \"Ready!\".",
+            /* CAVECODE_CSHARP_MODULE_17_CURRICULUM_REPAIR_TRANSFER */
+        "Create ShowInventory that prints \"Inventory opened\". Use these exact identifiers: Console, WriteLine.",
             "void ShowInventory()\n{\n    Console.WriteLine(\"Inventory opened\");\n}",
             "The project now contains a reusable method."
         ),
@@ -1440,8 +1464,10 @@
             "The caller supplies a value, and the method receives it through the amount parameter.",
             "void AddStone(amount)\n{\n    stoneCount += amount;\n}",
             "A parameter declaration needs a data type before its name.",
-            "Write AddStone with an int amount parameter.",
-            "Create TakeDamage with an int amount parameter.",
+            /* CAVECODE_CSHARP_MODULE_18_CURRICULUM_REPAIR_RECALL */
+        "Write AddStone with an int amount parameter. Use the exact identifier stoneCount.",
+            /* CAVECODE_CSHARP_MODULE_18_CURRICULUM_REPAIR_TRANSFER */
+        "Create TakeDamage with an int amount parameter. Use the exact identifier playerHealth.",
             "void TakeDamage(int amount)\n{\n    playerHealth -= amount;\n}",
             "Methods can now receive values."
         ),
@@ -1452,15 +1478,18 @@
             "A method with a non-void return type sends a value back to the code that called it.",
             "int Double(int value)\n{\n    return value * 2;\n}",
             "bool IsAlive(int health)\n{\n    return health > 0;\n}",
-            "bool IsAlive(int health)\n{\n    return health __ 0;\n}",
+            /* CAVECODE_CSHARP_MODULE_19_CURRICULUM_REPAIR_FILL */
+        "bool IsAlive(int health)\n{\n    return health ___ 0;\n}",
             "What type must IsAlive return?",
             new[] { "bool", "int", "string", "void" },
             0,
             "The method declaration begins with bool, so every return path must provide true or false.",
             "bool IsAlive(int health)\n{\n    health > 0;\n}",
             "The comparison is calculated but never returned. Add the return keyword.",
-            "Write IsAlive from memory.",
-            "Create HasStone that returns whether count is greater than zero.",
+            /* CAVECODE_CSHARP_MODULE_19_CURRICULUM_REPAIR_RECALL */
+        "Write IsAlive from memory. Use the exact identifier health. Use the exact value 0.",
+            /* CAVECODE_CSHARP_MODULE_19_CURRICULUM_REPAIR_TRANSFER */
+        "Create HasStone that returns whether count is greater than zero. Use the exact value 0.",
             "bool HasStone(int count)\n{\n    return count > 0;\n}",
             "Game rules can now return answers."
         ),
@@ -1516,7 +1545,8 @@
             "The ++ operator increases a numeric variable by one.",
             "void MoveRight()\n{\n    playerX--;\n}",
             "The method is moving in the wrong direction. Right should increase X.",
-            "Write MoveRight from memory.",
+            /* CAVECODE_CSHARP_MODULE_22_CURRICULUM_REPAIR_RECALL */
+        "Write MoveRight from memory. Use the exact identifier playerX.",
             "Create MoveDown by increasing playerY.",
             "void MoveDown()\n{\n    playerY++;\n}",
             "The player can move horizontally."
@@ -1528,15 +1558,18 @@
             "A boundary check prevents movement when the next position would leave the map.",
             "if (playerX > 0)\n{\n    playerX--;\n}",
             "if (playerX < 9)\n{\n    playerX++;\n}",
-            "if (playerX __ 9)\n{\n    playerX++;\n}",
+            /* CAVECODE_CSHARP_MODULE_23_CURRICULUM_REPAIR_FILL */
+        "if (playerX ___ 9)\n{\n    playerX++;\n}",
             "Why compare playerX with 9?",
             new[] { "9 is the last allowed column", "9 is player health", "Every map has 9 rocks", "It creates a loop" },
             0,
             "The check allows movement only while X is below the rightmost column.",
             "if (playerX > 9)\n{\n    playerX++;\n}",
             "The comparison points the wrong way. Movement is allowed while X is less than 9.",
-            "Write the right boundary check from memory.",
-            "Prevent upward movement unless playerY is greater than zero.",
+            /* CAVECODE_CSHARP_MODULE_23_CURRICULUM_REPAIR_RECALL */
+        "Write the right boundary check from memory. Use the exact identifier playerX. Use the exact value 9.",
+            /* CAVECODE_CSHARP_MODULE_23_CURRICULUM_REPAIR_TRANSFER */
+        "Prevent upward movement unless playerY is greater than zero. Use the exact value 0.",
             "if (playerY > 0)\n{\n    playerY--;\n}",
             "Movement now respects a map boundary."
         ),
@@ -1554,8 +1587,10 @@
             "W and S move vertically, so they modify Y.",
             "void Move(string key)\n{\n    if (key = \"w\")\n    {\n        playerX++;\n    }\n}",
             "Repair the equality operator and change the correct coordinate in the correct direction.",
-            "Rebuild the complete WASD movement method.",
-            "Create a two-direction MoveEnemy method using left and right commands.",
+            /* CAVECODE_CSHARP_MODULE_24_CURRICULUM_REPAIR_RECALL */
+        "Rebuild the complete WASD movement method. Use these exact identifiers: key, playerX, playerY.",
+            /* CAVECODE_CSHARP_MODULE_24_CURRICULUM_REPAIR_TRANSFER */
+        "Create a two-direction MoveEnemy method using left and right commands. Use these exact identifiers: enemyX, key.",
             "void MoveEnemy(string key)\n{\n    if (key == \"a\")\n    {\n        enemyX--;\n    }\n    else if (key == \"d\")\n    {\n        enemyX++;\n    }\n}",
             "The movement system now understands WASD-style commands."
         ),
@@ -1574,7 +1609,8 @@
             "string inventory = { \"Stone\", \"Wood\" };",
             "The declaration needs [] because it stores multiple string values.",
             "Create the Stone and Wood inventory array from memory.",
-            "Create an int array containing 5, 10, and 15.",
+            /* CAVECODE_CSHARP_MODULE_25_CURRICULUM_REPAIR_TRANSFER */
+        "Create an int array containing 5, 10, and 15. Use the exact identifier damageValues.",
             "int[] damageValues = { 5, 10, 15 };",
             "The preview now has a basic inventory."
         ),
@@ -1649,8 +1685,10 @@
             "foreach automatically visits each element in the collection.",
             "foreach (rocks)\n{\n    Console.WriteLine(rock);\n}",
             "The loop header needs an element type and a temporary variable name.",
-            "Write the rock foreach loop from memory.",
-            "Print every enemy in enemies.",
+            /* CAVECODE_CSHARP_MODULE_29_CURRICULUM_REPAIR_RECALL */
+        "Write the rock foreach loop from memory. Use these exact identifiers: Console, WriteLine, in, rocks.",
+            /* CAVECODE_CSHARP_MODULE_29_CURRICULUM_REPAIR_TRANSFER */
+        "Print every enemy in enemies. Use these exact identifiers: Console, WriteLine, foreach.",
             "foreach (string enemy in enemies)\n{\n    Console.WriteLine(enemy);\n}",
             "The renderer can now visit every rock."
         ),
@@ -1668,8 +1706,10 @@
             "The index advances so the loop can visit the next element.",
             "for (int i = 0; i > rocks.Count; i++)\n{\n    Console.WriteLine(rocks[i]);\n}",
             "Starting at zero, i must remain less than Count to enter the loop.",
-            "Write the indexed rock loop from memory.",
-            "Print every inventory item with a for loop.",
+            /* CAVECODE_CSHARP_MODULE_30_CURRICULUM_REPAIR_RECALL */
+        "Write the indexed rock loop from memory. Use these exact identifiers: Console, Count, WriteLine, rocks. Use the exact value 0.",
+            /* CAVECODE_CSHARP_MODULE_30_CURRICULUM_REPAIR_TRANSFER */
+        "Print every inventory item with a for loop. Use these exact identifiers: Console, Length, WriteLine. Use the exact value 0.",
             "for (int i = 0; i < inventory.Length; i++)\n{\n    Console.WriteLine(inventory[i]);\n}",
             "Indexed repetition is now available."
         ),
@@ -1706,8 +1746,10 @@
             "The check prevents rewarding a rock that was not present.",
             "void MineRock(string rock)\n{\n    if (rocks.Contains(rock))\n    {\n        rocks.Add(rock);\n        stoneCount--;\n    }\n}",
             "Mining should remove the rock and increase the collected resource count.",
-            "Rebuild MineRock from memory.",
-            "Create DefeatEnemy that removes an enemy and adds one coin.",
+            /* CAVECODE_CSHARP_MODULE_32_CURRICULUM_REPAIR_RECALL */
+        "Rebuild MineRock from memory. Use these exact identifiers: Contains, Remove, rocks, stoneCount.",
+            /* CAVECODE_CSHARP_MODULE_32_CURRICULUM_REPAIR_TRANSFER */
+        "Create DefeatEnemy that removes an enemy and adds one coin. Use these exact identifiers: Contains, coinCount, enemies.",
             "void DefeatEnemy(string enemy)\n{\n    if (enemies.Contains(enemy))\n    {\n        enemies.Remove(enemy);\n        coinCount++;\n    }\n}",
             "The world collection and inventory reward now work together."
         ),
@@ -1744,8 +1786,10 @@
             "get returns the property's current value; set allows assignment.",
             "class Player\n{\n    string Name\n    int Health\n}",
             "Add public auto-property syntax, including braces, get, set, and semicolons.",
-            "Add Name and Health properties to Player.",
-            "Create a Slime class with an int Health property.",
+            /* CAVECODE_CSHARP_MODULE_34_CURRICULUM_REPAIR_RECALL */
+        "Add Name and Health properties to Player. Use these exact identifiers: get, set.",
+            /* CAVECODE_CSHARP_MODULE_34_CURRICULUM_REPAIR_TRANSFER */
+        "Create a Slime class with an int Health property. Use these exact identifiers: get, set.",
             "class Slime\n{\n    public int Health { get; set; }\n}",
             "Player objects can now carry name and health properties."
         ),
@@ -1763,7 +1807,8 @@
             "The new expression invokes the matching constructor.",
             "public void Player(string name)\n{\n    Name = name;\n    Health = 100;\n}",
             "Constructors have no return type, not even void.",
-            "Write the Player constructor from memory.",
+            /* CAVECODE_CSHARP_MODULE_35_CURRICULUM_REPAIR_RECALL */
+        "Write the Player constructor from memory. Use these exact identifiers: Health, Name, name. Use the exact value 100.",
             "Create a Slime constructor that sets Health to 30.",
             "public Slime()\n{\n    Health = 30;\n}",
             "New players can now initialize themselves."
@@ -1820,7 +1865,8 @@
             "Compound subtraction removes the supplied damage amount from current health.",
             "void DamageSlime(int damage)\n{\n    slimeHealth += damage;\n}",
             "Damage should subtract health, not add it.",
-            "Write DamageSlime from memory.",
+            /* CAVECODE_CSHARP_MODULE_38_CURRICULUM_REPAIR_RECALL */
+        "Write DamageSlime from memory. Use the exact identifier slimeHealth.",
             "Create HealPlayer that adds an amount to playerHealth.",
             "void HealPlayer(int amount)\n{\n    playerHealth += amount;\n}",
             "The combat system can now reduce enemy health."
@@ -1839,8 +1885,10 @@
             "The object keeps related item data together.",
             "class Item\n{\n    public Name string { get; set; }\n    public Quantity int { get; set; }\n}",
             "In property declarations, the data type comes before the property name.",
-            "Create the Item class with Name and Quantity.",
-            "Create a Weapon class with Name and Damage properties.",
+            /* CAVECODE_CSHARP_MODULE_39_CURRICULUM_REPAIR_RECALL */
+        "Create the Item class with Name and Quantity. Use these exact identifiers: get, set.",
+            /* CAVECODE_CSHARP_MODULE_39_CURRICULUM_REPAIR_TRANSFER */
+        "Create a Weapon class with Name and Damage properties. Use these exact identifiers: get, set.",
             "class Weapon\n{\n    public string Name { get; set; }\n    public int Damage { get; set; }\n}",
             "Inventory entries can now become structured objects."
         ),
@@ -1858,8 +1906,10 @@
             "The <= comparison detects defeat after damage has been subtracted.",
             "void AttackSlime(int damage)\n{\n    slimeHealth += damage;\n    if (slimeHealth >= 0)\n    {\n        stoneCount -= 5;\n    }\n}",
             "Repair the damage direction, defeat comparison, and reward direction.",
-            "Rebuild AttackSlime from memory.",
-            "Create AttackBoss that grants 20 coins when bossHealth reaches zero or less.",
+            /* CAVECODE_CSHARP_MODULE_40_CURRICULUM_REPAIR_RECALL */
+        "Rebuild AttackSlime from memory. Use these exact identifiers: damage, defeated, slimeHealth, status, stoneCount. Use these exact values: 0, 5, \"Slime defeated\".",
+            /* CAVECODE_CSHARP_MODULE_40_CURRICULUM_REPAIR_TRANSFER */
+        "Create AttackBoss that grants 20 coins when bossHealth reaches zero or less. Use these exact identifiers: coinCount, damage, defeated, status. Use the exact value \"Boss defeated\".",
             "void AttackBoss(int damage)\n{\n    bossHealth -= damage;\n    if (bossHealth <= 0)\n    {\n        coinCount += 20;\n        status = \"Boss defeated\";\n    }\n}",
             "The course ends with a complete combat-and-reward rule."
         )

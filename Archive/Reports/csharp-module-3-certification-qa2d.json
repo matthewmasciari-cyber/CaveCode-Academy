@@ -1,0 +1,160 @@
+{
+  "pass": "C#-QA2D",
+  "created_utc": "2026-08-04T12:07:59.300086+00:00",
+  "source": "Pages/CSharp.razor",
+  "module_number": 3,
+  "module": {
+    "Chapter": "Chapter 1 \u00b7 Foundations",
+    "Topic": "Text",
+    "Title": "Store the Player Name",
+    "Teaching": "The string type stores text. Text values must be surrounded by double quotation marks.",
+    "ExampleCode": "string caveName = \"Deep Hollow\";",
+    "TargetCode": "string playerName = \"Miner\";",
+    "FillStarter": "string playerName = \"___\";",
+    "PredictionQuestion": "Which marks make Miner a string value?",
+    "PredictionOptions": [
+      "Double quotation marks",
+      "Parentheses",
+      "Braces",
+      "A semicolon"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "Double quotation marks tell C# that \"Miner\" is text.",
+    "BrokenCode": "string playerName = Miner;",
+    "DebugPrompt": "Miner needs quotation marks because it is text, not another variable name.",
+    "RecallPrompt": "/* CAVECODE_CSHARP_MODULE_3_RECALL_NAME_QA2E_V3 */\n        \"From memory, store the player name \\\"Miner\\\". Use the exact variable name playerName.\"",
+    "TransferPrompt": "Create worldName with the text \"Deep Hollow\".",
+    "TransferCode": "string worldName = \"Deep Hollow\";",
+    "PreviewMessage": "The explorer now has a visible name."
+  },
+  "checks": [
+    {
+      "name": "Module identity",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Chapter, topic, and title must all be present."
+    },
+    {
+      "name": "Teaching content",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Teaching explanation should be complete enough for a beginner."
+    },
+    {
+      "name": "Example and target code",
+      "passed": true,
+      "severity": "PASS",
+      "details": "ExampleCode and TargetCode must both contain code."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "PASS",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction option count",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Found 4 prediction options."
+    },
+    {
+      "name": "Prediction index",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Correct index is 0."
+    },
+    {
+      "name": "Prediction options unique",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Every prediction answer must be meaningfully different."
+    },
+    {
+      "name": "Prediction explanation",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Prediction question and explanation must both be present."
+    },
+    {
+      "name": "Broken code differs from target",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Debug code must contain a real defect."
+    },
+    {
+      "name": "Debug prompt",
+      "passed": true,
+      "severity": "PASS",
+      "details": "DebugPrompt must explain what the learner should inspect."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in RecallPrompt."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in RecallPrompt."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Transfer wording is exact."
+    },
+    {
+      "name": "Preview message",
+      "passed": true,
+      "severity": "PASS",
+      "details": "PreviewMessage must describe the visible outcome."
+    },
+    {
+      "name": "Project build",
+      "passed": true,
+      "severity": "PASS",
+      "details": "dotnet build succeeded."
+    }
+  ],
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [],
+    "errors": [],
+    "tail": [
+      "Determining projects to restore...",
+      "  All projects are up-to-date for restore.",
+      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
+      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
+      "",
+      "Build succeeded.",
+      "    0 Warning(s)",
+      "    0 Error(s)",
+      "",
+      "Time Elapsed 00:00:03.99"
+    ]
+  },
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

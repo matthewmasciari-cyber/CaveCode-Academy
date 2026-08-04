@@ -1,0 +1,20 @@
+{
+  "module_number": 40,
+  "module_title": "Final Challenge: Defeat the Slime",
+  "created_utc": "2026-08-04T13:05:47.344459+00:00",
+  "changes": [
+    "RecallPrompt: added missing exact identifiers damage, defeated, slimeHealth, status, stoneCount",
+    "RecallPrompt: added missing exact values 0, 5, Slime defeated",
+    "TransferPrompt: added missing exact identifiers coinCount, damage, defeated, status",
+    "TransferPrompt: added missing exact values Boss defeated"
+  ],
+  "backup": ".csharp-curriculum-repair-backups/module-40-20260804-130532/Pages/CSharp.razor",
+  "final_checks": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

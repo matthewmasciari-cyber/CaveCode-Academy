@@ -1,0 +1,160 @@
+{
+  "pass": "C# Module 35 certification",
+  "created_utc": "2026-08-04T13:04:27.401255+00:00",
+  "source": "Pages/CSharp.razor",
+  "module_number": 35,
+  "module": {
+    "Chapter": "Chapter 5 \u00b7 Objects and Combat",
+    "Topic": "Constructors",
+    "Title": "Initialize New Players",
+    "Teaching": "A constructor runs when an object is created. It usually assigns required starting values.",
+    "ExampleCode": "public Item(string name)\n{\n    Name = name;\n}",
+    "TargetCode": "public Player(string name)\n{\n    Name = name;\n    Health = 100;\n}",
+    "FillStarter": "public Player(string ___)\n{\n    Name = ___;\n    Health = ___;\n}",
+    "PredictionQuestion": "When does a constructor run?",
+    "PredictionOptions": [
+      "When a new object is created",
+      "Only when a loop ends",
+      "Whenever health changes",
+      "Before the class exists"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "The new expression invokes the matching constructor.",
+    "BrokenCode": "public void Player(string name)\n{\n    Name = name;\n    Health = 100;\n}",
+    "DebugPrompt": "Constructors have no return type, not even void.",
+    "RecallPrompt": "Write the Player constructor from memory. Use these exact identifiers: Health, Name, name. Use the exact value 100.",
+    "TransferPrompt": "Create a Slime constructor that sets Health to 30.",
+    "TransferCode": "public Slime()\n{\n    Health = 30;\n}",
+    "PreviewMessage": "New players can now initialize themselves."
+  },
+  "checks": [
+    {
+      "name": "Module identity",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Chapter, topic, and title must all be present."
+    },
+    {
+      "name": "Teaching content",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Teaching explanation should be complete enough for a beginner."
+    },
+    {
+      "name": "Example and target code",
+      "passed": true,
+      "severity": "PASS",
+      "details": "ExampleCode and TargetCode must both contain code."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "PASS",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction option count",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Found 4 prediction options."
+    },
+    {
+      "name": "Prediction index",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Correct index is 0."
+    },
+    {
+      "name": "Prediction options unique",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Every prediction answer must be meaningfully different."
+    },
+    {
+      "name": "Prediction explanation",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Prediction question and explanation must both be present."
+    },
+    {
+      "name": "Broken code differs from target",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Debug code must contain a real defect."
+    },
+    {
+      "name": "Debug prompt",
+      "passed": true,
+      "severity": "PASS",
+      "details": "DebugPrompt must explain what the learner should inspect."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in RecallPrompt."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in RecallPrompt."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Transfer wording is exact."
+    },
+    {
+      "name": "Preview message",
+      "passed": true,
+      "severity": "PASS",
+      "details": "PreviewMessage must describe the visible outcome."
+    },
+    {
+      "name": "Project build",
+      "passed": true,
+      "severity": "PASS",
+      "details": "dotnet build succeeded."
+    }
+  ],
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [],
+    "errors": [],
+    "tail": [
+      "Determining projects to restore...",
+      "  All projects are up-to-date for restore.",
+      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
+      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
+      "",
+      "Build succeeded.",
+      "    0 Warning(s)",
+      "    0 Error(s)",
+      "",
+      "Time Elapsed 00:00:03.51"
+    ]
+  },
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

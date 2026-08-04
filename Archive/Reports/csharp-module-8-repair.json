@@ -1,0 +1,21 @@
+{
+  "module_number": 8,
+  "module_title": "Foundation Challenge",
+  "created_utc": "2026-08-04T12:36:03.151460+00:00",
+  "changes": [
+    "RecallPrompt: added missing exact identifiers Miner, hasPickaxe, playerHealth, playerName, stoneCount",
+    "RecallPrompt: added missing exact values 0, 100, Miner, true",
+    "TransferPrompt: added missing exact identifiers Slime",
+    "TransferPrompt: added missing exact values 30, Slime, true",
+    "TransferPrompt: removed vague exact-match wording"
+  ],
+  "backup": ".csharp-curriculum-repair-backups/module-8-20260804-123533/Pages/CSharp.razor",
+  "final_checks": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

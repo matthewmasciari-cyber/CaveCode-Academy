@@ -1,0 +1,143 @@
+====================================================================================================
+CAVECODE C# MODULE 31 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 4 · Collections and World
+Topic: 2D arrays
+Title: Create the Cave Grid
+
+COMPLETE MODULE 31 CONTENT
+------------------------------
+
+Chapter:
+Chapter 4 · Collections and World
+
+Topic:
+2D arrays
+
+Title:
+Create the Cave Grid
+
+Teaching:
+A two-dimensional array stores values in rows and columns. It can represent a tile map.
+
+ExampleCode:
+int[,] room = new int[4, 6];
+
+TargetCode:
+int[,] cave = new int[8, 10];
+
+FillStarter:
+int[,] cave = new int[___, ___];
+
+PredictionQuestion:
+What do 8 and 10 represent?
+
+PredictionOptions:
+['Rows and columns', 'Health and stone', 'Two strings', 'Method parameters only']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+The dimensions define the grid's height and width.
+
+BrokenCode:
+int[] cave = new int[8, 10];
+
+DebugPrompt:
+A two-dimensional array needs a comma inside both bracket pairs.
+
+RecallPrompt:
+Create the 8 by 10 cave grid from memory.
+
+TransferPrompt:
+Create a 4 by 6 room grid.
+
+TransferCode:
+int[,] room = new int[4, 6];
+
+PreviewMessage:
+The world now has an explicit tile grid.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-31-certification.txt
+JSON report: Archive/Reports/csharp-module-31-certification.json

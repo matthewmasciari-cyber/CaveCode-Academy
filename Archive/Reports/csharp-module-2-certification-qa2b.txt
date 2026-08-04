@@ -1,0 +1,148 @@
+====================================================================================================
+CAVECODE C# MODULE 2 CERTIFICATION — PASS C#-QA2B
+====================================================================================================
+
+Chapter: Chapter 1 · Foundations
+Topic: Variables
+Title: Count Collected Stone
+
+COMPLETE MODULE 2 CONTENT
+-------------------------
+
+Chapter:
+Chapter 1 · Foundations
+
+Topic:
+Variables
+
+Title:
+Count Collected Stone
+
+Teaching:
+Use another int when the game must remember a count. Good variable names describe exactly what is being counted.
+
+ExampleCode:
+int berryCount = 2;
+
+TargetCode:
+int stoneCount = 0;
+
+FillStarter:
+int stoneCount = ___;
+
+PredictionQuestion:
+Why does stoneCount start at 0?
+
+PredictionOptions:
+['No stone has been collected yet', '0 means text', 'Every int must start at 0', 'It creates a comment']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+A new player has not collected stone yet, so the starting count is zero.
+
+BrokenCode:
+int stoneCount = 0
+
+DebugPrompt:
+Every C# statement needs a semicolon at the end.
+
+RecallPrompt:
+/* CAVECODE_CSHARP_MODULE_2_RECALL_VALUE_QA2C */
+        "From memory, create stoneCount and start it at zero. Start the stone count at 0."
+
+TransferPrompt:
+Create torchCount and start it at 4.
+
+TransferCode:
+int torchCount = 4;
+
+PreviewMessage:
+The stone counter is now part of the game state.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+DECISION
+--------
+MODULE 2 AUTOMATED CHECKS PASSED. Human review is still required.
+
+Text report: Archive/Reports/csharp-module-2-certification-qa2b.txt
+JSON report: Archive/Reports/csharp-module-2-certification-qa2b.json

@@ -1,0 +1,178 @@
+====================================================================================================
+CAVECODE C# MODULE 12 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 2 · Decisions
+Topic: Else
+Title: Provide a Fallback Path
+
+COMPLETE MODULE 12 CONTENT
+------------------------------
+
+Chapter:
+Chapter 2 · Decisions
+
+Topic:
+Else
+
+Title:
+Provide a Fallback Path
+
+Teaching:
+An else block runs when the preceding if condition is false.
+
+ExampleCode:
+if (isAlive)
+{
+    status = "Exploring";
+}
+else
+{
+    status = "Defeated";
+}
+
+TargetCode:
+if (hasPickaxe)
+{
+    status = "Ready to mine";
+}
+else
+{
+    status = "Find a pickaxe";
+}
+
+FillStarter:
+if (hasPickaxe)
+{
+    status = "Ready to mine";
+}
+___
+{
+    status = "Find a pickaxe";
+}
+
+PredictionQuestion:
+When does else run?
+
+PredictionOptions:
+['When the if condition is false', 'When the if condition is true', 'Before the if block', 'Only inside a loop']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+else provides the alternative path when the if condition fails.
+
+BrokenCode:
+if (hasPickaxe)
+{
+    status = "Ready";
+}
+if
+{
+    status = "Find a pickaxe";
+}
+
+DebugPrompt:
+The fallback block should use else, not a second if without a condition.
+
+RecallPrompt:
+Write the pickaxe if/else decision from memory. Use these exact identifiers: Find, Ready, hasPickaxe, mine, status, to. Use these exact values: "Find a pickaxe", "Ready to mine".
+
+TransferPrompt:
+Show Safe when isAlive is true, otherwise show Defeated. Use the exact identifier status.
+
+TransferCode:
+if (isAlive)
+{
+    status = "Safe";
+}
+else
+{
+    status = "Defeated";
+}
+
+PreviewMessage:
+The game now has a fallback path.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-12-certification.txt
+JSON report: Archive/Reports/csharp-module-12-certification.json

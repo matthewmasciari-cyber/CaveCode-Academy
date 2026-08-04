@@ -1,0 +1,160 @@
+{
+  "pass": "C# Module 11 certification",
+  "created_utc": "2026-08-04T12:56:09.561366+00:00",
+  "source": "Pages/CSharp.razor",
+  "module_number": 11,
+  "module": {
+    "Chapter": "Chapter 2 \u00b7 Decisions",
+    "Topic": "If statements",
+    "Title": "Run Code Only When Allowed",
+    "Teaching": "An if statement runs its block only when the condition inside parentheses is true.",
+    "ExampleCode": "if (doorOpen)\n{\n    Console.WriteLine(\"Enter\");\n}",
+    "TargetCode": "if (canMine)\n{\n    stoneCount += 1;\n}",
+    "FillStarter": "if (___)\n{\n    stoneCount += 1;\n}",
+    "PredictionQuestion": "When does the code inside an if block run?",
+    "PredictionOptions": [
+      "When its condition is true",
+      "Every frame",
+      "Only when the condition is false",
+      "Before variables exist"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "The condition controls whether the block executes.",
+    "BrokenCode": "if canMine\n{\n    stoneCount += 1;\n}",
+    "DebugPrompt": "An if condition must be placed inside parentheses.",
+    "RecallPrompt": "Write an if statement that adds one stone when canMine is true. Use the exact identifier stoneCount. Use the exact value 1.",
+    "TransferPrompt": "Write an if statement that subtracts 10 health when touchingLava is true. Use the exact identifier playerHealth.",
+    "TransferCode": "if (touchingLava)\n{\n    playerHealth -= 10;\n}",
+    "PreviewMessage": "The game can now make a conditional mining decision."
+  },
+  "checks": [
+    {
+      "name": "Module identity",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Chapter, topic, and title must all be present."
+    },
+    {
+      "name": "Teaching content",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Teaching explanation should be complete enough for a beginner."
+    },
+    {
+      "name": "Example and target code",
+      "passed": true,
+      "severity": "PASS",
+      "details": "ExampleCode and TargetCode must both contain code."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "PASS",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction option count",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Found 4 prediction options."
+    },
+    {
+      "name": "Prediction index",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Correct index is 0."
+    },
+    {
+      "name": "Prediction options unique",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Every prediction answer must be meaningfully different."
+    },
+    {
+      "name": "Prediction explanation",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Prediction question and explanation must both be present."
+    },
+    {
+      "name": "Broken code differs from target",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Debug code must contain a real defect."
+    },
+    {
+      "name": "Debug prompt",
+      "passed": true,
+      "severity": "PASS",
+      "details": "DebugPrompt must explain what the learner should inspect."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in RecallPrompt."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in RecallPrompt."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Transfer wording is exact."
+    },
+    {
+      "name": "Preview message",
+      "passed": true,
+      "severity": "PASS",
+      "details": "PreviewMessage must describe the visible outcome."
+    },
+    {
+      "name": "Project build",
+      "passed": true,
+      "severity": "PASS",
+      "details": "dotnet build succeeded."
+    }
+  ],
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [],
+    "errors": [],
+    "tail": [
+      "Determining projects to restore...",
+      "  All projects are up-to-date for restore.",
+      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
+      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
+      "",
+      "Build succeeded.",
+      "    0 Warning(s)",
+      "    0 Error(s)",
+      "",
+      "Time Elapsed 00:00:03.61"
+    ]
+  },
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

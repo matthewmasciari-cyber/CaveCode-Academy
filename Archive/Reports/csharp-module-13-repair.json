@@ -1,0 +1,21 @@
+{
+  "module_number": 13,
+  "module_title": "Create Multiple Health States",
+  "created_utc": "2026-08-04T12:56:58.618104+00:00",
+  "changes": [
+    "RecallPrompt: added missing exact identifiers playerHealth, status",
+    "RecallPrompt: added missing exact values 0, 75",
+    "TransferPrompt: added missing exact identifiers status",
+    "TransferPrompt: added missing exact values 0, 5",
+    "FillStarter: changed 'if (playerHealth >= 75)\\n{\\n    status = \"Healthy\";\\n}\\nelse if (playerHealth __ 0)\\n{\\n    status = \"Hurt\";\\n}\\nelse\\n{\\n    status = \"Defeated\";\\n}' to 'if (playerHealth >= 75)\\n{\\n    status = \"Healthy\";\\n}\\nelse if (playerHealth ___ 0)\\n{\\n    status = \"Hurt\";\\n}\\nelse\\n{\\n    status = \"Defeated\";\\n}'"
+  ],
+  "backup": ".csharp-curriculum-repair-backups/module-13-20260804-125643/Pages/CSharp.razor",
+  "final_checks": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

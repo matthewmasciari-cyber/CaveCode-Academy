@@ -1,0 +1,121 @@
+{
+  "created_utc": "2026-08-04T13:05:47.352532+00:00",
+  "total_modules": 40,
+  "already_certified": 10,
+  "repaired": 12,
+  "repairable_dry_run": 0,
+  "manual_review": 0,
+  "failed": 0,
+  "results": [
+    {
+      "module": 19,
+      "title": "Return a Result",
+      "status": "already-certified"
+    },
+    {
+      "module": 20,
+      "title": "Track Horizontal Position",
+      "status": "already-certified"
+    },
+    {
+      "module": 21,
+      "title": "Track Vertical Position",
+      "status": "already-certified"
+    },
+    {
+      "module": 22,
+      "title": "Move One Tile Right",
+      "status": "repaired"
+    },
+    {
+      "module": 23,
+      "title": "Keep the Player Inside the Cave",
+      "status": "repaired"
+    },
+    {
+      "module": 24,
+      "title": "Movement Challenge: WASD",
+      "status": "repaired"
+    },
+    {
+      "module": 25,
+      "title": "Create a Fixed Inventory",
+      "status": "repaired"
+    },
+    {
+      "module": 26,
+      "title": "Create a Flexible Rock List",
+      "status": "already-certified"
+    },
+    {
+      "module": 27,
+      "title": "Add a Rock",
+      "status": "already-certified"
+    },
+    {
+      "module": 28,
+      "title": "Remove a Mined Rock",
+      "status": "already-certified"
+    },
+    {
+      "module": 29,
+      "title": "Visit Every Rock",
+      "status": "repaired"
+    },
+    {
+      "module": 30,
+      "title": "Repeat With an Index",
+      "status": "repaired"
+    },
+    {
+      "module": 31,
+      "title": "Create the Cave Grid",
+      "status": "already-certified"
+    },
+    {
+      "module": 32,
+      "title": "World Challenge: Mine a Rock",
+      "status": "repaired"
+    },
+    {
+      "module": 33,
+      "title": "Define a Player Class",
+      "status": "already-certified"
+    },
+    {
+      "module": 34,
+      "title": "Add Player Properties",
+      "status": "repaired"
+    },
+    {
+      "module": 35,
+      "title": "Initialize New Players",
+      "status": "repaired"
+    },
+    {
+      "module": 36,
+      "title": "Create a Player Object",
+      "status": "already-certified"
+    },
+    {
+      "module": 37,
+      "title": "Create Slime Health",
+      "status": "already-certified"
+    },
+    {
+      "module": 38,
+      "title": "Deal Damage",
+      "status": "repaired"
+    },
+    {
+      "module": 39,
+      "title": "Model an Inventory Item",
+      "status": "repaired"
+    },
+    {
+      "module": 40,
+      "title": "Final Challenge: Defeat the Slime",
+      "status": "repaired"
+    }
+  ]
+}

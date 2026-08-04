@@ -1,0 +1,160 @@
+{
+  "pass": "C# Module 13 certification",
+  "created_utc": "2026-08-04T12:59:21.839511+00:00",
+  "source": "Pages/CSharp.razor",
+  "module_number": 13,
+  "module": {
+    "Chapter": "Chapter 2 \u00b7 Decisions",
+    "Topic": "Else if",
+    "Title": "Create Multiple Health States",
+    "Teaching": "Use else if to test another condition when the first condition is false.",
+    "ExampleCode": "if (score >= 100)\n{\n    rank = \"Gold\";\n}\nelse if (score >= 50)\n{\n    rank = \"Silver\";\n}",
+    "TargetCode": "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse if (playerHealth > 0)\n{\n    status = \"Hurt\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
+    "FillStarter": "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse if (playerHealth ___ 0)\n{\n    status = \"Hurt\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
+    "PredictionQuestion": "Why is the Hurt condition checked second?",
+    "PredictionOptions": [
+      "Healthy players were already handled",
+      "else if always runs first",
+      "Health is text",
+      "The final else requires it"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "Once the first condition succeeds, the remaining branches are skipped.",
+    "BrokenCode": "if (playerHealth >= 75)\n{\n    status = \"Healthy\";\n}\nelse (playerHealth > 0)\n{\n    status = \"Hurt\";\n}",
+    "DebugPrompt": "A conditional fallback branch is written else if, not else followed by parentheses.",
+    "RecallPrompt": "Recreate the Healthy, Hurt, and Defeated branches. Use these exact identifiers: playerHealth, status. Use these exact values: 0, 75.",
+    "TransferPrompt": "Create Full, Low, and Empty states for torchCount. Use the exact identifier status. Use these exact values: 0, 5.",
+    "TransferCode": "if (torchCount >= 5)\n{\n    status = \"Full\";\n}\nelse if (torchCount > 0)\n{\n    status = \"Low\";\n}\nelse\n{\n    status = \"Empty\";\n}",
+    "PreviewMessage": "Health can now produce three distinct states."
+  },
+  "checks": [
+    {
+      "name": "Module identity",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Chapter, topic, and title must all be present."
+    },
+    {
+      "name": "Teaching content",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Teaching explanation should be complete enough for a beginner."
+    },
+    {
+      "name": "Example and target code",
+      "passed": true,
+      "severity": "PASS",
+      "details": "ExampleCode and TargetCode must both contain code."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "PASS",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction option count",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Found 4 prediction options."
+    },
+    {
+      "name": "Prediction index",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Correct index is 0."
+    },
+    {
+      "name": "Prediction options unique",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Every prediction answer must be meaningfully different."
+    },
+    {
+      "name": "Prediction explanation",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Prediction question and explanation must both be present."
+    },
+    {
+      "name": "Broken code differs from target",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Debug code must contain a real defect."
+    },
+    {
+      "name": "Debug prompt",
+      "passed": true,
+      "severity": "PASS",
+      "details": "DebugPrompt must explain what the learner should inspect."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in RecallPrompt."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in RecallPrompt."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All exact-match identifiers appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "PASS",
+      "details": "All required values appear in TransferPrompt."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "PASS",
+      "details": "Transfer wording is exact."
+    },
+    {
+      "name": "Preview message",
+      "passed": true,
+      "severity": "PASS",
+      "details": "PreviewMessage must describe the visible outcome."
+    },
+    {
+      "name": "Project build",
+      "passed": true,
+      "severity": "PASS",
+      "details": "dotnet build succeeded."
+    }
+  ],
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [],
+    "errors": [],
+    "tail": [
+      "Determining projects to restore...",
+      "  All projects are up-to-date for restore.",
+      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
+      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
+      "",
+      "Build succeeded.",
+      "    0 Warning(s)",
+      "    0 Error(s)",
+      "",
+      "Time Elapsed 00:00:04.16"
+    ]
+  },
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

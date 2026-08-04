@@ -1,0 +1,163 @@
+====================================================================================================
+CAVECODE C# MODULE 39 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 5 · Objects and Combat
+Topic: Item objects
+Title: Model an Inventory Item
+
+COMPLETE MODULE 39 CONTENT
+------------------------------
+
+Chapter:
+Chapter 5 · Objects and Combat
+
+Topic:
+Item objects
+
+Title:
+Model an Inventory Item
+
+Teaching:
+A small class can group an item's name and quantity into one meaningful object.
+
+ExampleCode:
+class Resource
+{
+    public string Name { get; set; }
+    public int Amount { get; set; }
+}
+
+TargetCode:
+class Item
+{
+    public string Name { get; set; }
+    public int Quantity { get; set; }
+}
+
+FillStarter:
+class Item
+{
+    public string ___ { get; set; }
+    public int ___ { get; set; }
+}
+
+PredictionQuestion:
+Why group Name and Quantity?
+
+PredictionOptions:
+['They describe one item together', 'Classes can hold only one value', 'It prevents all methods', 'It changes int into string']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+The object keeps related item data together.
+
+BrokenCode:
+class Item
+{
+    public Name string { get; set; }
+    public Quantity int { get; set; }
+}
+
+DebugPrompt:
+In property declarations, the data type comes before the property name.
+
+RecallPrompt:
+Create the Item class with Name and Quantity. Use these exact identifiers: get, set.
+
+TransferPrompt:
+Create a Weapon class with Name and Damage properties. Use these exact identifiers: get, set.
+
+TransferCode:
+class Weapon
+{
+    public string Name { get; set; }
+    public int Damage { get; set; }
+}
+
+PreviewMessage:
+Inventory entries can now become structured objects.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-39-certification.txt
+JSON report: Archive/Reports/csharp-module-39-certification.json

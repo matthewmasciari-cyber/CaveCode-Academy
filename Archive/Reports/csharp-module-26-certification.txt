@@ -1,0 +1,143 @@
+====================================================================================================
+CAVECODE C# MODULE 26 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 4 · Collections and World
+Topic: Lists
+Title: Create a Flexible Rock List
+
+COMPLETE MODULE 26 CONTENT
+------------------------------
+
+Chapter:
+Chapter 4 · Collections and World
+
+Topic:
+Lists
+
+Title:
+Create a Flexible Rock List
+
+Teaching:
+A List can grow and shrink while the game runs, making it useful for world objects.
+
+ExampleCode:
+List<string> enemies = new();
+
+TargetCode:
+List<string> rocks = new();
+
+FillStarter:
+List<string> rocks = ___;
+
+PredictionQuestion:
+Why use a List for rocks?
+
+PredictionOptions:
+['Rocks can be added and removed', 'A List stores only one item', 'Lists cannot change', 'It automatically mines rocks']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+A List supports adding and removing elements during play.
+
+BrokenCode:
+List rocks = new();
+
+DebugPrompt:
+A generic List needs the element type inside angle brackets.
+
+RecallPrompt:
+Create an empty List of string values named rocks.
+
+TransferPrompt:
+Create an empty List of string values named enemies.
+
+TransferCode:
+List<string> enemies = new();
+
+PreviewMessage:
+The cave can now track a flexible collection of rocks.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-26-certification.txt
+JSON report: Archive/Reports/csharp-module-26-certification.json

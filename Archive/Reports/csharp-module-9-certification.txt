@@ -1,0 +1,143 @@
+====================================================================================================
+CAVECODE C# MODULE 9 CERTIFICATION
+====================================================================================================
+
+Chapter: Chapter 2 · Decisions
+Topic: Comparison
+Title: Compare Player Health
+
+COMPLETE MODULE 9 CONTENT
+------------------------------
+
+Chapter:
+Chapter 2 · Decisions
+
+Topic:
+Comparison
+
+Title:
+Compare Player Health
+
+Teaching:
+Comparison operators produce a bool. The > operator asks whether the value on the left is greater than the value on the right.
+
+ExampleCode:
+bool hasStone = stoneCount > 0;
+
+TargetCode:
+bool isAlive = playerHealth > 0;
+
+FillStarter:
+bool isAlive = playerHealth ___ 0;
+
+PredictionQuestion:
+What is the result type of playerHealth > 0?
+
+PredictionOptions:
+['bool', 'int', 'string', 'double']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+Comparisons answer true or false, so their result is a bool.
+
+BrokenCode:
+bool isAlive = playerHealth = 0;
+
+DebugPrompt:
+A single equals sign assigns a value. Use > to test whether health is above zero.
+
+RecallPrompt:
+Create isAlive by checking whether playerHealth is greater than zero. Use the exact value 0.
+
+TransferPrompt:
+Create hasStone by checking whether stoneCount is greater than zero. Use the exact value 0.
+
+TransferCode:
+bool hasStone = stoneCount > 0;
+
+PreviewMessage:
+The game can now determine whether the player is alive.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/csharp-module-9-certification.txt
+JSON report: Archive/Reports/csharp-module-9-certification.json

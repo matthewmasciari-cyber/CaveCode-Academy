@@ -1,0 +1,148 @@
+====================================================================================================
+CAVECODE C# MODULE 3 CERTIFICATION — PASS C#-QA2D
+====================================================================================================
+
+Chapter: Chapter 1 · Foundations
+Topic: Text
+Title: Store the Player Name
+
+COMPLETE MODULE 3 CONTENT
+-------------------------
+
+Chapter:
+Chapter 1 · Foundations
+
+Topic:
+Text
+
+Title:
+Store the Player Name
+
+Teaching:
+The string type stores text. Text values must be surrounded by double quotation marks.
+
+ExampleCode:
+string caveName = "Deep Hollow";
+
+TargetCode:
+string playerName = "Miner";
+
+FillStarter:
+string playerName = "___";
+
+PredictionQuestion:
+Which marks make Miner a string value?
+
+PredictionOptions:
+['Double quotation marks', 'Parentheses', 'Braces', 'A semicolon']
+
+PredictionCorrect:
+0
+
+PredictionExplanation:
+Double quotation marks tell C# that "Miner" is text.
+
+BrokenCode:
+string playerName = Miner;
+
+DebugPrompt:
+Miner needs quotation marks because it is text, not another variable name.
+
+RecallPrompt:
+/* CAVECODE_CSHARP_MODULE_3_RECALL_NAME_QA2E_V3 */
+        "From memory, store the player name \"Miner\". Use the exact variable name playerName."
+
+TransferPrompt:
+Create worldName with the text "Deep Hollow".
+
+TransferCode:
+string worldName = "Deep Hollow";
+
+PreviewMessage:
+The explorer now has a visible name.
+
+CERTIFICATION CHECKS
+--------------------
+
+[PASS] Module identity
+Severity: PASS
+Details: Chapter, topic, and title must all be present.
+
+[PASS] Teaching content
+Severity: PASS
+Details: Teaching explanation should be complete enough for a beginner.
+
+[PASS] Example and target code
+Severity: PASS
+Details: ExampleCode and TargetCode must both contain code.
+
+[PASS] Fill stage contains blank
+Severity: PASS
+Details: FillStarter must contain at least one ___ placeholder.
+
+[PASS] Prediction option count
+Severity: PASS
+Details: Found 4 prediction options.
+
+[PASS] Prediction index
+Severity: PASS
+Details: Correct index is 0.
+
+[PASS] Prediction options unique
+Severity: PASS
+Details: Every prediction answer must be meaningfully different.
+
+[PASS] Prediction explanation
+Severity: PASS
+Details: Prediction question and explanation must both be present.
+
+[PASS] Broken code differs from target
+Severity: PASS
+Details: Debug code must contain a real defect.
+
+[PASS] Debug prompt
+Severity: PASS
+Details: DebugPrompt must explain what the learner should inspect.
+
+[PASS] Recall names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in RecallPrompt.
+
+[PASS] Recall values are fair
+Severity: PASS
+Details: All required values appear in RecallPrompt.
+
+[PASS] Transfer names are stated
+Severity: PASS
+Details: All exact-match identifiers appear in TransferPrompt.
+
+[PASS] Transfer values are stated
+Severity: PASS
+Details: All required values appear in TransferPrompt.
+
+[PASS] Transfer wording matches exact validator
+Severity: PASS
+Details: Transfer wording is exact.
+
+[PASS] Preview message
+Severity: PASS
+Details: PreviewMessage must describe the visible outcome.
+
+[PASS] Project build
+Severity: PASS
+Details: dotnet build succeeded.
+
+SUMMARY
+-------
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+DECISION
+--------
+MODULE 3 AUTOMATED CHECKS PASSED. Human curriculum review is still required.
+
+Text report: Archive/Reports/csharp-module-3-certification-qa2d.txt
+JSON report: Archive/Reports/csharp-module-3-certification-qa2d.json
