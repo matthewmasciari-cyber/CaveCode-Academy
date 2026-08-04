@@ -1,31 +1,31 @@
 {
-  "pass": "C# Module 23 certification",
-  "created_utc": "2026-08-04T15:36:35.973541+00:00",
+  "pass": "C# Module 1 certification",
+  "created_utc": "2026-08-04T15:34:55.320762+00:00",
   "source": "Pages/CSharp.razor",
-  "module_number": 23,
+  "module_number": 1,
   "module": {
-    "Chapter": "Chapter 3 \u00b7 Methods and Movement",
-    "Topic": "Boundaries",
-    "Title": "Keep the Player Inside the Cave",
-    "Teaching": "A boundary check prevents movement when the next position would leave the map.",
-    "ExampleCode": "if (playerX > 0)\n{\n    playerX--;\n}",
-    "TargetCode": "if (playerX < 9)\n{\n    playerX++;\n}",
-    "FillStarter": "if (playerX ___ 9)\n{\n    playerX++;\n}",
-    "PredictionQuestion": "Why compare playerX with 9?",
+    "Chapter": "Chapter 1 \u00b7 Foundations",
+    "Topic": "Variables",
+    "Title": "Store Player Health",
+    "Teaching": "A variable is a named container. The int type stores whole numbers, which makes it a good fit for health.",
+    "ExampleCode": "int torchCount = 4;",
+    "TargetCode": "int playerHealth = 100;",
+    "FillStarter": "int playerHealth = ___;",
+    "PredictionQuestion": "Which part tells C# to store a whole number?",
     "PredictionOptions": [
-      "9 is the last allowed column",
-      "9 is player health",
-      "Every map has 9 rocks",
-      "It creates a loop"
+      "int",
+      "playerHealth",
+      "100",
+      ";"
     ],
     "PredictionCorrect": 0,
-    "PredictionExplanation": "The check allows movement only while X is below the rightmost column.",
-    "BrokenCode": "if (playerX > 9)\n{\n    playerX++;\n}",
-    "DebugPrompt": "The comparison points the wrong way. Movement is allowed while X is less than 9.",
-    "RecallPrompt": "Write the right boundary check from memory. Use the exact identifier playerX. Use the exact value 9.",
-    "TransferPrompt": "Prevent upward movement unless playerY is greater than zero. Use the exact value 0.",
-    "TransferCode": "if (playerY > 0)\n{\n    playerY--;\n}",
-    "PreviewMessage": "Movement now respects a map boundary."
+    "PredictionExplanation": "int is the data type for whole numbers.",
+    "BrokenCode": "int playerHealth = \"100\";",
+    "DebugPrompt": "The value is inside quotation marks, which makes it text instead of a number.",
+    "RecallPrompt": "From memory, create playerHealth with a starting value of 100.",
+    "TransferPrompt": "Create enemyHealth as a whole number starting at 30.",
+    "TransferCode": "int enemyHealth = 30;",
+    "PreviewMessage": "The player now begins with 100 health."
   },
   "checks": [
     {
@@ -146,7 +146,7 @@
       "    0 Warning(s)",
       "    0 Error(s)",
       "",
-      "Time Elapsed 00:00:03.58"
+      "Time Elapsed 00:00:06.30"
     ]
   },
   "summary": {

@@ -1,6 +1,6 @@
 {
   "pass": "C# Module 17 certification",
-  "created_utc": "2026-08-04T13:28:56.171506+00:00",
+  "created_utc": "2026-08-04T15:36:08.581134+00:00",
   "source": "Pages/CSharp.razor",
   "module_number": 17,
   "module": {
@@ -146,7 +146,7 @@
       "    0 Warning(s)",
       "    0 Error(s)",
       "",
-      "Time Elapsed 00:00:03.60"
+      "Time Elapsed 00:00:03.93"
     ]
   },
   "summary": {

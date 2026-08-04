@@ -1,31 +1,31 @@
 {
-  "pass": "C# Module 23 certification",
-  "created_utc": "2026-08-04T15:36:35.973541+00:00",
+  "pass": "C# Module 3 certification",
+  "created_utc": "2026-08-04T15:35:07.068202+00:00",
   "source": "Pages/CSharp.razor",
-  "module_number": 23,
+  "module_number": 3,
   "module": {
-    "Chapter": "Chapter 3 \u00b7 Methods and Movement",
-    "Topic": "Boundaries",
-    "Title": "Keep the Player Inside the Cave",
-    "Teaching": "A boundary check prevents movement when the next position would leave the map.",
-    "ExampleCode": "if (playerX > 0)\n{\n    playerX--;\n}",
-    "TargetCode": "if (playerX < 9)\n{\n    playerX++;\n}",
-    "FillStarter": "if (playerX ___ 9)\n{\n    playerX++;\n}",
-    "PredictionQuestion": "Why compare playerX with 9?",
+    "Chapter": "Chapter 1 \u00b7 Foundations",
+    "Topic": "Text",
+    "Title": "Store the Player Name",
+    "Teaching": "The string type stores text. Text values must be surrounded by double quotation marks.",
+    "ExampleCode": "string caveName = \"Deep Hollow\";",
+    "TargetCode": "string playerName = \"Miner\";",
+    "FillStarter": "string playerName = \"___\";",
+    "PredictionQuestion": "Which marks make Miner a string value?",
     "PredictionOptions": [
-      "9 is the last allowed column",
-      "9 is player health",
-      "Every map has 9 rocks",
-      "It creates a loop"
+      "Double quotation marks",
+      "Parentheses",
+      "Braces",
+      "A semicolon"
     ],
     "PredictionCorrect": 0,
-    "PredictionExplanation": "The check allows movement only while X is below the rightmost column.",
-    "BrokenCode": "if (playerX > 9)\n{\n    playerX++;\n}",
-    "DebugPrompt": "The comparison points the wrong way. Movement is allowed while X is less than 9.",
-    "RecallPrompt": "Write the right boundary check from memory. Use the exact identifier playerX. Use the exact value 9.",
-    "TransferPrompt": "Prevent upward movement unless playerY is greater than zero. Use the exact value 0.",
-    "TransferCode": "if (playerY > 0)\n{\n    playerY--;\n}",
-    "PreviewMessage": "Movement now respects a map boundary."
+    "PredictionExplanation": "Double quotation marks tell C# that \"Miner\" is text.",
+    "BrokenCode": "string playerName = Miner;",
+    "DebugPrompt": "Miner needs quotation marks because it is text, not another variable name.",
+    "RecallPrompt": "From memory, store the player name \"Miner\". Use the exact variable name playerName.",
+    "TransferPrompt": "Create worldName with the text \"Deep Hollow\".",
+    "TransferCode": "string worldName = \"Deep Hollow\";",
+    "PreviewMessage": "The explorer now has a visible name."
   },
   "checks": [
     {
@@ -146,7 +146,7 @@
       "    0 Warning(s)",
       "    0 Error(s)",
       "",
-      "Time Elapsed 00:00:03.58"
+      "Time Elapsed 00:00:05.57"
     ]
   },
   "summary": {

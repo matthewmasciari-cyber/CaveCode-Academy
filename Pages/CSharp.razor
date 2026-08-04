@@ -1255,9 +1255,11 @@
             "int playerHealth = 100\nint stoneCount = \"0\";\nstring playerName = Miner;\nbool hasPickaxe = \"true\";",
             "Repair the missing semicolon and the incorrect types or quotation marks.",
             /* CAVECODE_CSHARP_MODULE_8_CURRICULUM_REPAIR_RECALL */
-        "Rebuild all four player variables from memory. Use these exact identifiers: Miner, hasPickaxe, playerHealth, playerName, stoneCount. Use these exact values: 0, 100, \"Miner\", true.",
+        /* CAVECODE_CSHARP_HQ3_MODULE_8_RECALLPROMPT */
+        "Rebuild all four player variables from memory. Use these exact identifiers: hasPickaxe, playerHealth, playerName, stoneCount. Use these exact values: 0, 100, \"Miner\", true.",
             /* CAVECODE_CSHARP_MODULE_8_CURRICULUM_REPAIR_TRANSFER */
-        "Create enemyHealth, enemyName, and enemyActive. Use the exact identifier Slime. Use these exact values: 30, \"Slime\", true.",
+        /* CAVECODE_CSHARP_HQ3_MODULE_8_TRANSFERPROMPT */
+        "Create enemyHealth, enemyName, and enemyActive. Use these exact values: 30, \"Slime\", true.",
             "int enemyHealth = 30;\nstring enemyName = \"Slime\";\nbool enemyActive = true;",
             "The complete foundation state is ready."
         ),
@@ -1340,7 +1342,8 @@
             "if (hasPickaxe)\n{\n    status = \"Ready\";\n}\nif\n{\n    status = \"Find a pickaxe\";\n}",
             "The fallback block should use else, not a second if without a condition.",
             /* CAVECODE_CSHARP_MODULE_12_CURRICULUM_REPAIR_RECALL */
-        "Write the pickaxe if/else decision from memory. Use these exact identifiers: Find, Ready, hasPickaxe, mine, status, to. Use these exact values: \"Find a pickaxe\", \"Ready to mine\".",
+        /* CAVECODE_CSHARP_HQ3_MODULE_12_RECALLPROMPT */
+        "Write the pickaxe if/else decision from memory. Use these exact identifiers: hasPickaxe, status. Use these exact values: \"Find a pickaxe\", \"Ready to mine\".",
             /* CAVECODE_CSHARP_MODULE_12_CURRICULUM_REPAIR_TRANSFER */
         "Show Safe when isAlive is true, otherwise show Defeated. Use the exact identifier status.",
             "if (isAlive)\n{\n    status = \"Safe\";\n}\nelse\n{\n    status = \"Defeated\";\n}",
@@ -1423,9 +1426,11 @@
             "bool canMine = hasPickaxe || playerHealth = 0;\nif canMine\n{\n    stoneCount += 1\n}",
             "Repair the logical operator, comparison, parentheses, and missing semicolon.",
             /* CAVECODE_CSHARP_MODULE_16_CURRICULUM_REPAIR_RECALL */
-        "Rebuild the complete mining permission rule. Use these exact identifiers: blocked, canMine, hasPickaxe, playerHealth, status, stoneCount. Use these exact values: 0, 1, \"Mining blocked\".",
+        /* CAVECODE_CSHARP_HQ3_MODULE_16_RECALLPROMPT */
+        "Rebuild the complete mining permission rule. Use these exact identifiers: canMine, hasPickaxe, playerHealth, status, stoneCount. Use these exact values: 0, 1, \"Mining blocked\".",
             /* CAVECODE_CSHARP_MODULE_16_CURRICULUM_REPAIR_TRANSFER */
-        "Create canFight from hasWeapon and playerHealth > 0, then set status accordingly. Use these exact identifiers: Battle, Cannot, ready. Use these exact values: \"Battle ready\", \"Cannot fight\".",
+        /* CAVECODE_CSHARP_HQ3_MODULE_16_TRANSFERPROMPT */
+        "Create canFight from hasWeapon and playerHealth > 0, then set status accordingly. Use these exact values: \"Battle ready\", \"Cannot fight\".",
             "bool canFight = hasWeapon && playerHealth > 0;\nif (canFight)\n{\n    status = \"Battle ready\";\n}\nelse\n{\n    status = \"Cannot fight\";\n}",
             "The first complete gameplay rule is active."
         ),
@@ -1444,7 +1449,8 @@
             "void ShowMessage\n{\n    Console.WriteLine(\"Ready!\");\n}",
             "A method declaration needs parentheses after its name.",
             /* CAVECODE_CSHARP_MODULE_17_CURRICULUM_REPAIR_RECALL */
-        "Write ShowMessage from memory. Use these exact identifiers: Console, Ready, WriteLine. Use the exact value \"Ready!\".",
+        /* CAVECODE_CSHARP_HQ3_MODULE_17_RECALLPROMPT */
+        "Write ShowMessage from memory. Use these exact identifiers: Console, WriteLine. Use the exact value \"Ready!\".",
             /* CAVECODE_CSHARP_MODULE_17_CURRICULUM_REPAIR_TRANSFER */
         "Create ShowInventory that prints \"Inventory opened\". Use these exact identifiers: Console, WriteLine.",
             "void ShowInventory()\n{\n    Console.WriteLine(\"Inventory opened\");\n}",
@@ -1907,9 +1913,11 @@
             "void AttackSlime(int damage)\n{\n    slimeHealth += damage;\n    if (slimeHealth >= 0)\n    {\n        stoneCount -= 5;\n    }\n}",
             "Repair the damage direction, defeat comparison, and reward direction.",
             /* CAVECODE_CSHARP_MODULE_40_CURRICULUM_REPAIR_RECALL */
-        "Rebuild AttackSlime from memory. Use these exact identifiers: damage, defeated, slimeHealth, status, stoneCount. Use these exact values: 0, 5, \"Slime defeated\".",
+        /* CAVECODE_CSHARP_HQ3_MODULE_40_RECALLPROMPT */
+        "Rebuild AttackSlime from memory. Use these exact identifiers: damage, slimeHealth, status, stoneCount. Use these exact values: 0, 5, \"Slime defeated\".",
             /* CAVECODE_CSHARP_MODULE_40_CURRICULUM_REPAIR_TRANSFER */
-        "Create AttackBoss that grants 20 coins when bossHealth reaches zero or less. Use these exact identifiers: coinCount, damage, defeated, status. Use the exact value \"Boss defeated\".",
+        /* CAVECODE_CSHARP_HQ3_MODULE_40_TRANSFERPROMPT */
+        "Create AttackBoss that grants 20 coins when bossHealth reaches zero or less. Use these exact identifiers: coinCount, damage, status. Use the exact value \"Boss defeated\".",
             "void AttackBoss(int damage)\n{\n    bossHealth -= damage;\n    if (bossHealth <= 0)\n    {\n        coinCount += 20;\n        status = \"Boss defeated\";\n    }\n}",
             "The course ends with a complete combat-and-reward rule."
         )
