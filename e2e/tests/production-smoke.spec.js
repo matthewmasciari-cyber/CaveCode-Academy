@@ -80,8 +80,8 @@ async function verifyHealthyPage(page, route) {
     const type = response.request().resourceType();
     const url = response.url();
 
-    // GitHub Pages may return the Blazor 404 fallback document
-    // for direct client-side routes before Blazor handles the URL.
+    // GitHub Pages returns the Blazor fallback document with HTTP 404
+    // for direct client-side routes. The checks below confirm the app loads.
     if (type === "document") {
       return;
     }
