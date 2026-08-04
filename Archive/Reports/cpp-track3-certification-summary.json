@@ -1,0 +1,110 @@
+{
+  "pass": "C++ Track 3 Batch Certification",
+  "created_utc": "2026-08-04T15:26:32.409418+00:00",
+  "module_count": 8,
+  "certified_modules": 8,
+  "total_checks": 136,
+  "passed_checks": 136,
+  "failed_checks": 0,
+  "blockers": 0,
+  "high": 0,
+  "medium": 0,
+  "modules": [
+    {
+      "module_number": 1,
+      "title": "Boot the Engine Foundry",
+      "summary": {
+        "total_checks": 17,
+        "passed_checks": 17,
+        "failed_checks": 0,
+        "blockers": 0,
+        "high": 0,
+        "medium": 0
+      }
+    },
+    {
+      "module_number": 2,
+      "title": "Send a Foundry Status Message",
+      "summary": {
+        "total_checks": 17,
+        "passed_checks": 17,
+        "failed_checks": 0,
+        "blockers": 0,
+        "high": 0,
+        "medium": 0
+      }
+    },
+    {
+      "module_number": 3,
+      "title": "Store the Engine Temperature",
+      "summary": {
+        "total_checks": 17,
+        "passed_checks": 17,
+        "failed_checks": 0,
+        "blockers": 0,
+        "high": 0,
+        "medium": 0
+      }
+    },
+    {
+      "module_number": 4,
+      "title": "Choose the Right Engine Data Types",
+      "summary": {
+        "total_checks": 17,
+        "passed_checks": 17,
+        "failed_checks": 0,
+        "blockers": 0,
+        "high": 0,
+        "medium": 0
+      }
+    },
+    {
+      "module_number": 5,
+      "title": "Label the Foundry Systems",
+      "summary": {
+        "total_checks": 17,
+        "passed_checks": 17,
+        "failed_checks": 0,
+        "blockers": 0,
+        "high": 0,
+        "medium": 0
+      }
+    },
+    {
+      "module_number": 6,
+      "title": "Read an Operator Command",
+      "summary": {
+        "total_checks": 17,
+        "passed_checks": 17,
+        "failed_checks": 0,
+        "blockers": 0,
+        "high": 0,
+        "medium": 0
+      }
+    },
+    {
+      "module_number": 7,
+      "title": "Calculate Engine Output",
+      "summary": {
+        "total_checks": 17,
+        "passed_checks": 17,
+        "failed_checks": 0,
+        "blockers": 0,
+        "high": 0,
+        "medium": 0
+      }
+    },
+    {
+      "module_number": 8,
+      "title": "Build the First Foundry Dashboard",
+      "summary": {
+        "total_checks": 17,
+        "passed_checks": 17,
+        "failed_checks": 0,
+        "blockers": 0,
+        "high": 0,
+        "medium": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+CAVECODE C++ TRACK 3 — BATCH CERTIFICATION
+
+Modules certified: 8 / 8
+Checks passed: 136 / 136
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+MODULE RESULTS
+--------------
+Module 1: Boot the Engine Foundry — 17 / 17 — CERTIFIED
+Module 2: Send a Foundry Status Message — 17 / 17 — CERTIFIED
+Module 3: Store the Engine Temperature — 17 / 17 — CERTIFIED
+Module 4: Choose the Right Engine Data Types — 17 / 17 — CERTIFIED
+Module 5: Label the Foundry Systems — 17 / 17 — CERTIFIED
+Module 6: Read an Operator Command — 17 / 17 — CERTIFIED
+Module 7: Calculate Engine Output — 17 / 17 — CERTIFIED
+Module 8: Build the First Foundry Dashboard — 17 / 17 — CERTIFIED
+
+Text report: Archive/Reports/cpp-track3-certification-summary.txt
+JSON report: Archive/Reports/cpp-track3-certification-summary.json

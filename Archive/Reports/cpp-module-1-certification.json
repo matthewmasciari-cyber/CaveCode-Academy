@@ -1,0 +1,141 @@
+{
+  "pass": "C++ Module Certification",
+  "created_utc": "2026-08-04T15:26:31.959325+00:00",
+  "module": {
+    "ModuleNumber": 1,
+    "Chapter": "Chapter 1 \u00b7 Foundry Foundations",
+    "Topic": "Program structure",
+    "Title": "Boot the Engine Foundry",
+    "Teaching": "Every C++ executable begins in the main function. The #include line makes a library available, braces group the function body, semicolons finish statements, and return 0 reports that the program ended successfully.",
+    "ExampleCode": "#include <iostream>\n\nint main()\n{\n    return 0;\n}",
+    "TargetCode": "#include <iostream>\n\nint main()\n{\n    return 0;\n}",
+    "FillStarter": "#include <___>\n\nint ___()\n{\n    return ___;\n}",
+    "PredictionQuestion": "Which function is the starting point of a normal C++ program?",
+    "PredictionOptions": [
+      "main",
+      "start",
+      "iostream",
+      "return"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "The operating system begins the program by calling main.",
+    "BrokenCode": "include <iostream>\n\nint main()\n{\n    return 0\n}",
+    "DebugPrompt": "The library directive needs # at the beginning, and the return statement needs a semicolon.",
+    "RecallPrompt": "Rebuild the minimal Engine Foundry program. Use the exact library iostream, the exact function name main, and return the exact value 0.",
+    "TransferPrompt": "Create another minimal program using the string library. Use the exact function name main and return the exact value 0.",
+    "TransferCode": "#include <string>\n\nint main()\n{\n    return 0;\n}",
+    "PreviewMessage": "The Forge Core startup sequence is now online."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes C++ content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate C++ syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

@@ -21,8 +21,8 @@ public static class CppChapterOneLessons
                 "The operating system begins the program by calling main.",
                 "include <iostream>\n\nint main()\n{\n    return 0\n}",
                 "The library directive needs # at the beginning, and the return statement needs a semicolon.",
-                "Rebuild the minimal Engine Foundry program from memory.",
-                "Create another minimal program that includes the string library and returns success.",
+                "Rebuild the minimal Engine Foundry program. Use the exact library iostream, the exact function name main, and return the exact value 0.",
+                "Create another minimal program using the string library. Use the exact function name main and return the exact value 0.",
                 "#include <string>\n\nint main()\n{\n    return 0;\n}",
                 "The Forge Core startup sequence is now online."
             )
@@ -44,8 +44,8 @@ public static class CppChapterOneLessons
                 "With std::cout, << inserts the value on its right into the console output stream.",
                 "std::cout < \"Foundry online\\n\"",
                 "Console output needs two less-than symbols and the statement must end with a semicolon.",
-                "Print Foundry online followed by a newline.",
-                "Print Cooling system ready followed by a newline.",
+                "Use the exact identifiers std and cout as std::cout. Print the exact text Foundry online\\n.",
+                "Use the exact identifiers std and cout as std::cout. Print the exact text Cooling system ready\\n.",
                 "std::cout << \"Cooling system ready\\n\";",
                 "The diagnostic message board can now report foundry status."
             )
@@ -90,8 +90,8 @@ public static class CppChapterOneLessons
                 "A yes-or-no state is represented directly by bool.",
                 "double engineRpm = \"1200\";\nint coolantTemperature = 72.5;\nbool engineOnline = \"true\";",
                 "Use int for whole RPM, double for the decimal temperature, and bool true without quotation marks.",
-                "Recreate the RPM, coolant temperature, and online-state declarations.",
-                "Store 8 blades, 94.5 percent efficiency, and a passed inspection.",
+                "Create the exact variables engineRpm with 1200, coolantTemperature with 72.5, and engineOnline with true.",
+                "Create the exact variables bladeCount with 8, efficiency with 94.5, and inspectionPassed with true.",
                 "int bladeCount = 8;\ndouble efficiency = 94.5;\nbool inspectionPassed = true;",
                 "RPM, decimal temperature, and power-state instruments are active."
             )
@@ -113,8 +113,8 @@ public static class CppChapterOneLessons
                 "Quotation marks tell C++ that the characters form a string literal.",
                 "string systemName = Forge Core;",
                 "Use std::string and place the text value inside quotation marks.",
-                "Create systemName with the value Forge Core.",
-                "Create subsystemName with the value Turbine Bank.",
+                "Create the exact std::string variable systemName with the value Forge Core.",
+                "Create the exact std::string variable subsystemName with the value Turbine Bank.",
                 "std::string subsystemName = \"Turbine Bank\";",
                 "The foundry now displays readable names for its systems."
             )
@@ -136,8 +136,8 @@ public static class CppChapterOneLessons
                 "The extraction operator places the entered integer into targetRpm.",
                 "int targetRpm = 0;\nstd::cin << targetRpm;",
                 "Input uses >> because data moves from std::cin into the variable.",
-                "Create targetRpm and read an operator value into it.",
-                "Create a command string and read one word into it.",
+                "Create the exact int variable targetRpm with the starting value 0, then use the exact identifiers std and cin as std::cin to read into targetRpm.",
+                "Create the exact std::string variable command, then use the exact identifiers std and cin as std::cin to read one word into command.",
                 "std::string command;\nstd::cin >> command;",
                 "The operator console can now send commands into the simulation."
             )
@@ -160,7 +160,7 @@ public static class CppChapterOneLessons
                 "int engineOutput = 60;\nengineOutput =+ 25;",
                 "Compound addition is written +=. Reversing the symbols assigns positive 25 instead.",
                 "Start engineOutput at 60 and add 25 with compound assignment.",
-                "Start with 10 fuel cells and subtract 2 with compound assignment.",
+                "Create the exact int variable fuelCells with 10, then subtract 2 from fuelCells with compound assignment.",
                 "int fuelCells = 10;\nfuelCells -= 2;",
                 "The power calculator now reports the foundry output level."
             )
@@ -182,8 +182,8 @@ public static class CppChapterOneLessons
                 "engineOnline uses bool because it represents true or false.",
                 "string systemName = Forge Core;\nint engineTemperature == 72;\nint engineOutput =+ 85;\nbool engineOnline = \"true\";\n\ncout < systemName;\ncout < engineTemperature;\ncout < engineOutput;\ncout < engineOnline;",
                 "Repair the std namespaces, quotation marks, assignment operators, Boolean value, output operators, newline text, and semicolons.",
-                "Rebuild the complete Forge Core dashboard from memory.",
-                "Create and print a maintenance dashboard with a name, open-job count, and maintenance-mode state.",
+                "Rebuild the exact Forge Core dashboard. Create std::string systemName with Forge Core, int engineTemperature with 72, int engineOutput with 85, and bool engineOnline with true. Use the exact identifiers std and cout as std::cout to print systemName, engineTemperature, engineOutput, and engineOnline, with the exact newline text \\n after every value.",
+                "Create the exact maintenance dashboard. Create std::string dashboardName with Maintenance, int openJobs with 3, and bool maintenanceMode with true. Use the exact identifiers std and cout as std::cout to print dashboardName, openJobs, and maintenanceMode, with the exact newline text \\n after every value.",
                 "std::string dashboardName = \"Maintenance\";\nint openJobs = 3;\nbool maintenanceMode = true;\n\nstd::cout << dashboardName << \"\\n\";\nstd::cout << openJobs << \"\\n\";\nstd::cout << maintenanceMode << \"\\n\";",
                 "Chapter 1 complete: the first Engine Foundry dashboard is operational."
             )

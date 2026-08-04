@@ -1,0 +1,141 @@
+{
+  "pass": "C++ Module Certification",
+  "created_utc": "2026-08-04T15:26:32.400286+00:00",
+  "module": {
+    "ModuleNumber": 8,
+    "Chapter": "Chapter 1 \u00b7 Foundry Foundations",
+    "Topic": "Foundation challenge",
+    "Title": "Build the First Foundry Dashboard",
+    "Teaching": "A useful program combines several types and output statements. This dashboard stores the system identity and live values, then sends them to the terminal in a readable sequence.",
+    "ExampleCode": "std::string machine = \"Pump\";\nint pressure = 42;\nbool running = true;\n\nstd::cout << machine << \"\\n\";\nstd::cout << pressure << \"\\n\";\nstd::cout << running << \"\\n\";",
+    "TargetCode": "std::string systemName = \"Forge Core\";\nint engineTemperature = 72;\nint engineOutput = 85;\nbool engineOnline = true;\n\nstd::cout << systemName << \"\\n\";\nstd::cout << engineTemperature << \"\\n\";\nstd::cout << engineOutput << \"\\n\";\nstd::cout << engineOnline << \"\\n\";",
+    "FillStarter": "std::string systemName = \"___\";\nint engineTemperature = ___;\nint engineOutput = ___;\nbool engineOnline = ___;\n\nstd::cout << ___ << \"\\n\";\nstd::cout << ___ << \"\\n\";\nstd::cout << ___ << \"\\n\";\nstd::cout << ___ << \"\\n\";",
+    "PredictionQuestion": "Which declaration stores the yes-or-no operating state?",
+    "PredictionOptions": [
+      "bool engineOnline",
+      "int engineOutput",
+      "std::string systemName",
+      "int engineTemperature"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "engineOnline uses bool because it represents true or false.",
+    "BrokenCode": "string systemName = Forge Core;\nint engineTemperature == 72;\nint engineOutput =+ 85;\nbool engineOnline = \"true\";\n\ncout < systemName;\ncout < engineTemperature;\ncout < engineOutput;\ncout < engineOnline;",
+    "DebugPrompt": "Repair the std namespaces, quotation marks, assignment operators, Boolean value, output operators, newline text, and semicolons.",
+    "RecallPrompt": "Rebuild the exact Forge Core dashboard. Create std::string systemName with Forge Core, int engineTemperature with 72, int engineOutput with 85, and bool engineOnline with true. Use the exact identifiers std and cout as std::cout to print systemName, engineTemperature, engineOutput, and engineOnline, with the exact newline text \\n after every value.",
+    "TransferPrompt": "Create the exact maintenance dashboard. Create std::string dashboardName with Maintenance, int openJobs with 3, and bool maintenanceMode with true. Use the exact identifiers std and cout as std::cout to print dashboardName, openJobs, and maintenanceMode, with the exact newline text \\n after every value.",
+    "TransferCode": "std::string dashboardName = \"Maintenance\";\nint openJobs = 3;\nbool maintenanceMode = true;\n\nstd::cout << dashboardName << \"\\n\";\nstd::cout << openJobs << \"\\n\";\nstd::cout << maintenanceMode << \"\\n\";",
+    "PreviewMessage": "Chapter 1 complete: the first Engine Foundry dashboard is operational."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes C++ content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate C++ syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

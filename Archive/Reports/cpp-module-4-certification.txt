@@ -1,0 +1,13 @@
+C++ Module 4 Certification
+
+Module: Choose the Right Engine Data Types
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/cpp-module-4-certification.txt
+JSON report: Archive/Reports/cpp-module-4-certification.json
+
+No production code was modified.
