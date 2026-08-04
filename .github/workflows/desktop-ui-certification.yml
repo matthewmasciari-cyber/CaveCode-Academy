@@ -1,0 +1,97 @@
+name: Desktop UI Certification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "Pages/**"
+      - "Layout/**"
+      - "Shared/**"
+      - "wwwroot/**"
+      - "e2e/tests/desktop-ui-certification.spec.js"
+      - ".github/workflows/desktop-ui-certification.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-ui-certification
+  cancel-in-progress: true
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    defaults:
+      run:
+        working-directory: e2e
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Wait for production deployment
+        run: |
+          for attempt in {1..30}; do
+            STATUS="$(curl -sS -L -o /dev/null -w '%{http_code}' https://cavecodeacademy.dev/?desktop-ui=${{ github.sha }})"
+
+            if [ "$STATUS" = "200" ]; then
+              echo "Production site is responding."
+              exit 0
+            fi
+
+            echo "Attempt $attempt: production returned HTTP $STATUS"
+            sleep 20
+          done
+
+          echo "Production site did not become available."
+          exit 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run desktop UI certification
+        env:
+          PLAYWRIGHT_BASE_URL: https://cavecodeacademy.dev
+        run: |
+          npx playwright test tests/desktop-ui-certification.spec.js             --project=desktop-chromium             --reporter=line,html
+
+      - name: Upload desktop screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cavecode-desktop-ui-screenshots
+          path: e2e/test-results/desktop-ui
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cavecode-desktop-ui-report
+          path: e2e/playwright-report
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cavecode-desktop-ui-failure-evidence
+          path: e2e/test-results
+          if-no-files-found: ignore
+          retention-days: 14
