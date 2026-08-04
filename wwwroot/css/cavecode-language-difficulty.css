@@ -1,0 +1,99 @@
+/* CaveCode Language Difficulty — Pass 2
+   Uses the active user-selected CaveCode theme. */
+
+.cavecode-learning-difficulty {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    margin-top: 14px;
+    padding: 9px 11px;
+    color: var(--text);
+    background:
+        color-mix(in srgb, var(--accent-surface) 34%, transparent);
+    border: 1px solid
+        color-mix(in srgb, var(--accent-border) 64%, var(--border) 36%);
+    border-radius: 9px;
+}
+
+.cavecode-learning-difficulty-copy {
+    min-width: 0;
+}
+
+.cavecode-learning-difficulty-label {
+    display: block;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.cavecode-learning-difficulty-level {
+    display: block;
+    margin-top: 3px;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.cavecode-learning-difficulty-stars {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    min-width: 72px;
+    font-size: 17px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.cavecode-learning-difficulty-star {
+    display: inline-block;
+}
+
+.cavecode-learning-difficulty-star.is-filled {
+    color: var(--accent);
+    text-shadow:
+        0 0 8px color-mix(in srgb, var(--accent-glow) 72%, transparent);
+}
+
+.cavecode-learning-difficulty-star.is-empty {
+    color:
+        color-mix(in srgb, var(--text-muted) 54%, var(--border-strong) 46%);
+}
+
+html[data-mode="light"] .cavecode-learning-difficulty,
+html[data-bs-theme="light"] .cavecode-learning-difficulty {
+    background:
+        color-mix(in srgb, var(--accent-surface) 20%, var(--surface) 80%);
+}
+
+@media (max-width: 520px) {
+    .cavecode-learning-difficulty {
+        grid-template-columns: 1fr;
+        gap: 7px;
+    }
+
+    .cavecode-learning-difficulty-stars {
+        justify-content: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .cavecode-learning-difficulty-star.is-filled {
+        transition:
+            color .18s ease,
+            text-shadow .18s ease,
+            transform .18s ease;
+    }
+
+    [data-learning-difficulty-stars]:hover
+        .cavecode-learning-difficulty-star.is-filled {
+        transform: translateY(-1px);
+    }
+}
