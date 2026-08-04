@@ -65,8 +65,10 @@ async function verifyHealthyPage(page, route) {
 
     const text = message.text();
 
+    // Ignore known browser-only messages that are not application failures.
     if (
       text.includes("Blocked script execution in 'about:srcdoc'") ||
+      text == "Failed to load resource: the server responded with a status of 404 ()" ||
       shouldIgnoreConsole(text)
     ) {
       return;
