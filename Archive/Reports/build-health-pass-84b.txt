@@ -1,0 +1,102 @@
+====================================================================================================
+CAVECODE BUILD HEALTH INVENTORY — PASS 84B
+====================================================================================================
+
+INVENTORY
+---------
+total_files: 203
+total_lines: 126053
+file_types: {'.cs': 19, '.csproj': 1, '.css': 35, '.html': 1, '.js': 24, '.json': 2, '.map': 22, '.md': 36, '.png': 6, '.py': 5, '.pyc': 1, '.razor': 45, '.sql': 1, '.svg': 1, '.txt': 2, '.yml': 1, '[no extension]': 1}
+top_level_file_counts: {'.github': 1, '.gitignore': 1, 'App.razor': 1, 'CaveCode.csproj': 1, 'Components': 15, 'CourseEngine': 13, 'Layout': 4, 'Pages': 26, 'Program.cs': 1, 'Properties': 1, 'Services': 5, 'THIRD_PARTY_NOTICES.md': 1, '_Imports.razor': 1, 'audit-cavecode-build-health-pass-84b.py': 1, 'docs': 37, 'supabase': 1, 'tools': 5, 'wwwroot': 88}
+razor_pages: 26
+razor_components: 19
+services: 7
+javascript_files: 24
+css_files: 35
+svg_files: 1
+
+ROUTES
+------
+/                                        Pages/Home.razor
+/achievements                            Pages/Achievements.razor
+/counter                                 Pages/Counter.razor
+/cpp                                     Pages/Cpp.razor
+/csharp                                  Pages/CSharp.razor
+/html-css                                Pages/HtmlCss.razor
+/leaderboard                             Pages/Leaderboard.razor
+/minigames                               Pages/Minigames.razor
+/minigames/cpp                           Pages/CppMinigame.razor
+/minigames/cpp/mission-2                 Pages/CppMinigameMissionTwo.razor
+/minigames/cpp/mission-3                 Pages/CppMinigameMissionThree.razor
+/minigames/cpp/mission-4                 Pages/CppMinigameMissionFour.razor
+/minigames/cpp/mission-5                 Pages/CppMinigameMissionFive.razor
+/minigames/csharp                        Pages/CSharpDefense.razor
+/minigames/html-css                      Pages/HtmlCssMinigame.razor
+/minigames/html-css/campaign             Pages/HtmlCssMinigameCampaign.razor
+/minigames/html-css/endless              Pages/HtmlCssMinigameEndless.razor
+/minigames/html-css/mission-2            Pages/HtmlCssMinigameMissionTwo.razor
+/minigames/html-css/mission-3            Pages/HtmlCssMinigameMissionThree.razor
+/minigames/html-css/mission-4            Pages/HtmlCssMinigameMissionFour.razor
+/minigames/html-css/mission-5            Pages/HtmlCssMinigameMissionFive.razor
+/minigames/python                        Pages/PythonControlRoom.razor
+/not-found                               Pages/NotFound.razor
+/python                                  Pages/Python.razor
+/settings                                Pages/Settings.razor
+/weather                                 Pages/Weather.razor
+
+LARGEST FILES
+-------------
+    679755 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap.css.map
+    679615 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map
+    589892 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map
+    589087 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map
+    444579 bytes |       1 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map
+    332090 bytes |       1 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map
+    306606 bytes |       1 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.js.map
+    305438 bytes |       1 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map
+    281046 bytes |   12057 lines | wwwroot/lib/bootstrap/dist/css/bootstrap.css
+    280259 bytes |   12030 lines | wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css
+    267535 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map
+    267476 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map
+    232911 bytes |       6 lines | wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css
+    232803 bytes |       6 lines | wwwroot/lib/bootstrap/dist/css/bootstrap.min.css
+    222455 bytes |       1 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map
+    220561 bytes |       1 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map
+    207819 bytes |    6314 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js
+    203225 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map
+    203221 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map
+    192026 bytes |    4772 lines | wwwroot/js/caveCodeMinigames.js
+    180381 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map
+    180217 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map
+    150000 bytes |    3969 lines | docs/leaderboard-service-pass-82a2-audit.txt
+    145401 bytes |    4494 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.js
+    135829 bytes |    4447 lines | wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js
+    129386 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map
+    129371 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map
+    122029 bytes |    2740 lines | Pages/Python.razor
+    116063 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map
+    115986 bytes |       1 lines | wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map
+
+DUPLICATE FILENAMES
+-------------------
+None found.
+
+IDENTICAL FILE CONTENT
+----------------------
+None found.
+
+EMPTY DIRECTORIES
+-----------------
+None found.
+
+LIKELY ORPHAN ASSETS
+--------------------
+Review before deleting. Dynamic references may not be detected.
+wwwroot/branding/cavecode-academy-favicon-512.png
+wwwroot/favicon.png
+wwwroot/icon-192.png
+
+OUTPUT
+------
+Text report: Archive/Reports/build-health-pass-84b.txt
+JSON report: Archive/Reports/build-health-pass-84b.json

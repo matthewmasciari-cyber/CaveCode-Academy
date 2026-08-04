@@ -1,5 +1,6 @@
 @page "/leaderboard"
 @inject ProgressionService ProgressionService
+@inject IJSRuntime JS
 @inject ProfileService ProfileService
 
 <PageTitle>Leaderboard · CaveCode Academy</PageTitle>
@@ -627,6 +628,7 @@
             _ => "Overall academy"
         };
 
+    // LEADERBOARD_AUTH_READY_REFRESH_79A
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
@@ -636,7 +638,27 @@
 
         Profile = await ProfileService.GetPreferencesAsync();
         State = await ProgressionService.GetStateAsync();
+
+        // Render local information immediately, then wait for Supabase
+        // to finish restoring the persisted authentication session.
         await RefreshLeaderboard();
+
+        try
+        {
+            await JS.InvokeAsync<AuthReadyState>(
+                "caveCodeAuth.waitForReady",
+                5000
+            );
+
+            // The first call may have happened before Supabase restored
+            // the session. This second call retrieves the full public list.
+            await RefreshLeaderboard();
+        }
+        catch
+        {
+            // Keep the local leaderboard result if cloud auth is unavailable.
+        }
+
         Ready = true;
         await InvokeAsync(StateHasChanged);
     }
@@ -673,6 +695,12 @@
             );
 
         await InvokeAsync(StateHasChanged);
+    }
+
+    private sealed class AuthReadyState
+    {
+        public bool Ready { get; set; }
+        public bool SignedIn { get; set; }
     }
 
     private int FilterXp(LeaderboardEntry entry) =>

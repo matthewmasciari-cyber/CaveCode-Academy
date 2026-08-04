@@ -87,6 +87,39 @@ async function currentUser() {
     return error ? null : user;
 }
 
+async function waitForAuthReady(timeoutMs = 5000) {
+    const deadline =
+        Date.now() + Math.max(250, Number(timeoutMs) || 5000);
+
+    while (!supabaseClient && Date.now() < deadline) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    if (!supabaseClient) {
+        return {
+            ready: false,
+            signedIn: false
+        };
+    }
+
+    try {
+        const {
+            data: { session },
+            error
+        } = await supabaseClient.auth.getSession();
+
+        return {
+            ready: !error,
+            signedIn: Boolean(session?.user)
+        };
+    } catch {
+        return {
+            ready: false,
+            signedIn: false
+        };
+    }
+}
+
 window.caveCodeAuth = {
     initialize: function (projectUrl, publishableKey) {
         if (supabaseClient) {
@@ -149,6 +182,10 @@ window.caveCodeAuth = {
 
     isSignedIn: async function () {
         return (await currentUser()) !== null;
+    },
+
+    waitForReady: async function (timeoutMs = 5000) {
+        return await waitForAuthReady(timeoutMs);
     },
 
     getCurrentUser: async function () {

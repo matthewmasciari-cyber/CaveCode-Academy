@@ -1,0 +1,895 @@
+{
+  "pass": "84A",
+  "created_utc": "2026-08-04T00:37:33.771284+00:00",
+  "purpose": "Move historical pass scaffolding out of the production repository root.",
+  "moved_count": 213,
+  "moves": [
+    {
+      "source": "apply-cavecode-adaptive-language-finder-pass-81d2.py",
+      "destination": "Archive/Installers/apply-cavecode-adaptive-language-finder-pass-81d2.py"
+    },
+    {
+      "source": "apply-cavecode-branding-alignment-pass-79b.py",
+      "destination": "Archive/Installers/apply-cavecode-branding-alignment-pass-79b.py"
+    },
+    {
+      "source": "apply-cavecode-chapter-mastery-minigame-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-chapter-mastery-minigame-pass.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-chapter-1-pass-3.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-chapter-1-pass-3.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-course-shell-pass-2.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-course-shell-pass-2.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7a.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7a.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7b.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7b.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7c.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7c.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7d.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7d.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-1.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-1.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-1r.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-1r.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-2a.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-2a.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-2b-1.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-2b-1.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-2b-2.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-2b-2.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-3a.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-3a.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-3b-1.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-3b-1.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-3b-2.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-3b-2.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-4a.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-4a.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-4b-1.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-4b-1.py"
+    },
+    {
+      "source": "apply-cavecode-cpp-minigame-pass-7e-4b-2.py",
+      "destination": "Archive/Installers/apply-cavecode-cpp-minigame-pass-7e-4b-2.py"
+    },
+    {
+      "source": "apply-cavecode-dark-mode-ui-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-dark-mode-ui-pass.py"
+    },
+    {
+      "source": "apply-cavecode-direct-static-language-cards-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-direct-static-language-cards-pass.py"
+    },
+    {
+      "source": "apply-cavecode-favicon-repair-v2.py",
+      "destination": "Archive/Installers/apply-cavecode-favicon-repair-v2.py"
+    },
+    {
+      "source": "apply-cavecode-full-question-bank-audit.py",
+      "destination": "Archive/Installers/apply-cavecode-full-question-bank-audit.py"
+    },
+    {
+      "source": "apply-cavecode-home-header-cleanup.py",
+      "destination": "Archive/Installers/apply-cavecode-home-header-cleanup.py"
+    },
+    {
+      "source": "apply-cavecode-home-learning-paths-polish-pass-80b.py",
+      "destination": "Archive/Installers/apply-cavecode-home-learning-paths-polish-pass-80b.py"
+    },
+    {
+      "source": "apply-cavecode-home-learning-paths-restore-pass-80a.py",
+      "destination": "Archive/Installers/apply-cavecode-home-learning-paths-restore-pass-80a.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-chapter-1-pass-5-clean.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-chapter-1-pass-5-clean.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-course-shell-pass-4.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-course-shell-pass-4.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-5b-1.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-5b-1.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-5b-2.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-5b-2.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6a.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6a.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6b.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6b.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6c.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6c.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6d.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6d.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6e-1.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6e-1.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6e-2.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6e-2.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6e-3.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6e-3.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6e-4.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6e-4.py"
+    },
+    {
+      "source": "apply-cavecode-html-css-pass-6e-5.py",
+      "destination": "Archive/Installers/apply-cavecode-html-css-pass-6e-5.py"
+    },
+    {
+      "source": "apply-cavecode-installer-framework-v2.py",
+      "destination": "Archive/Installers/apply-cavecode-installer-framework-v2.py"
+    },
+    {
+      "source": "apply-cavecode-language-cards-visual-polish-pass-81b.py",
+      "destination": "Archive/Installers/apply-cavecode-language-cards-visual-polish-pass-81b.py"
+    },
+    {
+      "source": "apply-cavecode-language-finder-pass-81d.py",
+      "destination": "Archive/Installers/apply-cavecode-language-finder-pass-81d.py"
+    },
+    {
+      "source": "apply-cavecode-language-icon-refinement-pass-81c.py",
+      "destination": "Archive/Installers/apply-cavecode-language-icon-refinement-pass-81c.py"
+    },
+    {
+      "source": "apply-cavecode-leaderboard-enrollment-sync-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-leaderboard-enrollment-sync-pass.py"
+    },
+    {
+      "source": "apply-cavecode-leaderboard-sync-repair-pass-82b.py",
+      "destination": "Archive/Installers/apply-cavecode-leaderboard-sync-repair-pass-82b.py"
+    },
+    {
+      "source": "apply-cavecode-learning-path-blinking-hotfix.py",
+      "destination": "Archive/Installers/apply-cavecode-learning-path-blinking-hotfix.py"
+    },
+    {
+      "source": "apply-cavecode-learning-path-discovery-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-learning-path-discovery-pass.py"
+    },
+    {
+      "source": "apply-cavecode-learning-path-real-world-uses-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-learning-path-real-world-uses-pass.py"
+    },
+    {
+      "source": "apply-cavecode-light-mode-contrast-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-light-mode-contrast-pass.py"
+    },
+    {
+      "source": "apply-cavecode-light-mode-notice-icon-contrast-hotfix.py",
+      "destination": "Archive/Installers/apply-cavecode-light-mode-notice-icon-contrast-hotfix.py"
+    },
+    {
+      "source": "apply-cavecode-minigame-rules-hints-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-minigame-rules-hints-pass.py"
+    },
+    {
+      "source": "apply-cavecode-minigame-ux-refinement-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-minigame-ux-refinement-pass.py"
+    },
+    {
+      "source": "apply-cavecode-minigame-variety-overhaul.py",
+      "destination": "Archive/Installers/apply-cavecode-minigame-variety-overhaul.py"
+    },
+    {
+      "source": "apply-cavecode-minigame-vertical-slice.py",
+      "destination": "Archive/Installers/apply-cavecode-minigame-vertical-slice.py"
+    },
+    {
+      "source": "apply-cavecode-modern-loading-screen.py",
+      "destination": "Archive/Installers/apply-cavecode-modern-loading-screen.py"
+    },
+    {
+      "source": "apply-cavecode-navigation-title-lock-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-navigation-title-lock-pass.py"
+    },
+    {
+      "source": "apply-cavecode-official-logo-pass-1.py",
+      "destination": "Archive/Installers/apply-cavecode-official-logo-pass-1.py"
+    },
+    {
+      "source": "apply-cavecode-official-logo-pass-2.py",
+      "destination": "Archive/Installers/apply-cavecode-official-logo-pass-2.py"
+    },
+    {
+      "source": "apply-cavecode-official-logo-pass-3.py",
+      "destination": "Archive/Installers/apply-cavecode-official-logo-pass-3.py"
+    },
+    {
+      "source": "apply-cavecode-profile-startup-safety-fix.py",
+      "destination": "Archive/Installers/apply-cavecode-profile-startup-safety-fix.py"
+    },
+    {
+      "source": "apply-cavecode-project-foundation-cleanup-pass-84a.py",
+      "destination": "Archive/Installers/apply-cavecode-project-foundation-cleanup-pass-84a.py"
+    },
+    {
+      "source": "apply-cavecode-settings-layout-upgrade-pass-83a.py",
+      "destination": "Archive/Installers/apply-cavecode-settings-layout-upgrade-pass-83a.py"
+    },
+    {
+      "source": "apply-cavecode-settings-visual-refactor-pass-83b.py",
+      "destination": "Archive/Installers/apply-cavecode-settings-visual-refactor-pass-83b.py"
+    },
+    {
+      "source": "apply-cavecode-shared-course-engine-pass-1.py",
+      "destination": "Archive/Installers/apply-cavecode-shared-course-engine-pass-1.py"
+    },
+    {
+      "source": "apply-cavecode-static-uniform-language-cards-pass-81a.py",
+      "destination": "Archive/Installers/apply-cavecode-static-uniform-language-cards-pass-81a.py"
+    },
+    {
+      "source": "apply-cavecode-themed-code-and-page-header-contrast-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-themed-code-and-page-header-contrast-pass.py"
+    },
+    {
+      "source": "apply-cavecode-username-button-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-username-button-pass.py"
+    },
+    {
+      "source": "apply-cavecode-username-rename-economy.py",
+      "destination": "Archive/Installers/apply-cavecode-username-rename-economy.py"
+    },
+    {
+      "source": "apply-cavecode-whole-program-contrast-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-whole-program-contrast-pass.py"
+    },
+    {
+      "source": "apply-cavecode-xp-leaderboard-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-xp-leaderboard-pass.py"
+    },
+    {
+      "source": "apply-cavecode-xp-resume-tier-pass.py",
+      "destination": "Archive/Installers/apply-cavecode-xp-resume-tier-pass.py"
+    },
+    {
+      "source": "audit-cavecode-home-language-features-recovery.py",
+      "destination": "Archive/Audits/audit-cavecode-home-language-features-recovery.py"
+    },
+    {
+      "source": "audit-cavecode-leaderboard-and-branding.py",
+      "destination": "Archive/Audits/audit-cavecode-leaderboard-and-branding.py"
+    },
+    {
+      "source": "audit-cavecode-leaderboard-refresh-current-files.py",
+      "destination": "Archive/Audits/audit-cavecode-leaderboard-refresh-current-files.py"
+    },
+    {
+      "source": "audit-cavecode-leaderboard-service-pass-82a2.py",
+      "destination": "Archive/Audits/audit-cavecode-leaderboard-service-pass-82a2.py"
+    },
+    {
+      "source": "audit-cavecode-leaderboard-sync-pass-82a.py",
+      "destination": "Archive/Audits/audit-cavecode-leaderboard-sync-pass-82a.py"
+    },
+    {
+      "source": "audit-cavecode-pass-80a-runtime-hooks.py",
+      "destination": "Archive/Audits/audit-cavecode-pass-80a-runtime-hooks.py"
+    },
+    {
+      "source": "enforce-cavecode-missing-code-hints.py",
+      "destination": "Archive/Repairs/enforce-cavecode-missing-code-hints.py"
+    },
+    {
+      "source": "fix-cavecode-confirmed-name-flow-runtime.py",
+      "destination": "Archive/Repairs/fix-cavecode-confirmed-name-flow-runtime.py"
+    },
+    {
+      "source": "fix-cavecode-duplicate-minigame-service-methods.py",
+      "destination": "Archive/Repairs/fix-cavecode-duplicate-minigame-service-methods.py"
+    },
+    {
+      "source": "fix-cavecode-minigame-string-validator.py",
+      "destination": "Archive/Repairs/fix-cavecode-minigame-string-validator.py"
+    },
+    {
+      "source": "fix-cavecode-missing-code-hints.py",
+      "destination": "Archive/Repairs/fix-cavecode-missing-code-hints.py"
+    },
+    {
+      "source": "fix-cavecode-navigation-callback.py",
+      "destination": "Archive/Repairs/fix-cavecode-navigation-callback.py"
+    },
+    {
+      "source": "fix-cavecode-training-duplicate-guidance.py",
+      "destination": "Archive/Repairs/fix-cavecode-training-duplicate-guidance.py"
+    },
+    {
+      "source": "fix-cavecode-username-input-runtime.py",
+      "destination": "Archive/Repairs/fix-cavecode-username-input-runtime.py"
+    },
+    {
+      "source": "recover-cavecode-settings-after-name-fix.py",
+      "destination": "Archive/Repairs/recover-cavecode-settings-after-name-fix.py"
+    },
+    {
+      "source": "recover-cavecode-username-rename-economy-v2.py",
+      "destination": "Archive/Repairs/recover-cavecode-username-rename-economy-v2.py"
+    },
+    {
+      "source": "repair-cavecode-cpp-minigame-hub-unlock-logic.py",
+      "destination": "Archive/Repairs/repair-cavecode-cpp-minigame-hub-unlock-logic.py"
+    },
+    {
+      "source": "repair-cavecode-cpp-mission5-campaignstate-name.py",
+      "destination": "Archive/Repairs/repair-cavecode-cpp-mission5-campaignstate-name.py"
+    },
+    {
+      "source": "repair-cavecode-cpp-pass-7b-focus-field.py",
+      "destination": "Archive/Repairs/repair-cavecode-cpp-pass-7b-focus-field.py"
+    },
+    {
+      "source": "repair-cavecode-cpp-pass-7c-focus-field.py",
+      "destination": "Archive/Repairs/repair-cavecode-cpp-pass-7c-focus-field.py"
+    },
+    {
+      "source": "repair-cavecode-cpp-pass-7d-achievement-property.py",
+      "destination": "Archive/Repairs/repair-cavecode-cpp-pass-7d-achievement-property.py"
+    },
+    {
+      "source": "repair-cavecode-home-learning-paths-heading-v2.py",
+      "destination": "Archive/Repairs/repair-cavecode-home-learning-paths-heading-v2.py"
+    },
+    {
+      "source": "repair-cavecode-home-learning-paths-heading.py",
+      "destination": "Archive/Repairs/repair-cavecode-home-learning-paths-heading.py"
+    },
+    {
+      "source": "repair-cavecode-html-css-pass-6d-razor-block.py",
+      "destination": "Archive/Repairs/repair-cavecode-html-css-pass-6d-razor-block.py"
+    },
+    {
+      "source": "repair-cavecode-language-finder-auto-prompt-81d3.py",
+      "destination": "Archive/Repairs/repair-cavecode-language-finder-auto-prompt-81d3.py"
+    },
+    {
+      "source": "repair-cavecode-language-finder-click-handler-81d1.py",
+      "destination": "Archive/Repairs/repair-cavecode-language-finder-click-handler-81d1.py"
+    },
+    {
+      "source": "repair-cavecode-language-finder-close-button-81d4.py",
+      "destination": "Archive/Repairs/repair-cavecode-language-finder-close-button-81d4.py"
+    },
+    {
+      "source": "repair-cavecode-leaderboard-refresh-race-79a.py",
+      "destination": "Archive/Repairs/repair-cavecode-leaderboard-refresh-race-79a.py"
+    },
+    {
+      "source": "repair-cavecode-learning-paths-remove-legacy-emoji-runtime.py",
+      "destination": "Archive/Repairs/repair-cavecode-learning-paths-remove-legacy-emoji-runtime.py"
+    },
+    {
+      "source": "repair-cavecode-learning-paths-runtime-reconnect-v2.py",
+      "destination": "Archive/Repairs/repair-cavecode-learning-paths-runtime-reconnect-v2.py"
+    },
+    {
+      "source": "repair-cavecode-learning-paths-runtime-reconnect.py",
+      "destination": "Archive/Repairs/repair-cavecode-learning-paths-runtime-reconnect.py"
+    },
+    {
+      "source": "repair-cavecode-minigame-rules-hints-pass.py",
+      "destination": "Archive/Repairs/repair-cavecode-minigame-rules-hints-pass.py"
+    },
+    {
+      "source": "repair-cavecode-pass-4-learning-paths.py",
+      "destination": "Archive/Repairs/repair-cavecode-pass-4-learning-paths.py"
+    },
+    {
+      "source": "repair-cavecode-real-world-lucide-cache-bust.py",
+      "destination": "Archive/Repairs/repair-cavecode-real-world-lucide-cache-bust.py"
+    },
+    {
+      "source": "repair-cavecode-real-world-uses-lucide-icons.py",
+      "destination": "Archive/Repairs/repair-cavecode-real-world-uses-lucide-icons.py"
+    },
+    {
+      "source": "repair-cavecode-static-learning-paths.py",
+      "destination": "Archive/Repairs/repair-cavecode-static-learning-paths.py"
+    },
+    {
+      "source": "repair-cavecode-static-paths-media-error-v2.py",
+      "destination": "Archive/Repairs/repair-cavecode-static-paths-media-error-v2.py"
+    },
+    {
+      "source": "repair-cavecode-static-paths-media-error.py",
+      "destination": "Archive/Repairs/repair-cavecode-static-paths-media-error.py"
+    },
+    {
+      "source": "replace-cavecode-learning-paths-section-static-lucide.py",
+      "destination": "Archive/Installers/replace-cavecode-learning-paths-section-static-lucide.py"
+    },
+    {
+      "source": ".adaptive-language-finder-pass-81d2-backup",
+      "destination": "Archive/Backups/.adaptive-language-finder-pass-81d2-backup"
+    },
+    {
+      "source": ".branding-alignment-pass-79b-backup",
+      "destination": "Archive/Backups/.branding-alignment-pass-79b-backup"
+    },
+    {
+      "source": ".chapter-mastery-minigame-backup",
+      "destination": "Archive/Backups/.chapter-mastery-minigame-backup"
+    },
+    {
+      "source": ".contrast-audit",
+      "destination": "Archive/Backups/.contrast-audit"
+    },
+    {
+      "source": ".cpp-chapter-1-pass-3-backup",
+      "destination": "Archive/Backups/.cpp-chapter-1-pass-3-backup"
+    },
+    {
+      "source": ".cpp-course-shell-pass-2-backup",
+      "destination": "Archive/Backups/.cpp-course-shell-pass-2-backup"
+    },
+    {
+      "source": ".cpp-minigame-hub-unlock-hotfix-backup",
+      "destination": "Archive/Backups/.cpp-minigame-hub-unlock-hotfix-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7a-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7a-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7b-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7b-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7c-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7c-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7d-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7d-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-1-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-1-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-1r-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-1r-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-2a-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-2a-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-2b-1-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-2b-1-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-2b-2-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-2b-2-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-3a-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-3a-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-3b-1-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-3b-1-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-3b-2-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-3b-2-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-4a-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-4a-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-4b-1-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-4b-1-backup"
+    },
+    {
+      "source": ".cpp-minigame-pass-7e-4b-2-backup",
+      "destination": "Archive/Backups/.cpp-minigame-pass-7e-4b-2-backup"
+    },
+    {
+      "source": ".cpp-mission5-campaignstate-name-fix-backup",
+      "destination": "Archive/Backups/.cpp-mission5-campaignstate-name-fix-backup"
+    },
+    {
+      "source": ".cpp-pass-7b-focus-fix-backup",
+      "destination": "Archive/Backups/.cpp-pass-7b-focus-fix-backup"
+    },
+    {
+      "source": ".cpp-pass-7c-focus-fix-backup",
+      "destination": "Archive/Backups/.cpp-pass-7c-focus-fix-backup"
+    },
+    {
+      "source": ".cpp-pass-7d-achievement-fix-backup",
+      "destination": "Archive/Backups/.cpp-pass-7d-achievement-fix-backup"
+    },
+    {
+      "source": ".dark-mode-ui-pass-backup",
+      "destination": "Archive/Backups/.dark-mode-ui-pass-backup"
+    },
+    {
+      "source": ".direct-static-language-cards-backup",
+      "destination": "Archive/Backups/.direct-static-language-cards-backup"
+    },
+    {
+      "source": ".favicon-repair-v2-backup",
+      "destination": "Archive/Backups/.favicon-repair-v2-backup"
+    },
+    {
+      "source": ".home-header-cleanup-backup",
+      "destination": "Archive/Backups/.home-header-cleanup-backup"
+    },
+    {
+      "source": ".home-learning-paths-heading-fix-backup",
+      "destination": "Archive/Backups/.home-learning-paths-heading-fix-backup"
+    },
+    {
+      "source": ".home-learning-paths-heading-v2-backup",
+      "destination": "Archive/Backups/.home-learning-paths-heading-v2-backup"
+    },
+    {
+      "source": ".home-learning-paths-pass-80a-backup",
+      "destination": "Archive/Backups/.home-learning-paths-pass-80a-backup"
+    },
+    {
+      "source": ".html-css-course-shell-pass-4-backup",
+      "destination": "Archive/Backups/.html-css-course-shell-pass-4-backup"
+    },
+    {
+      "source": ".html-css-pass-4-emergency-repair-backup",
+      "destination": "Archive/Backups/.html-css-pass-4-emergency-repair-backup"
+    },
+    {
+      "source": ".html-css-pass-5b-1-backup",
+      "destination": "Archive/Backups/.html-css-pass-5b-1-backup"
+    },
+    {
+      "source": ".html-css-pass-5b-2-backup",
+      "destination": "Archive/Backups/.html-css-pass-5b-2-backup"
+    },
+    {
+      "source": ".html-css-pass-6a-backup",
+      "destination": "Archive/Backups/.html-css-pass-6a-backup"
+    },
+    {
+      "source": ".html-css-pass-6b-backup",
+      "destination": "Archive/Backups/.html-css-pass-6b-backup"
+    },
+    {
+      "source": ".html-css-pass-6c-backup",
+      "destination": "Archive/Backups/.html-css-pass-6c-backup"
+    },
+    {
+      "source": ".html-css-pass-6d-backup",
+      "destination": "Archive/Backups/.html-css-pass-6d-backup"
+    },
+    {
+      "source": ".html-css-pass-6d-razor-fix-backup",
+      "destination": "Archive/Backups/.html-css-pass-6d-razor-fix-backup"
+    },
+    {
+      "source": ".html-css-pass-6e-1-backup",
+      "destination": "Archive/Backups/.html-css-pass-6e-1-backup"
+    },
+    {
+      "source": ".html-css-pass-6e-2-backup",
+      "destination": "Archive/Backups/.html-css-pass-6e-2-backup"
+    },
+    {
+      "source": ".html-css-pass-6e-3-backup",
+      "destination": "Archive/Backups/.html-css-pass-6e-3-backup"
+    },
+    {
+      "source": ".html-css-pass-6e-4-backup",
+      "destination": "Archive/Backups/.html-css-pass-6e-4-backup"
+    },
+    {
+      "source": ".html-css-pass-6e-5-backup",
+      "destination": "Archive/Backups/.html-css-pass-6e-5-backup"
+    },
+    {
+      "source": ".language-cards-visual-polish-pass-81b-backup",
+      "destination": "Archive/Backups/.language-cards-visual-polish-pass-81b-backup"
+    },
+    {
+      "source": ".language-finder-auto-prompt-81d3-backup",
+      "destination": "Archive/Backups/.language-finder-auto-prompt-81d3-backup"
+    },
+    {
+      "source": ".language-finder-click-handler-81d1-backup",
+      "destination": "Archive/Backups/.language-finder-click-handler-81d1-backup"
+    },
+    {
+      "source": ".language-finder-close-button-81d4-backup",
+      "destination": "Archive/Backups/.language-finder-close-button-81d4-backup"
+    },
+    {
+      "source": ".language-finder-pass-81d-backup",
+      "destination": "Archive/Backups/.language-finder-pass-81d-backup"
+    },
+    {
+      "source": ".language-icon-refinement-pass-81c-backup",
+      "destination": "Archive/Backups/.language-icon-refinement-pass-81c-backup"
+    },
+    {
+      "source": ".leaderboard-enrollment-sync-pass-backup",
+      "destination": "Archive/Backups/.leaderboard-enrollment-sync-pass-backup"
+    },
+    {
+      "source": ".leaderboard-refresh-race-79a-backup",
+      "destination": "Archive/Backups/.leaderboard-refresh-race-79a-backup"
+    },
+    {
+      "source": ".leaderboard-sync-repair-pass-82b-backup",
+      "destination": "Archive/Backups/.leaderboard-sync-repair-pass-82b-backup"
+    },
+    {
+      "source": ".learning-path-blinking-hotfix-backup",
+      "destination": "Archive/Backups/.learning-path-blinking-hotfix-backup"
+    },
+    {
+      "source": ".learning-path-discovery-backup",
+      "destination": "Archive/Backups/.learning-path-discovery-backup"
+    },
+    {
+      "source": ".learning-path-real-world-uses-backup",
+      "destination": "Archive/Backups/.learning-path-real-world-uses-backup"
+    },
+    {
+      "source": ".learning-paths-remove-legacy-emoji-runtime-backup",
+      "destination": "Archive/Backups/.learning-paths-remove-legacy-emoji-runtime-backup"
+    },
+    {
+      "source": ".learning-paths-runtime-reconnect-backup",
+      "destination": "Archive/Backups/.learning-paths-runtime-reconnect-backup"
+    },
+    {
+      "source": ".learning-paths-runtime-reconnect-v2-backup",
+      "destination": "Archive/Backups/.learning-paths-runtime-reconnect-v2-backup"
+    },
+    {
+      "source": ".light-mode-contrast-backup",
+      "destination": "Archive/Backups/.light-mode-contrast-backup"
+    },
+    {
+      "source": ".light-mode-notice-icon-contrast-hotfix-backup",
+      "destination": "Archive/Backups/.light-mode-notice-icon-contrast-hotfix-backup"
+    },
+    {
+      "source": ".minigame-duplicate-service-methods-backup",
+      "destination": "Archive/Backups/.minigame-duplicate-service-methods-backup"
+    },
+    {
+      "source": ".minigame-hint-engine-enforcement-backup",
+      "destination": "Archive/Backups/.minigame-hint-engine-enforcement-backup"
+    },
+    {
+      "source": ".minigame-missing-code-hints-backup",
+      "destination": "Archive/Backups/.minigame-missing-code-hints-backup"
+    },
+    {
+      "source": ".minigame-navigation-callback-backup",
+      "destination": "Archive/Backups/.minigame-navigation-callback-backup"
+    },
+    {
+      "source": ".minigame-question-bank-audit-backup",
+      "destination": "Archive/Backups/.minigame-question-bank-audit-backup"
+    },
+    {
+      "source": ".minigame-rules-hints-backup",
+      "destination": "Archive/Backups/.minigame-rules-hints-backup"
+    },
+    {
+      "source": ".minigame-string-validator-backup",
+      "destination": "Archive/Backups/.minigame-string-validator-backup"
+    },
+    {
+      "source": ".minigame-training-duplicate-guidance-backup",
+      "destination": "Archive/Backups/.minigame-training-duplicate-guidance-backup"
+    },
+    {
+      "source": ".minigame-ux-refinement-backup",
+      "destination": "Archive/Backups/.minigame-ux-refinement-backup"
+    },
+    {
+      "source": ".minigame-variety-overhaul-backup",
+      "destination": "Archive/Backups/.minigame-variety-overhaul-backup"
+    },
+    {
+      "source": ".minigame-vertical-slice-backup",
+      "destination": "Archive/Backups/.minigame-vertical-slice-backup"
+    },
+    {
+      "source": ".modern-loading-screen-backup",
+      "destination": "Archive/Backups/.modern-loading-screen-backup"
+    },
+    {
+      "source": ".navigation-title-lock-backup",
+      "destination": "Archive/Backups/.navigation-title-lock-backup"
+    },
+    {
+      "source": ".official-branding-pass-1-backup",
+      "destination": "Archive/Backups/.official-branding-pass-1-backup"
+    },
+    {
+      "source": ".official-branding-pass-2-backup",
+      "destination": "Archive/Backups/.official-branding-pass-2-backup"
+    },
+    {
+      "source": ".official-branding-pass-3-backup",
+      "destination": "Archive/Backups/.official-branding-pass-3-backup"
+    },
+    {
+      "source": ".profile-startup-safety-fix-backup",
+      "destination": "Archive/Backups/.profile-startup-safety-fix-backup"
+    },
+    {
+      "source": ".real-world-uses-lucide-icons-backup",
+      "destination": "Archive/Backups/.real-world-uses-lucide-icons-backup"
+    },
+    {
+      "source": ".replace-learning-paths-section-backup",
+      "destination": "Archive/Backups/.replace-learning-paths-section-backup"
+    },
+    {
+      "source": ".settings-layout-upgrade-pass-83a-backup",
+      "destination": "Archive/Backups/.settings-layout-upgrade-pass-83a-backup"
+    },
+    {
+      "source": ".settings-visual-refactor-pass-83b-backup",
+      "destination": "Archive/Backups/.settings-visual-refactor-pass-83b-backup"
+    },
+    {
+      "source": ".shared-course-engine-pass-1-backup",
+      "destination": "Archive/Backups/.shared-course-engine-pass-1-backup"
+    },
+    {
+      "source": ".static-language-cards-pass-81a-backup",
+      "destination": "Archive/Backups/.static-language-cards-pass-81a-backup"
+    },
+    {
+      "source": ".static-learning-paths-media-fix-backup",
+      "destination": "Archive/Backups/.static-learning-paths-media-fix-backup"
+    },
+    {
+      "source": ".static-learning-paths-media-fix-v2-backup",
+      "destination": "Archive/Backups/.static-learning-paths-media-fix-v2-backup"
+    },
+    {
+      "source": ".static-learning-paths-repair-backup",
+      "destination": "Archive/Backups/.static-learning-paths-repair-backup"
+    },
+    {
+      "source": ".themed-code-and-page-header-contrast-backup",
+      "destination": "Archive/Backups/.themed-code-and-page-header-contrast-backup"
+    },
+    {
+      "source": ".username-broken-settings-recovery-backup",
+      "destination": "Archive/Backups/.username-broken-settings-recovery-backup"
+    },
+    {
+      "source": ".username-button-pass-backup",
+      "destination": "Archive/Backups/.username-button-pass-backup"
+    },
+    {
+      "source": ".username-confirmed-flow-runtime-backup",
+      "destination": "Archive/Backups/.username-confirmed-flow-runtime-backup"
+    },
+    {
+      "source": ".username-input-runtime-fix-backup",
+      "destination": "Archive/Backups/.username-input-runtime-fix-backup"
+    },
+    {
+      "source": ".username-rename-economy-backup",
+      "destination": "Archive/Backups/.username-rename-economy-backup"
+    },
+    {
+      "source": ".username-rename-economy-v2-backup",
+      "destination": "Archive/Backups/.username-rename-economy-v2-backup"
+    },
+    {
+      "source": ".username-rename-partial-state-backup",
+      "destination": "Archive/Backups/.username-rename-partial-state-backup"
+    },
+    {
+      "source": ".whole-program-contrast-backup",
+      "destination": "Archive/Backups/.whole-program-contrast-backup"
+    },
+    {
+      "source": ".xp-leaderboard-backup",
+      "destination": "Archive/Backups/.xp-leaderboard-backup"
+    },
+    {
+      "source": ".xp-resume-tier-backup",
+      "destination": "Archive/Backups/.xp-resume-tier-backup"
+    },
+    {
+      "source": "username-exact-current-state.txt",
+      "destination": "Archive/Reports/username-exact-current-state.txt"
+    }
+  ],
+  "skipped_root_python_files": [],
+  "application_inventory_after_cleanup": {
+    "razor_files": 45,
+    "csharp_files": 19,
+    "javascript_files": 24,
+    "css_files": 33,
+    "svg_files": 1,
+    "python_scripts_remaining_at_root": 0
+  },
+  "protected_root_names": [
+    ".editorconfig",
+    ".git",
+    ".github",
+    ".gitignore",
+    ".vscode",
+    "App.razor",
+    "Archive",
+    "CaveCode.csproj",
+    "Components",
+    "CourseEngine",
+    "Layout",
+    "Pages",
+    "Program.cs",
+    "Properties",
+    "README.md",
+    "Services",
+    "THIRD_PARTY_NOTICES.md",
+    "_Imports.razor",
+    "bin",
+    "docs",
+    "node_modules",
+    "obj",
+    "supabase",
+    "wwwroot"
+  ]
+}

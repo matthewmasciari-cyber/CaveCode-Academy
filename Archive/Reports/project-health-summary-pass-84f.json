@@ -1,0 +1,721 @@
+{
+  "pass": "84F",
+  "created_utc": "2026-08-04T00:49:17.031741+00:00",
+  "totals": {
+    "project_files": 203,
+    "total_lines": 126053,
+    "routes": 26,
+    "components": 19,
+    "unused_component_candidates": 4,
+    "large_page_candidates": 11,
+    "theme_accessibility_risk_files": 50,
+    "duplicate_css_selectors": 2984,
+    "duplicate_js_function_names": 76,
+    "identical_asset_groups": 0,
+    "likely_orphan_assets": 3
+  },
+  "priority_files": [
+    {
+      "file": "Pages/Python.razor",
+      "score": 24,
+      "reasons": [
+        "very large file (2740 lines)",
+        "page flagged for component extraction",
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "20 small-font rules"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "score": 21,
+      "reasons": [
+        "very large file (12057 lines)",
+        "large file size (281046 bytes)",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "11 nowrap rules",
+        "424 hard-coded colors",
+        "2563 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "score": 21,
+      "reasons": [
+        "very large file (12030 lines)",
+        "large file size (280259 bytes)",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "11 nowrap rules",
+        "424 hard-coded colors",
+        "2562 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "score": 18,
+      "reasons": [
+        "very large file (6314 lines)",
+        "large file size (207819 bytes)",
+        "Contains motion but no reduced-motion handling was detected.",
+        "very large JavaScript file (6314 lines)"
+      ]
+    },
+    {
+      "file": "Pages/CSharp.razor",
+      "score": 16,
+      "reasons": [
+        "page flagged for component extraction",
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "20 small-font rules"
+      ]
+    },
+    {
+      "file": "wwwroot/js/caveCodeMinigames.js",
+      "score": 16,
+      "reasons": [
+        "very large file (4772 lines)",
+        "large file size (192026 bytes)",
+        "very large JavaScript file (4772 lines)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "score": 15,
+      "reasons": [
+        "very large file (4447 lines)",
+        "Contains motion but no reduced-motion handling was detected.",
+        "very large JavaScript file (4447 lines)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "score": 15,
+      "reasons": [
+        "very large file (4494 lines)",
+        "Contains motion but no reduced-motion handling was detected.",
+        "very large JavaScript file (4494 lines)"
+      ]
+    },
+    {
+      "file": "Pages/CppMinigame.razor",
+      "score": 14,
+      "reasons": [
+        "page flagged for component extraction",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "17 small-font rules",
+        "93 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/CppMinigameMissionThree.razor",
+      "score": 14,
+      "reasons": [
+        "page flagged for component extraction",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "17 small-font rules",
+        "70 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/CppMinigameMissionTwo.razor",
+      "score": 14,
+      "reasons": [
+        "page flagged for component extraction",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "10 small-font rules",
+        "54 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/HtmlCssMinigame.razor",
+      "score": 14,
+      "reasons": [
+        "page flagged for component extraction",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "27 small-font rules",
+        "50 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionFive.razor",
+      "score": 14,
+      "reasons": [
+        "page flagged for component extraction",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "27 small-font rules",
+        "57 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionFour.razor",
+      "score": 14,
+      "reasons": [
+        "page flagged for component extraction",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "27 small-font rules",
+        "58 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionThree.razor",
+      "score": 14,
+      "reasons": [
+        "page flagged for component extraction",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "27 small-font rules",
+        "56 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionTwo.razor",
+      "score": 14,
+      "reasons": [
+        "page flagged for component extraction",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "27 small-font rules",
+        "49 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "score": 13,
+      "reasons": [
+        "large file size (232803 bytes)",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "11 nowrap rules",
+        "424 hard-coded colors",
+        "2562 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "score": 13,
+      "reasons": [
+        "large file size (232911 bytes)",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "11 nowrap rules",
+        "424 hard-coded colors",
+        "2562 CSS selectors"
+      ]
+    },
+    {
+      "file": "Pages/Leaderboard.razor",
+      "score": 11,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "12 small-font rules",
+        "48 hard-coded colors"
+      ]
+    },
+    {
+      "file": "docs/leaderboard-service-pass-82a2-audit.txt",
+      "score": 11,
+      "reasons": [
+        "very large file (3969 lines)",
+        "large file size (150000 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/css/cpp-course-shell.css",
+      "score": 11,
+      "reasons": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "21 small-font rules",
+        "168 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/css/html-css-course-shell.css",
+      "score": 11,
+      "reasons": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "23 small-font rules",
+        "162 CSS selectors"
+      ]
+    },
+    {
+      "file": "Components/CodeMinigame.razor",
+      "score": 9,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "20 small-font rules"
+      ]
+    },
+    {
+      "file": "Pages/Settings.razor",
+      "score": 9,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "12 small-font rules",
+        "34 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Components/AuthPanel.razor",
+      "score": 8,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "25 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/HtmlCssMinigameCampaign.razor",
+      "score": 8,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "51 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/css/learning-path-discovery.css",
+      "score": 8,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+      "score": 8,
+      "reasons": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "117 hard-coded colors",
+        "1411 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+      "score": 8,
+      "reasons": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "117 hard-coded colors",
+        "1411 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+      "score": 8,
+      "reasons": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "117 hard-coded colors",
+        "1410 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+      "score": 8,
+      "reasons": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "117 hard-coded colors",
+        "1410 CSS selectors"
+      ]
+    },
+    {
+      "file": "Pages/Achievements.razor",
+      "score": 7,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer.",
+        "11 small-font rules"
+      ]
+    },
+    {
+      "file": "Pages/HtmlCss.razor",
+      "score": 7,
+      "reasons": [
+        "page flagged for component extraction",
+        "Heavy use of hard-coded colors with little theme-variable usage."
+      ]
+    },
+    {
+      "file": "Components/ProgressIdentity.razor",
+      "score": 6,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ]
+    },
+    {
+      "file": "Components/TitleEffect.razor",
+      "score": 6,
+      "reasons": [
+        "Heavy use of hard-coded colors with little theme-variable usage.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "26 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/CppMinigameMissionFive.razor",
+      "score": 4,
+      "reasons": [
+        "Contains many font sizes below 11px; readability may suffer.",
+        "38 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/CppMinigameMissionFour.razor",
+      "score": 4,
+      "reasons": [
+        "Contains many font sizes below 11px; readability may suffer.",
+        "33 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/Home.razor",
+      "score": 4,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ]
+    },
+    {
+      "file": "Pages/HtmlCssMinigameEndless.razor",
+      "score": 4,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "36 hard-coded colors"
+      ]
+    },
+    {
+      "file": "Pages/Minigames.razor",
+      "score": 4,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+      "score": 4,
+      "reasons": [
+        "1159 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "score": 4,
+      "reasons": [
+        "1159 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+      "score": 4,
+      "reasons": [
+        "1159 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+      "score": 4,
+      "reasons": [
+        "1159 CSS selectors"
+      ]
+    },
+    {
+      "file": "wwwroot/js/learning-path-discovery.js",
+      "score": 3,
+      "reasons": [
+        "large JavaScript file (1012 lines)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (203221 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (203225 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (267535 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (180381 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (267476 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (180217 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (679755 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (589892 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (679615 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+      "score": 3,
+      "reasons": [
+        "large file size (589087 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+      "score": 3,
+      "reasons": [
+        "large file size (444579 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+      "score": 3,
+      "reasons": [
+        "large file size (332090 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+      "score": 3,
+      "reasons": [
+        "large file size (305438 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+      "score": 3,
+      "reasons": [
+        "large file size (222455 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+      "score": 3,
+      "reasons": [
+        "large file size (306606 bytes)"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+      "score": 3,
+      "reasons": [
+        "large file size (220561 bytes)"
+      ]
+    },
+    {
+      "file": "Components/AcademyHomeButton.razor",
+      "score": 2,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ]
+    },
+    {
+      "file": "Components/AchievementNavLink.razor",
+      "score": 2,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ]
+    },
+    {
+      "file": "Components/CourseResume.razor",
+      "score": 2,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ]
+    },
+    {
+      "file": "Layout/MainLayout.razor.css",
+      "score": 2,
+      "reasons": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ]
+    },
+    {
+      "file": "wwwroot/css/app.css",
+      "score": 2,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected."
+      ]
+    },
+    {
+      "file": "wwwroot/css/cavecode-global-contrast-system.css",
+      "score": 2,
+      "reasons": [
+        "39 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/css/cavecode-language-finder-81d.css",
+      "score": 2,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ]
+    },
+    {
+      "file": "wwwroot/css/cavecode-modern-loading-screen.css",
+      "score": 2,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ]
+    },
+    {
+      "file": "wwwroot/css/cavecode-official-branding-pass-2.css",
+      "score": 2,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ]
+    },
+    {
+      "file": "wwwroot/css/cavecode-static-language-panels.css",
+      "score": 2,
+      "reasons": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ]
+    },
+    {
+      "file": "wwwroot/css/light-mode-contrast.css",
+      "score": 2,
+      "reasons": [
+        "52 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/css/light-mode-notice-icon-contrast-hotfix.css",
+      "score": 2,
+      "reasons": [
+        "20 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/css/themes.css",
+      "score": 2,
+      "reasons": [
+        "254 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+      "score": 2,
+      "reasons": [
+        "109 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "score": 2,
+      "reasons": [
+        "109 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+      "score": 2,
+      "reasons": [
+        "109 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+      "score": 2,
+      "reasons": [
+        "109 hard-coded colors"
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "score": 2,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected."
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+      "score": 2,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected."
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "score": 2,
+      "reasons": [
+        "Contains motion but no reduced-motion handling was detected."
+      ]
+    }
+  ],
+  "recommended_order": [
+    "Refactor the highest-scoring files one at a time, starting with the top three.",
+    "Review unused component candidates manually before deleting anything.",
+    "Address text clipping, small fonts, and reduced-motion gaps before cosmetic polish.",
+    "Review likely orphan assets last because dynamic references may be missed."
+  ],
+  "source_reports": {
+    "build_health": "Archive/Reports/build-health-pass-84b.json",
+    "component_usage": "Archive/Reports/component-usage-pass-84c.json",
+    "theme_accessibility": "Archive/Reports/theme-accessibility-pass-84d.json",
+    "duplicate_assets": "Archive/Reports/duplicate-assets-pass-84e.json"
+  },
+  "notes": [
+    "Scores are heuristic and intended to prioritize review, not prove defects.",
+    "No files are modified by this pass.",
+    "Deletion should never be automated from these reports alone."
+  ]
+}

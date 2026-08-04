@@ -1,0 +1,258 @@
+====================================================================================================
+CAVECODE COMPONENT AND ROUTE USAGE — PASS 84C
+====================================================================================================
+
+ROUTES
+------
+/                                          Pages/Home.razor
+/achievements                              Pages/Achievements.razor
+/counter                                   Pages/Counter.razor
+/cpp                                       Pages/Cpp.razor
+/csharp                                    Pages/CSharp.razor
+/html-css                                  Pages/HtmlCss.razor
+/leaderboard                               Pages/Leaderboard.razor
+/minigames                                 Pages/Minigames.razor
+/minigames/cpp                             Pages/CppMinigame.razor
+/minigames/cpp/mission-2                   Pages/CppMinigameMissionTwo.razor
+/minigames/cpp/mission-3                   Pages/CppMinigameMissionThree.razor
+/minigames/cpp/mission-4                   Pages/CppMinigameMissionFour.razor
+/minigames/cpp/mission-5                   Pages/CppMinigameMissionFive.razor
+/minigames/csharp                          Pages/CSharpDefense.razor
+/minigames/html-css                        Pages/HtmlCssMinigame.razor
+/minigames/html-css/campaign               Pages/HtmlCssMinigameCampaign.razor
+/minigames/html-css/endless                Pages/HtmlCssMinigameEndless.razor
+/minigames/html-css/mission-2              Pages/HtmlCssMinigameMissionTwo.razor
+/minigames/html-css/mission-3              Pages/HtmlCssMinigameMissionThree.razor
+/minigames/html-css/mission-4              Pages/HtmlCssMinigameMissionFour.razor
+/minigames/html-css/mission-5              Pages/HtmlCssMinigameMissionFive.razor
+/minigames/python                          Pages/PythonControlRoom.razor
+/not-found                                 Pages/NotFound.razor
+/python                                    Pages/Python.razor
+/settings                                  Pages/Settings.razor
+/weather                                   Pages/Weather.razor
+
+DUPLICATE ROUTES
+----------------
+None found.
+
+COMPONENT USAGE
+---------------
+AcademyHomeButton (9 references)
+  file: Components/AcademyHomeButton.razor
+  used by: Components/CodeMinigame.razor
+  used by: Pages/Achievements.razor
+  used by: Pages/CSharp.razor
+  used by: Pages/Cpp.razor
+  used by: Pages/HtmlCss.razor
+  used by: Pages/Leaderboard.razor
+  used by: Pages/Minigames.razor
+  used by: Pages/Python.razor
+  used by: Pages/Settings.razor
+AchievementNavLink (1 references)
+  file: Components/AchievementNavLink.razor
+  used by: Pages/Home.razor
+App (0 references)
+  file: App.razor
+  used by: none detected
+AuthPanel (5 references)
+  file: Components/AuthPanel.razor
+  used by: Pages/CSharp.razor
+  used by: Pages/Cpp.razor
+  used by: Pages/Home.razor
+  used by: Pages/HtmlCss.razor
+  used by: Pages/Python.razor
+CodeMinigame (2 references)
+  file: Components/CodeMinigame.razor
+  used by: Pages/CSharpDefense.razor
+  used by: Pages/PythonControlRoom.razor
+CourseCodeEditor (2 references)
+  file: Components/CourseEngine/CourseCodeEditor.razor
+  used by: Pages/Cpp.razor
+  used by: Pages/HtmlCss.razor
+CourseProgressPanel (2 references)
+  file: Components/CourseEngine/CourseProgressPanel.razor
+  used by: Pages/Cpp.razor
+  used by: Pages/HtmlCss.razor
+CourseResume (1 references)
+  file: Components/CourseResume.razor
+  used by: Pages/Home.razor
+CourseStageTabs (2 references)
+  file: Components/CourseEngine/CourseStageTabs.razor
+  used by: Pages/Cpp.razor
+  used by: Pages/HtmlCss.razor
+CppMinigameHubCard (1 references)
+  file: Components/CppMinigameHubCard.razor
+  used by: Pages/Minigames.razor
+DisplayNameRenameControl (1 references)
+  file: Components/DisplayNameRenameControl.razor
+  used by: Pages/Settings.razor
+LeaderboardNavLink (1 references)
+  file: Components/LeaderboardNavLink.razor
+  used by: Pages/Home.razor
+LockMark (7 references)
+  file: Components/LockMark.razor
+  used by: Pages/Achievements.razor
+  used by: Pages/CSharp.razor
+  used by: Pages/Cpp.razor
+  used by: Pages/Home.razor
+  used by: Pages/HtmlCss.razor
+  used by: Pages/Python.razor
+  used by: Pages/Settings.razor
+MainLayout (0 references)
+  file: Layout/MainLayout.razor
+  used by: none detected
+MinigameNavLink (1 references)
+  file: Components/MinigameNavLink.razor
+  used by: Pages/Home.razor
+NavMenu (0 references)
+  file: Layout/NavMenu.razor
+  used by: none detected
+ProgressIdentity (4 references)
+  file: Components/ProgressIdentity.razor
+  used by: Components/AuthPanel.razor
+  used by: Components/CodeMinigame.razor
+  used by: Pages/Leaderboard.razor
+  used by: Pages/Minigames.razor
+TitleEffect (4 references)
+  file: Components/TitleEffect.razor
+  used by: Components/ProgressIdentity.razor
+  used by: Pages/Achievements.razor
+  used by: Pages/Leaderboard.razor
+  used by: Pages/Settings.razor
+_Imports (0 references)
+  file: _Imports.razor
+  used by: none detected
+
+UNUSED COMPONENT CANDIDATES
+---------------------------
+App.razor
+Layout/MainLayout.razor
+Layout/NavMenu.razor
+_Imports.razor
+
+PAGE INVENTORY
+--------------
+Pages/Achievements.razor
+  routes: /achievements
+  lines: 693
+  direct components: AcademyHomeButton, LockMark, TitleEffect
+Pages/CSharp.razor
+  routes: /csharp
+  lines: 2536
+  direct components: AcademyHomeButton, AuthPanel, LockMark
+Pages/CSharpDefense.razor
+  routes: /minigames/csharp
+  lines: 5
+  direct components: CodeMinigame
+Pages/Counter.razor
+  routes: /counter
+  lines: 18
+  direct components: [none]
+Pages/Cpp.razor
+  routes: /cpp
+  lines: 1179
+  direct components: AcademyHomeButton, AuthPanel, CourseCodeEditor, CourseProgressPanel, CourseStageTabs, LockMark
+Pages/CppMinigame.razor
+  routes: /minigames/cpp
+  lines: 1825
+  direct components: [none]
+Pages/CppMinigameMissionFive.razor
+  routes: /minigames/cpp/mission-5
+  lines: 849
+  direct components: [none]
+Pages/CppMinigameMissionFour.razor
+  routes: /minigames/cpp/mission-4
+  lines: 434
+  direct components: [none]
+Pages/CppMinigameMissionThree.razor
+  routes: /minigames/cpp/mission-3
+  lines: 1441
+  direct components: [none]
+Pages/CppMinigameMissionTwo.razor
+  routes: /minigames/cpp/mission-2
+  lines: 1316
+  direct components: [none]
+Pages/Home.razor
+  routes: /
+  lines: 920
+  direct components: AchievementNavLink, AuthPanel, CourseResume, LeaderboardNavLink, LockMark, MinigameNavLink
+Pages/HtmlCss.razor
+  routes: /html-css
+  lines: 1432
+  direct components: AcademyHomeButton, AuthPanel, CourseCodeEditor, CourseProgressPanel, CourseStageTabs, LockMark
+Pages/HtmlCssMinigame.razor
+  routes: /minigames/html-css
+  lines: 3167
+  direct components: [none]
+Pages/HtmlCssMinigameCampaign.razor
+  routes: /minigames/html-css/campaign
+  lines: 713
+  direct components: [none]
+Pages/HtmlCssMinigameEndless.razor
+  routes: /minigames/html-css/endless
+  lines: 478
+  direct components: [none]
+Pages/HtmlCssMinigameMissionFive.razor
+  routes: /minigames/html-css/mission-5
+  lines: 2786
+  direct components: [none]
+Pages/HtmlCssMinigameMissionFour.razor
+  routes: /minigames/html-css/mission-4
+  lines: 2681
+  direct components: [none]
+Pages/HtmlCssMinigameMissionThree.razor
+  routes: /minigames/html-css/mission-3
+  lines: 2612
+  direct components: [none]
+Pages/HtmlCssMinigameMissionTwo.razor
+  routes: /minigames/html-css/mission-2
+  lines: 2509
+  direct components: [none]
+Pages/Leaderboard.razor
+  routes: /leaderboard
+  lines: 793
+  direct components: AcademyHomeButton, ProgressIdentity, TitleEffect
+Pages/Minigames.razor
+  routes: /minigames
+  lines: 740
+  direct components: AcademyHomeButton, CppMinigameHubCard, ProgressIdentity
+Pages/NotFound.razor
+  routes: /not-found
+  lines: 5
+  direct components: [none]
+Pages/Python.razor
+  routes: /python
+  lines: 2740
+  direct components: AcademyHomeButton, AuthPanel, LockMark
+Pages/PythonControlRoom.razor
+  routes: /minigames/python
+  lines: 5
+  direct components: CodeMinigame
+Pages/Settings.razor
+  routes: /settings
+  lines: 1140
+  direct components: AcademyHomeButton, DisplayNameRenameControl, LockMark, TitleEffect
+Pages/Weather.razor
+  routes: /weather
+  lines: 57
+  direct components: [none]
+
+LARGE PAGE CANDIDATES
+---------------------
+Pages at or above 1,200 lines may benefit from component extraction.
+  2536 lines | Pages/CSharp.razor
+  1825 lines | Pages/CppMinigame.razor
+  1441 lines | Pages/CppMinigameMissionThree.razor
+  1316 lines | Pages/CppMinigameMissionTwo.razor
+  1432 lines | Pages/HtmlCss.razor
+  3167 lines | Pages/HtmlCssMinigame.razor
+  2786 lines | Pages/HtmlCssMinigameMissionFive.razor
+  2681 lines | Pages/HtmlCssMinigameMissionFour.razor
+  2612 lines | Pages/HtmlCssMinigameMissionThree.razor
+  2509 lines | Pages/HtmlCssMinigameMissionTwo.razor
+  2740 lines | Pages/Python.razor
+
+OUTPUT
+------
+Text report: Archive/Reports/component-usage-pass-84c.txt
+JSON report: Archive/Reports/component-usage-pass-84c.json

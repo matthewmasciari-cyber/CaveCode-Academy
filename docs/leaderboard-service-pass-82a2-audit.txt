@@ -1,0 +1,3969 @@
+====================================================================================================
+CAVECODE LEADERBOARD SERVICE TRACE — PASS 82A-2
+====================================================================================================
+
+Purpose
+-------
+Trace the service and model logic behind ProgressionService.GetLeaderboardAsync without
+modifying Leaderboard.razor, caveCodeAuth.js, or any other project file.
+
+====================================================================================================
+FILES LOCATED
+====================================================================================================
+- .cpp-chapter-1-pass-3-backup/Services/ProgressionService.cs
+- .cpp-chapter-1-pass-3-backup/wwwroot/js/caveCodeAuth.js
+- .cpp-chapter-1-pass-3-backup/wwwroot/js/caveCodeProgression.js
+- .html-css-course-shell-pass-4-backup/wwwroot/js/caveCodeAuth.js
+- .html-css-pass-5b-2-backup/Services/ProgressionService.cs
+- .html-css-pass-5b-2-backup/wwwroot/js/caveCodeProgression.js
+- .leaderboard-enrollment-sync-pass-backup/Pages/Leaderboard.razor
+- .leaderboard-enrollment-sync-pass-backup/Services/ProgressionService.cs
+- .leaderboard-enrollment-sync-pass-backup/wwwroot/js/caveCodeAuth.js
+- .leaderboard-refresh-race-79a-backup/Pages/Leaderboard.razor
+- .leaderboard-refresh-race-79a-backup/wwwroot/js/caveCodeAuth.js
+- .minigame-vertical-slice-backup/Services/ProgressionService.cs
+- .minigame-vertical-slice-backup/wwwroot/js/caveCodeProgression.js
+- .navigation-title-lock-backup/Pages/Leaderboard.razor
+- .official-branding-pass-2-backup/Pages/Leaderboard.razor
+- .xp-resume-tier-backup/Pages/Leaderboard.razor
+- .xp-resume-tier-backup/Services/ProgressionService.cs
+- .xp-resume-tier-backup/wwwroot/js/caveCodeProgression.js
+- Pages/Leaderboard.razor
+- Services/ProgressionService.cs
+- wwwroot/js/caveCodeAuth.js
+- wwwroot/js/caveCodeProgression.js
+
+====================================================================================================
+STATIC RISK SIGNALS
+====================================================================================================
+1. Cloud data is loaded separately; inspect whether a later local assignment overwrites it.
+2. Local/fallback data is constructed separately; inspect merge-versus-replace behavior.
+3. The service calls the JavaScript cloud profile query.
+
+====================================================================================================
+FILE: .cpp-chapter-1-pass-3-backup/Services/ProgressionService.cs
+====================================================================================================
+### GetLeaderboardAsync at line 96
+--- lines 76-116 ---
+   76:         return state;
+   77:     }
+   78: 
+   79:     public void NotifyExternalChange() =>
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int TotalLines { get; set; }
+  116:     public int CSharpLines { get; set; }
+
+### LeaderboardResult at line 96
+--- lines 76-116 ---
+   76:         return state;
+   77:     }
+   78: 
+   79:     public void NotifyExternalChange() =>
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int TotalLines { get; set; }
+  116:     public int CSharpLines { get; set; }
+
+### LeaderboardResult at line 100
+--- lines 80-120 ---
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int TotalLines { get; set; }
+  116:     public int CSharpLines { get; set; }
+  117:     public int PythonLines { get; set; }
+  118:     public int Level { get; set; } = 1;
+  119:     public int XpIntoLevel { get; set; }
+  120:     public int XpForNextLevel { get; set; } = 500;
+
+### LeaderboardResult at line 143
+--- lines 123-163 ---
+  123: }
+  124: 
+  125: public sealed class CourseResumeState
+  126: {
+  127:     public bool HasProgress { get; set; }
+  128:     public bool CourseComplete { get; set; }
+  129:     public int CurrentModuleIndex { get; set; }
+  130:     public int CurrentStage { get; set; }
+  131:     public int CompletedModules { get; set; }
+  132:     public int TotalModules { get; set; } = 40;
+  133:     public int ModuleMastery { get; set; }
+  134: }
+  135: 
+  136: public sealed class ProgressionAwardResult
+  137: {
+  138:     public bool NewlyAwarded { get; set; }
+  139:     public int XpAwarded { get; set; }
+  140:     public ProgressionState State { get; set; } = new();
+  141: }
+  142: 
+  143: public sealed class LeaderboardResult
+  144: {
+  145:     public bool CloudAvailable { get; set; }
+  146:     public bool SignedIn { get; set; }
+  147:     public string Message { get; set; } = "";
+  148:     public LeaderboardEntry[] Entries { get; set; } =
+  149:         Array.Empty<LeaderboardEntry>();
+  150: }
+  151: 
+  152: public sealed class LeaderboardEntry
+  153: {
+  154:     public string Id { get; set; } = "";
+  155:     public string DisplayName { get; set; } = "CaveCode Learner";
+  156:     public string Emblem { get; set; } = "crystal";
+  157:     public string Title { get; set; } = "Cave Explorer";
+  158:     public int TotalXp { get; set; }
+  159:     public int CSharpXp { get; set; }
+  160:     public int PythonXp { get; set; }
+  161:     public int TotalLines { get; set; }
+  162:     public int CSharpLines { get; set; }
+  163:     public int PythonLines { get; set; }
+
+### LeaderboardEntry at line 148
+--- lines 128-166 ---
+  128:     public bool CourseComplete { get; set; }
+  129:     public int CurrentModuleIndex { get; set; }
+  130:     public int CurrentStage { get; set; }
+  131:     public int CompletedModules { get; set; }
+  132:     public int TotalModules { get; set; } = 40;
+  133:     public int ModuleMastery { get; set; }
+  134: }
+  135: 
+  136: public sealed class ProgressionAwardResult
+  137: {
+  138:     public bool NewlyAwarded { get; set; }
+  139:     public int XpAwarded { get; set; }
+  140:     public ProgressionState State { get; set; } = new();
+  141: }
+  142: 
+  143: public sealed class LeaderboardResult
+  144: {
+  145:     public bool CloudAvailable { get; set; }
+  146:     public bool SignedIn { get; set; }
+  147:     public string Message { get; set; } = "";
+  148:     public LeaderboardEntry[] Entries { get; set; } =
+  149:         Array.Empty<LeaderboardEntry>();
+  150: }
+  151: 
+  152: public sealed class LeaderboardEntry
+  153: {
+  154:     public string Id { get; set; } = "";
+  155:     public string DisplayName { get; set; } = "CaveCode Learner";
+  156:     public string Emblem { get; set; } = "crystal";
+  157:     public string Title { get; set; } = "Cave Explorer";
+  158:     public int TotalXp { get; set; }
+  159:     public int CSharpXp { get; set; }
+  160:     public int PythonXp { get; set; }
+  161:     public int TotalLines { get; set; }
+  162:     public int CSharpLines { get; set; }
+  163:     public int PythonLines { get; set; }
+  164:     public int Level { get; set; } = 1;
+  165:     public bool IsCurrentUser { get; set; }
+  166: }
+
+### LeaderboardEntry at line 149
+--- lines 129-166 ---
+  129:     public int CurrentModuleIndex { get; set; }
+  130:     public int CurrentStage { get; set; }
+  131:     public int CompletedModules { get; set; }
+  132:     public int TotalModules { get; set; } = 40;
+  133:     public int ModuleMastery { get; set; }
+  134: }
+  135: 
+  136: public sealed class ProgressionAwardResult
+  137: {
+  138:     public bool NewlyAwarded { get; set; }
+  139:     public int XpAwarded { get; set; }
+  140:     public ProgressionState State { get; set; } = new();
+  141: }
+  142: 
+  143: public sealed class LeaderboardResult
+  144: {
+  145:     public bool CloudAvailable { get; set; }
+  146:     public bool SignedIn { get; set; }
+  147:     public string Message { get; set; } = "";
+  148:     public LeaderboardEntry[] Entries { get; set; } =
+  149:         Array.Empty<LeaderboardEntry>();
+  150: }
+  151: 
+  152: public sealed class LeaderboardEntry
+  153: {
+  154:     public string Id { get; set; } = "";
+  155:     public string DisplayName { get; set; } = "CaveCode Learner";
+  156:     public string Emblem { get; set; } = "crystal";
+  157:     public string Title { get; set; } = "Cave Explorer";
+  158:     public int TotalXp { get; set; }
+  159:     public int CSharpXp { get; set; }
+  160:     public int PythonXp { get; set; }
+  161:     public int TotalLines { get; set; }
+  162:     public int CSharpLines { get; set; }
+  163:     public int PythonLines { get; set; }
+  164:     public int Level { get; set; } = 1;
+  165:     public bool IsCurrentUser { get; set; }
+  166: }
+
+### LeaderboardEntry at line 152
+--- lines 132-166 ---
+  132:     public int TotalModules { get; set; } = 40;
+  133:     public int ModuleMastery { get; set; }
+  134: }
+  135: 
+  136: public sealed class ProgressionAwardResult
+  137: {
+  138:     public bool NewlyAwarded { get; set; }
+  139:     public int XpAwarded { get; set; }
+  140:     public ProgressionState State { get; set; } = new();
+  141: }
+  142: 
+  143: public sealed class LeaderboardResult
+  144: {
+  145:     public bool CloudAvailable { get; set; }
+  146:     public bool SignedIn { get; set; }
+  147:     public string Message { get; set; } = "";
+  148:     public LeaderboardEntry[] Entries { get; set; } =
+  149:         Array.Empty<LeaderboardEntry>();
+  150: }
+  151: 
+  152: public sealed class LeaderboardEntry
+  153: {
+  154:     public string Id { get; set; } = "";
+  155:     public string DisplayName { get; set; } = "CaveCode Learner";
+  156:     public string Emblem { get; set; } = "crystal";
+  157:     public string Title { get; set; } = "Cave Explorer";
+  158:     public int TotalXp { get; set; }
+  159:     public int CSharpXp { get; set; }
+  160:     public int PythonXp { get; set; }
+  161:     public int TotalLines { get; set; }
+  162:     public int CSharpLines { get; set; }
+  163:     public int PythonLines { get; set; }
+  164:     public int Level { get; set; } = 1;
+  165:     public bool IsCurrentUser { get; set; }
+  166: }
+
+
+====================================================================================================
+FILE: .cpp-chapter-1-pass-3-backup/wwwroot/js/caveCodeAuth.js
+====================================================================================================
+### getLeaderboardProfiles at line 212
+--- lines 192-232 ---
+  192:             title: profile.title || "Cave Explorer",
+  193:             total_xp: Number(profile.totalXp || 0),
+  194:             csharp_xp: Number(profile.cSharpXp || 0),
+  195:             python_xp: Number(profile.pythonXp || 0),
+  196:             total_lines: Number(profile.totalLines || 0),
+  197:             csharp_lines: Number(profile.cSharpLines || 0),
+  198:             python_lines: Number(profile.pythonLines || 0),
+  199:             is_public: Boolean(profile.isPublic),
+  200:             updated_at: new Date().toISOString()
+  201:         };
+  202: 
+  203:         const { error } = await supabaseClient
+  204:             .from("leaderboard_profiles")
+  205:             .upsert(payload, { onConflict: "id" });
+  206: 
+  207:         return error
+  208:             ? { available: false, message: error.message }
+  209:             : { available: true, message: "" };
+  210:     },
+  211: 
+  212:     getLeaderboardProfiles: async function (filter = "overall") {
+  213:         if (!supabaseClient) {
+  214:             return { available: false, entries: [], message: "Supabase is not initialized." };
+  215:         }
+  216: 
+  217:         const orderColumn =
+  218:             filter === "csharp"
+  219:                 ? "csharp_xp"
+  220:                 : filter === "python"
+  221:                     ? "python_xp"
+  222:                     : "total_xp";
+  223: 
+  224:         const { data, error } = await supabaseClient
+  225:             .from("leaderboard_profiles")
+  226:             .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+  227:             .eq("is_public", true)
+  228:             .order(orderColumn, { ascending: false })
+  229:             .limit(100);
+  230: 
+  231:         if (error) {
+  232:             return { available: false, entries: [], message: error.message };
+
+
+====================================================================================================
+FILE: .cpp-chapter-1-pass-3-backup/wwwroot/js/caveCodeProgression.js
+====================================================================================================
+### getLeaderboardProfiles at line 465
+--- lines 445-485 ---
+  445: 
+  446:             const local = localEntry(profile, user);
+  447:             let cloudAvailable = false;
+  448:             let entries = [];
+  449:             let message = "";
+  450: 
+  451:             if (user && window.caveCodeAuth) {
+  452:                 try {
+  453:                     const sync =
+  454:                         await window.caveCodeAuth
+  455:                             .upsertLeaderboardProfile({
+  456:                                 ...local,
+  457:                                 isPublic:
+  458:                                     current.publicLeaderboard
+  459:                             });
+  460: 
+  461:                     cloudAvailable = Boolean(sync?.available);
+  462: 
+  463:                     const cloud =
+  464:                         await window.caveCodeAuth
+  465:                             .getLeaderboardProfiles(filter);
+  466: 
+  467:                     if (cloud?.available) {
+  468:                         cloudAvailable = true;
+  469:                         entries = cloud.entries || [];
+  470:                     } else {
+  471:                         message = cloud?.message || "";
+  472:                     }
+  473:                 } catch (error) {
+  474:                     message =
+  475:                         error?.message ||
+  476:                         "Global leaderboard is not configured.";
+  477:                 }
+  478:             }
+  479: 
+  480:             const existing = entries.findIndex(
+  481:                 entry => entry.id === local.id
+  482:             );
+  483: 
+  484:             if (existing >= 0) {
+  485:                 entries[existing] = {
+
+
+====================================================================================================
+FILE: .html-css-course-shell-pass-4-backup/wwwroot/js/caveCodeAuth.js
+====================================================================================================
+### getLeaderboardProfiles at line 234
+--- lines 214-254 ---
+  214:             title: profile.title || "Cave Explorer",
+  215:             total_xp: Number(profile.totalXp || 0),
+  216:             csharp_xp: Number(profile.cSharpXp || 0),
+  217:             python_xp: Number(profile.pythonXp || 0),
+  218:             total_lines: Number(profile.totalLines || 0),
+  219:             csharp_lines: Number(profile.cSharpLines || 0),
+  220:             python_lines: Number(profile.pythonLines || 0),
+  221:             is_public: Boolean(profile.isPublic),
+  222:             updated_at: new Date().toISOString()
+  223:         };
+  224: 
+  225:         const { error } = await supabaseClient
+  226:             .from("leaderboard_profiles")
+  227:             .upsert(payload, { onConflict: "id" });
+  228: 
+  229:         return error
+  230:             ? { available: false, message: error.message }
+  231:             : { available: true, message: "" };
+  232:     },
+  233: 
+  234:     getLeaderboardProfiles: async function (filter = "overall") {
+  235:         if (!supabaseClient) {
+  236:             return { available: false, entries: [], message: "Supabase is not initialized." };
+  237:         }
+  238: 
+  239:         const orderColumn =
+  240:             filter === "csharp"
+  241:                 ? "csharp_xp"
+  242:                 : filter === "python"
+  243:                     ? "python_xp"
+  244:                     : "total_xp";
+  245: 
+  246:         const { data, error } = await supabaseClient
+  247:             .from("leaderboard_profiles")
+  248:             .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+  249:             .eq("is_public", true)
+  250:             .order(orderColumn, { ascending: false })
+  251:             .limit(100);
+  252: 
+  253:         if (error) {
+  254:             return { available: false, entries: [], message: error.message };
+
+
+====================================================================================================
+FILE: .html-css-pass-5b-2-backup/Services/ProgressionService.cs
+====================================================================================================
+### GetLeaderboardAsync at line 96
+--- lines 76-116 ---
+   76:         return state;
+   77:     }
+   78: 
+   79:     public void NotifyExternalChange() =>
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int TotalLines { get; set; }
+
+### LeaderboardResult at line 96
+--- lines 76-116 ---
+   76:         return state;
+   77:     }
+   78: 
+   79:     public void NotifyExternalChange() =>
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int TotalLines { get; set; }
+
+### LeaderboardResult at line 100
+--- lines 80-120 ---
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int TotalLines { get; set; }
+  117:     public int CSharpLines { get; set; }
+  118:     public int PythonLines { get; set; }
+  119:     public int CppLines { get; set; }
+  120:     public int Level { get; set; } = 1;
+
+### LeaderboardResult at line 145
+--- lines 125-165 ---
+  125: }
+  126: 
+  127: public sealed class CourseResumeState
+  128: {
+  129:     public bool HasProgress { get; set; }
+  130:     public bool CourseComplete { get; set; }
+  131:     public int CurrentModuleIndex { get; set; }
+  132:     public int CurrentStage { get; set; }
+  133:     public int CompletedModules { get; set; }
+  134:     public int TotalModules { get; set; } = 40;
+  135:     public int ModuleMastery { get; set; }
+  136: }
+  137: 
+  138: public sealed class ProgressionAwardResult
+  139: {
+  140:     public bool NewlyAwarded { get; set; }
+  141:     public int XpAwarded { get; set; }
+  142:     public ProgressionState State { get; set; } = new();
+  143: }
+  144: 
+  145: public sealed class LeaderboardResult
+  146: {
+  147:     public bool CloudAvailable { get; set; }
+  148:     public bool SignedIn { get; set; }
+  149:     public string Message { get; set; } = "";
+  150:     public LeaderboardEntry[] Entries { get; set; } =
+  151:         Array.Empty<LeaderboardEntry>();
+  152: }
+  153: 
+  154: public sealed class LeaderboardEntry
+  155: {
+  156:     public string Id { get; set; } = "";
+  157:     public string DisplayName { get; set; } = "CaveCode Learner";
+  158:     public string Emblem { get; set; } = "crystal";
+  159:     public string Title { get; set; } = "Cave Explorer";
+  160:     public int TotalXp { get; set; }
+  161:     public int CSharpXp { get; set; }
+  162:     public int PythonXp { get; set; }
+  163:     public int CppXp { get; set; }
+  164:     public int TotalLines { get; set; }
+  165:     public int CSharpLines { get; set; }
+
+### LeaderboardEntry at line 150
+--- lines 130-170 ---
+  130:     public bool CourseComplete { get; set; }
+  131:     public int CurrentModuleIndex { get; set; }
+  132:     public int CurrentStage { get; set; }
+  133:     public int CompletedModules { get; set; }
+  134:     public int TotalModules { get; set; } = 40;
+  135:     public int ModuleMastery { get; set; }
+  136: }
+  137: 
+  138: public sealed class ProgressionAwardResult
+  139: {
+  140:     public bool NewlyAwarded { get; set; }
+  141:     public int XpAwarded { get; set; }
+  142:     public ProgressionState State { get; set; } = new();
+  143: }
+  144: 
+  145: public sealed class LeaderboardResult
+  146: {
+  147:     public bool CloudAvailable { get; set; }
+  148:     public bool SignedIn { get; set; }
+  149:     public string Message { get; set; } = "";
+  150:     public LeaderboardEntry[] Entries { get; set; } =
+  151:         Array.Empty<LeaderboardEntry>();
+  152: }
+  153: 
+  154: public sealed class LeaderboardEntry
+  155: {
+  156:     public string Id { get; set; } = "";
+  157:     public string DisplayName { get; set; } = "CaveCode Learner";
+  158:     public string Emblem { get; set; } = "crystal";
+  159:     public string Title { get; set; } = "Cave Explorer";
+  160:     public int TotalXp { get; set; }
+  161:     public int CSharpXp { get; set; }
+  162:     public int PythonXp { get; set; }
+  163:     public int CppXp { get; set; }
+  164:     public int TotalLines { get; set; }
+  165:     public int CSharpLines { get; set; }
+  166:     public int PythonLines { get; set; }
+  167:     public int CppLines { get; set; }
+  168:     public int Level { get; set; } = 1;
+  169:     public bool IsCurrentUser { get; set; }
+  170: }
+
+### LeaderboardEntry at line 151
+--- lines 131-170 ---
+  131:     public int CurrentModuleIndex { get; set; }
+  132:     public int CurrentStage { get; set; }
+  133:     public int CompletedModules { get; set; }
+  134:     public int TotalModules { get; set; } = 40;
+  135:     public int ModuleMastery { get; set; }
+  136: }
+  137: 
+  138: public sealed class ProgressionAwardResult
+  139: {
+  140:     public bool NewlyAwarded { get; set; }
+  141:     public int XpAwarded { get; set; }
+  142:     public ProgressionState State { get; set; } = new();
+  143: }
+  144: 
+  145: public sealed class LeaderboardResult
+  146: {
+  147:     public bool CloudAvailable { get; set; }
+  148:     public bool SignedIn { get; set; }
+  149:     public string Message { get; set; } = "";
+  150:     public LeaderboardEntry[] Entries { get; set; } =
+  151:         Array.Empty<LeaderboardEntry>();
+  152: }
+  153: 
+  154: public sealed class LeaderboardEntry
+  155: {
+  156:     public string Id { get; set; } = "";
+  157:     public string DisplayName { get; set; } = "CaveCode Learner";
+  158:     public string Emblem { get; set; } = "crystal";
+  159:     public string Title { get; set; } = "Cave Explorer";
+  160:     public int TotalXp { get; set; }
+  161:     public int CSharpXp { get; set; }
+  162:     public int PythonXp { get; set; }
+  163:     public int CppXp { get; set; }
+  164:     public int TotalLines { get; set; }
+  165:     public int CSharpLines { get; set; }
+  166:     public int PythonLines { get; set; }
+  167:     public int CppLines { get; set; }
+  168:     public int Level { get; set; } = 1;
+  169:     public bool IsCurrentUser { get; set; }
+  170: }
+
+### LeaderboardEntry at line 154
+--- lines 134-170 ---
+  134:     public int TotalModules { get; set; } = 40;
+  135:     public int ModuleMastery { get; set; }
+  136: }
+  137: 
+  138: public sealed class ProgressionAwardResult
+  139: {
+  140:     public bool NewlyAwarded { get; set; }
+  141:     public int XpAwarded { get; set; }
+  142:     public ProgressionState State { get; set; } = new();
+  143: }
+  144: 
+  145: public sealed class LeaderboardResult
+  146: {
+  147:     public bool CloudAvailable { get; set; }
+  148:     public bool SignedIn { get; set; }
+  149:     public string Message { get; set; } = "";
+  150:     public LeaderboardEntry[] Entries { get; set; } =
+  151:         Array.Empty<LeaderboardEntry>();
+  152: }
+  153: 
+  154: public sealed class LeaderboardEntry
+  155: {
+  156:     public string Id { get; set; } = "";
+  157:     public string DisplayName { get; set; } = "CaveCode Learner";
+  158:     public string Emblem { get; set; } = "crystal";
+  159:     public string Title { get; set; } = "Cave Explorer";
+  160:     public int TotalXp { get; set; }
+  161:     public int CSharpXp { get; set; }
+  162:     public int PythonXp { get; set; }
+  163:     public int CppXp { get; set; }
+  164:     public int TotalLines { get; set; }
+  165:     public int CSharpLines { get; set; }
+  166:     public int PythonLines { get; set; }
+  167:     public int CppLines { get; set; }
+  168:     public int Level { get; set; } = 1;
+  169:     public bool IsCurrentUser { get; set; }
+  170: }
+
+
+====================================================================================================
+FILE: .html-css-pass-5b-2-backup/wwwroot/js/caveCodeProgression.js
+====================================================================================================
+### getLeaderboardProfiles at line 492
+--- lines 472-512 ---
+  472: 
+  473:             const local = localEntry(profile, user);
+  474:             let cloudAvailable = false;
+  475:             let entries = [];
+  476:             let message = "";
+  477: 
+  478:             if (user && window.caveCodeAuth) {
+  479:                 try {
+  480:                     const sync =
+  481:                         await window.caveCodeAuth
+  482:                             .upsertLeaderboardProfile({
+  483:                                 ...local,
+  484:                                 isPublic:
+  485:                                     current.publicLeaderboard
+  486:                             });
+  487: 
+  488:                     cloudAvailable = Boolean(sync?.available);
+  489: 
+  490:                     const cloud =
+  491:                         await window.caveCodeAuth
+  492:                             .getLeaderboardProfiles(filter);
+  493: 
+  494:                     if (cloud?.available) {
+  495:                         cloudAvailable = true;
+  496:                         entries = cloud.entries || [];
+  497:                     } else {
+  498:                         message = cloud?.message || "";
+  499:                     }
+  500:                 } catch (error) {
+  501:                     message =
+  502:                         error?.message ||
+  503:                         "Global leaderboard is not configured.";
+  504:                 }
+  505:             }
+  506: 
+  507:             const existing = entries.findIndex(
+  508:                 entry => entry.id === local.id
+  509:             );
+  510: 
+  511:             if (existing >= 0) {
+  512:                 entries[existing] = {
+
+
+====================================================================================================
+FILE: .leaderboard-enrollment-sync-pass-backup/Pages/Leaderboard.razor
+====================================================================================================
+### Public leaderboard at line 75
+--- lines 55-95 ---
+   55:                         @State.XpIntoLevel / @State.XpForNextLevel XP
+   56:                         toward Level @(State.Level + 1)
+   57:                     </small>
+   58:                 </div>
+   59: 
+   60:                 <div class="summary-stats">
+   61:                     <div>
+   62:                         <span>Total XP</span>
+   63:                         <strong>@State.TotalXp.ToString("N0")</strong>
+   64:                     </div>
+   65: 
+   66:                     <div>
+   67:                         <span>Validated lines</span>
+   68:                         <strong>@State.TotalLines.ToString("N0")</strong>
+   69:                     </div>
+   70:                 </div>
+   71:             </section>
+   72: 
+   73:             <section class="visibility-card">
+   74:                 <div>
+   75:                     <strong>Public leaderboard profile</strong>
+   76:                     <p>
+   77:                         Public profiles show only your display name, emblem,
+   78:                         title, level, XP, and validated-line totals.
+   79:                     </p>
+   80:                 </div>
+   81: 
+   82:                 <label class="visibility-toggle">
+   83:                     <input type="checkbox"
+   84:                            checked="@State.PublicLeaderboard"
+   85:                            @onchange="ToggleVisibility" />
+   86:                     <i></i>
+   87:                     <span>
+   88:                         @(State.PublicLeaderboard ? "Public" : "Private")
+   89:                     </span>
+   90:                 </label>
+   91:             </section>
+   92: 
+   93:             @if (!string.IsNullOrWhiteSpace(Result.Message))
+   94:             {
+   95:                 <section class="leaderboard-message">
+
+### LeaderboardEntry at line 141
+--- lines 121-161 ---
+  121:                                 class="@(Filter == "python" ? "selected" : "")"
+  122:                                 @onclick='() => SelectFilter("python")'>
+  123:                             Python
+  124:                         </button>
+  125:                     </div>
+  126:                 </div>
+  127: 
+  128:                 <div class="leaderboard-table">
+  129:                     <div class="leaderboard-row table-head">
+  130:                         <span>Rank</span>
+  131:                         <span>Player</span>
+  132:                         <span>Level</span>
+  133:                         <span>Experience</span>
+  134:                         <span>Validated lines</span>
+  135:                     </div>
+  136: 
+  137:                     @for (int index = 0;
+  138:                           index < Result.Entries.Length;
+  139:                           index++)
+  140:                     {
+  141:                         LeaderboardEntry entry = Result.Entries[index];
+  142: 
+  143:                         <div class="leaderboard-row @(entry.IsCurrentUser ? "current-player" : "")">
+  144:                             <strong class="rank">@(index + 1)</strong>
+  145: 
+  146:                             <div class="player-cell">
+  147:                                 <span class="player-emblem">
+  148:                                     @Emblem(entry.Emblem)
+  149:                                 </span>
+  150: 
+  151:                                 <span>
+  152:                                     <strong class="level-colored-name"
+  153:                                             style="@LevelNameStyle(entry.Level)"
+  154:                                             title="@LevelColorTitle(entry.Level)">
+  155:                                         @entry.DisplayName
+  156:                                     </strong>
+  157:                                     <TitleEffect Title="@entry.Title" />
+  158:                                 </span>
+  159:                             </div>
+  160: 
+  161:                             <strong>Lv @entry.Level</strong>
+
+### LeaderboardResult at line 613
+--- lines 593-633 ---
+  593: 
+  594:     .player-cell strong,
+  595:     .leaderboard-row > strong:not(.rank) {
+  596:         color: var(--dark-panel-text, #eef4f8);
+  597:     }
+  598: 
+  599:     .player-cell small {
+  600:         color: var(--dark-panel-muted, #aab7c4);
+  601:     }
+  602: 
+  603:     .level-colored-name {
+  604:         font-weight: 950;
+  605:         text-shadow: 0 0 12px rgba(255, 255, 255, .12);
+  606:     }
+  607: 
+  608: </style>
+  609: 
+  610: @code {
+  611:     private ProfilePreferences Profile = new();
+  612:     private ProgressionState State = new();
+  613:     private LeaderboardResult Result = new();
+  614:     private bool Ready;
+  615:     private string Filter = "overall";
+  616: 
+  617:     private string DisplayName =>
+  618:         string.IsNullOrWhiteSpace(Profile.DisplayName)
+  619:             ? "CaveCode Learner"
+  620:             : Profile.DisplayName.Trim();
+  621: 
+  622:     private string FilterHeading =>
+  623:         Filter switch
+  624:         {
+  625:             "csharp" => "C# Cave Adventure",
+  626:             "python" => "Python Automation Quest",
+  627:             _ => "Overall academy"
+  628:         };
+  629: 
+  630:     protected override async Task OnAfterRenderAsync(bool firstRender)
+  631:     {
+  632:         if (!firstRender)
+  633:         {
+
+### GetLeaderboardAsync at line 670
+--- lines 650-690 ---
+  650:     private async Task ToggleVisibility(ChangeEventArgs args)
+  651:     {
+  652:         bool isPublic =
+  653:             args.Value is bool value
+  654:                 ? value
+  655:                 : bool.TryParse(
+  656:                     args.Value?.ToString(),
+  657:                     out bool parsed
+  658:                 ) && parsed;
+  659: 
+  660:         State =
+  661:             await ProgressionService
+  662:                 .SetPublicLeaderboardAsync(isPublic);
+  663: 
+  664:         await RefreshLeaderboard();
+  665:     }
+  666: 
+  667:     private async Task RefreshLeaderboard()
+  668:     {
+  669:         Result =
+  670:             await ProgressionService.GetLeaderboardAsync(
+  671:                 Filter,
+  672:                 Profile
+  673:             );
+  674: 
+  675:         await InvokeAsync(StateHasChanged);
+  676:     }
+  677: 
+  678:     private int FilterXp(LeaderboardEntry entry) =>
+  679:         Filter switch
+  680:         {
+  681:             "csharp" => entry.CSharpXp,
+  682:             "python" => entry.PythonXp,
+  683:             _ => entry.TotalXp
+  684:         };
+  685: 
+  686:     private int FilterLines(LeaderboardEntry entry) =>
+  687:         Filter switch
+  688:         {
+  689:             "csharp" => entry.CSharpLines,
+  690:             "python" => entry.PythonLines,
+
+### LeaderboardEntry at line 678
+--- lines 658-698 ---
+  658:                 ) && parsed;
+  659: 
+  660:         State =
+  661:             await ProgressionService
+  662:                 .SetPublicLeaderboardAsync(isPublic);
+  663: 
+  664:         await RefreshLeaderboard();
+  665:     }
+  666: 
+  667:     private async Task RefreshLeaderboard()
+  668:     {
+  669:         Result =
+  670:             await ProgressionService.GetLeaderboardAsync(
+  671:                 Filter,
+  672:                 Profile
+  673:             );
+  674: 
+  675:         await InvokeAsync(StateHasChanged);
+  676:     }
+  677: 
+  678:     private int FilterXp(LeaderboardEntry entry) =>
+  679:         Filter switch
+  680:         {
+  681:             "csharp" => entry.CSharpXp,
+  682:             "python" => entry.PythonXp,
+  683:             _ => entry.TotalXp
+  684:         };
+  685: 
+  686:     private int FilterLines(LeaderboardEntry entry) =>
+  687:         Filter switch
+  688:         {
+  689:             "csharp" => entry.CSharpLines,
+  690:             "python" => entry.PythonLines,
+  691:             _ => entry.TotalLines
+  692:         };
+  693: 
+  694: 
+  695:     private static readonly string[] LevelTierColors =
+  696:     {
+  697:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  698:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+
+### LeaderboardEntry at line 686
+--- lines 666-706 ---
+  666: 
+  667:     private async Task RefreshLeaderboard()
+  668:     {
+  669:         Result =
+  670:             await ProgressionService.GetLeaderboardAsync(
+  671:                 Filter,
+  672:                 Profile
+  673:             );
+  674: 
+  675:         await InvokeAsync(StateHasChanged);
+  676:     }
+  677: 
+  678:     private int FilterXp(LeaderboardEntry entry) =>
+  679:         Filter switch
+  680:         {
+  681:             "csharp" => entry.CSharpXp,
+  682:             "python" => entry.PythonXp,
+  683:             _ => entry.TotalXp
+  684:         };
+  685: 
+  686:     private int FilterLines(LeaderboardEntry entry) =>
+  687:         Filter switch
+  688:         {
+  689:             "csharp" => entry.CSharpLines,
+  690:             "python" => entry.PythonLines,
+  691:             _ => entry.TotalLines
+  692:         };
+  693: 
+  694: 
+  695:     private static readonly string[] LevelTierColors =
+  696:     {
+  697:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  698:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+  699:         "#EEF3F8", "#DDE8F2", "#CCDDEA", "#B9D1E3", "#A8C6DC",
+  700:         "#FFF0B0", "#FFE58A", "#FFDA66", "#F7CB42", "#E9BA22",
+  701:         "#B8F3D3", "#95EAB8", "#72E09E", "#50D284", "#34C16D",
+  702:         "#B9D8FF", "#9CC7FF", "#7CB5FF", "#5D9FFF", "#4088F0",
+  703:         "#E4C8FF", "#D4AEFF", "#C393FF", "#B27BEE", "#9D63DB",
+  704:         "#FFC6EA", "#FFACE0", "#FF91D3", "#F978C7", "#EE5DB9"
+  705:     };
+  706: 
+
+
+====================================================================================================
+FILE: .leaderboard-enrollment-sync-pass-backup/Services/ProgressionService.cs
+====================================================================================================
+### GetLeaderboardAsync at line 96
+--- lines 76-116 ---
+   76:         return state;
+   77:     }
+   78: 
+   79:     public void NotifyExternalChange() =>
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int HtmlCssXp { get; set; }
+
+### LeaderboardResult at line 96
+--- lines 76-116 ---
+   76:         return state;
+   77:     }
+   78: 
+   79:     public void NotifyExternalChange() =>
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int HtmlCssXp { get; set; }
+
+### LeaderboardResult at line 100
+--- lines 80-120 ---
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int HtmlCssXp { get; set; }
+  117:     public int TotalLines { get; set; }
+  118:     public int CSharpLines { get; set; }
+  119:     public int PythonLines { get; set; }
+  120:     public int CppLines { get; set; }
+
+### LeaderboardResult at line 147
+--- lines 127-167 ---
+  127: }
+  128: 
+  129: public sealed class CourseResumeState
+  130: {
+  131:     public bool HasProgress { get; set; }
+  132:     public bool CourseComplete { get; set; }
+  133:     public int CurrentModuleIndex { get; set; }
+  134:     public int CurrentStage { get; set; }
+  135:     public int CompletedModules { get; set; }
+  136:     public int TotalModules { get; set; } = 40;
+  137:     public int ModuleMastery { get; set; }
+  138: }
+  139: 
+  140: public sealed class ProgressionAwardResult
+  141: {
+  142:     public bool NewlyAwarded { get; set; }
+  143:     public int XpAwarded { get; set; }
+  144:     public ProgressionState State { get; set; } = new();
+  145: }
+  146: 
+  147: public sealed class LeaderboardResult
+  148: {
+  149:     public bool CloudAvailable { get; set; }
+  150:     public bool SignedIn { get; set; }
+  151:     public string Message { get; set; } = "";
+  152:     public LeaderboardEntry[] Entries { get; set; } =
+  153:         Array.Empty<LeaderboardEntry>();
+  154: }
+  155: 
+  156: public sealed class LeaderboardEntry
+  157: {
+  158:     public string Id { get; set; } = "";
+  159:     public string DisplayName { get; set; } = "CaveCode Learner";
+  160:     public string Emblem { get; set; } = "crystal";
+  161:     public string Title { get; set; } = "Cave Explorer";
+  162:     public int TotalXp { get; set; }
+  163:     public int CSharpXp { get; set; }
+  164:     public int PythonXp { get; set; }
+  165:     public int CppXp { get; set; }
+  166:     public int HtmlCssXp { get; set; }
+  167:     public int TotalLines { get; set; }
+
+### LeaderboardEntry at line 152
+--- lines 132-172 ---
+  132:     public bool CourseComplete { get; set; }
+  133:     public int CurrentModuleIndex { get; set; }
+  134:     public int CurrentStage { get; set; }
+  135:     public int CompletedModules { get; set; }
+  136:     public int TotalModules { get; set; } = 40;
+  137:     public int ModuleMastery { get; set; }
+  138: }
+  139: 
+  140: public sealed class ProgressionAwardResult
+  141: {
+  142:     public bool NewlyAwarded { get; set; }
+  143:     public int XpAwarded { get; set; }
+  144:     public ProgressionState State { get; set; } = new();
+  145: }
+  146: 
+  147: public sealed class LeaderboardResult
+  148: {
+  149:     public bool CloudAvailable { get; set; }
+  150:     public bool SignedIn { get; set; }
+  151:     public string Message { get; set; } = "";
+  152:     public LeaderboardEntry[] Entries { get; set; } =
+  153:         Array.Empty<LeaderboardEntry>();
+  154: }
+  155: 
+  156: public sealed class LeaderboardEntry
+  157: {
+  158:     public string Id { get; set; } = "";
+  159:     public string DisplayName { get; set; } = "CaveCode Learner";
+  160:     public string Emblem { get; set; } = "crystal";
+  161:     public string Title { get; set; } = "Cave Explorer";
+  162:     public int TotalXp { get; set; }
+  163:     public int CSharpXp { get; set; }
+  164:     public int PythonXp { get; set; }
+  165:     public int CppXp { get; set; }
+  166:     public int HtmlCssXp { get; set; }
+  167:     public int TotalLines { get; set; }
+  168:     public int CSharpLines { get; set; }
+  169:     public int PythonLines { get; set; }
+  170:     public int CppLines { get; set; }
+  171:     public int HtmlCssLines { get; set; }
+  172:     public int Level { get; set; } = 1;
+
+### LeaderboardEntry at line 153
+--- lines 133-173 ---
+  133:     public int CurrentModuleIndex { get; set; }
+  134:     public int CurrentStage { get; set; }
+  135:     public int CompletedModules { get; set; }
+  136:     public int TotalModules { get; set; } = 40;
+  137:     public int ModuleMastery { get; set; }
+  138: }
+  139: 
+  140: public sealed class ProgressionAwardResult
+  141: {
+  142:     public bool NewlyAwarded { get; set; }
+  143:     public int XpAwarded { get; set; }
+  144:     public ProgressionState State { get; set; } = new();
+  145: }
+  146: 
+  147: public sealed class LeaderboardResult
+  148: {
+  149:     public bool CloudAvailable { get; set; }
+  150:     public bool SignedIn { get; set; }
+  151:     public string Message { get; set; } = "";
+  152:     public LeaderboardEntry[] Entries { get; set; } =
+  153:         Array.Empty<LeaderboardEntry>();
+  154: }
+  155: 
+  156: public sealed class LeaderboardEntry
+  157: {
+  158:     public string Id { get; set; } = "";
+  159:     public string DisplayName { get; set; } = "CaveCode Learner";
+  160:     public string Emblem { get; set; } = "crystal";
+  161:     public string Title { get; set; } = "Cave Explorer";
+  162:     public int TotalXp { get; set; }
+  163:     public int CSharpXp { get; set; }
+  164:     public int PythonXp { get; set; }
+  165:     public int CppXp { get; set; }
+  166:     public int HtmlCssXp { get; set; }
+  167:     public int TotalLines { get; set; }
+  168:     public int CSharpLines { get; set; }
+  169:     public int PythonLines { get; set; }
+  170:     public int CppLines { get; set; }
+  171:     public int HtmlCssLines { get; set; }
+  172:     public int Level { get; set; } = 1;
+  173:     public bool IsCurrentUser { get; set; }
+
+### LeaderboardEntry at line 156
+--- lines 136-174 ---
+  136:     public int TotalModules { get; set; } = 40;
+  137:     public int ModuleMastery { get; set; }
+  138: }
+  139: 
+  140: public sealed class ProgressionAwardResult
+  141: {
+  142:     public bool NewlyAwarded { get; set; }
+  143:     public int XpAwarded { get; set; }
+  144:     public ProgressionState State { get; set; } = new();
+  145: }
+  146: 
+  147: public sealed class LeaderboardResult
+  148: {
+  149:     public bool CloudAvailable { get; set; }
+  150:     public bool SignedIn { get; set; }
+  151:     public string Message { get; set; } = "";
+  152:     public LeaderboardEntry[] Entries { get; set; } =
+  153:         Array.Empty<LeaderboardEntry>();
+  154: }
+  155: 
+  156: public sealed class LeaderboardEntry
+  157: {
+  158:     public string Id { get; set; } = "";
+  159:     public string DisplayName { get; set; } = "CaveCode Learner";
+  160:     public string Emblem { get; set; } = "crystal";
+  161:     public string Title { get; set; } = "Cave Explorer";
+  162:     public int TotalXp { get; set; }
+  163:     public int CSharpXp { get; set; }
+  164:     public int PythonXp { get; set; }
+  165:     public int CppXp { get; set; }
+  166:     public int HtmlCssXp { get; set; }
+  167:     public int TotalLines { get; set; }
+  168:     public int CSharpLines { get; set; }
+  169:     public int PythonLines { get; set; }
+  170:     public int CppLines { get; set; }
+  171:     public int HtmlCssLines { get; set; }
+  172:     public int Level { get; set; } = 1;
+  173:     public bool IsCurrentUser { get; set; }
+  174: }
+
+
+====================================================================================================
+FILE: .leaderboard-enrollment-sync-pass-backup/wwwroot/js/caveCodeAuth.js
+====================================================================================================
+### getLeaderboardProfiles at line 234
+--- lines 214-254 ---
+  214:             title: profile.title || "Cave Explorer",
+  215:             total_xp: Number(profile.totalXp || 0),
+  216:             csharp_xp: Number(profile.cSharpXp || 0),
+  217:             python_xp: Number(profile.pythonXp || 0),
+  218:             total_lines: Number(profile.totalLines || 0),
+  219:             csharp_lines: Number(profile.cSharpLines || 0),
+  220:             python_lines: Number(profile.pythonLines || 0),
+  221:             is_public: Boolean(profile.isPublic),
+  222:             updated_at: new Date().toISOString()
+  223:         };
+  224: 
+  225:         const { error } = await supabaseClient
+  226:             .from("leaderboard_profiles")
+  227:             .upsert(payload, { onConflict: "id" });
+  228: 
+  229:         return error
+  230:             ? { available: false, message: error.message }
+  231:             : { available: true, message: "" };
+  232:     },
+  233: 
+  234:     getLeaderboardProfiles: async function (filter = "overall") {
+  235:         if (!supabaseClient) {
+  236:             return { available: false, entries: [], message: "Supabase is not initialized." };
+  237:         }
+  238: 
+  239:         const orderColumn =
+  240:             filter === "csharp"
+  241:                 ? "csharp_xp"
+  242:                 : filter === "python"
+  243:                     ? "python_xp"
+  244:                     : "total_xp";
+  245: 
+  246:         const { data, error } = await supabaseClient
+  247:             .from("leaderboard_profiles")
+  248:             .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+  249:             .eq("is_public", true)
+  250:             .order(orderColumn, { ascending: false })
+  251:             .limit(100);
+  252: 
+  253:         if (error) {
+  254:             return { available: false, entries: [], message: error.message };
+
+
+====================================================================================================
+FILE: .leaderboard-refresh-race-79a-backup/Pages/Leaderboard.razor
+====================================================================================================
+### Public leaderboard at line 75
+--- lines 55-95 ---
+   55:                         @State.XpIntoLevel / @State.XpForNextLevel XP
+   56:                         toward Level @(State.Level + 1)
+   57:                     </small>
+   58:                 </div>
+   59: 
+   60:                 <div class="summary-stats">
+   61:                     <div>
+   62:                         <span>Total XP</span>
+   63:                         <strong>@State.TotalXp.ToString("N0")</strong>
+   64:                     </div>
+   65: 
+   66:                     <div>
+   67:                         <span>Validated lines</span>
+   68:                         <strong>@State.TotalLines.ToString("N0")</strong>
+   69:                     </div>
+   70:                 </div>
+   71:             </section>
+   72: 
+   73:             <section class="visibility-card">
+   74:                 <div>
+   75:                     <strong>Public leaderboard profile</strong>
+   76:                     <p>
+   77:                         Public profiles show only your display name, emblem,
+   78:                         title, level, XP, and validated-line totals.
+   79:                     </p>
+   80:                 </div>
+   81: 
+   82:                 <label class="visibility-toggle">
+   83:                     <input type="checkbox"
+   84:                            checked="@State.PublicLeaderboard"
+   85:                            @onchange="ToggleVisibility" />
+   86:                     <i></i>
+   87:                     <span>
+   88:                         @(State.PublicLeaderboard ? "Public" : "Private")
+   89:                     </span>
+   90:                 </label>
+   91:             </section>
+   92: 
+   93:             @if (!string.IsNullOrWhiteSpace(Result.Message))
+   94:             {
+   95:                 <section class="leaderboard-message">
+
+### LeaderboardEntry at line 141
+--- lines 121-161 ---
+  121:                                 class="@(Filter == "python" ? "selected" : "")"
+  122:                                 @onclick='() => SelectFilter("python")'>
+  123:                             Python
+  124:                         </button>
+  125:                     </div>
+  126:                 </div>
+  127: 
+  128:                 <div class="leaderboard-table">
+  129:                     <div class="leaderboard-row table-head">
+  130:                         <span>Rank</span>
+  131:                         <span>Player</span>
+  132:                         <span>Level</span>
+  133:                         <span>Experience</span>
+  134:                         <span>Validated lines</span>
+  135:                     </div>
+  136: 
+  137:                     @for (int index = 0;
+  138:                           index < Result.Entries.Length;
+  139:                           index++)
+  140:                     {
+  141:                         LeaderboardEntry entry = Result.Entries[index];
+  142: 
+  143:                         <div class="leaderboard-row @(entry.IsCurrentUser ? "current-player" : "")">
+  144:                             <strong class="rank">@(index + 1)</strong>
+  145: 
+  146:                             <div class="player-cell">
+  147:                                 <span class="player-emblem">
+  148:                                     @Emblem(entry.Emblem)
+  149:                                 </span>
+  150: 
+  151:                                 <span>
+  152:                                     <strong class="level-colored-name"
+  153:                                             style="@LevelNameStyle(entry.Level)"
+  154:                                             title="@LevelColorTitle(entry.Level)">
+  155:                                         @entry.DisplayName
+  156:                                     </strong>
+  157:                                     <TitleEffect Title="@entry.Title" />
+  158:                                 </span>
+  159:                             </div>
+  160: 
+  161:                             <strong>Lv @entry.Level</strong>
+
+### LeaderboardResult at line 613
+--- lines 593-633 ---
+  593: 
+  594:     .player-cell strong,
+  595:     .leaderboard-row > strong:not(.rank) {
+  596:         color: var(--dark-panel-text, #eef4f8);
+  597:     }
+  598: 
+  599:     .player-cell small {
+  600:         color: var(--dark-panel-muted, #aab7c4);
+  601:     }
+  602: 
+  603:     .level-colored-name {
+  604:         font-weight: 950;
+  605:         text-shadow: 0 0 12px rgba(255, 255, 255, .12);
+  606:     }
+  607: 
+  608: </style>
+  609: 
+  610: @code {
+  611:     private ProfilePreferences Profile = new();
+  612:     private ProgressionState State = new();
+  613:     private LeaderboardResult Result = new();
+  614:     private bool Ready;
+  615:     private string Filter = "overall";
+  616: 
+  617:     private string DisplayName =>
+  618:         string.IsNullOrWhiteSpace(Profile.DisplayName)
+  619:             ? "CaveCode Learner"
+  620:             : Profile.DisplayName.Trim();
+  621: 
+  622:     private string FilterHeading =>
+  623:         Filter switch
+  624:         {
+  625:             "csharp" => "C# Cave Adventure",
+  626:             "python" => "Python Automation Quest",
+  627:             _ => "Overall academy"
+  628:         };
+  629: 
+  630:     protected override async Task OnAfterRenderAsync(bool firstRender)
+  631:     {
+  632:         if (!firstRender)
+  633:         {
+
+### GetLeaderboardAsync at line 670
+--- lines 650-690 ---
+  650:     private async Task ToggleVisibility(ChangeEventArgs args)
+  651:     {
+  652:         bool isPublic =
+  653:             args.Value is bool value
+  654:                 ? value
+  655:                 : bool.TryParse(
+  656:                     args.Value?.ToString(),
+  657:                     out bool parsed
+  658:                 ) && parsed;
+  659: 
+  660:         State =
+  661:             await ProgressionService
+  662:                 .SetPublicLeaderboardAsync(isPublic);
+  663: 
+  664:         await RefreshLeaderboard();
+  665:     }
+  666: 
+  667:     private async Task RefreshLeaderboard()
+  668:     {
+  669:         Result =
+  670:             await ProgressionService.GetLeaderboardAsync(
+  671:                 Filter,
+  672:                 Profile
+  673:             );
+  674: 
+  675:         await InvokeAsync(StateHasChanged);
+  676:     }
+  677: 
+  678:     private int FilterXp(LeaderboardEntry entry) =>
+  679:         Filter switch
+  680:         {
+  681:             "csharp" => entry.CSharpXp,
+  682:             "python" => entry.PythonXp,
+  683:             _ => entry.TotalXp
+  684:         };
+  685: 
+  686:     private int FilterLines(LeaderboardEntry entry) =>
+  687:         Filter switch
+  688:         {
+  689:             "csharp" => entry.CSharpLines,
+  690:             "python" => entry.PythonLines,
+
+### LeaderboardEntry at line 678
+--- lines 658-698 ---
+  658:                 ) && parsed;
+  659: 
+  660:         State =
+  661:             await ProgressionService
+  662:                 .SetPublicLeaderboardAsync(isPublic);
+  663: 
+  664:         await RefreshLeaderboard();
+  665:     }
+  666: 
+  667:     private async Task RefreshLeaderboard()
+  668:     {
+  669:         Result =
+  670:             await ProgressionService.GetLeaderboardAsync(
+  671:                 Filter,
+  672:                 Profile
+  673:             );
+  674: 
+  675:         await InvokeAsync(StateHasChanged);
+  676:     }
+  677: 
+  678:     private int FilterXp(LeaderboardEntry entry) =>
+  679:         Filter switch
+  680:         {
+  681:             "csharp" => entry.CSharpXp,
+  682:             "python" => entry.PythonXp,
+  683:             _ => entry.TotalXp
+  684:         };
+  685: 
+  686:     private int FilterLines(LeaderboardEntry entry) =>
+  687:         Filter switch
+  688:         {
+  689:             "csharp" => entry.CSharpLines,
+  690:             "python" => entry.PythonLines,
+  691:             _ => entry.TotalLines
+  692:         };
+  693: 
+  694: 
+  695:     private static readonly string[] LevelTierColors =
+  696:     {
+  697:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  698:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+
+### LeaderboardEntry at line 686
+--- lines 666-706 ---
+  666: 
+  667:     private async Task RefreshLeaderboard()
+  668:     {
+  669:         Result =
+  670:             await ProgressionService.GetLeaderboardAsync(
+  671:                 Filter,
+  672:                 Profile
+  673:             );
+  674: 
+  675:         await InvokeAsync(StateHasChanged);
+  676:     }
+  677: 
+  678:     private int FilterXp(LeaderboardEntry entry) =>
+  679:         Filter switch
+  680:         {
+  681:             "csharp" => entry.CSharpXp,
+  682:             "python" => entry.PythonXp,
+  683:             _ => entry.TotalXp
+  684:         };
+  685: 
+  686:     private int FilterLines(LeaderboardEntry entry) =>
+  687:         Filter switch
+  688:         {
+  689:             "csharp" => entry.CSharpLines,
+  690:             "python" => entry.PythonLines,
+  691:             _ => entry.TotalLines
+  692:         };
+  693: 
+  694: 
+  695:     private static readonly string[] LevelTierColors =
+  696:     {
+  697:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  698:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+  699:         "#EEF3F8", "#DDE8F2", "#CCDDEA", "#B9D1E3", "#A8C6DC",
+  700:         "#FFF0B0", "#FFE58A", "#FFDA66", "#F7CB42", "#E9BA22",
+  701:         "#B8F3D3", "#95EAB8", "#72E09E", "#50D284", "#34C16D",
+  702:         "#B9D8FF", "#9CC7FF", "#7CB5FF", "#5D9FFF", "#4088F0",
+  703:         "#E4C8FF", "#D4AEFF", "#C393FF", "#B27BEE", "#9D63DB",
+  704:         "#FFC6EA", "#FFACE0", "#FF91D3", "#F978C7", "#EE5DB9"
+  705:     };
+  706: 
+
+
+====================================================================================================
+FILE: .leaderboard-refresh-race-79a-backup/wwwroot/js/caveCodeAuth.js
+====================================================================================================
+### getLeaderboardProfiles at line 234
+--- lines 214-254 ---
+  214:             title: profile.title || "Cave Explorer",
+  215:             total_xp: Number(profile.totalXp || 0),
+  216:             csharp_xp: Number(profile.cSharpXp || 0),
+  217:             python_xp: Number(profile.pythonXp || 0),
+  218:             total_lines: Number(profile.totalLines || 0),
+  219:             csharp_lines: Number(profile.cSharpLines || 0),
+  220:             python_lines: Number(profile.pythonLines || 0),
+  221:             is_public: Boolean(profile.isPublic),
+  222:             updated_at: new Date().toISOString()
+  223:         };
+  224: 
+  225:         const { error } = await supabaseClient
+  226:             .from("leaderboard_profiles")
+  227:             .upsert(payload, { onConflict: "id" });
+  228: 
+  229:         return error
+  230:             ? { available: false, message: error.message }
+  231:             : { available: true, message: "" };
+  232:     },
+  233: 
+  234:     getLeaderboardProfiles: async function (filter = "overall") {
+  235:         if (!supabaseClient) {
+  236:             return { available: false, entries: [], message: "Supabase is not initialized." };
+  237:         }
+  238: 
+  239:         const orderColumn =
+  240:             filter === "csharp"
+  241:                 ? "csharp_xp"
+  242:                 : filter === "python"
+  243:                     ? "python_xp"
+  244:                     : "total_xp";
+  245: 
+  246:         const { data, error } = await supabaseClient
+  247:             .from("leaderboard_profiles")
+  248:             .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+  249:             .eq("is_public", true)
+  250:             .order(orderColumn, { ascending: false })
+  251:             .limit(100);
+  252: 
+  253:         if (error) {
+  254:             return { available: false, entries: [], message: error.message };
+
+
+====================================================================================================
+FILE: .minigame-vertical-slice-backup/Services/ProgressionService.cs
+====================================================================================================
+### GetLeaderboardAsync at line 72
+--- lines 52-92 ---
+   52:             );
+   53: 
+   54:         NotifyChanged();
+   55:         return result;
+   56:     }
+   57: 
+   58:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   59:         bool isPublic
+   60:     )
+   61:     {
+   62:         ProgressionState state =
+   63:             await js.InvokeAsync<ProgressionState>(
+   64:                 "caveCodeProgression.setPublicLeaderboard",
+   65:                 isPublic
+   66:             );
+   67: 
+   68:         NotifyChanged();
+   69:         return state;
+   70:     }
+   71: 
+   72:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   73:         string filter,
+   74:         ProfilePreferences profile
+   75:     ) =>
+   76:         js.InvokeAsync<LeaderboardResult>(
+   77:             "caveCodeProgression.getLeaderboard",
+   78:             filter,
+   79:             profile
+   80:         );
+   81: 
+   82:     private void NotifyChanged() =>
+   83:         StateChanged?.Invoke();
+   84: }
+   85: 
+   86: public sealed class ProgressionState
+   87: {
+   88:     public int TotalXp { get; set; }
+   89:     public int CSharpXp { get; set; }
+   90:     public int PythonXp { get; set; }
+   91:     public int TotalLines { get; set; }
+   92:     public int CSharpLines { get; set; }
+
+### LeaderboardResult at line 72
+--- lines 52-92 ---
+   52:             );
+   53: 
+   54:         NotifyChanged();
+   55:         return result;
+   56:     }
+   57: 
+   58:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   59:         bool isPublic
+   60:     )
+   61:     {
+   62:         ProgressionState state =
+   63:             await js.InvokeAsync<ProgressionState>(
+   64:                 "caveCodeProgression.setPublicLeaderboard",
+   65:                 isPublic
+   66:             );
+   67: 
+   68:         NotifyChanged();
+   69:         return state;
+   70:     }
+   71: 
+   72:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   73:         string filter,
+   74:         ProfilePreferences profile
+   75:     ) =>
+   76:         js.InvokeAsync<LeaderboardResult>(
+   77:             "caveCodeProgression.getLeaderboard",
+   78:             filter,
+   79:             profile
+   80:         );
+   81: 
+   82:     private void NotifyChanged() =>
+   83:         StateChanged?.Invoke();
+   84: }
+   85: 
+   86: public sealed class ProgressionState
+   87: {
+   88:     public int TotalXp { get; set; }
+   89:     public int CSharpXp { get; set; }
+   90:     public int PythonXp { get; set; }
+   91:     public int TotalLines { get; set; }
+   92:     public int CSharpLines { get; set; }
+
+### LeaderboardResult at line 76
+--- lines 56-96 ---
+   56:     }
+   57: 
+   58:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   59:         bool isPublic
+   60:     )
+   61:     {
+   62:         ProgressionState state =
+   63:             await js.InvokeAsync<ProgressionState>(
+   64:                 "caveCodeProgression.setPublicLeaderboard",
+   65:                 isPublic
+   66:             );
+   67: 
+   68:         NotifyChanged();
+   69:         return state;
+   70:     }
+   71: 
+   72:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   73:         string filter,
+   74:         ProfilePreferences profile
+   75:     ) =>
+   76:         js.InvokeAsync<LeaderboardResult>(
+   77:             "caveCodeProgression.getLeaderboard",
+   78:             filter,
+   79:             profile
+   80:         );
+   81: 
+   82:     private void NotifyChanged() =>
+   83:         StateChanged?.Invoke();
+   84: }
+   85: 
+   86: public sealed class ProgressionState
+   87: {
+   88:     public int TotalXp { get; set; }
+   89:     public int CSharpXp { get; set; }
+   90:     public int PythonXp { get; set; }
+   91:     public int TotalLines { get; set; }
+   92:     public int CSharpLines { get; set; }
+   93:     public int PythonLines { get; set; }
+   94:     public int Level { get; set; } = 1;
+   95:     public int XpIntoLevel { get; set; }
+   96:     public int XpForNextLevel { get; set; } = 500;
+
+### LeaderboardResult at line 119
+--- lines 99-139 ---
+   99: }
+  100: 
+  101: public sealed class CourseResumeState
+  102: {
+  103:     public bool HasProgress { get; set; }
+  104:     public bool CourseComplete { get; set; }
+  105:     public int CurrentModuleIndex { get; set; }
+  106:     public int CurrentStage { get; set; }
+  107:     public int CompletedModules { get; set; }
+  108:     public int TotalModules { get; set; } = 40;
+  109:     public int ModuleMastery { get; set; }
+  110: }
+  111: 
+  112: public sealed class ProgressionAwardResult
+  113: {
+  114:     public bool NewlyAwarded { get; set; }
+  115:     public int XpAwarded { get; set; }
+  116:     public ProgressionState State { get; set; } = new();
+  117: }
+  118: 
+  119: public sealed class LeaderboardResult
+  120: {
+  121:     public bool CloudAvailable { get; set; }
+  122:     public bool SignedIn { get; set; }
+  123:     public string Message { get; set; } = "";
+  124:     public LeaderboardEntry[] Entries { get; set; } =
+  125:         Array.Empty<LeaderboardEntry>();
+  126: }
+  127: 
+  128: public sealed class LeaderboardEntry
+  129: {
+  130:     public string Id { get; set; } = "";
+  131:     public string DisplayName { get; set; } = "CaveCode Learner";
+  132:     public string Emblem { get; set; } = "crystal";
+  133:     public string Title { get; set; } = "Cave Explorer";
+  134:     public int TotalXp { get; set; }
+  135:     public int CSharpXp { get; set; }
+  136:     public int PythonXp { get; set; }
+  137:     public int TotalLines { get; set; }
+  138:     public int CSharpLines { get; set; }
+  139:     public int PythonLines { get; set; }
+
+### LeaderboardEntry at line 124
+--- lines 104-142 ---
+  104:     public bool CourseComplete { get; set; }
+  105:     public int CurrentModuleIndex { get; set; }
+  106:     public int CurrentStage { get; set; }
+  107:     public int CompletedModules { get; set; }
+  108:     public int TotalModules { get; set; } = 40;
+  109:     public int ModuleMastery { get; set; }
+  110: }
+  111: 
+  112: public sealed class ProgressionAwardResult
+  113: {
+  114:     public bool NewlyAwarded { get; set; }
+  115:     public int XpAwarded { get; set; }
+  116:     public ProgressionState State { get; set; } = new();
+  117: }
+  118: 
+  119: public sealed class LeaderboardResult
+  120: {
+  121:     public bool CloudAvailable { get; set; }
+  122:     public bool SignedIn { get; set; }
+  123:     public string Message { get; set; } = "";
+  124:     public LeaderboardEntry[] Entries { get; set; } =
+  125:         Array.Empty<LeaderboardEntry>();
+  126: }
+  127: 
+  128: public sealed class LeaderboardEntry
+  129: {
+  130:     public string Id { get; set; } = "";
+  131:     public string DisplayName { get; set; } = "CaveCode Learner";
+  132:     public string Emblem { get; set; } = "crystal";
+  133:     public string Title { get; set; } = "Cave Explorer";
+  134:     public int TotalXp { get; set; }
+  135:     public int CSharpXp { get; set; }
+  136:     public int PythonXp { get; set; }
+  137:     public int TotalLines { get; set; }
+  138:     public int CSharpLines { get; set; }
+  139:     public int PythonLines { get; set; }
+  140:     public int Level { get; set; } = 1;
+  141:     public bool IsCurrentUser { get; set; }
+  142: }
+
+### LeaderboardEntry at line 125
+--- lines 105-142 ---
+  105:     public int CurrentModuleIndex { get; set; }
+  106:     public int CurrentStage { get; set; }
+  107:     public int CompletedModules { get; set; }
+  108:     public int TotalModules { get; set; } = 40;
+  109:     public int ModuleMastery { get; set; }
+  110: }
+  111: 
+  112: public sealed class ProgressionAwardResult
+  113: {
+  114:     public bool NewlyAwarded { get; set; }
+  115:     public int XpAwarded { get; set; }
+  116:     public ProgressionState State { get; set; } = new();
+  117: }
+  118: 
+  119: public sealed class LeaderboardResult
+  120: {
+  121:     public bool CloudAvailable { get; set; }
+  122:     public bool SignedIn { get; set; }
+  123:     public string Message { get; set; } = "";
+  124:     public LeaderboardEntry[] Entries { get; set; } =
+  125:         Array.Empty<LeaderboardEntry>();
+  126: }
+  127: 
+  128: public sealed class LeaderboardEntry
+  129: {
+  130:     public string Id { get; set; } = "";
+  131:     public string DisplayName { get; set; } = "CaveCode Learner";
+  132:     public string Emblem { get; set; } = "crystal";
+  133:     public string Title { get; set; } = "Cave Explorer";
+  134:     public int TotalXp { get; set; }
+  135:     public int CSharpXp { get; set; }
+  136:     public int PythonXp { get; set; }
+  137:     public int TotalLines { get; set; }
+  138:     public int CSharpLines { get; set; }
+  139:     public int PythonLines { get; set; }
+  140:     public int Level { get; set; } = 1;
+  141:     public bool IsCurrentUser { get; set; }
+  142: }
+
+### LeaderboardEntry at line 128
+--- lines 108-142 ---
+  108:     public int TotalModules { get; set; } = 40;
+  109:     public int ModuleMastery { get; set; }
+  110: }
+  111: 
+  112: public sealed class ProgressionAwardResult
+  113: {
+  114:     public bool NewlyAwarded { get; set; }
+  115:     public int XpAwarded { get; set; }
+  116:     public ProgressionState State { get; set; } = new();
+  117: }
+  118: 
+  119: public sealed class LeaderboardResult
+  120: {
+  121:     public bool CloudAvailable { get; set; }
+  122:     public bool SignedIn { get; set; }
+  123:     public string Message { get; set; } = "";
+  124:     public LeaderboardEntry[] Entries { get; set; } =
+  125:         Array.Empty<LeaderboardEntry>();
+  126: }
+  127: 
+  128: public sealed class LeaderboardEntry
+  129: {
+  130:     public string Id { get; set; } = "";
+  131:     public string DisplayName { get; set; } = "CaveCode Learner";
+  132:     public string Emblem { get; set; } = "crystal";
+  133:     public string Title { get; set; } = "Cave Explorer";
+  134:     public int TotalXp { get; set; }
+  135:     public int CSharpXp { get; set; }
+  136:     public int PythonXp { get; set; }
+  137:     public int TotalLines { get; set; }
+  138:     public int CSharpLines { get; set; }
+  139:     public int PythonLines { get; set; }
+  140:     public int Level { get; set; } = 1;
+  141:     public bool IsCurrentUser { get; set; }
+  142: }
+
+
+====================================================================================================
+FILE: .minigame-vertical-slice-backup/wwwroot/js/caveCodeProgression.js
+====================================================================================================
+### getLeaderboardProfiles at line 428
+--- lines 408-448 ---
+  408: 
+  409:             const local = localEntry(profile, user);
+  410:             let cloudAvailable = false;
+  411:             let entries = [];
+  412:             let message = "";
+  413: 
+  414:             if (user && window.caveCodeAuth) {
+  415:                 try {
+  416:                     const sync =
+  417:                         await window.caveCodeAuth
+  418:                             .upsertLeaderboardProfile({
+  419:                                 ...local,
+  420:                                 isPublic:
+  421:                                     current.publicLeaderboard
+  422:                             });
+  423: 
+  424:                     cloudAvailable = Boolean(sync?.available);
+  425: 
+  426:                     const cloud =
+  427:                         await window.caveCodeAuth
+  428:                             .getLeaderboardProfiles(filter);
+  429: 
+  430:                     if (cloud?.available) {
+  431:                         cloudAvailable = true;
+  432:                         entries = cloud.entries || [];
+  433:                     } else {
+  434:                         message = cloud?.message || "";
+  435:                     }
+  436:                 } catch (error) {
+  437:                     message =
+  438:                         error?.message ||
+  439:                         "Global leaderboard is not configured.";
+  440:                 }
+  441:             }
+  442: 
+  443:             const existing = entries.findIndex(
+  444:                 entry => entry.id === local.id
+  445:             );
+  446: 
+  447:             if (existing >= 0) {
+  448:                 entries[existing] = {
+
+
+====================================================================================================
+FILE: .navigation-title-lock-backup/Pages/Leaderboard.razor
+====================================================================================================
+### Public leaderboard at line 65
+--- lines 45-85 ---
+   45:                         @State.XpIntoLevel / @State.XpForNextLevel XP
+   46:                         toward Level @(State.Level + 1)
+   47:                     </small>
+   48:                 </div>
+   49: 
+   50:                 <div class="summary-stats">
+   51:                     <div>
+   52:                         <span>Total XP</span>
+   53:                         <strong>@State.TotalXp.ToString("N0")</strong>
+   54:                     </div>
+   55: 
+   56:                     <div>
+   57:                         <span>Validated lines</span>
+   58:                         <strong>@State.TotalLines.ToString("N0")</strong>
+   59:                     </div>
+   60:                 </div>
+   61:             </section>
+   62: 
+   63:             <section class="visibility-card">
+   64:                 <div>
+   65:                     <strong>Public leaderboard profile</strong>
+   66:                     <p>
+   67:                         Public profiles show only your display name, emblem,
+   68:                         title, level, XP, and validated-line totals.
+   69:                     </p>
+   70:                 </div>
+   71: 
+   72:                 <label class="visibility-toggle">
+   73:                     <input type="checkbox"
+   74:                            checked="@State.PublicLeaderboard"
+   75:                            @onchange="ToggleVisibility" />
+   76:                     <i></i>
+   77:                     <span>
+   78:                         @(State.PublicLeaderboard ? "Public" : "Private")
+   79:                     </span>
+   80:                 </label>
+   81:             </section>
+   82: 
+   83:             @if (!string.IsNullOrWhiteSpace(Result.Message))
+   84:             {
+   85:                 <section class="leaderboard-message">
+
+### LeaderboardEntry at line 131
+--- lines 111-151 ---
+  111:                                 class="@(Filter == "python" ? "selected" : "")"
+  112:                                 @onclick='() => SelectFilter("python")'>
+  113:                             Python
+  114:                         </button>
+  115:                     </div>
+  116:                 </div>
+  117: 
+  118:                 <div class="leaderboard-table">
+  119:                     <div class="leaderboard-row table-head">
+  120:                         <span>Rank</span>
+  121:                         <span>Player</span>
+  122:                         <span>Level</span>
+  123:                         <span>Experience</span>
+  124:                         <span>Validated lines</span>
+  125:                     </div>
+  126: 
+  127:                     @for (int index = 0;
+  128:                           index < Result.Entries.Length;
+  129:                           index++)
+  130:                     {
+  131:                         LeaderboardEntry entry = Result.Entries[index];
+  132: 
+  133:                         <div class="leaderboard-row @(entry.IsCurrentUser ? "current-player" : "")">
+  134:                             <strong class="rank">@(index + 1)</strong>
+  135: 
+  136:                             <div class="player-cell">
+  137:                                 <span class="player-emblem">
+  138:                                     @Emblem(entry.Emblem)
+  139:                                 </span>
+  140: 
+  141:                                 <span>
+  142:                                     <strong class="level-colored-name"
+  143:                                             style="@LevelNameStyle(entry.Level)"
+  144:                                             title="@LevelColorTitle(entry.Level)">
+  145:                                         @entry.DisplayName
+  146:                                     </strong>
+  147:                                     <small>@entry.Title</small>
+  148:                                 </span>
+  149:                             </div>
+  150: 
+  151:                             <strong>Lv @entry.Level</strong>
+
+### LeaderboardResult at line 603
+--- lines 583-623 ---
+  583: 
+  584:     .player-cell strong,
+  585:     .leaderboard-row > strong:not(.rank) {
+  586:         color: var(--dark-panel-text, #eef4f8);
+  587:     }
+  588: 
+  589:     .player-cell small {
+  590:         color: var(--dark-panel-muted, #aab7c4);
+  591:     }
+  592: 
+  593:     .level-colored-name {
+  594:         font-weight: 950;
+  595:         text-shadow: 0 0 12px rgba(255, 255, 255, .12);
+  596:     }
+  597: 
+  598: </style>
+  599: 
+  600: @code {
+  601:     private ProfilePreferences Profile = new();
+  602:     private ProgressionState State = new();
+  603:     private LeaderboardResult Result = new();
+  604:     private bool Ready;
+  605:     private string Filter = "overall";
+  606: 
+  607:     private string DisplayName =>
+  608:         string.IsNullOrWhiteSpace(Profile.DisplayName)
+  609:             ? "CaveCode Learner"
+  610:             : Profile.DisplayName.Trim();
+  611: 
+  612:     private string FilterHeading =>
+  613:         Filter switch
+  614:         {
+  615:             "csharp" => "C# Cave Adventure",
+  616:             "python" => "Python Automation Quest",
+  617:             _ => "Overall academy"
+  618:         };
+  619: 
+  620:     protected override async Task OnAfterRenderAsync(bool firstRender)
+  621:     {
+  622:         if (!firstRender)
+  623:         {
+
+### GetLeaderboardAsync at line 660
+--- lines 640-680 ---
+  640:     private async Task ToggleVisibility(ChangeEventArgs args)
+  641:     {
+  642:         bool isPublic =
+  643:             args.Value is bool value
+  644:                 ? value
+  645:                 : bool.TryParse(
+  646:                     args.Value?.ToString(),
+  647:                     out bool parsed
+  648:                 ) && parsed;
+  649: 
+  650:         State =
+  651:             await ProgressionService
+  652:                 .SetPublicLeaderboardAsync(isPublic);
+  653: 
+  654:         await RefreshLeaderboard();
+  655:     }
+  656: 
+  657:     private async Task RefreshLeaderboard()
+  658:     {
+  659:         Result =
+  660:             await ProgressionService.GetLeaderboardAsync(
+  661:                 Filter,
+  662:                 Profile
+  663:             );
+  664: 
+  665:         await InvokeAsync(StateHasChanged);
+  666:     }
+  667: 
+  668:     private int FilterXp(LeaderboardEntry entry) =>
+  669:         Filter switch
+  670:         {
+  671:             "csharp" => entry.CSharpXp,
+  672:             "python" => entry.PythonXp,
+  673:             _ => entry.TotalXp
+  674:         };
+  675: 
+  676:     private int FilterLines(LeaderboardEntry entry) =>
+  677:         Filter switch
+  678:         {
+  679:             "csharp" => entry.CSharpLines,
+  680:             "python" => entry.PythonLines,
+
+### LeaderboardEntry at line 668
+--- lines 648-688 ---
+  648:                 ) && parsed;
+  649: 
+  650:         State =
+  651:             await ProgressionService
+  652:                 .SetPublicLeaderboardAsync(isPublic);
+  653: 
+  654:         await RefreshLeaderboard();
+  655:     }
+  656: 
+  657:     private async Task RefreshLeaderboard()
+  658:     {
+  659:         Result =
+  660:             await ProgressionService.GetLeaderboardAsync(
+  661:                 Filter,
+  662:                 Profile
+  663:             );
+  664: 
+  665:         await InvokeAsync(StateHasChanged);
+  666:     }
+  667: 
+  668:     private int FilterXp(LeaderboardEntry entry) =>
+  669:         Filter switch
+  670:         {
+  671:             "csharp" => entry.CSharpXp,
+  672:             "python" => entry.PythonXp,
+  673:             _ => entry.TotalXp
+  674:         };
+  675: 
+  676:     private int FilterLines(LeaderboardEntry entry) =>
+  677:         Filter switch
+  678:         {
+  679:             "csharp" => entry.CSharpLines,
+  680:             "python" => entry.PythonLines,
+  681:             _ => entry.TotalLines
+  682:         };
+  683: 
+  684: 
+  685:     private static readonly string[] LevelTierColors =
+  686:     {
+  687:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  688:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+
+### LeaderboardEntry at line 676
+--- lines 656-696 ---
+  656: 
+  657:     private async Task RefreshLeaderboard()
+  658:     {
+  659:         Result =
+  660:             await ProgressionService.GetLeaderboardAsync(
+  661:                 Filter,
+  662:                 Profile
+  663:             );
+  664: 
+  665:         await InvokeAsync(StateHasChanged);
+  666:     }
+  667: 
+  668:     private int FilterXp(LeaderboardEntry entry) =>
+  669:         Filter switch
+  670:         {
+  671:             "csharp" => entry.CSharpXp,
+  672:             "python" => entry.PythonXp,
+  673:             _ => entry.TotalXp
+  674:         };
+  675: 
+  676:     private int FilterLines(LeaderboardEntry entry) =>
+  677:         Filter switch
+  678:         {
+  679:             "csharp" => entry.CSharpLines,
+  680:             "python" => entry.PythonLines,
+  681:             _ => entry.TotalLines
+  682:         };
+  683: 
+  684: 
+  685:     private static readonly string[] LevelTierColors =
+  686:     {
+  687:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  688:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+  689:         "#EEF3F8", "#DDE8F2", "#CCDDEA", "#B9D1E3", "#A8C6DC",
+  690:         "#FFF0B0", "#FFE58A", "#FFDA66", "#F7CB42", "#E9BA22",
+  691:         "#B8F3D3", "#95EAB8", "#72E09E", "#50D284", "#34C16D",
+  692:         "#B9D8FF", "#9CC7FF", "#7CB5FF", "#5D9FFF", "#4088F0",
+  693:         "#E4C8FF", "#D4AEFF", "#C393FF", "#B27BEE", "#9D63DB",
+  694:         "#FFC6EA", "#FFACE0", "#FF91D3", "#F978C7", "#EE5DB9"
+  695:     };
+  696: 
+
+
+====================================================================================================
+FILE: .official-branding-pass-2-backup/Pages/Leaderboard.razor
+====================================================================================================
+### Public leaderboard at line 65
+--- lines 45-85 ---
+   45:                         @State.XpIntoLevel / @State.XpForNextLevel XP
+   46:                         toward Level @(State.Level + 1)
+   47:                     </small>
+   48:                 </div>
+   49: 
+   50:                 <div class="summary-stats">
+   51:                     <div>
+   52:                         <span>Total XP</span>
+   53:                         <strong>@State.TotalXp.ToString("N0")</strong>
+   54:                     </div>
+   55: 
+   56:                     <div>
+   57:                         <span>Validated lines</span>
+   58:                         <strong>@State.TotalLines.ToString("N0")</strong>
+   59:                     </div>
+   60:                 </div>
+   61:             </section>
+   62: 
+   63:             <section class="visibility-card">
+   64:                 <div>
+   65:                     <strong>Public leaderboard profile</strong>
+   66:                     <p>
+   67:                         Public profiles show only your display name, emblem,
+   68:                         title, level, XP, and validated-line totals.
+   69:                     </p>
+   70:                 </div>
+   71: 
+   72:                 <label class="visibility-toggle">
+   73:                     <input type="checkbox"
+   74:                            checked="@State.PublicLeaderboard"
+   75:                            @onchange="ToggleVisibility" />
+   76:                     <i></i>
+   77:                     <span>
+   78:                         @(State.PublicLeaderboard ? "Public" : "Private")
+   79:                     </span>
+   80:                 </label>
+   81:             </section>
+   82: 
+   83:             @if (!string.IsNullOrWhiteSpace(Result.Message))
+   84:             {
+   85:                 <section class="leaderboard-message">
+
+### LeaderboardEntry at line 131
+--- lines 111-151 ---
+  111:                                 class="@(Filter == "python" ? "selected" : "")"
+  112:                                 @onclick='() => SelectFilter("python")'>
+  113:                             Python
+  114:                         </button>
+  115:                     </div>
+  116:                 </div>
+  117: 
+  118:                 <div class="leaderboard-table">
+  119:                     <div class="leaderboard-row table-head">
+  120:                         <span>Rank</span>
+  121:                         <span>Player</span>
+  122:                         <span>Level</span>
+  123:                         <span>Experience</span>
+  124:                         <span>Validated lines</span>
+  125:                     </div>
+  126: 
+  127:                     @for (int index = 0;
+  128:                           index < Result.Entries.Length;
+  129:                           index++)
+  130:                     {
+  131:                         LeaderboardEntry entry = Result.Entries[index];
+  132: 
+  133:                         <div class="leaderboard-row @(entry.IsCurrentUser ? "current-player" : "")">
+  134:                             <strong class="rank">@(index + 1)</strong>
+  135: 
+  136:                             <div class="player-cell">
+  137:                                 <span class="player-emblem">
+  138:                                     @Emblem(entry.Emblem)
+  139:                                 </span>
+  140: 
+  141:                                 <span>
+  142:                                     <strong class="level-colored-name"
+  143:                                             style="@LevelNameStyle(entry.Level)"
+  144:                                             title="@LevelColorTitle(entry.Level)">
+  145:                                         @entry.DisplayName
+  146:                                     </strong>
+  147:                                     <TitleEffect Title="@entry.Title" />
+  148:                                 </span>
+  149:                             </div>
+  150: 
+  151:                             <strong>Lv @entry.Level</strong>
+
+### LeaderboardResult at line 603
+--- lines 583-623 ---
+  583: 
+  584:     .player-cell strong,
+  585:     .leaderboard-row > strong:not(.rank) {
+  586:         color: var(--dark-panel-text, #eef4f8);
+  587:     }
+  588: 
+  589:     .player-cell small {
+  590:         color: var(--dark-panel-muted, #aab7c4);
+  591:     }
+  592: 
+  593:     .level-colored-name {
+  594:         font-weight: 950;
+  595:         text-shadow: 0 0 12px rgba(255, 255, 255, .12);
+  596:     }
+  597: 
+  598: </style>
+  599: 
+  600: @code {
+  601:     private ProfilePreferences Profile = new();
+  602:     private ProgressionState State = new();
+  603:     private LeaderboardResult Result = new();
+  604:     private bool Ready;
+  605:     private string Filter = "overall";
+  606: 
+  607:     private string DisplayName =>
+  608:         string.IsNullOrWhiteSpace(Profile.DisplayName)
+  609:             ? "CaveCode Learner"
+  610:             : Profile.DisplayName.Trim();
+  611: 
+  612:     private string FilterHeading =>
+  613:         Filter switch
+  614:         {
+  615:             "csharp" => "C# Cave Adventure",
+  616:             "python" => "Python Automation Quest",
+  617:             _ => "Overall academy"
+  618:         };
+  619: 
+  620:     protected override async Task OnAfterRenderAsync(bool firstRender)
+  621:     {
+  622:         if (!firstRender)
+  623:         {
+
+### GetLeaderboardAsync at line 660
+--- lines 640-680 ---
+  640:     private async Task ToggleVisibility(ChangeEventArgs args)
+  641:     {
+  642:         bool isPublic =
+  643:             args.Value is bool value
+  644:                 ? value
+  645:                 : bool.TryParse(
+  646:                     args.Value?.ToString(),
+  647:                     out bool parsed
+  648:                 ) && parsed;
+  649: 
+  650:         State =
+  651:             await ProgressionService
+  652:                 .SetPublicLeaderboardAsync(isPublic);
+  653: 
+  654:         await RefreshLeaderboard();
+  655:     }
+  656: 
+  657:     private async Task RefreshLeaderboard()
+  658:     {
+  659:         Result =
+  660:             await ProgressionService.GetLeaderboardAsync(
+  661:                 Filter,
+  662:                 Profile
+  663:             );
+  664: 
+  665:         await InvokeAsync(StateHasChanged);
+  666:     }
+  667: 
+  668:     private int FilterXp(LeaderboardEntry entry) =>
+  669:         Filter switch
+  670:         {
+  671:             "csharp" => entry.CSharpXp,
+  672:             "python" => entry.PythonXp,
+  673:             _ => entry.TotalXp
+  674:         };
+  675: 
+  676:     private int FilterLines(LeaderboardEntry entry) =>
+  677:         Filter switch
+  678:         {
+  679:             "csharp" => entry.CSharpLines,
+  680:             "python" => entry.PythonLines,
+
+### LeaderboardEntry at line 668
+--- lines 648-688 ---
+  648:                 ) && parsed;
+  649: 
+  650:         State =
+  651:             await ProgressionService
+  652:                 .SetPublicLeaderboardAsync(isPublic);
+  653: 
+  654:         await RefreshLeaderboard();
+  655:     }
+  656: 
+  657:     private async Task RefreshLeaderboard()
+  658:     {
+  659:         Result =
+  660:             await ProgressionService.GetLeaderboardAsync(
+  661:                 Filter,
+  662:                 Profile
+  663:             );
+  664: 
+  665:         await InvokeAsync(StateHasChanged);
+  666:     }
+  667: 
+  668:     private int FilterXp(LeaderboardEntry entry) =>
+  669:         Filter switch
+  670:         {
+  671:             "csharp" => entry.CSharpXp,
+  672:             "python" => entry.PythonXp,
+  673:             _ => entry.TotalXp
+  674:         };
+  675: 
+  676:     private int FilterLines(LeaderboardEntry entry) =>
+  677:         Filter switch
+  678:         {
+  679:             "csharp" => entry.CSharpLines,
+  680:             "python" => entry.PythonLines,
+  681:             _ => entry.TotalLines
+  682:         };
+  683: 
+  684: 
+  685:     private static readonly string[] LevelTierColors =
+  686:     {
+  687:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  688:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+
+### LeaderboardEntry at line 676
+--- lines 656-696 ---
+  656: 
+  657:     private async Task RefreshLeaderboard()
+  658:     {
+  659:         Result =
+  660:             await ProgressionService.GetLeaderboardAsync(
+  661:                 Filter,
+  662:                 Profile
+  663:             );
+  664: 
+  665:         await InvokeAsync(StateHasChanged);
+  666:     }
+  667: 
+  668:     private int FilterXp(LeaderboardEntry entry) =>
+  669:         Filter switch
+  670:         {
+  671:             "csharp" => entry.CSharpXp,
+  672:             "python" => entry.PythonXp,
+  673:             _ => entry.TotalXp
+  674:         };
+  675: 
+  676:     private int FilterLines(LeaderboardEntry entry) =>
+  677:         Filter switch
+  678:         {
+  679:             "csharp" => entry.CSharpLines,
+  680:             "python" => entry.PythonLines,
+  681:             _ => entry.TotalLines
+  682:         };
+  683: 
+  684: 
+  685:     private static readonly string[] LevelTierColors =
+  686:     {
+  687:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  688:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+  689:         "#EEF3F8", "#DDE8F2", "#CCDDEA", "#B9D1E3", "#A8C6DC",
+  690:         "#FFF0B0", "#FFE58A", "#FFDA66", "#F7CB42", "#E9BA22",
+  691:         "#B8F3D3", "#95EAB8", "#72E09E", "#50D284", "#34C16D",
+  692:         "#B9D8FF", "#9CC7FF", "#7CB5FF", "#5D9FFF", "#4088F0",
+  693:         "#E4C8FF", "#D4AEFF", "#C393FF", "#B27BEE", "#9D63DB",
+  694:         "#FFC6EA", "#FFACE0", "#FF91D3", "#F978C7", "#EE5DB9"
+  695:     };
+  696: 
+
+
+====================================================================================================
+FILE: .xp-resume-tier-backup/Pages/Leaderboard.razor
+====================================================================================================
+### Public leaderboard at line 65
+--- lines 45-85 ---
+   45:                         @State.XpIntoLevel / @State.XpForNextLevel XP
+   46:                         toward Level @(State.Level + 1)
+   47:                     </small>
+   48:                 </div>
+   49: 
+   50:                 <div class="summary-stats">
+   51:                     <div>
+   52:                         <span>Total XP</span>
+   53:                         <strong>@State.TotalXp.ToString("N0")</strong>
+   54:                     </div>
+   55: 
+   56:                     <div>
+   57:                         <span>Validated lines</span>
+   58:                         <strong>@State.TotalLines.ToString("N0")</strong>
+   59:                     </div>
+   60:                 </div>
+   61:             </section>
+   62: 
+   63:             <section class="visibility-card">
+   64:                 <div>
+   65:                     <strong>Public leaderboard profile</strong>
+   66:                     <p>
+   67:                         Public profiles show only your display name, emblem,
+   68:                         title, level, XP, and validated-line totals.
+   69:                     </p>
+   70:                 </div>
+   71: 
+   72:                 <label class="visibility-toggle">
+   73:                     <input type="checkbox"
+   74:                            checked="@State.PublicLeaderboard"
+   75:                            @onchange="ToggleVisibility" />
+   76:                     <i></i>
+   77:                     <span>
+   78:                         @(State.PublicLeaderboard ? "Public" : "Private")
+   79:                     </span>
+   80:                 </label>
+   81:             </section>
+   82: 
+   83:             @if (!string.IsNullOrWhiteSpace(Result.Message))
+   84:             {
+   85:                 <section class="leaderboard-message">
+
+### LeaderboardEntry at line 131
+--- lines 111-151 ---
+  111:                                 class="@(Filter == "python" ? "selected" : "")"
+  112:                                 @onclick='() => SelectFilter("python")'>
+  113:                             Python
+  114:                         </button>
+  115:                     </div>
+  116:                 </div>
+  117: 
+  118:                 <div class="leaderboard-table">
+  119:                     <div class="leaderboard-row table-head">
+  120:                         <span>Rank</span>
+  121:                         <span>Player</span>
+  122:                         <span>Level</span>
+  123:                         <span>Experience</span>
+  124:                         <span>Validated lines</span>
+  125:                     </div>
+  126: 
+  127:                     @for (int index = 0;
+  128:                           index < Result.Entries.Length;
+  129:                           index++)
+  130:                     {
+  131:                         LeaderboardEntry entry = Result.Entries[index];
+  132: 
+  133:                         <div class="leaderboard-row @(entry.IsCurrentUser ? "current-player" : "")">
+  134:                             <strong class="rank">@(index + 1)</strong>
+  135: 
+  136:                             <div class="player-cell">
+  137:                                 <span class="player-emblem">
+  138:                                     @Emblem(entry.Emblem)
+  139:                                 </span>
+  140: 
+  141:                                 <span>
+  142:                                     <strong>@entry.DisplayName</strong>
+  143:                                     <small>@entry.Title</small>
+  144:                                 </span>
+  145:                             </div>
+  146: 
+  147:                             <strong>Lv @entry.Level</strong>
+  148:                             <strong>@FilterXp(entry).ToString("N0") XP</strong>
+  149:                             <strong>@FilterLines(entry).ToString("N0")</strong>
+  150:                         </div>
+  151:                     }
+
+### LeaderboardResult at line 567
+--- lines 547-587 ---
+  547: 
+  548:         .summary-stats {
+  549:             grid-column: 1 / -1;
+  550:         }
+  551: 
+  552:         .visibility-card,
+  553:         .ranking-toolbar {
+  554:             align-items: stretch;
+  555:             flex-direction: column;
+  556:         }
+  557: 
+  558:         .xp-rules {
+  559:             grid-template-columns: repeat(2, 1fr);
+  560:         }
+  561:     }
+  562: </style>
+  563: 
+  564: @code {
+  565:     private ProfilePreferences Profile = new();
+  566:     private ProgressionState State = new();
+  567:     private LeaderboardResult Result = new();
+  568:     private bool Ready;
+  569:     private string Filter = "overall";
+  570: 
+  571:     private string DisplayName =>
+  572:         string.IsNullOrWhiteSpace(Profile.DisplayName)
+  573:             ? "CaveCode Learner"
+  574:             : Profile.DisplayName.Trim();
+  575: 
+  576:     private string FilterHeading =>
+  577:         Filter switch
+  578:         {
+  579:             "csharp" => "C# Cave Adventure",
+  580:             "python" => "Python Automation Quest",
+  581:             _ => "Overall academy"
+  582:         };
+  583: 
+  584:     protected override async Task OnAfterRenderAsync(bool firstRender)
+  585:     {
+  586:         if (!firstRender)
+  587:         {
+
+### GetLeaderboardAsync at line 624
+--- lines 604-644 ---
+  604:     private async Task ToggleVisibility(ChangeEventArgs args)
+  605:     {
+  606:         bool isPublic =
+  607:             args.Value is bool value
+  608:                 ? value
+  609:                 : bool.TryParse(
+  610:                     args.Value?.ToString(),
+  611:                     out bool parsed
+  612:                 ) && parsed;
+  613: 
+  614:         State =
+  615:             await ProgressionService
+  616:                 .SetPublicLeaderboardAsync(isPublic);
+  617: 
+  618:         await RefreshLeaderboard();
+  619:     }
+  620: 
+  621:     private async Task RefreshLeaderboard()
+  622:     {
+  623:         Result =
+  624:             await ProgressionService.GetLeaderboardAsync(
+  625:                 Filter,
+  626:                 Profile
+  627:             );
+  628: 
+  629:         await InvokeAsync(StateHasChanged);
+  630:     }
+  631: 
+  632:     private int FilterXp(LeaderboardEntry entry) =>
+  633:         Filter switch
+  634:         {
+  635:             "csharp" => entry.CSharpXp,
+  636:             "python" => entry.PythonXp,
+  637:             _ => entry.TotalXp
+  638:         };
+  639: 
+  640:     private int FilterLines(LeaderboardEntry entry) =>
+  641:         Filter switch
+  642:         {
+  643:             "csharp" => entry.CSharpLines,
+  644:             "python" => entry.PythonLines,
+
+### LeaderboardEntry at line 632
+--- lines 612-652 ---
+  612:                 ) && parsed;
+  613: 
+  614:         State =
+  615:             await ProgressionService
+  616:                 .SetPublicLeaderboardAsync(isPublic);
+  617: 
+  618:         await RefreshLeaderboard();
+  619:     }
+  620: 
+  621:     private async Task RefreshLeaderboard()
+  622:     {
+  623:         Result =
+  624:             await ProgressionService.GetLeaderboardAsync(
+  625:                 Filter,
+  626:                 Profile
+  627:             );
+  628: 
+  629:         await InvokeAsync(StateHasChanged);
+  630:     }
+  631: 
+  632:     private int FilterXp(LeaderboardEntry entry) =>
+  633:         Filter switch
+  634:         {
+  635:             "csharp" => entry.CSharpXp,
+  636:             "python" => entry.PythonXp,
+  637:             _ => entry.TotalXp
+  638:         };
+  639: 
+  640:     private int FilterLines(LeaderboardEntry entry) =>
+  641:         Filter switch
+  642:         {
+  643:             "csharp" => entry.CSharpLines,
+  644:             "python" => entry.PythonLines,
+  645:             _ => entry.TotalLines
+  646:         };
+  647: 
+  648:     private static string Emblem(string emblem) =>
+  649:         emblem switch
+  650:         {
+  651:             "cave" => "△",
+  652:             "terminal" => ">_",
+
+### LeaderboardEntry at line 640
+--- lines 620-656 ---
+  620: 
+  621:     private async Task RefreshLeaderboard()
+  622:     {
+  623:         Result =
+  624:             await ProgressionService.GetLeaderboardAsync(
+  625:                 Filter,
+  626:                 Profile
+  627:             );
+  628: 
+  629:         await InvokeAsync(StateHasChanged);
+  630:     }
+  631: 
+  632:     private int FilterXp(LeaderboardEntry entry) =>
+  633:         Filter switch
+  634:         {
+  635:             "csharp" => entry.CSharpXp,
+  636:             "python" => entry.PythonXp,
+  637:             _ => entry.TotalXp
+  638:         };
+  639: 
+  640:     private int FilterLines(LeaderboardEntry entry) =>
+  641:         Filter switch
+  642:         {
+  643:             "csharp" => entry.CSharpLines,
+  644:             "python" => entry.PythonLines,
+  645:             _ => entry.TotalLines
+  646:         };
+  647: 
+  648:     private static string Emblem(string emblem) =>
+  649:         emblem switch
+  650:         {
+  651:             "cave" => "△",
+  652:             "terminal" => ">_",
+  653:             "gear" => "⚙",
+  654:             _ => "◆"
+  655:         };
+  656: }
+
+
+====================================================================================================
+FILE: .xp-resume-tier-backup/Services/ProgressionService.cs
+====================================================================================================
+### GetLeaderboardAsync at line 42
+--- lines 22-62 ---
+   22:         );
+   23: 
+   24:     public ValueTask<ProgressionAwardResult> AwardModuleAsync(
+   25:         string course,
+   26:         int moduleIndex
+   27:     ) =>
+   28:         js.InvokeAsync<ProgressionAwardResult>(
+   29:             "caveCodeProgression.awardModule",
+   30:             course,
+   31:             moduleIndex
+   32:         );
+   33: 
+   34:     public ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   35:         bool isPublic
+   36:     ) =>
+   37:         js.InvokeAsync<ProgressionState>(
+   38:             "caveCodeProgression.setPublicLeaderboard",
+   39:             isPublic
+   40:         );
+   41: 
+   42:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   43:         string filter,
+   44:         ProfilePreferences profile
+   45:     ) =>
+   46:         js.InvokeAsync<LeaderboardResult>(
+   47:             "caveCodeProgression.getLeaderboard",
+   48:             filter,
+   49:             profile
+   50:         );
+   51: }
+   52: 
+   53: public sealed class ProgressionState
+   54: {
+   55:     public int TotalXp { get; set; }
+   56:     public int CSharpXp { get; set; }
+   57:     public int PythonXp { get; set; }
+   58:     public int TotalLines { get; set; }
+   59:     public int CSharpLines { get; set; }
+   60:     public int PythonLines { get; set; }
+   61:     public int Level { get; set; } = 1;
+   62:     public int XpIntoLevel { get; set; }
+
+### LeaderboardResult at line 42
+--- lines 22-62 ---
+   22:         );
+   23: 
+   24:     public ValueTask<ProgressionAwardResult> AwardModuleAsync(
+   25:         string course,
+   26:         int moduleIndex
+   27:     ) =>
+   28:         js.InvokeAsync<ProgressionAwardResult>(
+   29:             "caveCodeProgression.awardModule",
+   30:             course,
+   31:             moduleIndex
+   32:         );
+   33: 
+   34:     public ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   35:         bool isPublic
+   36:     ) =>
+   37:         js.InvokeAsync<ProgressionState>(
+   38:             "caveCodeProgression.setPublicLeaderboard",
+   39:             isPublic
+   40:         );
+   41: 
+   42:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   43:         string filter,
+   44:         ProfilePreferences profile
+   45:     ) =>
+   46:         js.InvokeAsync<LeaderboardResult>(
+   47:             "caveCodeProgression.getLeaderboard",
+   48:             filter,
+   49:             profile
+   50:         );
+   51: }
+   52: 
+   53: public sealed class ProgressionState
+   54: {
+   55:     public int TotalXp { get; set; }
+   56:     public int CSharpXp { get; set; }
+   57:     public int PythonXp { get; set; }
+   58:     public int TotalLines { get; set; }
+   59:     public int CSharpLines { get; set; }
+   60:     public int PythonLines { get; set; }
+   61:     public int Level { get; set; } = 1;
+   62:     public int XpIntoLevel { get; set; }
+
+### LeaderboardResult at line 46
+--- lines 26-66 ---
+   26:         int moduleIndex
+   27:     ) =>
+   28:         js.InvokeAsync<ProgressionAwardResult>(
+   29:             "caveCodeProgression.awardModule",
+   30:             course,
+   31:             moduleIndex
+   32:         );
+   33: 
+   34:     public ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   35:         bool isPublic
+   36:     ) =>
+   37:         js.InvokeAsync<ProgressionState>(
+   38:             "caveCodeProgression.setPublicLeaderboard",
+   39:             isPublic
+   40:         );
+   41: 
+   42:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   43:         string filter,
+   44:         ProfilePreferences profile
+   45:     ) =>
+   46:         js.InvokeAsync<LeaderboardResult>(
+   47:             "caveCodeProgression.getLeaderboard",
+   48:             filter,
+   49:             profile
+   50:         );
+   51: }
+   52: 
+   53: public sealed class ProgressionState
+   54: {
+   55:     public int TotalXp { get; set; }
+   56:     public int CSharpXp { get; set; }
+   57:     public int PythonXp { get; set; }
+   58:     public int TotalLines { get; set; }
+   59:     public int CSharpLines { get; set; }
+   60:     public int PythonLines { get; set; }
+   61:     public int Level { get; set; } = 1;
+   62:     public int XpIntoLevel { get; set; }
+   63:     public int XpForNextLevel { get; set; } = 500;
+   64:     public int LevelProgress { get; set; }
+   65:     public bool PublicLeaderboard { get; set; }
+   66: }
+
+### LeaderboardResult at line 75
+--- lines 55-95 ---
+   55:     public int TotalXp { get; set; }
+   56:     public int CSharpXp { get; set; }
+   57:     public int PythonXp { get; set; }
+   58:     public int TotalLines { get; set; }
+   59:     public int CSharpLines { get; set; }
+   60:     public int PythonLines { get; set; }
+   61:     public int Level { get; set; } = 1;
+   62:     public int XpIntoLevel { get; set; }
+   63:     public int XpForNextLevel { get; set; } = 500;
+   64:     public int LevelProgress { get; set; }
+   65:     public bool PublicLeaderboard { get; set; }
+   66: }
+   67: 
+   68: public sealed class ProgressionAwardResult
+   69: {
+   70:     public bool NewlyAwarded { get; set; }
+   71:     public int XpAwarded { get; set; }
+   72:     public ProgressionState State { get; set; } = new();
+   73: }
+   74: 
+   75: public sealed class LeaderboardResult
+   76: {
+   77:     public bool CloudAvailable { get; set; }
+   78:     public bool SignedIn { get; set; }
+   79:     public string Message { get; set; } = "";
+   80:     public LeaderboardEntry[] Entries { get; set; } =
+   81:         Array.Empty<LeaderboardEntry>();
+   82: }
+   83: 
+   84: public sealed class LeaderboardEntry
+   85: {
+   86:     public string Id { get; set; } = "";
+   87:     public string DisplayName { get; set; } = "CaveCode Learner";
+   88:     public string Emblem { get; set; } = "crystal";
+   89:     public string Title { get; set; } = "Cave Explorer";
+   90:     public int TotalXp { get; set; }
+   91:     public int CSharpXp { get; set; }
+   92:     public int PythonXp { get; set; }
+   93:     public int TotalLines { get; set; }
+   94:     public int CSharpLines { get; set; }
+   95:     public int PythonLines { get; set; }
+
+### LeaderboardEntry at line 80
+--- lines 60-98 ---
+   60:     public int PythonLines { get; set; }
+   61:     public int Level { get; set; } = 1;
+   62:     public int XpIntoLevel { get; set; }
+   63:     public int XpForNextLevel { get; set; } = 500;
+   64:     public int LevelProgress { get; set; }
+   65:     public bool PublicLeaderboard { get; set; }
+   66: }
+   67: 
+   68: public sealed class ProgressionAwardResult
+   69: {
+   70:     public bool NewlyAwarded { get; set; }
+   71:     public int XpAwarded { get; set; }
+   72:     public ProgressionState State { get; set; } = new();
+   73: }
+   74: 
+   75: public sealed class LeaderboardResult
+   76: {
+   77:     public bool CloudAvailable { get; set; }
+   78:     public bool SignedIn { get; set; }
+   79:     public string Message { get; set; } = "";
+   80:     public LeaderboardEntry[] Entries { get; set; } =
+   81:         Array.Empty<LeaderboardEntry>();
+   82: }
+   83: 
+   84: public sealed class LeaderboardEntry
+   85: {
+   86:     public string Id { get; set; } = "";
+   87:     public string DisplayName { get; set; } = "CaveCode Learner";
+   88:     public string Emblem { get; set; } = "crystal";
+   89:     public string Title { get; set; } = "Cave Explorer";
+   90:     public int TotalXp { get; set; }
+   91:     public int CSharpXp { get; set; }
+   92:     public int PythonXp { get; set; }
+   93:     public int TotalLines { get; set; }
+   94:     public int CSharpLines { get; set; }
+   95:     public int PythonLines { get; set; }
+   96:     public int Level { get; set; } = 1;
+   97:     public bool IsCurrentUser { get; set; }
+   98: }
+
+### LeaderboardEntry at line 81
+--- lines 61-98 ---
+   61:     public int Level { get; set; } = 1;
+   62:     public int XpIntoLevel { get; set; }
+   63:     public int XpForNextLevel { get; set; } = 500;
+   64:     public int LevelProgress { get; set; }
+   65:     public bool PublicLeaderboard { get; set; }
+   66: }
+   67: 
+   68: public sealed class ProgressionAwardResult
+   69: {
+   70:     public bool NewlyAwarded { get; set; }
+   71:     public int XpAwarded { get; set; }
+   72:     public ProgressionState State { get; set; } = new();
+   73: }
+   74: 
+   75: public sealed class LeaderboardResult
+   76: {
+   77:     public bool CloudAvailable { get; set; }
+   78:     public bool SignedIn { get; set; }
+   79:     public string Message { get; set; } = "";
+   80:     public LeaderboardEntry[] Entries { get; set; } =
+   81:         Array.Empty<LeaderboardEntry>();
+   82: }
+   83: 
+   84: public sealed class LeaderboardEntry
+   85: {
+   86:     public string Id { get; set; } = "";
+   87:     public string DisplayName { get; set; } = "CaveCode Learner";
+   88:     public string Emblem { get; set; } = "crystal";
+   89:     public string Title { get; set; } = "Cave Explorer";
+   90:     public int TotalXp { get; set; }
+   91:     public int CSharpXp { get; set; }
+   92:     public int PythonXp { get; set; }
+   93:     public int TotalLines { get; set; }
+   94:     public int CSharpLines { get; set; }
+   95:     public int PythonLines { get; set; }
+   96:     public int Level { get; set; } = 1;
+   97:     public bool IsCurrentUser { get; set; }
+   98: }
+
+### LeaderboardEntry at line 84
+--- lines 64-98 ---
+   64:     public int LevelProgress { get; set; }
+   65:     public bool PublicLeaderboard { get; set; }
+   66: }
+   67: 
+   68: public sealed class ProgressionAwardResult
+   69: {
+   70:     public bool NewlyAwarded { get; set; }
+   71:     public int XpAwarded { get; set; }
+   72:     public ProgressionState State { get; set; } = new();
+   73: }
+   74: 
+   75: public sealed class LeaderboardResult
+   76: {
+   77:     public bool CloudAvailable { get; set; }
+   78:     public bool SignedIn { get; set; }
+   79:     public string Message { get; set; } = "";
+   80:     public LeaderboardEntry[] Entries { get; set; } =
+   81:         Array.Empty<LeaderboardEntry>();
+   82: }
+   83: 
+   84: public sealed class LeaderboardEntry
+   85: {
+   86:     public string Id { get; set; } = "";
+   87:     public string DisplayName { get; set; } = "CaveCode Learner";
+   88:     public string Emblem { get; set; } = "crystal";
+   89:     public string Title { get; set; } = "Cave Explorer";
+   90:     public int TotalXp { get; set; }
+   91:     public int CSharpXp { get; set; }
+   92:     public int PythonXp { get; set; }
+   93:     public int TotalLines { get; set; }
+   94:     public int CSharpLines { get; set; }
+   95:     public int PythonLines { get; set; }
+   96:     public int Level { get; set; } = 1;
+   97:     public bool IsCurrentUser { get; set; }
+   98: }
+
+
+====================================================================================================
+FILE: .xp-resume-tier-backup/wwwroot/js/caveCodeProgression.js
+====================================================================================================
+### getLeaderboardProfiles at line 334
+--- lines 314-354 ---
+  314: 
+  315:             const local = localEntry(profile, user);
+  316:             let cloudAvailable = false;
+  317:             let entries = [];
+  318:             let message = "";
+  319: 
+  320:             if (user && window.caveCodeAuth) {
+  321:                 try {
+  322:                     const sync =
+  323:                         await window.caveCodeAuth
+  324:                             .upsertLeaderboardProfile({
+  325:                                 ...local,
+  326:                                 isPublic:
+  327:                                     current.publicLeaderboard
+  328:                             });
+  329: 
+  330:                     cloudAvailable = Boolean(sync?.available);
+  331: 
+  332:                     const cloud =
+  333:                         await window.caveCodeAuth
+  334:                             .getLeaderboardProfiles(filter);
+  335: 
+  336:                     if (cloud?.available) {
+  337:                         cloudAvailable = true;
+  338:                         entries = cloud.entries || [];
+  339:                     } else {
+  340:                         message = cloud?.message || "";
+  341:                     }
+  342:                 } catch (error) {
+  343:                     message =
+  344:                         error?.message ||
+  345:                         "Global leaderboard is not configured.";
+  346:                 }
+  347:             }
+  348: 
+  349:             const existing = entries.findIndex(
+  350:                 entry => entry.id === local.id
+  351:             );
+  352: 
+  353:             if (existing >= 0) {
+  354:                 entries[existing] = {
+
+
+====================================================================================================
+FILE: Pages/Leaderboard.razor
+====================================================================================================
+### Public leaderboard at line 76
+--- lines 56-96 ---
+   56:                         @State.XpIntoLevel / @State.XpForNextLevel XP
+   57:                         toward Level @(State.Level + 1)
+   58:                     </small>
+   59:                 </div>
+   60: 
+   61:                 <div class="summary-stats">
+   62:                     <div>
+   63:                         <span>Total XP</span>
+   64:                         <strong>@State.TotalXp.ToString("N0")</strong>
+   65:                     </div>
+   66: 
+   67:                     <div>
+   68:                         <span>Validated lines</span>
+   69:                         <strong>@State.TotalLines.ToString("N0")</strong>
+   70:                     </div>
+   71:                 </div>
+   72:             </section>
+   73: 
+   74:             <section class="visibility-card">
+   75:                 <div>
+   76:                     <strong>Public leaderboard profile</strong>
+   77:                     <p>
+   78:                         Public profiles show only your display name, emblem,
+   79:                         title, level, XP, and validated-line totals.
+   80:                     </p>
+   81:                 </div>
+   82: 
+   83:                 <label class="visibility-toggle">
+   84:                     <input type="checkbox"
+   85:                            checked="@State.PublicLeaderboard"
+   86:                            @onchange="ToggleVisibility" />
+   87:                     <i></i>
+   88:                     <span>
+   89:                         @(State.PublicLeaderboard ? "Public" : "Private")
+   90:                     </span>
+   91:                 </label>
+   92:             </section>
+   93: 
+   94:             @if (!string.IsNullOrWhiteSpace(Result.Message))
+   95:             {
+   96:                 <section class="leaderboard-message">
+
+### LeaderboardEntry at line 142
+--- lines 122-162 ---
+  122:                                 class="@(Filter == "python" ? "selected" : "")"
+  123:                                 @onclick='() => SelectFilter("python")'>
+  124:                             Python
+  125:                         </button>
+  126:                     </div>
+  127:                 </div>
+  128: 
+  129:                 <div class="leaderboard-table">
+  130:                     <div class="leaderboard-row table-head">
+  131:                         <span>Rank</span>
+  132:                         <span>Player</span>
+  133:                         <span>Level</span>
+  134:                         <span>Experience</span>
+  135:                         <span>Validated lines</span>
+  136:                     </div>
+  137: 
+  138:                     @for (int index = 0;
+  139:                           index < Result.Entries.Length;
+  140:                           index++)
+  141:                     {
+  142:                         LeaderboardEntry entry = Result.Entries[index];
+  143: 
+  144:                         <div class="leaderboard-row @(entry.IsCurrentUser ? "current-player" : "")">
+  145:                             <strong class="rank">@(index + 1)</strong>
+  146: 
+  147:                             <div class="player-cell">
+  148:                                 <span class="player-emblem">
+  149:                                     @Emblem(entry.Emblem)
+  150:                                 </span>
+  151: 
+  152:                                 <span>
+  153:                                     <strong class="level-colored-name"
+  154:                                             style="@LevelNameStyle(entry.Level)"
+  155:                                             title="@LevelColorTitle(entry.Level)">
+  156:                                         @entry.DisplayName
+  157:                                     </strong>
+  158:                                     <TitleEffect Title="@entry.Title" />
+  159:                                 </span>
+  160:                             </div>
+  161: 
+  162:                             <strong>Lv @entry.Level</strong>
+
+### LeaderboardResult at line 614
+--- lines 594-634 ---
+  594: 
+  595:     .player-cell strong,
+  596:     .leaderboard-row > strong:not(.rank) {
+  597:         color: var(--dark-panel-text, #eef4f8);
+  598:     }
+  599: 
+  600:     .player-cell small {
+  601:         color: var(--dark-panel-muted, #aab7c4);
+  602:     }
+  603: 
+  604:     .level-colored-name {
+  605:         font-weight: 950;
+  606:         text-shadow: 0 0 12px rgba(255, 255, 255, .12);
+  607:     }
+  608: 
+  609: </style>
+  610: 
+  611: @code {
+  612:     private ProfilePreferences Profile = new();
+  613:     private ProgressionState State = new();
+  614:     private LeaderboardResult Result = new();
+  615:     private bool Ready;
+  616:     private string Filter = "overall";
+  617: 
+  618:     private string DisplayName =>
+  619:         string.IsNullOrWhiteSpace(Profile.DisplayName)
+  620:             ? "CaveCode Learner"
+  621:             : Profile.DisplayName.Trim();
+  622: 
+  623:     private string FilterHeading =>
+  624:         Filter switch
+  625:         {
+  626:             "csharp" => "C# Cave Adventure",
+  627:             "python" => "Python Automation Quest",
+  628:             _ => "Overall academy"
+  629:         };
+  630: 
+  631:     // LEADERBOARD_AUTH_READY_REFRESH_79A
+  632:     protected override async Task OnAfterRenderAsync(bool firstRender)
+  633:     {
+  634:         if (!firstRender)
+
+### GetLeaderboardAsync at line 692
+--- lines 672-712 ---
+  672:     private async Task ToggleVisibility(ChangeEventArgs args)
+  673:     {
+  674:         bool isPublic =
+  675:             args.Value is bool value
+  676:                 ? value
+  677:                 : bool.TryParse(
+  678:                     args.Value?.ToString(),
+  679:                     out bool parsed
+  680:                 ) && parsed;
+  681: 
+  682:         State =
+  683:             await ProgressionService
+  684:                 .SetPublicLeaderboardAsync(isPublic);
+  685: 
+  686:         await RefreshLeaderboard();
+  687:     }
+  688: 
+  689:     private async Task RefreshLeaderboard()
+  690:     {
+  691:         Result =
+  692:             await ProgressionService.GetLeaderboardAsync(
+  693:                 Filter,
+  694:                 Profile
+  695:             );
+  696: 
+  697:         await InvokeAsync(StateHasChanged);
+  698:     }
+  699: 
+  700:     private sealed class AuthReadyState
+  701:     {
+  702:         public bool Ready { get; set; }
+  703:         public bool SignedIn { get; set; }
+  704:     }
+  705: 
+  706:     private int FilterXp(LeaderboardEntry entry) =>
+  707:         Filter switch
+  708:         {
+  709:             "csharp" => entry.CSharpXp,
+  710:             "python" => entry.PythonXp,
+  711:             _ => entry.TotalXp
+  712:         };
+
+### LeaderboardEntry at line 706
+--- lines 686-726 ---
+  686:         await RefreshLeaderboard();
+  687:     }
+  688: 
+  689:     private async Task RefreshLeaderboard()
+  690:     {
+  691:         Result =
+  692:             await ProgressionService.GetLeaderboardAsync(
+  693:                 Filter,
+  694:                 Profile
+  695:             );
+  696: 
+  697:         await InvokeAsync(StateHasChanged);
+  698:     }
+  699: 
+  700:     private sealed class AuthReadyState
+  701:     {
+  702:         public bool Ready { get; set; }
+  703:         public bool SignedIn { get; set; }
+  704:     }
+  705: 
+  706:     private int FilterXp(LeaderboardEntry entry) =>
+  707:         Filter switch
+  708:         {
+  709:             "csharp" => entry.CSharpXp,
+  710:             "python" => entry.PythonXp,
+  711:             _ => entry.TotalXp
+  712:         };
+  713: 
+  714:     private int FilterLines(LeaderboardEntry entry) =>
+  715:         Filter switch
+  716:         {
+  717:             "csharp" => entry.CSharpLines,
+  718:             "python" => entry.PythonLines,
+  719:             _ => entry.TotalLines
+  720:         };
+  721: 
+  722: 
+  723:     private static readonly string[] LevelTierColors =
+  724:     {
+  725:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  726:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+
+### LeaderboardEntry at line 714
+--- lines 694-734 ---
+  694:                 Profile
+  695:             );
+  696: 
+  697:         await InvokeAsync(StateHasChanged);
+  698:     }
+  699: 
+  700:     private sealed class AuthReadyState
+  701:     {
+  702:         public bool Ready { get; set; }
+  703:         public bool SignedIn { get; set; }
+  704:     }
+  705: 
+  706:     private int FilterXp(LeaderboardEntry entry) =>
+  707:         Filter switch
+  708:         {
+  709:             "csharp" => entry.CSharpXp,
+  710:             "python" => entry.PythonXp,
+  711:             _ => entry.TotalXp
+  712:         };
+  713: 
+  714:     private int FilterLines(LeaderboardEntry entry) =>
+  715:         Filter switch
+  716:         {
+  717:             "csharp" => entry.CSharpLines,
+  718:             "python" => entry.PythonLines,
+  719:             _ => entry.TotalLines
+  720:         };
+  721: 
+  722: 
+  723:     private static readonly string[] LevelTierColors =
+  724:     {
+  725:         "#DCE6F0", "#C8D8E8", "#B4CAE0", "#A2BCD8", "#90AED0",
+  726:         "#F4D1B5", "#F2C09A", "#EFB17F", "#E9A164", "#E3914A",
+  727:         "#EEF3F8", "#DDE8F2", "#CCDDEA", "#B9D1E3", "#A8C6DC",
+  728:         "#FFF0B0", "#FFE58A", "#FFDA66", "#F7CB42", "#E9BA22",
+  729:         "#B8F3D3", "#95EAB8", "#72E09E", "#50D284", "#34C16D",
+  730:         "#B9D8FF", "#9CC7FF", "#7CB5FF", "#5D9FFF", "#4088F0",
+  731:         "#E4C8FF", "#D4AEFF", "#C393FF", "#B27BEE", "#9D63DB",
+  732:         "#FFC6EA", "#FFACE0", "#FF91D3", "#F978C7", "#EE5DB9"
+  733:     };
+  734: 
+
+
+====================================================================================================
+FILE: Services/ProgressionService.cs
+====================================================================================================
+### GetLeaderboardAsync at line 96
+--- lines 76-116 ---
+   76:         return state;
+   77:     }
+   78: 
+   79:     public void NotifyExternalChange() =>
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int HtmlCssXp { get; set; }
+
+### LeaderboardResult at line 96
+--- lines 76-116 ---
+   76:         return state;
+   77:     }
+   78: 
+   79:     public void NotifyExternalChange() =>
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int HtmlCssXp { get; set; }
+
+### LeaderboardResult at line 100
+--- lines 80-120 ---
+   80:         NotifyChanged();
+   81: 
+   82:     public async ValueTask<ProgressionState> SetPublicLeaderboardAsync(
+   83:         bool isPublic
+   84:     )
+   85:     {
+   86:         ProgressionState state =
+   87:             await js.InvokeAsync<ProgressionState>(
+   88:                 "caveCodeProgression.setPublicLeaderboard",
+   89:                 isPublic
+   90:             );
+   91: 
+   92:         NotifyChanged();
+   93:         return state;
+   94:     }
+   95: 
+   96:     public ValueTask<LeaderboardResult> GetLeaderboardAsync(
+   97:         string filter,
+   98:         ProfilePreferences profile
+   99:     ) =>
+  100:         js.InvokeAsync<LeaderboardResult>(
+  101:             "caveCodeProgression.getLeaderboard",
+  102:             filter,
+  103:             profile
+  104:         );
+  105: 
+  106:     private void NotifyChanged() =>
+  107:         StateChanged?.Invoke();
+  108: }
+  109: 
+  110: public sealed class ProgressionState
+  111: {
+  112:     public int TotalXp { get; set; }
+  113:     public int CSharpXp { get; set; }
+  114:     public int PythonXp { get; set; }
+  115:     public int CppXp { get; set; }
+  116:     public int HtmlCssXp { get; set; }
+  117:     public int TotalLines { get; set; }
+  118:     public int CSharpLines { get; set; }
+  119:     public int PythonLines { get; set; }
+  120:     public int CppLines { get; set; }
+
+### LeaderboardResult at line 147
+--- lines 127-167 ---
+  127: }
+  128: 
+  129: public sealed class CourseResumeState
+  130: {
+  131:     public bool HasProgress { get; set; }
+  132:     public bool CourseComplete { get; set; }
+  133:     public int CurrentModuleIndex { get; set; }
+  134:     public int CurrentStage { get; set; }
+  135:     public int CompletedModules { get; set; }
+  136:     public int TotalModules { get; set; } = 40;
+  137:     public int ModuleMastery { get; set; }
+  138: }
+  139: 
+  140: public sealed class ProgressionAwardResult
+  141: {
+  142:     public bool NewlyAwarded { get; set; }
+  143:     public int XpAwarded { get; set; }
+  144:     public ProgressionState State { get; set; } = new();
+  145: }
+  146: 
+  147: public sealed class LeaderboardResult
+  148: {
+  149:     public bool CloudAvailable { get; set; }
+  150:     public bool SignedIn { get; set; }
+  151:     public string Message { get; set; } = "";
+  152:     public LeaderboardEntry[] Entries { get; set; } =
+  153:         Array.Empty<LeaderboardEntry>();
+  154: }
+  155: 
+  156: public sealed class LeaderboardEntry
+  157: {
+  158:     public string Id { get; set; } = "";
+  159:     public string DisplayName { get; set; } = "CaveCode Learner";
+  160:     public string Emblem { get; set; } = "crystal";
+  161:     public string Title { get; set; } = "Cave Explorer";
+  162:     public int TotalXp { get; set; }
+  163:     public int CSharpXp { get; set; }
+  164:     public int PythonXp { get; set; }
+  165:     public int CppXp { get; set; }
+  166:     public int HtmlCssXp { get; set; }
+  167:     public int TotalLines { get; set; }
+
+### LeaderboardEntry at line 152
+--- lines 132-172 ---
+  132:     public bool CourseComplete { get; set; }
+  133:     public int CurrentModuleIndex { get; set; }
+  134:     public int CurrentStage { get; set; }
+  135:     public int CompletedModules { get; set; }
+  136:     public int TotalModules { get; set; } = 40;
+  137:     public int ModuleMastery { get; set; }
+  138: }
+  139: 
+  140: public sealed class ProgressionAwardResult
+  141: {
+  142:     public bool NewlyAwarded { get; set; }
+  143:     public int XpAwarded { get; set; }
+  144:     public ProgressionState State { get; set; } = new();
+  145: }
+  146: 
+  147: public sealed class LeaderboardResult
+  148: {
+  149:     public bool CloudAvailable { get; set; }
+  150:     public bool SignedIn { get; set; }
+  151:     public string Message { get; set; } = "";
+  152:     public LeaderboardEntry[] Entries { get; set; } =
+  153:         Array.Empty<LeaderboardEntry>();
+  154: }
+  155: 
+  156: public sealed class LeaderboardEntry
+  157: {
+  158:     public string Id { get; set; } = "";
+  159:     public string DisplayName { get; set; } = "CaveCode Learner";
+  160:     public string Emblem { get; set; } = "crystal";
+  161:     public string Title { get; set; } = "Cave Explorer";
+  162:     public int TotalXp { get; set; }
+  163:     public int CSharpXp { get; set; }
+  164:     public int PythonXp { get; set; }
+  165:     public int CppXp { get; set; }
+  166:     public int HtmlCssXp { get; set; }
+  167:     public int TotalLines { get; set; }
+  168:     public int CSharpLines { get; set; }
+  169:     public int PythonLines { get; set; }
+  170:     public int CppLines { get; set; }
+  171:     public int HtmlCssLines { get; set; }
+  172:     public int Level { get; set; } = 1;
+
+### LeaderboardEntry at line 153
+--- lines 133-173 ---
+  133:     public int CurrentModuleIndex { get; set; }
+  134:     public int CurrentStage { get; set; }
+  135:     public int CompletedModules { get; set; }
+  136:     public int TotalModules { get; set; } = 40;
+  137:     public int ModuleMastery { get; set; }
+  138: }
+  139: 
+  140: public sealed class ProgressionAwardResult
+  141: {
+  142:     public bool NewlyAwarded { get; set; }
+  143:     public int XpAwarded { get; set; }
+  144:     public ProgressionState State { get; set; } = new();
+  145: }
+  146: 
+  147: public sealed class LeaderboardResult
+  148: {
+  149:     public bool CloudAvailable { get; set; }
+  150:     public bool SignedIn { get; set; }
+  151:     public string Message { get; set; } = "";
+  152:     public LeaderboardEntry[] Entries { get; set; } =
+  153:         Array.Empty<LeaderboardEntry>();
+  154: }
+  155: 
+  156: public sealed class LeaderboardEntry
+  157: {
+  158:     public string Id { get; set; } = "";
+  159:     public string DisplayName { get; set; } = "CaveCode Learner";
+  160:     public string Emblem { get; set; } = "crystal";
+  161:     public string Title { get; set; } = "Cave Explorer";
+  162:     public int TotalXp { get; set; }
+  163:     public int CSharpXp { get; set; }
+  164:     public int PythonXp { get; set; }
+  165:     public int CppXp { get; set; }
+  166:     public int HtmlCssXp { get; set; }
+  167:     public int TotalLines { get; set; }
+  168:     public int CSharpLines { get; set; }
+  169:     public int PythonLines { get; set; }
+  170:     public int CppLines { get; set; }
+  171:     public int HtmlCssLines { get; set; }
+  172:     public int Level { get; set; } = 1;
+  173:     public bool IsCurrentUser { get; set; }
+
+### LeaderboardEntry at line 156
+--- lines 136-174 ---
+  136:     public int TotalModules { get; set; } = 40;
+  137:     public int ModuleMastery { get; set; }
+  138: }
+  139: 
+  140: public sealed class ProgressionAwardResult
+  141: {
+  142:     public bool NewlyAwarded { get; set; }
+  143:     public int XpAwarded { get; set; }
+  144:     public ProgressionState State { get; set; } = new();
+  145: }
+  146: 
+  147: public sealed class LeaderboardResult
+  148: {
+  149:     public bool CloudAvailable { get; set; }
+  150:     public bool SignedIn { get; set; }
+  151:     public string Message { get; set; } = "";
+  152:     public LeaderboardEntry[] Entries { get; set; } =
+  153:         Array.Empty<LeaderboardEntry>();
+  154: }
+  155: 
+  156: public sealed class LeaderboardEntry
+  157: {
+  158:     public string Id { get; set; } = "";
+  159:     public string DisplayName { get; set; } = "CaveCode Learner";
+  160:     public string Emblem { get; set; } = "crystal";
+  161:     public string Title { get; set; } = "Cave Explorer";
+  162:     public int TotalXp { get; set; }
+  163:     public int CSharpXp { get; set; }
+  164:     public int PythonXp { get; set; }
+  165:     public int CppXp { get; set; }
+  166:     public int HtmlCssXp { get; set; }
+  167:     public int TotalLines { get; set; }
+  168:     public int CSharpLines { get; set; }
+  169:     public int PythonLines { get; set; }
+  170:     public int CppLines { get; set; }
+  171:     public int HtmlCssLines { get; set; }
+  172:     public int Level { get; set; } = 1;
+  173:     public bool IsCurrentUser { get; set; }
+  174: }
+
+
+====================================================================================================
+FILE: wwwroot/js/caveCodeAuth.js
+====================================================================================================
+### getLeaderboardProfiles at line 271
+--- lines 251-291 ---
+  251:             title: profile.title || "Cave Explorer",
+  252:             total_xp: Number(profile.totalXp || 0),
+  253:             csharp_xp: Number(profile.cSharpXp || 0),
+  254:             python_xp: Number(profile.pythonXp || 0),
+  255:             total_lines: Number(profile.totalLines || 0),
+  256:             csharp_lines: Number(profile.cSharpLines || 0),
+  257:             python_lines: Number(profile.pythonLines || 0),
+  258:             is_public: Boolean(profile.isPublic),
+  259:             updated_at: new Date().toISOString()
+  260:         };
+  261: 
+  262:         const { error } = await supabaseClient
+  263:             .from("leaderboard_profiles")
+  264:             .upsert(payload, { onConflict: "id" });
+  265: 
+  266:         return error
+  267:             ? { available: false, message: error.message }
+  268:             : { available: true, message: "" };
+  269:     },
+  270: 
+  271:     getLeaderboardProfiles: async function (filter = "overall") {
+  272:         if (!supabaseClient) {
+  273:             return { available: false, entries: [], message: "Supabase is not initialized." };
+  274:         }
+  275: 
+  276:         const orderColumn =
+  277:             filter === "csharp"
+  278:                 ? "csharp_xp"
+  279:                 : filter === "python"
+  280:                     ? "python_xp"
+  281:                     : "total_xp";
+  282: 
+  283:         const { data, error } = await supabaseClient
+  284:             .from("leaderboard_profiles")
+  285:             .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+  286:             .eq("is_public", true)
+  287:             .order(orderColumn, { ascending: false })
+  288:             .limit(100);
+  289: 
+  290:         if (error) {
+  291:             return { available: false, entries: [], message: error.message };
+
+
+====================================================================================================
+FILE: wwwroot/js/caveCodeProgression.js
+====================================================================================================
+### getLeaderboardProfiles at line 511
+--- lines 491-531 ---
+  491: 
+  492:             const local = localEntry(profile, user);
+  493:             let cloudAvailable = false;
+  494:             let entries = [];
+  495:             let message = "";
+  496: 
+  497:             if (user && window.caveCodeAuth) {
+  498:                 try {
+  499:                     const sync =
+  500:                         await window.caveCodeAuth
+  501:                             .upsertLeaderboardProfile({
+  502:                                 ...local,
+  503:                                 isPublic:
+  504:                                     current.publicLeaderboard
+  505:                             });
+  506: 
+  507:                     cloudAvailable = Boolean(sync?.available);
+  508: 
+  509:                     const cloud =
+  510:                         await window.caveCodeAuth
+  511:                             .getLeaderboardProfiles(filter);
+  512: 
+  513:                     if (cloud?.available) {
+  514:                         cloudAvailable = true;
+  515:                         entries = cloud.entries || [];
+  516:                     } else {
+  517:                         message = cloud?.message || "";
+  518:                     }
+  519:                 } catch (error) {
+  520:                     message =
+  521:                         error?.message ||
+  522:                         "Global leaderboard is not configured.";
+  523:                 }
+  524:             }
+  525: 
+  526:             const existing = entries.findIndex(
+  527:                 entry => entry.id === local.id
+  528:             );
+  529: 
+  530:             if (existing >= 0) {
+  531:                 entries[existing] = {
+
+
+====================================================================================================
+TARGETED REPAIR RULES FOR PASS 82B
+====================================================================================================
+
+The repair should be limited to the service/reconciliation method identified above.
+It should:
+  1. keep the last valid shared cloud list if a later refresh is unavailable or partial;
+  2. merge the current user's local row into the shared list by stable ID;
+  3. never replace a multi-user cloud list with a single local row;
+  4. deduplicate by stable user ID;
+  5. sort after merging;
+  6. preserve filters, public visibility, XP totals, lines, and titles;
+  7. avoid changing authentication, awards, progress saves, minigames, or course logic.

@@ -1,0 +1,1248 @@
+{
+  "pass": "85A",
+  "created_utc": "2026-08-04T00:52:21.578963+00:00",
+  "target": "Pages/Python.razor",
+  "total_lines": 2740,
+  "structural_sections": [
+    {
+      "tag": "aside",
+      "line": 13,
+      "class": "sidebar",
+      "id": "",
+      "markup": "<aside class=\"sidebar\">"
+    },
+    {
+      "tag": "nav",
+      "line": 31,
+      "class": "course-nav",
+      "id": "",
+      "markup": "<nav class=\"course-nav\" aria-label=\"Course navigation\">"
+    },
+    {
+      "tag": "section",
+      "line": 37,
+      "class": "course-progress",
+      "id": "",
+      "markup": "<section class=\"course-progress\">"
+    },
+    {
+      "tag": "main",
+      "line": 93,
+      "class": "lesson-main",
+      "id": "",
+      "markup": "<main class=\"lesson-main\">"
+    },
+    {
+      "tag": "header",
+      "line": 94,
+      "class": "lesson-header",
+      "id": "",
+      "markup": "<header class=\"lesson-header\">"
+    },
+    {
+      "tag": "nav",
+      "line": 106,
+      "class": "stage-tabs",
+      "id": "",
+      "markup": "<nav class=\"stage-tabs\" aria-label=\"Training stages\">"
+    },
+    {
+      "tag": "section",
+      "line": 122,
+      "class": "stage-card",
+      "id": "",
+      "markup": "<section class=\"stage-card\">"
+    },
+    {
+      "tag": "aside",
+      "line": 311,
+      "class": "preview-panel",
+      "id": "",
+      "markup": "<aside class=\"preview-panel\">"
+    },
+    {
+      "tag": "header",
+      "line": 312,
+      "class": "preview-header",
+      "id": "",
+      "markup": "<header class=\"preview-header\">"
+    },
+    {
+      "tag": "section",
+      "line": 363,
+      "class": "inventory-card",
+      "id": "",
+      "markup": "<section class=\"inventory-card\">"
+    },
+    {
+      "tag": "section",
+      "line": 368,
+      "class": "terminal",
+      "id": "",
+      "markup": "<section class=\"terminal\">"
+    },
+    {
+      "tag": "section",
+      "line": 398,
+      "class": "achievement-unlock-dialog",
+      "id": "",
+      "markup": "<section class=\"achievement-unlock-dialog\"\n                 role=\"dialog\"\n                 aria-modal=\"true\"\n                 aria-labelledby=\"achievement-unlock-title\"\n                 @onclick:stopPropagation=\"true\">"
+    },
+    {
+      "tag": "section",
+      "line": 458,
+      "class": "save-progress-dialog",
+      "id": "",
+      "markup": "<section class=\"save-progress-dialog\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"save-progress-title\" @onclick:stopPropagation=\"true\">"
+    }
+  ],
+  "existing_components": [
+    {
+      "component": "AcademyHomeButton",
+      "count": 1,
+      "lines": [
+        32
+      ]
+    },
+    {
+      "component": "AuthPanel",
+      "count": 2,
+      "lines": [
+        35,
+        462
+      ]
+    },
+    {
+      "component": "CourseProgressSnapshot",
+      "count": 1,
+      "lines": [
+        2034
+      ]
+    },
+    {
+      "component": "Lesson",
+      "count": 1,
+      "lines": [
+        1229
+      ]
+    },
+    {
+      "component": "LockMark",
+      "count": 1,
+      "lines": [
+        81
+      ]
+    },
+    {
+      "component": "NavLink",
+      "count": 2,
+      "lines": [
+        440,
+        443
+      ]
+    },
+    {
+      "component": "PageTitle",
+      "count": 1,
+      "lines": [
+        10
+      ]
+    },
+    {
+      "component": "TrainingStage",
+      "count": 1,
+      "lines": [
+        107
+      ]
+    }
+  ],
+  "code_start_line": 1162,
+  "methods": [
+    {
+      "name": "ModuleMastery",
+      "line": 2071,
+      "signature": "private int ModuleMastery("
+    },
+    {
+      "name": "IsLessonUnlocked",
+      "line": 2082,
+      "signature": "private bool IsLessonUnlocked("
+    },
+    {
+      "name": "IsStageUnlocked",
+      "line": 2085,
+      "signature": "private bool IsStageUnlocked("
+    },
+    {
+      "name": "IsStageComplete",
+      "line": 2095,
+      "signature": "private bool IsStageComplete("
+    },
+    {
+      "name": "SelectLesson",
+      "line": 2099,
+      "signature": "private void SelectLesson("
+    },
+    {
+      "name": "SelectStage",
+      "line": 2114,
+      "signature": "private void SelectStage("
+    },
+    {
+      "name": "PrepareStage",
+      "line": 2125,
+      "signature": "private void PrepareStage("
+    },
+    {
+      "name": "GetCharacterClass",
+      "line": 2199,
+      "signature": "private string GetCharacterClass("
+    },
+    {
+      "name": "CompleteLearnStage",
+      "line": 2213,
+      "signature": "private void CompleteLearnStage("
+    },
+    {
+      "name": "CheckCode",
+      "line": 2219,
+      "signature": "private async Task CheckCode("
+    },
+    {
+      "name": "SelectPrediction",
+      "line": 2261,
+      "signature": "private void SelectPrediction("
+    },
+    {
+      "name": "PredictionClass",
+      "line": 2277,
+      "signature": "private string PredictionClass("
+    },
+    {
+      "name": "ShowHint",
+      "line": 2292,
+      "signature": "private void ShowHint("
+    },
+    {
+      "name": "ResetStage",
+      "line": 2297,
+      "signature": "private void ResetStage("
+    },
+    {
+      "name": "AdvanceStage",
+      "line": 2302,
+      "signature": "private void AdvanceStage("
+    },
+    {
+      "name": "MarkStageComplete",
+      "line": 2313,
+      "signature": "private void MarkStageComplete("
+    },
+    {
+      "name": "FinishModule",
+      "line": 2321,
+      "signature": "private async Task FinishModule("
+    },
+    {
+      "name": "DismissXpAward",
+      "line": 2385,
+      "signature": "private void DismissXpAward("
+    },
+    {
+      "name": "HandleChapterCompletionAsync",
+      "line": 2391,
+      "signature": "private async Task HandleChapterCompletionAsync("
+    },
+    {
+      "name": "DismissAchievementUnlock",
+      "line": 2428,
+      "signature": "private void DismissAchievementUnlock("
+    },
+    {
+      "name": "SaveProgressAsync",
+      "line": 2440,
+      "signature": "private async Task SaveProgressAsync("
+    },
+    {
+      "name": "DismissSavePrompt",
+      "line": 2464,
+      "signature": "private void DismissSavePrompt("
+    },
+    {
+      "name": "StageLabel",
+      "line": 2469,
+      "signature": "private string StageLabel("
+    },
+    {
+      "name": "StageHeading",
+      "line": 2482,
+      "signature": "private string StageHeading("
+    },
+    {
+      "name": "SupportLabel",
+      "line": 2495,
+      "signature": "private string SupportLabel("
+    },
+    {
+      "name": "ExerciseTitle",
+      "line": 2508,
+      "signature": "private string ExerciseTitle("
+    },
+    {
+      "name": "ExercisePrompt",
+      "line": 2518,
+      "signature": "private string ExercisePrompt("
+    },
+    {
+      "name": "NextStageLabel",
+      "line": 2528,
+      "signature": "private string NextStageLabel("
+    },
+    {
+      "name": "ConceptPoints",
+      "line": 2537,
+      "signature": "private IEnumerable<string> ConceptPoints("
+    }
+  ],
+  "fields": [
+    {
+      "type": "List<Lesson>",
+      "name": "Lessons",
+      "line": 1230
+    },
+    {
+      "type": "int",
+      "name": "CurrentModuleIndex",
+      "line": 1994
+    },
+    {
+      "type": "TrainingStage",
+      "name": "CurrentStage",
+      "line": 1995
+    },
+    {
+      "type": "int[]",
+      "name": "HighestCompletedStage",
+      "line": 1996
+    },
+    {
+      "type": "bool[]",
+      "name": "ModuleCompleted",
+      "line": 1997
+    },
+    {
+      "type": "string",
+      "name": "StudentCode",
+      "line": 1999
+    },
+    {
+      "type": "string",
+      "name": "Feedback",
+      "line": 2000
+    },
+    {
+      "type": "bool",
+      "name": "HintVisible",
+      "line": 2001
+    },
+    {
+      "type": "bool",
+      "name": "StagePassed",
+      "line": 2002
+    },
+    {
+      "type": "int?",
+      "name": "SelectedPrediction",
+      "line": 2003
+    },
+    {
+      "type": "bool",
+      "name": "ShowChapterOneSignInPrompt",
+      "line": 2004
+    },
+    {
+      "type": "AchievementUnlockResult?",
+      "name": "ChapterAchievement",
+      "line": 2005
+    },
+    {
+      "type": "bool",
+      "name": "ShowAchievementUnlock",
+      "line": 2006
+    },
+    {
+      "type": "ProgressionAwardResult?",
+      "name": "LastProgressAward",
+      "line": 2007
+    },
+    {
+      "type": "bool",
+      "name": "ShowXpAward",
+      "line": 2008
+    },
+    {
+      "type": "bool",
+      "name": "PendingChapterOneSignInPrompt",
+      "line": 2009
+    },
+    {
+      "type": "bool",
+      "name": "ProgressRestored",
+      "line": 2010
+    },
+    {
+      "type": "const int",
+      "name": "ChapterOneLastModuleIndex",
+      "line": 2012
+    },
+    {
+      "type": "Lesson",
+      "name": "CurrentLesson",
+      "line": 2014
+    },
+    {
+      "type": "int",
+      "name": "CompletedModuleCount",
+      "line": 2066
+    },
+    {
+      "type": "int",
+      "name": "CourseProgress",
+      "line": 2068
+    },
+    {
+      "type": "string",
+      "name": "CurrentExpectedCode",
+      "line": 2148
+    },
+    {
+      "type": "bool",
+      "name": "ShowTargetGuide",
+      "line": 2158
+    }
+  ],
+  "embedded_css": {
+    "start_line": 469,
+    "line_count": 691,
+    "selectors": [
+      {
+        "selector": "*",
+        "line": 470
+      },
+      {
+        "selector": "html, body",
+        "line": 471
+      },
+      {
+        "selector": "button, textarea",
+        "line": 472
+      },
+      {
+        "selector": ".academy",
+        "line": 473
+      },
+      {
+        "selector": ".sidebar",
+        "line": 482
+      },
+      {
+        "selector": ".brand",
+        "line": 489
+      },
+      {
+        "selector": ".brand-mark",
+        "line": 491
+      },
+      {
+        "selector": ".brand h1",
+        "line": 495
+      },
+      {
+        "selector": ".brand p",
+        "line": 496
+      },
+      {
+        "selector": ".course-nav",
+        "line": 497
+      },
+      {
+        "selector": ".course-nav a",
+        "line": 504
+      },
+      {
+        "selector": ".course-nav a:hover, .course-nav a.active",
+        "line": 515
+      },
+      {
+        "selector": ".course-progress",
+        "line": 520
+      },
+      {
+        "selector": ".row-between",
+        "line": 525
+      },
+      {
+        "selector": ".progress-track, .health-track",
+        "line": 526
+      },
+      {
+        "selector": ".progress-fill, .health-fill",
+        "line": 530
+      },
+      {
+        "selector": ".course-progress small",
+        "line": 531
+      },
+      {
+        "selector": ".lesson-list h2",
+        "line": 532
+      },
+      {
+        "selector": ".lesson-button",
+        "line": 537
+      },
+      {
+        "selector": ".lesson-button:hover:not(:disabled)",
+        "line": 543
+      },
+      {
+        "selector": ".lesson-button.active",
+        "line": 544
+      },
+      {
+        "selector": ".lesson-button.complete",
+        "line": 545
+      },
+      {
+        "selector": ".lesson-button:disabled",
+        "line": 546
+      },
+      {
+        "selector": ".lesson-number",
+        "line": 547
+      },
+      {
+        "selector": ".lesson-button.active .lesson-number, .lesson-button.complete .lesson-number",
+        "line": 551
+      },
+      {
+        "selector": ".lesson-copy",
+        "line": 554
+      },
+      {
+        "selector": ".lesson-copy strong, .lesson-copy small",
+        "line": 555
+      },
+      {
+        "selector": ".lesson-copy strong",
+        "line": 556
+      },
+      {
+        "selector": ".lesson-copy small",
+        "line": 557
+      },
+      {
+        "selector": ".lesson-main",
+        "line": 558
+      },
+      {
+        "selector": ".lesson-header",
+        "line": 560
+      },
+      {
+        "selector": ".lesson-header h2",
+        "line": 564
+      },
+      {
+        "selector": ".lesson-header > div:first-child > p:last-child",
+        "line": 565
+      },
+      {
+        "selector": ".eyebrow",
+        "line": 568
+      },
+      {
+        "selector": ".mastery-ring",
+        "line": 572
+      },
+      {
+        "selector": ".mastery-ring strong",
+        "line": 576
+      },
+      {
+        "selector": ".mastery-ring span",
+        "line": 577
+      },
+      {
+        "selector": ".stage-tabs",
+        "line": 578
+      },
+      {
+        "selector": ".stage-tab",
+        "line": 584
+      },
+      {
+        "selector": ".stage-tab:last-child",
+        "line": 589
+      },
+      {
+        "selector": ".stage-tab span",
+        "line": 590
+      },
+      {
+        "selector": ".stage-tab.active",
+        "line": 594
+      },
+      {
+        "selector": ".stage-tab.active span, .stage-tab.done span",
+        "line": 595
+      },
+      {
+        "selector": ".stage-tab:disabled",
+        "line": 596
+      },
+      {
+        "selector": ".stage-card",
+        "line": 597
+      },
+      {
+        "selector": ".stage-heading",
+        "line": 603
+      },
+      {
+        "selector": ".stage-heading h3",
+        "line": 604
+      },
+      {
+        "selector": ".support-badge",
+        "line": 605
+      },
+      {
+        "selector": ".learn-grid",
+        "line": 609
+      },
+      {
+        "selector": ".learn-grid h4, .exercise-intro h4, .prediction-card h4",
+        "line": 611
+      },
+      {
+        "selector": ".learn-grid p, .exercise-intro p, .prediction-card p",
+        "line": 612
+      },
+      {
+        "selector": ".reference-example, .revealed-target",
+        "line": 613
+      },
+      {
+        "selector": ".reference-example > span, .revealed-target > span, .mini-label",
+        "line": 617
+      },
+      {
+        "selector": "pre",
+        "line": 620
+      },
+      {
+        "selector": "code",
+        "line": 621
+      },
+      {
+        "selector": ".concept-points div",
+        "line": 622
+      },
+      {
+        "selector": ".concept-points span",
+        "line": 623
+      },
+      {
+        "selector": ".concept-points p",
+        "line": 624
+      },
+      {
+        "selector": ".memory-aid",
+        "line": 625
+      },
+      {
+        "selector": ".flow",
+        "line": 628
+      },
+      {
+        "selector": ".flow div",
+        "line": 629
+      },
+      {
+        "selector": ".flow span",
+        "line": 630
+      },
+      {
+        "selector": ".exercise-intro",
+        "line": 631
+      },
+      {
+        "selector": ".compiler-note",
+        "line": 633
+      },
+      {
+        "selector": ".compiler-note p",
+        "line": 637
+      },
+      {
+        "selector": ".typing-guide, .code-editor",
+        "line": 638
+      },
+      {
+        "selector": ".editor-bar",
+        "line": 643
+      },
+      {
+        "selector": ".character-guide",
+        "line": 648
+      },
+      {
+        "selector": ".character-correct",
+        "line": 652
+      },
+      {
+        "selector": ".character-wrong",
+        "line": 653
+      },
+      {
+        "selector": ".character-current",
+        "line": 657
+      },
+      {
+        "selector": ".character-pending",
+        "line": 658
+      },
+      {
+        "selector": ".space-mark",
+        "line": 659
+      },
+      {
+        "selector": ".newline-mark",
+        "line": 660
+      },
+      {
+        "selector": "textarea",
+        "line": 661
+      },
+      {
+        "selector": ".typing-stats",
+        "line": 668
+      },
+      {
+        "selector": ".typing-stats div",
+        "line": 672
+      },
+      {
+        "selector": ".typing-stats span, .typing-stats strong",
+        "line": 673
+      },
+      {
+        "selector": ".typing-stats span",
+        "line": 674
+      },
+      {
+        "selector": ".typing-stats strong",
+        "line": 675
+      },
+      {
+        "selector": ".action-row",
+        "line": 676
+      },
+      {
+        "selector": ".primary, .secondary",
+        "line": 678
+      },
+      {
+        "selector": ".primary",
+        "line": 681
+      },
+      {
+        "selector": ".primary:hover",
+        "line": 682
+      },
+      {
+        "selector": ".secondary",
+        "line": 683
+      },
+      {
+        "selector": ".continue-button",
+        "line": 684
+      },
+      {
+        "selector": ".feedback",
+        "line": 685
+      },
+      {
+        "selector": ".feedback.success",
+        "line": 686
+      },
+      {
+        "selector": ".feedback.error",
+        "line": 687
+      },
+      {
+        "selector": ".prediction-card",
+        "line": 688
+      },
+      {
+        "selector": ".prediction-options",
+        "line": 690
+      },
+      {
+        "selector": ".prediction-options button",
+        "line": 691
+      },
+      {
+        "selector": ".prediction-options button span",
+        "line": 696
+      },
+      {
+        "selector": ".prediction-options button.selected",
+        "line": 700
+      },
+      {
+        "selector": ".prediction-options button.correct",
+        "line": 701
+      },
+      {
+        "selector": ".prediction-options button.wrong",
+        "line": 702
+      },
+      {
+        "selector": ".completion-panel",
+        "line": 703
+      },
+      {
+        "selector": ".completion-icon",
+        "line": 705
+      },
+      {
+        "selector": ".completion-panel > p",
+        "line": 710
+      },
+      {
+        "selector": ".completion-summary",
+        "line": 711
+      },
+      {
+        "selector": ".completion-summary div",
+        "line": 715
+      },
+      {
+        "selector": ".completion-summary span",
+        "line": 716
+      },
+      {
+        "selector": ".preview-panel",
+        "line": 717
+      },
+      {
+        "selector": ".preview-header",
+        "line": 721
+      },
+      {
+        "selector": ".preview-header h2",
+        "line": 722
+      },
+      {
+        "selector": ".live",
+        "line": 723
+      },
+      {
+        "selector": ".preview-stats",
+        "line": 727
+      },
+      {
+        "selector": ".preview-stats div, .inventory-card",
+        "line": 730
+      },
+      {
+        "selector": ".preview-stats span, .preview-stats strong, .inventory-card span, .inventory-card strong",
+        "line": 733
+      },
+      {
+        "selector": ".preview-stats span, .inventory-card span",
+        "line": 734
+      },
+      {
+        "selector": ".preview-stats strong, .inventory-card strong",
+        "line": 735
+      },
+      {
+        "selector": ".health-track",
+        "line": 736
+      },
+      {
+        "selector": ".inventory-card",
+        "line": 737
+      },
+      {
+        "selector": ".terminal",
+        "line": 738
+      },
+      {
+        "selector": ".terminal-title",
+        "line": 743
+      },
+      {
+        "selector": ".terminal p",
+        "line": 744
+      },
+      {
+        "selector": ".facility-diagram",
+        "line": 745
+      },
+      {
+        "selector": ".facility-titlebar",
+        "line": 763
+      },
+      {
+        "selector": ".equipment-grid",
+        "line": 775
+      },
+      {
+        "selector": ".equipment-node, .controller-node",
+        "line": 782
+      },
+      {
+        "selector": ".equipment-node::before",
+        "line": 791
+      },
+      {
+        "selector": ".equipment-node.active::before",
+        "line": 802
+      },
+      {
+        "selector": ".equipment-node.alarm::before",
+        "line": 807
+      },
+      {
+        "selector": ".equipment-node span, .equipment-node strong, .controller-node span, .controller-node strong",
+        "line": 812
+      },
+      {
+        "selector": ".equipment-node span, .controller-node span",
+        "line": 819
+      },
+      {
+        "selector": ".equipment-node strong, .controller-node strong",
+        "line": 827
+      },
+      {
+        "selector": ".signal-line",
+        "line": 834
+      },
+      {
+        "selector": ".controller-node",
+        "line": 842
+      },
+      {
+        "selector": "@@keyframes pulse",
+        "line": 848
+      },
+      {
+        "selector": "50%",
+        "line": 850
+      },
+      {
+        "selector": "@@media (max-width: 1250px)",
+        "line": 850
+      },
+      {
+        "selector": ".academy",
+        "line": 852
+      },
+      {
+        "selector": ".preview-panel",
+        "line": 853
+      },
+      {
+        "selector": "@@media (max-width: 850px)",
+        "line": 855
+      },
+      {
+        "selector": ".academy",
+        "line": 856
+      },
+      {
+        "selector": ".sidebar",
+        "line": 857
+      },
+      {
+        "selector": ".stage-tabs",
+        "line": 858
+      },
+      {
+        "selector": ".learn-grid",
+        "line": 859
+      },
+      {
+        "selector": ".lesson-main",
+        "line": 860
+      },
+      {
+        "selector": "/* Persistent dark-surface contrast */ .mastery-ring, .stage-tab.active, .lesson-button.active, .prediction-options button.correct",
+        "line": 862
+      },
+      {
+        "selector": ".mastery-ring span, .lesson-button.active .lesson-copy small",
+        "line": 870
+      },
+      {
+        "selector": ".lesson-button.complete:not(.active)",
+        "line": 876
+      },
+      {
+        "selector": ".reference-example, .revealed-target, .terminal, .character-guide",
+        "line": 880
+      },
+      {
+        "selector": ".reference-example > span, .revealed-target > span, .terminal-title, .typing-guide .editor-bar, .code-editor .editor-bar",
+        "line": 887
+      },
+      {
+        "selector": ".typing-guide .editor-bar, .code-editor .editor-bar",
+        "line": 895
+      },
+      {
+        "selector": ".character-current, textarea",
+        "line": 901
+      },
+      {
+        "selector": ".character-pending, .newline-mark",
+        "line": 906
+      },
+      {
+        "selector": "textarea",
+        "line": 911
+      },
+      {
+        "selector": ".xp-award-toast",
+        "line": 915
+      },
+      {
+        "selector": ".xp-award-toast span",
+        "line": 934
+      },
+      {
+        "selector": ".xp-award-toast strong",
+        "line": 940
+      },
+      {
+        "selector": ".xp-award-toast small",
+        "line": 945
+      },
+      {
+        "selector": ".achievement-unlock-overlay",
+        "line": 950
+      },
+      {
+        "selector": ".achievement-unlock-dialog",
+        "line": 961
+      },
+      {
+        "selector": ".achievement-unlock-kicker",
+        "line": 978
+      },
+      {
+        "selector": ".achievement-unlock-medal",
+        "line": 985
+      },
+      {
+        "selector": ".achievement-unlock-dialog h2",
+        "line": 998
+      },
+      {
+        "selector": ".achievement-unlock-dialog > p",
+        "line": 1003
+      },
+      {
+        "selector": ".achievement-unlock-rewards",
+        "line": 1009
+      },
+      {
+        "selector": ".achievement-unlock-rewards > div",
+        "line": 1015
+      },
+      {
+        "selector": ".achievement-unlock-rewards span, .achievement-unlock-rewards strong",
+        "line": 1022
+      },
+      {
+        "selector": ".achievement-unlock-rewards span",
+        "line": 1027
+      },
+      {
+        "selector": ".achievement-unlock-rewards strong",
+        "line": 1033
+      },
+      {
+        "selector": ".achievement-unlock-dialog > small",
+        "line": 1039
+      },
+      {
+        "selector": ".minigame-unlock-note",
+        "line": 1046
+      },
+      {
+        "selector": ".minigame-unlock-note span, .minigame-unlock-note strong, .minigame-unlock-note small",
+        "line": 1057
+      },
+      {
+        "selector": ".minigame-unlock-note span",
+        "line": 1063
+      },
+      {
+        "selector": ".minigame-unlock-note strong",
+        "line": 1070
+      },
+      {
+        "selector": ".minigame-unlock-note small",
+        "line": 1075
+      },
+      {
+        "selector": ".mastery-actions",
+        "line": 1080
+      },
+      {
+        "selector": "@@media (max-width: 620px)",
+        "line": 1084
+      },
+      {
+        "selector": ".mastery-actions",
+        "line": 1086
+      },
+      {
+        "selector": ".achievement-unlock-actions",
+        "line": 1090
+      },
+      {
+        "selector": ".achievement-unlock-actions a, .achievement-unlock-actions button",
+        "line": 1097
+      },
+      {
+        "selector": ".achievement-unlock-actions a",
+        "line": 1109
+      },
+      {
+        "selector": ".achievement-unlock-actions button",
+        "line": 1115
+      },
+      {
+        "selector": ".save-progress-overlay",
+        "line": 1121
+      },
+      {
+        "selector": ".save-progress-dialog",
+        "line": 1132
+      },
+      {
+        "selector": ".save-progress-kicker",
+        "line": 1141
+      },
+      {
+        "selector": ".save-progress-dialog h2",
+        "line": 1142
+      },
+      {
+        "selector": ".save-progress-dialog > p",
+        "line": 1143
+      },
+      {
+        "selector": ".save-progress-dialog .auth-card",
+        "line": 1144
+      },
+      {
+        "selector": ".continue-guest",
+        "line": 1145
+      },
+      {
+        "selector": ".save-progress-dialog > small",
+        "line": 1155
+      },
+      {
+        "selector": ".lesson-number .lock-mark",
+        "line": 1156
+      },
+      {
+        "selector": ".lesson-complete-mark",
+        "line": 1159
+      }
+    ]
+  },
+  "suggested_boundaries": [
+    {
+      "suggested_component": "CourseHeader",
+      "evidence_lines": [
+        94,
+        312
+      ],
+      "reason": "Matching structural class/id names were detected."
+    },
+    {
+      "suggested_component": "ModuleNavigation",
+      "evidence_lines": [
+        31,
+        93,
+        94
+      ],
+      "reason": "Matching structural class/id names were detected."
+    },
+    {
+      "suggested_component": "StageProgressPanel",
+      "evidence_lines": [
+        37,
+        106,
+        122,
+        458
+      ],
+      "reason": "Matching structural class/id names were detected."
+    },
+    {
+      "suggested_component": "LearningTerminal",
+      "evidence_lines": [
+        368
+      ],
+      "reason": "Matching structural class/id names were detected."
+    },
+    {
+      "suggested_component": "GamePreviewPanel",
+      "evidence_lines": [
+        311,
+        312
+      ],
+      "reason": "Matching structural class/id names were detected."
+    },
+    {
+      "suggested_component": "RewardPanel",
+      "evidence_lines": [
+        398
+      ],
+      "reason": "Matching structural class/id names were detected."
+    },
+    {
+      "suggested_component": "PythonCourseStyles.css",
+      "evidence_lines": [
+        469
+      ],
+      "reason": "Embedded style block contains 691 lines and should likely move to a dedicated stylesheet."
+    },
+    {
+      "suggested_component": "PythonCourseViewModel",
+      "evidence_lines": [
+        1230
+      ],
+      "reason": "The page contains 23 detected private fields/properties."
+    }
+  ],
+  "safety_rules_for_85b": [
+    "Extract markup-only components first.",
+    "Keep ProgressionService, validation, and resume orchestration in Python.razor initially.",
+    "Do not move mutable page state during the first extraction.",
+    "Pass values into child components using parameters.",
+    "Pass actions back using EventCallback.",
+    "Build and test after each individual component extraction.",
+    "Do not change routes, storage keys, XP awards, or lesson identifiers."
+  ]
+}

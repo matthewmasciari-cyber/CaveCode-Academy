@@ -1,0 +1,699 @@
+{
+  "pass": "84C",
+  "created_utc": "2026-08-04T00:41:24.390735+00:00",
+  "routes": [
+    {
+      "route": "/",
+      "file": "Pages/Home.razor"
+    },
+    {
+      "route": "/achievements",
+      "file": "Pages/Achievements.razor"
+    },
+    {
+      "route": "/counter",
+      "file": "Pages/Counter.razor"
+    },
+    {
+      "route": "/cpp",
+      "file": "Pages/Cpp.razor"
+    },
+    {
+      "route": "/csharp",
+      "file": "Pages/CSharp.razor"
+    },
+    {
+      "route": "/html-css",
+      "file": "Pages/HtmlCss.razor"
+    },
+    {
+      "route": "/leaderboard",
+      "file": "Pages/Leaderboard.razor"
+    },
+    {
+      "route": "/minigames",
+      "file": "Pages/Minigames.razor"
+    },
+    {
+      "route": "/minigames/cpp",
+      "file": "Pages/CppMinigame.razor"
+    },
+    {
+      "route": "/minigames/cpp/mission-2",
+      "file": "Pages/CppMinigameMissionTwo.razor"
+    },
+    {
+      "route": "/minigames/cpp/mission-3",
+      "file": "Pages/CppMinigameMissionThree.razor"
+    },
+    {
+      "route": "/minigames/cpp/mission-4",
+      "file": "Pages/CppMinigameMissionFour.razor"
+    },
+    {
+      "route": "/minigames/cpp/mission-5",
+      "file": "Pages/CppMinigameMissionFive.razor"
+    },
+    {
+      "route": "/minigames/csharp",
+      "file": "Pages/CSharpDefense.razor"
+    },
+    {
+      "route": "/minigames/html-css",
+      "file": "Pages/HtmlCssMinigame.razor"
+    },
+    {
+      "route": "/minigames/html-css/campaign",
+      "file": "Pages/HtmlCssMinigameCampaign.razor"
+    },
+    {
+      "route": "/minigames/html-css/endless",
+      "file": "Pages/HtmlCssMinigameEndless.razor"
+    },
+    {
+      "route": "/minigames/html-css/mission-2",
+      "file": "Pages/HtmlCssMinigameMissionTwo.razor"
+    },
+    {
+      "route": "/minigames/html-css/mission-3",
+      "file": "Pages/HtmlCssMinigameMissionThree.razor"
+    },
+    {
+      "route": "/minigames/html-css/mission-4",
+      "file": "Pages/HtmlCssMinigameMissionFour.razor"
+    },
+    {
+      "route": "/minigames/html-css/mission-5",
+      "file": "Pages/HtmlCssMinigameMissionFive.razor"
+    },
+    {
+      "route": "/minigames/python",
+      "file": "Pages/PythonControlRoom.razor"
+    },
+    {
+      "route": "/not-found",
+      "file": "Pages/NotFound.razor"
+    },
+    {
+      "route": "/python",
+      "file": "Pages/Python.razor"
+    },
+    {
+      "route": "/settings",
+      "file": "Pages/Settings.razor"
+    },
+    {
+      "route": "/weather",
+      "file": "Pages/Weather.razor"
+    }
+  ],
+  "duplicate_routes": {},
+  "components": [
+    {
+      "component": "AcademyHomeButton",
+      "file": "Components/AcademyHomeButton.razor",
+      "used_by": [
+        "Components/CodeMinigame.razor",
+        "Pages/Achievements.razor",
+        "Pages/CSharp.razor",
+        "Pages/Cpp.razor",
+        "Pages/HtmlCss.razor",
+        "Pages/Leaderboard.razor",
+        "Pages/Minigames.razor",
+        "Pages/Python.razor",
+        "Pages/Settings.razor"
+      ],
+      "usage_count": 9
+    },
+    {
+      "component": "AchievementNavLink",
+      "file": "Components/AchievementNavLink.razor",
+      "used_by": [
+        "Pages/Home.razor"
+      ],
+      "usage_count": 1
+    },
+    {
+      "component": "App",
+      "file": "App.razor",
+      "used_by": [],
+      "usage_count": 0
+    },
+    {
+      "component": "AuthPanel",
+      "file": "Components/AuthPanel.razor",
+      "used_by": [
+        "Pages/CSharp.razor",
+        "Pages/Cpp.razor",
+        "Pages/Home.razor",
+        "Pages/HtmlCss.razor",
+        "Pages/Python.razor"
+      ],
+      "usage_count": 5
+    },
+    {
+      "component": "CodeMinigame",
+      "file": "Components/CodeMinigame.razor",
+      "used_by": [
+        "Pages/CSharpDefense.razor",
+        "Pages/PythonControlRoom.razor"
+      ],
+      "usage_count": 2
+    },
+    {
+      "component": "CourseCodeEditor",
+      "file": "Components/CourseEngine/CourseCodeEditor.razor",
+      "used_by": [
+        "Pages/Cpp.razor",
+        "Pages/HtmlCss.razor"
+      ],
+      "usage_count": 2
+    },
+    {
+      "component": "CourseProgressPanel",
+      "file": "Components/CourseEngine/CourseProgressPanel.razor",
+      "used_by": [
+        "Pages/Cpp.razor",
+        "Pages/HtmlCss.razor"
+      ],
+      "usage_count": 2
+    },
+    {
+      "component": "CourseResume",
+      "file": "Components/CourseResume.razor",
+      "used_by": [
+        "Pages/Home.razor"
+      ],
+      "usage_count": 1
+    },
+    {
+      "component": "CourseStageTabs",
+      "file": "Components/CourseEngine/CourseStageTabs.razor",
+      "used_by": [
+        "Pages/Cpp.razor",
+        "Pages/HtmlCss.razor"
+      ],
+      "usage_count": 2
+    },
+    {
+      "component": "CppMinigameHubCard",
+      "file": "Components/CppMinigameHubCard.razor",
+      "used_by": [
+        "Pages/Minigames.razor"
+      ],
+      "usage_count": 1
+    },
+    {
+      "component": "DisplayNameRenameControl",
+      "file": "Components/DisplayNameRenameControl.razor",
+      "used_by": [
+        "Pages/Settings.razor"
+      ],
+      "usage_count": 1
+    },
+    {
+      "component": "LeaderboardNavLink",
+      "file": "Components/LeaderboardNavLink.razor",
+      "used_by": [
+        "Pages/Home.razor"
+      ],
+      "usage_count": 1
+    },
+    {
+      "component": "LockMark",
+      "file": "Components/LockMark.razor",
+      "used_by": [
+        "Pages/Achievements.razor",
+        "Pages/CSharp.razor",
+        "Pages/Cpp.razor",
+        "Pages/Home.razor",
+        "Pages/HtmlCss.razor",
+        "Pages/Python.razor",
+        "Pages/Settings.razor"
+      ],
+      "usage_count": 7
+    },
+    {
+      "component": "MainLayout",
+      "file": "Layout/MainLayout.razor",
+      "used_by": [],
+      "usage_count": 0
+    },
+    {
+      "component": "MinigameNavLink",
+      "file": "Components/MinigameNavLink.razor",
+      "used_by": [
+        "Pages/Home.razor"
+      ],
+      "usage_count": 1
+    },
+    {
+      "component": "NavMenu",
+      "file": "Layout/NavMenu.razor",
+      "used_by": [],
+      "usage_count": 0
+    },
+    {
+      "component": "ProgressIdentity",
+      "file": "Components/ProgressIdentity.razor",
+      "used_by": [
+        "Components/AuthPanel.razor",
+        "Components/CodeMinigame.razor",
+        "Pages/Leaderboard.razor",
+        "Pages/Minigames.razor"
+      ],
+      "usage_count": 4
+    },
+    {
+      "component": "TitleEffect",
+      "file": "Components/TitleEffect.razor",
+      "used_by": [
+        "Components/ProgressIdentity.razor",
+        "Pages/Achievements.razor",
+        "Pages/Leaderboard.razor",
+        "Pages/Settings.razor"
+      ],
+      "usage_count": 4
+    },
+    {
+      "component": "_Imports",
+      "file": "_Imports.razor",
+      "used_by": [],
+      "usage_count": 0
+    }
+  ],
+  "unused_components": [
+    "App.razor",
+    "Layout/MainLayout.razor",
+    "Layout/NavMenu.razor",
+    "_Imports.razor"
+  ],
+  "pages": [
+    {
+      "file": "Pages/Achievements.razor",
+      "routes": [
+        "/achievements"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "LockMark",
+        "TitleEffect"
+      ],
+      "component_count": 3,
+      "lines": 693
+    },
+    {
+      "file": "Pages/CSharp.razor",
+      "routes": [
+        "/csharp"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "AuthPanel",
+        "LockMark"
+      ],
+      "component_count": 3,
+      "lines": 2536
+    },
+    {
+      "file": "Pages/CSharpDefense.razor",
+      "routes": [
+        "/minigames/csharp"
+      ],
+      "components": [
+        "CodeMinigame"
+      ],
+      "component_count": 1,
+      "lines": 5
+    },
+    {
+      "file": "Pages/Counter.razor",
+      "routes": [
+        "/counter"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 18
+    },
+    {
+      "file": "Pages/Cpp.razor",
+      "routes": [
+        "/cpp"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "AuthPanel",
+        "CourseCodeEditor",
+        "CourseProgressPanel",
+        "CourseStageTabs",
+        "LockMark"
+      ],
+      "component_count": 6,
+      "lines": 1179
+    },
+    {
+      "file": "Pages/CppMinigame.razor",
+      "routes": [
+        "/minigames/cpp"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 1825
+    },
+    {
+      "file": "Pages/CppMinigameMissionFive.razor",
+      "routes": [
+        "/minigames/cpp/mission-5"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 849
+    },
+    {
+      "file": "Pages/CppMinigameMissionFour.razor",
+      "routes": [
+        "/minigames/cpp/mission-4"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 434
+    },
+    {
+      "file": "Pages/CppMinigameMissionThree.razor",
+      "routes": [
+        "/minigames/cpp/mission-3"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 1441
+    },
+    {
+      "file": "Pages/CppMinigameMissionTwo.razor",
+      "routes": [
+        "/minigames/cpp/mission-2"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 1316
+    },
+    {
+      "file": "Pages/Home.razor",
+      "routes": [
+        "/"
+      ],
+      "components": [
+        "AchievementNavLink",
+        "AuthPanel",
+        "CourseResume",
+        "LeaderboardNavLink",
+        "LockMark",
+        "MinigameNavLink"
+      ],
+      "component_count": 6,
+      "lines": 920
+    },
+    {
+      "file": "Pages/HtmlCss.razor",
+      "routes": [
+        "/html-css"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "AuthPanel",
+        "CourseCodeEditor",
+        "CourseProgressPanel",
+        "CourseStageTabs",
+        "LockMark"
+      ],
+      "component_count": 6,
+      "lines": 1432
+    },
+    {
+      "file": "Pages/HtmlCssMinigame.razor",
+      "routes": [
+        "/minigames/html-css"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 3167
+    },
+    {
+      "file": "Pages/HtmlCssMinigameCampaign.razor",
+      "routes": [
+        "/minigames/html-css/campaign"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 713
+    },
+    {
+      "file": "Pages/HtmlCssMinigameEndless.razor",
+      "routes": [
+        "/minigames/html-css/endless"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 478
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionFive.razor",
+      "routes": [
+        "/minigames/html-css/mission-5"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 2786
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionFour.razor",
+      "routes": [
+        "/minigames/html-css/mission-4"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 2681
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionThree.razor",
+      "routes": [
+        "/minigames/html-css/mission-3"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 2612
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionTwo.razor",
+      "routes": [
+        "/minigames/html-css/mission-2"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 2509
+    },
+    {
+      "file": "Pages/Leaderboard.razor",
+      "routes": [
+        "/leaderboard"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "ProgressIdentity",
+        "TitleEffect"
+      ],
+      "component_count": 3,
+      "lines": 793
+    },
+    {
+      "file": "Pages/Minigames.razor",
+      "routes": [
+        "/minigames"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "CppMinigameHubCard",
+        "ProgressIdentity"
+      ],
+      "component_count": 3,
+      "lines": 740
+    },
+    {
+      "file": "Pages/NotFound.razor",
+      "routes": [
+        "/not-found"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 5
+    },
+    {
+      "file": "Pages/Python.razor",
+      "routes": [
+        "/python"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "AuthPanel",
+        "LockMark"
+      ],
+      "component_count": 3,
+      "lines": 2740
+    },
+    {
+      "file": "Pages/PythonControlRoom.razor",
+      "routes": [
+        "/minigames/python"
+      ],
+      "components": [
+        "CodeMinigame"
+      ],
+      "component_count": 1,
+      "lines": 5
+    },
+    {
+      "file": "Pages/Settings.razor",
+      "routes": [
+        "/settings"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "DisplayNameRenameControl",
+        "LockMark",
+        "TitleEffect"
+      ],
+      "component_count": 4,
+      "lines": 1140
+    },
+    {
+      "file": "Pages/Weather.razor",
+      "routes": [
+        "/weather"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 57
+    }
+  ],
+  "large_pages": [
+    {
+      "file": "Pages/CSharp.razor",
+      "routes": [
+        "/csharp"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "AuthPanel",
+        "LockMark"
+      ],
+      "component_count": 3,
+      "lines": 2536
+    },
+    {
+      "file": "Pages/CppMinigame.razor",
+      "routes": [
+        "/minigames/cpp"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 1825
+    },
+    {
+      "file": "Pages/CppMinigameMissionThree.razor",
+      "routes": [
+        "/minigames/cpp/mission-3"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 1441
+    },
+    {
+      "file": "Pages/CppMinigameMissionTwo.razor",
+      "routes": [
+        "/minigames/cpp/mission-2"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 1316
+    },
+    {
+      "file": "Pages/HtmlCss.razor",
+      "routes": [
+        "/html-css"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "AuthPanel",
+        "CourseCodeEditor",
+        "CourseProgressPanel",
+        "CourseStageTabs",
+        "LockMark"
+      ],
+      "component_count": 6,
+      "lines": 1432
+    },
+    {
+      "file": "Pages/HtmlCssMinigame.razor",
+      "routes": [
+        "/minigames/html-css"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 3167
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionFive.razor",
+      "routes": [
+        "/minigames/html-css/mission-5"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 2786
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionFour.razor",
+      "routes": [
+        "/minigames/html-css/mission-4"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 2681
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionThree.razor",
+      "routes": [
+        "/minigames/html-css/mission-3"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 2612
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionTwo.razor",
+      "routes": [
+        "/minigames/html-css/mission-2"
+      ],
+      "components": [],
+      "component_count": 0,
+      "lines": 2509
+    },
+    {
+      "file": "Pages/Python.razor",
+      "routes": [
+        "/python"
+      ],
+      "components": [
+        "AcademyHomeButton",
+        "AuthPanel",
+        "LockMark"
+      ],
+      "component_count": 3,
+      "lines": 2740
+    }
+  ],
+  "notes": [
+    "Component usage is based on direct Razor tag references.",
+    "Dynamic rendering and reflection-based usage may not be detected.",
+    "Unused does not automatically mean safe to delete.",
+    "Archive, bin, obj, node_modules, and .git are excluded."
+  ]
+}

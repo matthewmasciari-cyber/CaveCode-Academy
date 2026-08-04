@@ -1,0 +1,138 @@
+====================================================================================================
+CAVECODE PYTHON PAGE DECOMPOSITION MAP — PASS 85A
+====================================================================================================
+
+Target: Pages/Python.razor
+Total lines: 2740
+@code begins near line: 1162
+Detected methods: 29
+Detected fields/properties: 23
+Embedded CSS lines: 691
+
+EXISTING CHILD COMPONENTS
+-------------------------
+AcademyHomeButton: 1 use(s) at lines 32
+AuthPanel: 2 use(s) at lines 35, 462
+CourseProgressSnapshot: 1 use(s) at lines 2034
+Lesson: 1 use(s) at lines 1229
+LockMark: 1 use(s) at lines 81
+NavLink: 2 use(s) at lines 440, 443
+PageTitle: 1 use(s) at lines 10
+TrainingStage: 1 use(s) at lines 107
+
+STRUCTURAL SECTIONS
+-------------------
+   13 | <aside> | sidebar
+   31 | <nav> | course-nav
+   37 | <section> | course-progress
+   93 | <main> | lesson-main
+   94 | <header> | lesson-header
+  106 | <nav> | stage-tabs
+  122 | <section> | stage-card
+  311 | <aside> | preview-panel
+  312 | <header> | preview-header
+  363 | <section> | inventory-card
+  368 | <section> | terminal
+  398 | <section> | achievement-unlock-dialog
+  458 | <section> | save-progress-dialog
+
+METHOD INVENTORY
+----------------
+ 2071 | ModuleMastery | private int ModuleMastery(
+ 2082 | IsLessonUnlocked | private bool IsLessonUnlocked(
+ 2085 | IsStageUnlocked | private bool IsStageUnlocked(
+ 2095 | IsStageComplete | private bool IsStageComplete(
+ 2099 | SelectLesson | private void SelectLesson(
+ 2114 | SelectStage | private void SelectStage(
+ 2125 | PrepareStage | private void PrepareStage(
+ 2199 | GetCharacterClass | private string GetCharacterClass(
+ 2213 | CompleteLearnStage | private void CompleteLearnStage(
+ 2219 | CheckCode | private async Task CheckCode(
+ 2261 | SelectPrediction | private void SelectPrediction(
+ 2277 | PredictionClass | private string PredictionClass(
+ 2292 | ShowHint | private void ShowHint(
+ 2297 | ResetStage | private void ResetStage(
+ 2302 | AdvanceStage | private void AdvanceStage(
+ 2313 | MarkStageComplete | private void MarkStageComplete(
+ 2321 | FinishModule | private async Task FinishModule(
+ 2385 | DismissXpAward | private void DismissXpAward(
+ 2391 | HandleChapterCompletionAsync | private async Task HandleChapterCompletionAsync(
+ 2428 | DismissAchievementUnlock | private void DismissAchievementUnlock(
+ 2440 | SaveProgressAsync | private async Task SaveProgressAsync(
+ 2464 | DismissSavePrompt | private void DismissSavePrompt(
+ 2469 | StageLabel | private string StageLabel(
+ 2482 | StageHeading | private string StageHeading(
+ 2495 | SupportLabel | private string SupportLabel(
+ 2508 | ExerciseTitle | private string ExerciseTitle(
+ 2518 | ExercisePrompt | private string ExercisePrompt(
+ 2528 | NextStageLabel | private string NextStageLabel(
+ 2537 | ConceptPoints | private IEnumerable<string> ConceptPoints(
+
+STATE FIELD INVENTORY
+---------------------
+ 1230 | List<Lesson> Lessons
+ 1994 | int CurrentModuleIndex
+ 1995 | TrainingStage CurrentStage
+ 1996 | int[] HighestCompletedStage
+ 1997 | bool[] ModuleCompleted
+ 1999 | string StudentCode
+ 2000 | string Feedback
+ 2001 | bool HintVisible
+ 2002 | bool StagePassed
+ 2003 | int? SelectedPrediction
+ 2004 | bool ShowChapterOneSignInPrompt
+ 2005 | AchievementUnlockResult? ChapterAchievement
+ 2006 | bool ShowAchievementUnlock
+ 2007 | ProgressionAwardResult? LastProgressAward
+ 2008 | bool ShowXpAward
+ 2009 | bool PendingChapterOneSignInPrompt
+ 2010 | bool ProgressRestored
+ 2012 | const int ChapterOneLastModuleIndex
+ 2014 | Lesson CurrentLesson
+ 2066 | int CompletedModuleCount
+ 2068 | int CourseProgress
+ 2148 | string CurrentExpectedCode
+ 2158 | bool ShowTargetGuide
+
+SUGGESTED COMPONENT BOUNDARIES
+------------------------------
+CourseHeader
+  evidence lines: 94, 312
+  reason: Matching structural class/id names were detected.
+ModuleNavigation
+  evidence lines: 31, 93, 94
+  reason: Matching structural class/id names were detected.
+StageProgressPanel
+  evidence lines: 37, 106, 122, 458
+  reason: Matching structural class/id names were detected.
+LearningTerminal
+  evidence lines: 368
+  reason: Matching structural class/id names were detected.
+GamePreviewPanel
+  evidence lines: 311, 312
+  reason: Matching structural class/id names were detected.
+RewardPanel
+  evidence lines: 398
+  reason: Matching structural class/id names were detected.
+PythonCourseStyles.css
+  evidence lines: 469
+  reason: Embedded style block contains 691 lines and should likely move to a dedicated stylesheet.
+PythonCourseViewModel
+  evidence lines: 1230
+  reason: The page contains 23 detected private fields/properties.
+
+SAFE EXTRACTION ORDER FOR PASS 85B
+----------------------------------
+1. Extract the most self-contained display-only panel.
+2. Keep all mutable state and services in Python.razor.
+3. Pass display values through [Parameter].
+4. Pass button actions through EventCallback only when needed.
+5. Build and test before extracting a second panel.
+6. Leave course IDs, storage keys, scoring, mastery, and resume logic unchanged.
+
+OUTPUT
+------
+Text report: Archive/Reports/python-page-decomposition-pass-85a.txt
+JSON report: Archive/Reports/python-page-decomposition-pass-85a.json
+
+No production files were modified.

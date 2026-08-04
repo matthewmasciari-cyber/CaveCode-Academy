@@ -34,16 +34,11 @@
 
         <AuthPanel />
 
-        <section class="course-progress">
-            <div class="row-between">
-                <span>Course progress</span>
-                <strong>@CourseProgress%</strong>
-            </div>
-            <div class="progress-track">
-                <div class="progress-fill" style="width: @(CourseProgress)%"></div>
-            </div>
-            <small>@CompletedModuleCount / @Lessons.Count modules complete</small>
-        </section>
+        @* CAVECODE_SHARED_PROGRESS_PANEL_86A *@
+        <CourseProgressPanel
+            Label="Course progress"
+            CompletedModules="@CompletedModuleCount"
+            TotalModules="@Lessons.Count" />
 
         <div class="lesson-list">
             @{
@@ -103,21 +98,13 @@
             </div>
         </header>
 
-        <nav class="stage-tabs" aria-label="Training stages">
-            @foreach (TrainingStage stage in Enum.GetValues<TrainingStage>())
-            {
-                TrainingStage selectedStage = stage;
-                bool unlocked = IsStageUnlocked(stage);
-
-                <button type="button"
-                        class="stage-tab @(CurrentStage == stage ? "active" : "") @(IsStageComplete(stage) ? "done" : "")"
-                        disabled="@(!unlocked)"
-                        @onclick="() => SelectStage(selectedStage)">
-                    <span>@((int)stage + 1)</span>
-                    @StageLabel(stage)
-                </button>
-            }
-        </nav>
+        @* CAVECODE_SHARED_STAGE_TABS_86B *@
+        <CourseStageTabs
+            AriaLabel="Training stages"
+            CurrentStage="@((int)CurrentStage)"
+            HighestCompletedStage="@SharedHighestCompletedStage"
+            UnlockedThroughStage="@SharedUnlockedThroughStage"
+            StageSelected="@SelectSharedStage" />
 
         <section class="stage-card">
             <div class="stage-heading">
@@ -267,43 +254,25 @@
                     </div>
                 }
 
-                <div class="code-editor">
-                    <div class="editor-bar">
-                        <span>PlayerTraining.cs</span>
-                        <span>C#</span>
-                    </div>
+                @* CAVECODE_SHARED_CODE_EDITOR_86C *@
+                <CourseCodeEditor
+                    FileName="PlayerTraining.cs"
+                    LanguageLabel="C#"
+                    AriaLabel="C# practice editor"
+                    @bind-Value="StudentCode"
+                    TargetLength="@CurrentExpectedCode.Length"
+                    Accuracy="@Accuracy"
+                    ErrorCount="@ErrorCount" />
 
-                    <textarea @bind="StudentCode"
-                              @bind:event="oninput"
-                              spellcheck="false"
-                              aria-label="C# practice editor"></textarea>
-
-                    <div class="typing-stats">
-                        <div><span>Characters</span><strong>@StudentCode.Length / @CurrentExpectedCode.Length</strong></div>
-                        <div><span>Accuracy</span><strong>@Accuracy%</strong></div>
-                        <div><span>Errors</span><strong>@ErrorCount</strong></div>
-                    </div>
-                </div>
-
-                <div class="action-row">
-                    <button type="button" class="primary" @onclick="CheckCode">Check code</button>
-                    <button type="button" class="secondary" @onclick="ShowHint">Hint</button>
-                    <button type="button" class="secondary" @onclick="ResetStage">Reset</button>
-                </div>
-
-                @if (!string.IsNullOrWhiteSpace(Feedback))
-                {
-                    <div class="feedback @(StagePassed ? "success" : "error")">
-                        @Feedback
-                    </div>
-                }
-
-                @if (StagePassed)
-                {
-                    <button type="button" class="primary continue-button" @onclick="AdvanceStage">
-                        Continue to @NextStageLabel() →
-                    </button>
-                }
+                @* CAVECODE_SHARED_EXERCISE_ACTIONS_86D *@
+                <CourseExerciseActions
+                    Feedback="@Feedback"
+                    StagePassed="@StagePassed"
+                    ContinueLabel="@NextStageLabel()"
+                    OnCheck="@CheckCode"
+                    OnHint="@ShowHint"
+                    OnReset="@ResetStage"
+                    OnContinue="@AdvanceStage" />
             }
         </section>
     </main>
@@ -1896,10 +1865,32 @@
         )
     };
 
-    private int CurrentModuleIndex;
-    private TrainingStage CurrentStage = TrainingStage.Learn;
-    private int[] HighestCompletedStage = Array.Empty<int>();
-    private bool[] ModuleCompleted = Array.Empty<bool>();
+    // CAVECODE_COURSE_SESSION_FOUNDATION_87A
+    private readonly CourseSession Session = new();
+
+    private int CurrentModuleIndex
+    {
+        get => Session.CurrentModuleIndex;
+        set => Session.CurrentModuleIndex = value;
+    }
+
+    private TrainingStage CurrentStage
+    {
+        get => (TrainingStage)Session.CurrentStageIndex;
+        set => Session.CurrentStageIndex = (int)value;
+    }
+
+    private int[] HighestCompletedStage
+    {
+        get => Session.HighestCompletedStage;
+        set => Session.HighestCompletedStage = value;
+    }
+
+    private bool[] ModuleCompleted
+    {
+        get => Session.ModuleCompleted;
+        set => Session.ModuleCompleted = value;
+    }
 
     private string StudentCode = "";
     private string Feedback = "";
@@ -1920,8 +1911,8 @@
 
     protected override void OnInitialized()
     {
-        HighestCompletedStage = Enumerable.Repeat(-1, Lessons.Count).ToArray();
-        ModuleCompleted = new bool[Lessons.Count];
+        Session.Initialize(Lessons.Count);
+        CurrentStage = TrainingStage.Learn;
         PrepareStage();
     }
 
@@ -1967,62 +1958,64 @@
         }
     }
 
-    private int CompletedModuleCount => ModuleCompleted.Count(completed => completed);
+    private int CompletedModuleCount =>
+        Session.CompletedModuleCount;
 
     private int CourseProgress =>
-        Lessons.Count == 0 ? 0 : CompletedModuleCount * 100 / Lessons.Count;
+        Session.ProgressPercent(Lessons.Count);
 
-    private int ModuleMastery(int index)
-    {
-        if (ModuleCompleted[index])
-        {
-            return 100;
-        }
-
-        int completedStages = HighestCompletedStage[index] + 1;
-        return Math.Clamp(completedStages * 100 / 8, 0, 100);
-    }
+    private int ModuleMastery(int index) =>
+        Session.ModuleMastery(
+            index,
+            CourseStageCatalog.StageCount);
 
     private bool IsLessonUnlocked(int index) =>
-        index == 0 || ModuleCompleted[index - 1];
+        Session.IsLessonUnlocked(index);
 
-    private bool IsStageUnlocked(TrainingStage stage)
-    {
-        if (ModuleCompleted[CurrentModuleIndex])
-        {
-            return true;
-        }
-
-        return (int)stage <= HighestCompletedStage[CurrentModuleIndex] + 1;
-    }
+    private bool IsStageUnlocked(TrainingStage stage) =>
+        Session.IsStageUnlocked((int)stage);
 
     private bool IsStageComplete(TrainingStage stage) =>
-        ModuleCompleted[CurrentModuleIndex] ||
-        (int)stage <= HighestCompletedStage[CurrentModuleIndex];
+        Session.IsStageComplete((int)stage);
 
+    // CAVECODE_COURSE_SESSION_TRANSITIONS_87B
     private void SelectLesson(int index)
     {
-        if (!IsLessonUnlocked(index))
+        if (!Session.TrySelectLesson(
+                index,
+                CourseStageCatalog.StageCount))
         {
             return;
         }
-
-        CurrentModuleIndex = index;
-        CurrentStage = ModuleCompleted[index]
-            ? TrainingStage.Complete
-            : (TrainingStage)Math.Clamp(HighestCompletedStage[index] + 1, 0, 7);
 
         PrepareStage();
     }
 
+
+    // CAVECODE_SHARED_STAGE_TABS_86B
+    private int SharedHighestCompletedStage =>
+        ModuleCompleted[CurrentModuleIndex]
+            ? CourseStageCatalog.StageCount - 1
+            : HighestCompletedStage[CurrentModuleIndex];
+
+    private int SharedUnlockedThroughStage =>
+        ModuleCompleted[CurrentModuleIndex]
+            ? CourseStageCatalog.StageCount - 1
+            : Math.Clamp(
+                HighestCompletedStage[CurrentModuleIndex] + 1,
+                0,
+                CourseStageCatalog.StageCount - 1);
+
+    private void SelectSharedStage(int stageIndex) =>
+        SelectStage((TrainingStage)stageIndex);
+
     private void SelectStage(TrainingStage stage)
     {
-        if (!IsStageUnlocked(stage))
+        if (!Session.TrySelectStage((int)stage))
         {
             return;
         }
 
-        CurrentStage = stage;
         PrepareStage();
     }
 
@@ -2214,20 +2207,16 @@
         }
     }
 
-    private void MarkStageComplete()
-    {
-        HighestCompletedStage[CurrentModuleIndex] = Math.Max(
-            HighestCompletedStage[CurrentModuleIndex],
-            (int)CurrentStage
-        );
-    }
+    private void MarkStageComplete() =>
+        Session.MarkCurrentStageComplete();
 
     private async Task FinishModule()
     {
         int finishedModuleIndex = CurrentModuleIndex;
 
-        HighestCompletedStage[finishedModuleIndex] = 7;
-        ModuleCompleted[finishedModuleIndex] = true;
+        Session.CompleteModule(
+            finishedModuleIndex,
+            CourseStageCatalog.StageCount);
 
         ProgressionAwardResult progressionAward =
             await ProgressionService.AwardModuleAsync(
@@ -2242,10 +2231,8 @@
         }
 
 
-        if (CurrentModuleIndex < Lessons.Count - 1)
+        if (Session.MoveToNextModule(Lessons.Count))
         {
-            CurrentModuleIndex++;
-            CurrentStage = TrainingStage.Learn;
             PrepareStage();
         }
         else

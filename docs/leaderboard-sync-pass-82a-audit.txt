@@ -1,0 +1,347 @@
+================================================================================================
+CAVECODE LEADERBOARD SYNCHRONIZATION — PASS 82A AUDIT
+================================================================================================
+
+Purpose
+-------
+Identify why the leaderboard can show normal entries initially but collapse to only the
+current user after a refresh. This audit does not modify project files.
+
+Leaderboard file: Pages/Leaderboard.razor
+Authentication file: wwwroot/js/caveCodeAuth.js
+
+================================================================================================
+LIKELY RISK AREAS
+================================================================================================
+1. caveCodeAuth.js appears to rely on browser-local data without an obvious remote fetch. Fresh-page behavior may differ from same-tab behavior.
+
+================================================================================================
+LEADERBOARD.RAZOR — MATCH SUMMARY
+================================================================================================
+  644 | refresh handler                | RefreshLeaderboard(
+  655 | refresh handler                | RefreshLeaderboard(
+  669 | refresh handler                | RefreshLeaderboard(
+  686 | refresh handler                | RefreshLeaderboard(
+  689 | refresh handler                | RefreshLeaderboard(
+  632 | lifecycle method               | OnAfterRenderAsync
+  648 | JS interop                     | JS.InvokeAsync
+   49 | current user filter            | Profile
+   76 | current user filter            | profile
+  612 | current user filter            | Profile
+  619 | current user filter            | Profile
+  621 | current user filter            | Profile
+  639 | current user filter            | Profile
+  694 | current user filter            | Profile
+
+================================================================================================
+LEADERBOARD.RAZOR — LOAD / REFRESH CONTEXT
+================================================================================================
+--- lines 635-653 ---
+  635:         {
+  636:             return;
+  637:         }
+  638: 
+  639:         Profile = await ProfileService.GetPreferencesAsync();
+  640:         State = await ProgressionService.GetStateAsync();
+  641: 
+  642:         // Render local information immediately, then wait for Supabase
+  643:         // to finish restoring the persisted authentication session.
+  644:         await RefreshLeaderboard();
+  645: 
+  646:         try
+  647:         {
+  648:             await JS.InvokeAsync<AuthReadyState>(
+  649:                 "caveCodeAuth.waitForReady",
+  650:                 5000
+  651:             );
+  652: 
+  653:             // The first call may have happened before Supabase restored
+--- lines 646-664 ---
+  646:         try
+  647:         {
+  648:             await JS.InvokeAsync<AuthReadyState>(
+  649:                 "caveCodeAuth.waitForReady",
+  650:                 5000
+  651:             );
+  652: 
+  653:             // The first call may have happened before Supabase restored
+  654:             // the session. This second call retrieves the full public list.
+  655:             await RefreshLeaderboard();
+  656:         }
+  657:         catch
+  658:         {
+  659:             // Keep the local leaderboard result if cloud auth is unavailable.
+  660:         }
+  661: 
+  662:         Ready = true;
+  663:         await InvokeAsync(StateHasChanged);
+  664:     }
+--- lines 660-678 ---
+  660:         }
+  661: 
+  662:         Ready = true;
+  663:         await InvokeAsync(StateHasChanged);
+  664:     }
+  665: 
+  666:     private async Task SelectFilter(string filter)
+  667:     {
+  668:         Filter = filter;
+  669:         await RefreshLeaderboard();
+  670:     }
+  671: 
+  672:     private async Task ToggleVisibility(ChangeEventArgs args)
+  673:     {
+  674:         bool isPublic =
+  675:             args.Value is bool value
+  676:                 ? value
+  677:                 : bool.TryParse(
+  678:                     args.Value?.ToString(),
+--- lines 677-695 ---
+  677:                 : bool.TryParse(
+  678:                     args.Value?.ToString(),
+  679:                     out bool parsed
+  680:                 ) && parsed;
+  681: 
+  682:         State =
+  683:             await ProgressionService
+  684:                 .SetPublicLeaderboardAsync(isPublic);
+  685: 
+  686:         await RefreshLeaderboard();
+  687:     }
+  688: 
+  689:     private async Task RefreshLeaderboard()
+  690:     {
+  691:         Result =
+  692:             await ProgressionService.GetLeaderboardAsync(
+  693:                 Filter,
+  694:                 Profile
+  695:             );
+--- lines 680-698 ---
+  680:                 ) && parsed;
+  681: 
+  682:         State =
+  683:             await ProgressionService
+  684:                 .SetPublicLeaderboardAsync(isPublic);
+  685: 
+  686:         await RefreshLeaderboard();
+  687:     }
+  688: 
+  689:     private async Task RefreshLeaderboard()
+  690:     {
+  691:         Result =
+  692:             await ProgressionService.GetLeaderboardAsync(
+  693:                 Filter,
+  694:                 Profile
+  695:             );
+  696: 
+  697:         await InvokeAsync(StateHasChanged);
+  698:     }
+
+================================================================================================
+LEADERBOARD.RAZOR — LIFECYCLE CONTEXT
+================================================================================================
+--- lines 624-640 ---
+  624:         Filter switch
+  625:         {
+  626:             "csharp" => "C# Cave Adventure",
+  627:             "python" => "Python Automation Quest",
+  628:             _ => "Overall academy"
+  629:         };
+  630: 
+  631:     // LEADERBOARD_AUTH_READY_REFRESH_79A
+  632:     protected override async Task OnAfterRenderAsync(bool firstRender)
+  633:     {
+  634:         if (!firstRender)
+  635:         {
+  636:             return;
+  637:         }
+  638: 
+  639:         Profile = await ProfileService.GetPreferencesAsync();
+  640:         State = await ProgressionService.GetStateAsync();
+
+================================================================================================
+CAVECODEAUTH.JS — MATCH SUMMARY
+================================================================================================
+   50 | storage read                   | localStorage.getItem(
+   71 | storage write                  | localStorage.setItem(
+   77 | current user object            | currentUser
+  184 | current user object            | currentUser
+  192 | current user object            | currentUser
+  236 | current user object            | profile
+  241 | current user object            | currentUser
+  249 | current user object            | profile
+  250 | current user object            | profile
+  251 | current user object            | profile
+  252 | current user object            | profile
+  253 | current user object            | profile
+  254 | current user object            | profile
+  255 | current user object            | profile
+  256 | current user object            | profile
+  257 | current user object            | profile
+  258 | current user object            | profile
+  294 | array map                      | .map(
+   59 | JSON parse                     | JSON.parse(
+   73 | JSON stringify                 | JSON.stringify(
+
+================================================================================================
+CAVECODEAUTH.JS — LEADERBOARD CONTEXT
+================================================================================================
+--- lines 226-246 ---
+  226:     },
+  227: 
+  228:     loadCourseProgressFor: function (courseKey) {
+  229:         return readLocalProgress(courseKey);
+  230:     },
+  231: 
+  232:     syncLocalProgressToCloud: async function (courseKey = "csharp") {
+  233:         return readLocalProgress(courseKey);
+  234:     },
+  235: 
+  236:     upsertLeaderboardProfile: async function (profile) {
+  237:         if (!supabaseClient) {
+  238:             return { available: false, message: "Supabase is not initialized." };
+  239:         }
+  240: 
+  241:         const user = await currentUser();
+  242: 
+  243:         if (!user) {
+  244:             return { available: false, message: "Sign in to publish rankings." };
+  245:         }
+  246: 
+--- lines 234-254 ---
+  234:     },
+  235: 
+  236:     upsertLeaderboardProfile: async function (profile) {
+  237:         if (!supabaseClient) {
+  238:             return { available: false, message: "Supabase is not initialized." };
+  239:         }
+  240: 
+  241:         const user = await currentUser();
+  242: 
+  243:         if (!user) {
+  244:             return { available: false, message: "Sign in to publish rankings." };
+  245:         }
+  246: 
+  247:         const payload = {
+  248:             id: user.id,
+  249:             display_name: String(profile.displayName || "CaveCode Learner").slice(0, 24),
+  250:             emblem: profile.emblem || "crystal",
+  251:             title: profile.title || "Cave Explorer",
+  252:             total_xp: Number(profile.totalXp || 0),
+  253:             csharp_xp: Number(profile.cSharpXp || 0),
+  254:             python_xp: Number(profile.pythonXp || 0),
+--- lines 253-273 ---
+  253:             csharp_xp: Number(profile.cSharpXp || 0),
+  254:             python_xp: Number(profile.pythonXp || 0),
+  255:             total_lines: Number(profile.totalLines || 0),
+  256:             csharp_lines: Number(profile.cSharpLines || 0),
+  257:             python_lines: Number(profile.pythonLines || 0),
+  258:             is_public: Boolean(profile.isPublic),
+  259:             updated_at: new Date().toISOString()
+  260:         };
+  261: 
+  262:         const { error } = await supabaseClient
+  263:             .from("leaderboard_profiles")
+  264:             .upsert(payload, { onConflict: "id" });
+  265: 
+  266:         return error
+  267:             ? { available: false, message: error.message }
+  268:             : { available: true, message: "" };
+  269:     },
+  270: 
+  271:     getLeaderboardProfiles: async function (filter = "overall") {
+  272:         if (!supabaseClient) {
+  273:             return { available: false, entries: [], message: "Supabase is not initialized." };
+--- lines 261-281 ---
+  261: 
+  262:         const { error } = await supabaseClient
+  263:             .from("leaderboard_profiles")
+  264:             .upsert(payload, { onConflict: "id" });
+  265: 
+  266:         return error
+  267:             ? { available: false, message: error.message }
+  268:             : { available: true, message: "" };
+  269:     },
+  270: 
+  271:     getLeaderboardProfiles: async function (filter = "overall") {
+  272:         if (!supabaseClient) {
+  273:             return { available: false, entries: [], message: "Supabase is not initialized." };
+  274:         }
+  275: 
+  276:         const orderColumn =
+  277:             filter === "csharp"
+  278:                 ? "csharp_xp"
+  279:                 : filter === "python"
+  280:                     ? "python_xp"
+  281:                     : "total_xp";
+--- lines 274-294 ---
+  274:         }
+  275: 
+  276:         const orderColumn =
+  277:             filter === "csharp"
+  278:                 ? "csharp_xp"
+  279:                 : filter === "python"
+  280:                     ? "python_xp"
+  281:                     : "total_xp";
+  282: 
+  283:         const { data, error } = await supabaseClient
+  284:             .from("leaderboard_profiles")
+  285:             .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+  286:             .eq("is_public", true)
+  287:             .order(orderColumn, { ascending: false })
+  288:             .limit(100);
+  289: 
+  290:         if (error) {
+  291:             return { available: false, entries: [], message: error.message };
+  292:         }
+  293: 
+  294:         const entries = (data || []).map(row => {
+
+================================================================================================
+CAVECODEAUTH.JS — STORAGE CONTEXT
+================================================================================================
+--- lines 43-57 ---
+   43:         ? window.location.pathname
+   44:         : "/";
+   45: 
+   46:     return `${caveCodeLiveOrigin}${path}`;
+   47: }
+   48: 
+   49: function readLocalProgress(courseKey) {
+   50:     const raw = window.localStorage.getItem(
+   51:         courseProgressKey(courseKey)
+   52:     );
+   53: 
+   54:     if (!raw) {
+   55:         return null;
+   56:     }
+   57: 
+--- lines 64-78 ---
+   64: 
+   65: function saveLocalProgress(courseKey, progress) {
+   66:     const snapshot = {
+   67:         ...progress,
+   68:         updatedAt: new Date().toISOString()
+   69:     };
+   70: 
+   71:     window.localStorage.setItem(
+   72:         courseProgressKey(courseKey),
+   73:         JSON.stringify(snapshot)
+   74:     );
+   75: }
+   76: 
+   77: async function currentUser() {
+   78:     if (!supabaseClient) {
+
+================================================================================================
+NEXT REPAIR TARGET
+================================================================================================
+
+The next pass should change only the exact refresh/load function identified above.
+The repair should:
+  1. preserve the full shared leaderboard payload;
+  2. merge or update the current user's row without discarding other rows;
+  3. deduplicate by stable user ID, not display name;
+  4. sort only after reconciliation;
+  5. keep the last valid shared list if refresh returns partial/local-only data;
+  6. avoid touching XP awards, authentication, course progress, or minigames.

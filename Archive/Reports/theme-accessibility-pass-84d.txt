@@ -1,0 +1,264 @@
+====================================================================================================
+CAVECODE THEME AND ACCESSIBILITY COVERAGE — PASS 84D
+====================================================================================================
+
+TOTALS
+------
+files_scanned: 105
+files_with_risks: 50
+hardcoded_hex_colors: 3902
+theme_variable_references: 9739
+transitions: 361
+animations: 71
+files_with_reduced_motion_support: 27
+nowrap_rules: 70
+overflow_hidden_rules: 127
+small_font_rules: 377
+
+RISK SUMMARY
+------------
+  30 | Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  22 | Contains many font sizes below 11px; readability may suffer.
+  17 | Uses both nowrap and overflow:hidden; text clipping is possible.
+  15 | Contains motion but no reduced-motion handling was detected.
+   2 | Heavy use of hard-coded colors with little theme-variable usage.
+
+FILES REQUIRING REVIEW
+----------------------
+Components/AcademyHomeButton.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=5, vars=8, motion=2, small-font=1, nowrap=0, overflow-hidden=0
+Components/AchievementNavLink.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=2, vars=3, motion=0, small-font=1, nowrap=0, overflow-hidden=0
+Components/AuthPanel.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=25, vars=19, motion=1, small-font=2, nowrap=2, overflow-hidden=2
+Components/CodeMinigame.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=9, vars=148, motion=1, small-font=20, nowrap=0, overflow-hidden=3
+Components/CourseResume.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=5, vars=7, motion=0, small-font=3, nowrap=0, overflow-hidden=1
+Components/ProgressIdentity.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=0, vars=13, motion=1, small-font=4, nowrap=1, overflow-hidden=2
+Components/TitleEffect.razor
+  - Heavy use of hard-coded colors with little theme-variable usage.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=26, vars=1, motion=6, small-font=0, nowrap=1, overflow-hidden=1
+Layout/MainLayout.razor.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=3, vars=0, motion=0, small-font=0, nowrap=1, overflow-hidden=1
+Pages/Achievements.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=2, vars=65, motion=0, small-font=11, nowrap=0, overflow-hidden=0
+Pages/CSharp.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=15, vars=177, motion=3, small-font=20, nowrap=1, overflow-hidden=5
+Pages/CppMinigame.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=93, vars=94, motion=0, small-font=17, nowrap=0, overflow-hidden=2
+Pages/CppMinigameMissionFive.razor
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=38, vars=37, motion=0, small-font=6, nowrap=0, overflow-hidden=1
+Pages/CppMinigameMissionFour.razor
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=33, vars=31, motion=0, small-font=6, nowrap=0, overflow-hidden=1
+Pages/CppMinigameMissionThree.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=70, vars=68, motion=0, small-font=17, nowrap=0, overflow-hidden=2
+Pages/CppMinigameMissionTwo.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=54, vars=51, motion=0, small-font=10, nowrap=0, overflow-hidden=2
+Pages/Home.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=0, vars=90, motion=0, small-font=6, nowrap=0, overflow-hidden=2
+Pages/HtmlCss.razor
+  - Heavy use of hard-coded colors with little theme-variable usage.
+  counts: hex=13, vars=0, motion=0, small-font=0, nowrap=0, overflow-hidden=0
+Pages/HtmlCssMinigame.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=50, vars=128, motion=3, small-font=27, nowrap=0, overflow-hidden=2
+Pages/HtmlCssMinigameCampaign.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=51, vars=50, motion=1, small-font=5, nowrap=0, overflow-hidden=0
+Pages/HtmlCssMinigameEndless.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=36, vars=33, motion=0, small-font=3, nowrap=0, overflow-hidden=0
+Pages/HtmlCssMinigameMissionFive.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=57, vars=129, motion=3, small-font=27, nowrap=0, overflow-hidden=2
+Pages/HtmlCssMinigameMissionFour.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=58, vars=129, motion=3, small-font=27, nowrap=0, overflow-hidden=2
+Pages/HtmlCssMinigameMissionThree.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=56, vars=129, motion=3, small-font=27, nowrap=0, overflow-hidden=2
+Pages/HtmlCssMinigameMissionTwo.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=49, vars=129, motion=3, small-font=27, nowrap=0, overflow-hidden=3
+Pages/Leaderboard.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=48, vars=54, motion=1, small-font=12, nowrap=0, overflow-hidden=3
+Pages/Minigames.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=9, vars=44, motion=0, small-font=7, nowrap=0, overflow-hidden=2
+Pages/Python.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=8, vars=192, motion=2, small-font=20, nowrap=1, overflow-hidden=5
+Pages/Settings.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=34, vars=91, motion=3, small-font=12, nowrap=0, overflow-hidden=2
+wwwroot/css/app.css
+  - Contains motion but no reduced-motion handling was detected.
+  counts: hex=10, vars=3, motion=1, small-font=0, nowrap=0, overflow-hidden=0
+wwwroot/css/cavecode-language-finder-81d.css
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=0, vars=73, motion=3, small-font=3, nowrap=0, overflow-hidden=1
+wwwroot/css/cavecode-modern-loading-screen.css
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=12, vars=14, motion=6, small-font=1, nowrap=0, overflow-hidden=2
+wwwroot/css/cavecode-official-branding-pass-2.css
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=7, vars=6, motion=0, small-font=2, nowrap=0, overflow-hidden=1
+wwwroot/css/cavecode-static-language-panels.css
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  counts: hex=3, vars=25, motion=3, small-font=1, nowrap=0, overflow-hidden=1
+wwwroot/css/cpp-course-shell.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=0, vars=174, motion=7, small-font=21, nowrap=3, overflow-hidden=8
+wwwroot/css/html-css-course-shell.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=1, vars=171, motion=2, small-font=23, nowrap=2, overflow-hidden=6
+wwwroot/css/learning-path-discovery.css
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  counts: hex=1, vars=96, motion=1, small-font=7, nowrap=1, overflow-hidden=3
+wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=117, vars=345, motion=2, small-font=0, nowrap=3, overflow-hidden=3
+wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=117, vars=345, motion=2, small-font=0, nowrap=3, overflow-hidden=3
+wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=117, vars=345, motion=2, small-font=0, nowrap=3, overflow-hidden=3
+wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=117, vars=345, motion=2, small-font=0, nowrap=3, overflow-hidden=3
+wwwroot/lib/bootstrap/dist/css/bootstrap.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=424, vars=1372, motion=85, small-font=0, nowrap=11, overflow-hidden=11
+wwwroot/lib/bootstrap/dist/css/bootstrap.min.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=424, vars=1371, motion=85, small-font=0, nowrap=11, overflow-hidden=11
+wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=424, vars=1371, motion=85, small-font=0, nowrap=11, overflow-hidden=11
+wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  counts: hex=424, vars=1371, motion=85, small-font=0, nowrap=11, overflow-hidden=11
+wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js
+  - Contains motion but no reduced-motion handling was detected.
+  counts: hex=2, vars=0, motion=4, small-font=0, nowrap=0, overflow-hidden=0
+wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js
+  - Contains motion but no reduced-motion handling was detected.
+  counts: hex=0, vars=0, motion=4, small-font=0, nowrap=0, overflow-hidden=0
+wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js
+  - Contains motion but no reduced-motion handling was detected.
+  counts: hex=2, vars=0, motion=4, small-font=0, nowrap=0, overflow-hidden=0
+wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js
+  - Contains motion but no reduced-motion handling was detected.
+  counts: hex=0, vars=0, motion=4, small-font=0, nowrap=0, overflow-hidden=0
+wwwroot/lib/bootstrap/dist/js/bootstrap.js
+  - Contains motion but no reduced-motion handling was detected.
+  counts: hex=2, vars=0, motion=4, small-font=0, nowrap=0, overflow-hidden=0
+wwwroot/lib/bootstrap/dist/js/bootstrap.min.js
+  - Contains motion but no reduced-motion handling was detected.
+  counts: hex=0, vars=0, motion=4, small-font=0, nowrap=0, overflow-hidden=0
+
+TOP HARDCODED-COLOR FILES
+-------------------------
+ 424 hex colors | 1372 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap.css
+ 424 hex colors | 1371 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap.min.css
+ 424 hex colors | 1371 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css
+ 424 hex colors | 1371 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css
+ 254 hex colors |   15 theme vars | wwwroot/css/themes.css
+ 117 hex colors |  345 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css
+ 117 hex colors |  345 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css
+ 117 hex colors |  345 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css
+ 117 hex colors |  345 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css
+ 109 hex colors |   21 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css
+ 109 hex colors |   21 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css
+ 109 hex colors |   21 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css
+ 109 hex colors |   21 theme vars | wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css
+  93 hex colors |   94 theme vars | Pages/CppMinigame.razor
+  70 hex colors |   68 theme vars | Pages/CppMinigameMissionThree.razor
+  58 hex colors |  129 theme vars | Pages/HtmlCssMinigameMissionFour.razor
+  57 hex colors |  129 theme vars | Pages/HtmlCssMinigameMissionFive.razor
+  56 hex colors |  129 theme vars | Pages/HtmlCssMinigameMissionThree.razor
+  54 hex colors |   51 theme vars | Pages/CppMinigameMissionTwo.razor
+  52 hex colors |   14 theme vars | wwwroot/css/light-mode-contrast.css
+
+TOP SMALL-TEXT FILES
+--------------------
+  27 sub-11px rules | Pages/HtmlCssMinigame.razor
+  27 sub-11px rules | Pages/HtmlCssMinigameMissionFive.razor
+  27 sub-11px rules | Pages/HtmlCssMinigameMissionFour.razor
+  27 sub-11px rules | Pages/HtmlCssMinigameMissionThree.razor
+  27 sub-11px rules | Pages/HtmlCssMinigameMissionTwo.razor
+  23 sub-11px rules | wwwroot/css/html-css-course-shell.css
+  21 sub-11px rules | wwwroot/css/cpp-course-shell.css
+  20 sub-11px rules | Components/CodeMinigame.razor
+  20 sub-11px rules | Pages/CSharp.razor
+  20 sub-11px rules | Pages/Python.razor
+  17 sub-11px rules | Pages/CppMinigame.razor
+  17 sub-11px rules | Pages/CppMinigameMissionThree.razor
+  12 sub-11px rules | Pages/Leaderboard.razor
+  12 sub-11px rules | Pages/Settings.razor
+  11 sub-11px rules | Pages/Achievements.razor
+  10 sub-11px rules | Pages/CppMinigameMissionTwo.razor
+   7 sub-11px rules | Pages/Minigames.razor
+   7 sub-11px rules | wwwroot/css/learning-path-discovery.css
+   6 sub-11px rules | Pages/CppMinigameMissionFive.razor
+   6 sub-11px rules | Pages/CppMinigameMissionFour.razor
+
+OUTPUT
+------
+Text report: Archive/Reports/theme-accessibility-pass-84d.txt
+JSON report: Archive/Reports/theme-accessibility-pass-84d.json

@@ -1,0 +1,209 @@
+====================================================================================================
+CAVECODE CONSOLIDATED PROJECT HEALTH SUMMARY — PASS 84F
+====================================================================================================
+
+PROJECT TOTALS
+--------------
+project_files: 203
+total_lines: 126053
+routes: 26
+components: 19
+unused_component_candidates: 4
+large_page_candidates: 11
+theme_accessibility_risk_files: 50
+duplicate_css_selectors: 2984
+duplicate_js_function_names: 76
+identical_asset_groups: 0
+likely_orphan_assets: 3
+
+PRIORITY FILES
+--------------
+[HIGH] score 24 | Pages/Python.razor
+  - very large file (2740 lines)
+  - page flagged for component extraction
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 20 small-font rules
+[HIGH] score 21 | wwwroot/lib/bootstrap/dist/css/bootstrap.css
+  - very large file (12057 lines)
+  - large file size (281046 bytes)
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - 11 nowrap rules
+  - 424 hard-coded colors
+  - 2563 CSS selectors
+[HIGH] score 21 | wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css
+  - very large file (12030 lines)
+  - large file size (280259 bytes)
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - 11 nowrap rules
+  - 424 hard-coded colors
+  - 2562 CSS selectors
+[HIGH] score 18 | wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js
+  - very large file (6314 lines)
+  - large file size (207819 bytes)
+  - Contains motion but no reduced-motion handling was detected.
+  - very large JavaScript file (6314 lines)
+[HIGH] score 16 | Pages/CSharp.razor
+  - page flagged for component extraction
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 20 small-font rules
+[HIGH] score 16 | wwwroot/js/caveCodeMinigames.js
+  - very large file (4772 lines)
+  - large file size (192026 bytes)
+  - very large JavaScript file (4772 lines)
+[HIGH] score 15 | wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js
+  - very large file (4447 lines)
+  - Contains motion but no reduced-motion handling was detected.
+  - very large JavaScript file (4447 lines)
+[HIGH] score 15 | wwwroot/lib/bootstrap/dist/js/bootstrap.js
+  - very large file (4494 lines)
+  - Contains motion but no reduced-motion handling was detected.
+  - very large JavaScript file (4494 lines)
+[MEDIUM] score 14 | Pages/CppMinigame.razor
+  - page flagged for component extraction
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 17 small-font rules
+  - 93 hard-coded colors
+[MEDIUM] score 14 | Pages/CppMinigameMissionThree.razor
+  - page flagged for component extraction
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 17 small-font rules
+  - 70 hard-coded colors
+[MEDIUM] score 14 | Pages/CppMinigameMissionTwo.razor
+  - page flagged for component extraction
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 10 small-font rules
+  - 54 hard-coded colors
+[MEDIUM] score 14 | Pages/HtmlCssMinigame.razor
+  - page flagged for component extraction
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 27 small-font rules
+  - 50 hard-coded colors
+[MEDIUM] score 14 | Pages/HtmlCssMinigameMissionFive.razor
+  - page flagged for component extraction
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 27 small-font rules
+  - 57 hard-coded colors
+[MEDIUM] score 14 | Pages/HtmlCssMinigameMissionFour.razor
+  - page flagged for component extraction
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 27 small-font rules
+  - 58 hard-coded colors
+[MEDIUM] score 14 | Pages/HtmlCssMinigameMissionThree.razor
+  - page flagged for component extraction
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 27 small-font rules
+  - 56 hard-coded colors
+[MEDIUM] score 14 | Pages/HtmlCssMinigameMissionTwo.razor
+  - page flagged for component extraction
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 27 small-font rules
+  - 49 hard-coded colors
+[MEDIUM] score 13 | wwwroot/lib/bootstrap/dist/css/bootstrap.min.css
+  - large file size (232803 bytes)
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - 11 nowrap rules
+  - 424 hard-coded colors
+  - 2562 CSS selectors
+[MEDIUM] score 13 | wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css
+  - large file size (232911 bytes)
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - 11 nowrap rules
+  - 424 hard-coded colors
+  - 2562 CSS selectors
+[MEDIUM] score 11 | Pages/Leaderboard.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 12 small-font rules
+  - 48 hard-coded colors
+[MEDIUM] score 11 | docs/leaderboard-service-pass-82a2-audit.txt
+  - very large file (3969 lines)
+  - large file size (150000 bytes)
+[MEDIUM] score 11 | wwwroot/css/cpp-course-shell.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 21 small-font rules
+  - 168 CSS selectors
+[MEDIUM] score 11 | wwwroot/css/html-css-course-shell.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 23 small-font rules
+  - 162 CSS selectors
+[MEDIUM] score  9 | Components/CodeMinigame.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 20 small-font rules
+[MEDIUM] score  9 | Pages/Settings.razor
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 12 small-font rules
+  - 34 hard-coded colors
+[MEDIUM] score  8 | Components/AuthPanel.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - 25 hard-coded colors
+[MEDIUM] score  8 | Pages/HtmlCssMinigameCampaign.razor
+  - Contains motion but no reduced-motion handling was detected.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+  - 51 hard-coded colors
+[MEDIUM] score  8 | wwwroot/css/learning-path-discovery.css
+  - Contains motion but no reduced-motion handling was detected.
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - Small fixed-height controls combined with sub-11px text may clip under text scaling.
+  - Contains many font sizes below 11px; readability may suffer.
+[MEDIUM] score  8 | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - 117 hard-coded colors
+  - 1411 CSS selectors
+[MEDIUM] score  8 | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - 117 hard-coded colors
+  - 1411 CSS selectors
+[MEDIUM] score  8 | wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css
+  - Uses both nowrap and overflow:hidden; text clipping is possible.
+  - 117 hard-coded colors
+  - 1410 CSS selectors
+
+RECOMMENDED CLEANUP ORDER
+-------------------------
+1. Refactor the highest-scoring files one at a time, starting with the top three.
+2. Review unused component candidates manually before deleting anything.
+3. Address text clipping, small fonts, and reduced-motion gaps before cosmetic polish.
+4. Review likely orphan assets last because dynamic references may be missed.
+
+TOP UNUSED COMPONENT CANDIDATES
+-------------------------------
+App.razor
+Layout/MainLayout.razor
+Layout/NavMenu.razor
+_Imports.razor
+
+DUPLICATE ROUTES
+----------------
+None found.
+
+OUTPUT
+------
+Text report: Archive/Reports/project-health-summary-pass-84f.txt
+JSON report: Archive/Reports/project-health-summary-pass-84f.json
+
+This pass changed no production files.

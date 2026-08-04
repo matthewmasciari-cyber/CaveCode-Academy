@@ -1,0 +1,46 @@
+@namespace CaveCode.Components.CourseEngine
+
+<div class="action-row">
+    <button type="button" class="primary" @onclick="OnCheck">Check code</button>
+    <button type="button" class="secondary" @onclick="OnHint">Hint</button>
+    <button type="button" class="secondary" @onclick="OnReset">Reset</button>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Feedback))
+{
+    <div class="feedback @(StagePassed ? "success" : "error")">
+        @Feedback
+    </div>
+}
+
+@if (StagePassed)
+{
+    <button type="button"
+            class="primary continue-button"
+            @onclick="OnContinue">
+        Continue to @ContinueLabel →
+    </button>
+}
+
+@code {
+    [Parameter]
+    public string Feedback { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool StagePassed { get; set; }
+
+    [Parameter]
+    public string ContinueLabel { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnCheck { get; set; }
+
+    [Parameter]
+    public EventCallback OnHint { get; set; }
+
+    [Parameter]
+    public EventCallback OnReset { get; set; }
+
+    [Parameter]
+    public EventCallback OnContinue { get; set; }
+}

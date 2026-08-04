@@ -1,0 +1,324 @@
+{
+  "pass": "84B",
+  "created_utc": "2026-08-04T00:39:40.709642+00:00",
+  "inventory": {
+    "total_files": 203,
+    "total_lines": 126053,
+    "file_types": {
+      ".cs": 19,
+      ".csproj": 1,
+      ".css": 35,
+      ".html": 1,
+      ".js": 24,
+      ".json": 2,
+      ".map": 22,
+      ".md": 36,
+      ".png": 6,
+      ".py": 5,
+      ".pyc": 1,
+      ".razor": 45,
+      ".sql": 1,
+      ".svg": 1,
+      ".txt": 2,
+      ".yml": 1,
+      "[no extension]": 1
+    },
+    "top_level_file_counts": {
+      ".github": 1,
+      ".gitignore": 1,
+      "App.razor": 1,
+      "CaveCode.csproj": 1,
+      "Components": 15,
+      "CourseEngine": 13,
+      "Layout": 4,
+      "Pages": 26,
+      "Program.cs": 1,
+      "Properties": 1,
+      "Services": 5,
+      "THIRD_PARTY_NOTICES.md": 1,
+      "_Imports.razor": 1,
+      "audit-cavecode-build-health-pass-84b.py": 1,
+      "docs": 37,
+      "supabase": 1,
+      "tools": 5,
+      "wwwroot": 88
+    },
+    "razor_pages": 26,
+    "razor_components": 19,
+    "services": 7,
+    "javascript_files": 24,
+    "css_files": 35,
+    "svg_files": 1
+  },
+  "routes": [
+    {
+      "route": "/",
+      "file": "Pages/Home.razor"
+    },
+    {
+      "route": "/achievements",
+      "file": "Pages/Achievements.razor"
+    },
+    {
+      "route": "/counter",
+      "file": "Pages/Counter.razor"
+    },
+    {
+      "route": "/cpp",
+      "file": "Pages/Cpp.razor"
+    },
+    {
+      "route": "/csharp",
+      "file": "Pages/CSharp.razor"
+    },
+    {
+      "route": "/html-css",
+      "file": "Pages/HtmlCss.razor"
+    },
+    {
+      "route": "/leaderboard",
+      "file": "Pages/Leaderboard.razor"
+    },
+    {
+      "route": "/minigames",
+      "file": "Pages/Minigames.razor"
+    },
+    {
+      "route": "/minigames/cpp",
+      "file": "Pages/CppMinigame.razor"
+    },
+    {
+      "route": "/minigames/cpp/mission-2",
+      "file": "Pages/CppMinigameMissionTwo.razor"
+    },
+    {
+      "route": "/minigames/cpp/mission-3",
+      "file": "Pages/CppMinigameMissionThree.razor"
+    },
+    {
+      "route": "/minigames/cpp/mission-4",
+      "file": "Pages/CppMinigameMissionFour.razor"
+    },
+    {
+      "route": "/minigames/cpp/mission-5",
+      "file": "Pages/CppMinigameMissionFive.razor"
+    },
+    {
+      "route": "/minigames/csharp",
+      "file": "Pages/CSharpDefense.razor"
+    },
+    {
+      "route": "/minigames/html-css",
+      "file": "Pages/HtmlCssMinigame.razor"
+    },
+    {
+      "route": "/minigames/html-css/campaign",
+      "file": "Pages/HtmlCssMinigameCampaign.razor"
+    },
+    {
+      "route": "/minigames/html-css/endless",
+      "file": "Pages/HtmlCssMinigameEndless.razor"
+    },
+    {
+      "route": "/minigames/html-css/mission-2",
+      "file": "Pages/HtmlCssMinigameMissionTwo.razor"
+    },
+    {
+      "route": "/minigames/html-css/mission-3",
+      "file": "Pages/HtmlCssMinigameMissionThree.razor"
+    },
+    {
+      "route": "/minigames/html-css/mission-4",
+      "file": "Pages/HtmlCssMinigameMissionFour.razor"
+    },
+    {
+      "route": "/minigames/html-css/mission-5",
+      "file": "Pages/HtmlCssMinigameMissionFive.razor"
+    },
+    {
+      "route": "/minigames/python",
+      "file": "Pages/PythonControlRoom.razor"
+    },
+    {
+      "route": "/not-found",
+      "file": "Pages/NotFound.razor"
+    },
+    {
+      "route": "/python",
+      "file": "Pages/Python.razor"
+    },
+    {
+      "route": "/settings",
+      "file": "Pages/Settings.razor"
+    },
+    {
+      "route": "/weather",
+      "file": "Pages/Weather.razor"
+    }
+  ],
+  "duplicate_filenames": {},
+  "duplicate_content": [],
+  "empty_directories": [],
+  "likely_orphan_assets": [
+    "wwwroot/branding/cavecode-academy-favicon-512.png",
+    "wwwroot/favicon.png",
+    "wwwroot/icon-192.png"
+  ],
+  "largest_files": [
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+      "bytes": 679755,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+      "bytes": 679615,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+      "bytes": 589892,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+      "bytes": 589087,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+      "bytes": 444579,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+      "bytes": 332090,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+      "bytes": 306606,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+      "bytes": 305438,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "bytes": 281046,
+      "lines": 12057
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "bytes": 280259,
+      "lines": 12030
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+      "bytes": 267535,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+      "bytes": 267476,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "bytes": 232911,
+      "lines": 6
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "bytes": 232803,
+      "lines": 6
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+      "bytes": 222455,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+      "bytes": 220561,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "bytes": 207819,
+      "lines": 6314
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+      "bytes": 203225,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+      "bytes": 203221,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/js/caveCodeMinigames.js",
+      "bytes": 192026,
+      "lines": 4772
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+      "bytes": 180381,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+      "bytes": 180217,
+      "lines": 1
+    },
+    {
+      "file": "docs/leaderboard-service-pass-82a2-audit.txt",
+      "bytes": 150000,
+      "lines": 3969
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "bytes": 145401,
+      "lines": 4494
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "bytes": 135829,
+      "lines": 4447
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
+      "bytes": 129386,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+      "bytes": 129371,
+      "lines": 1
+    },
+    {
+      "file": "Pages/Python.razor",
+      "bytes": 122029,
+      "lines": 2740
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
+      "bytes": 116063,
+      "lines": 1
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
+      "bytes": 115986,
+      "lines": 1
+    }
+  ],
+  "notes": [
+    "Orphan asset detection is conservative and may include files loaded dynamically.",
+    "Duplicate content does not automatically mean a file should be deleted.",
+    "Archive, bin, obj, node_modules, and .git are excluded."
+  ]
+}

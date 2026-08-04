@@ -1,0 +1,5345 @@
+{
+  "pass": "84D",
+  "created_utc": "2026-08-04T00:43:13.474370+00:00",
+  "totals": {
+    "files_scanned": 105,
+    "files_with_risks": 50,
+    "hardcoded_hex_colors": 3902,
+    "theme_variable_references": 9739,
+    "transitions": 361,
+    "animations": 71,
+    "files_with_reduced_motion_support": 27,
+    "nowrap_rules": 70,
+    "overflow_hidden_rules": 127,
+    "small_font_rules": 377
+  },
+  "risk_summary": {
+    "Small fixed-height controls combined with sub-11px text may clip under text scaling.": 30,
+    "Contains motion but no reduced-motion handling was detected.": 15,
+    "Uses both nowrap and overflow:hidden; text clipping is possible.": 17,
+    "Contains many font sizes below 11px; readability may suffer.": 22,
+    "Heavy use of hard-coded colors with little theme-variable usage.": 2
+  },
+  "files": [
+    {
+      "file": "App.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/AcademyHomeButton.razor",
+      "hardcoded_hex_colors": 5,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 8,
+      "transitions": 2,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 2,
+      "small_font_count": 1,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 17,
+          "text": "color: var(--text, #eef4f8);"
+        },
+        {
+          "line": 20,
+          "text": "border: 1px solid var(--accent-border, #3e8a59);"
+        },
+        {
+          "line": 30,
+          "text": "color: var(--text, #eef4f8);"
+        },
+        {
+          "line": 31,
+          "text": "border-color: var(--accent, #71e49a);"
+        },
+        {
+          "line": 45,
+          "text": "color: var(--accent, #71e49a);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 23,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 41,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 46,
+          "text": "font-size: 15px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/AchievementNavLink.razor",
+      "hardcoded_hex_colors": 2,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 3,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 1,
+      "small_font_count": 1,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 29,
+          "text": "color: var(--accent-contrast, #07120b);"
+        },
+        {
+          "line": 30,
+          "text": "background: var(--accent, #71e49a);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 33,
+          "text": "font-size: 9px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/AuthPanel.razor",
+      "hardcoded_hex_colors": 25,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 19,
+      "transitions": 1,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 2,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 4,
+      "small_font_count": 2,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 93,
+          "text": "color: var(--text, #eef4f8);"
+        },
+        {
+          "line": 94,
+          "text": "background: var(--surface, #151f2a);"
+        },
+        {
+          "line": 95,
+          "text": "border: 1px solid var(--border, #2b3948);"
+        },
+        {
+          "line": 110,
+          "text": "color: var(--text-muted, #8f9daa);"
+        },
+        {
+          "line": 118,
+          "text": "background: var(--surface-raised, #202c38);"
+        },
+        {
+          "line": 119,
+          "text": "border: 1px solid var(--border, #2b3948);"
+        },
+        {
+          "line": 158,
+          "text": "color: #202124;"
+        },
+        {
+          "line": 159,
+          "text": "background: #ffffff;"
+        },
+        {
+          "line": 160,
+          "text": "border: 1px solid #dadce0;"
+        },
+        {
+          "line": 164,
+          "text": "color: #ffffff;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 111,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 154,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 170,
+          "text": "font-size: 15px;"
+        },
+        {
+          "line": 234,
+          "text": "font-size: 13px;"
+        },
+        {
+          "line": 276,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 295,
+          "text": "font-size: 10px;"
+        }
+      ],
+      "nowrap_examples": [
+        {
+          "line": 279,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 289,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "Components/CodeMinigame.razor",
+      "hardcoded_hex_colors": 9,
+      "rgb_colors": 3,
+      "hsl_colors": 0,
+      "theme_variable_references": 148,
+      "transitions": 1,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 3,
+      "fixed_height_count": 8,
+      "small_font_count": 20,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 1132,
+          "text": "color: var(--code-text, #e9f1f7);"
+        },
+        {
+          "line": 1133,
+          "text": "background: var(--code-bg, #0b1118);"
+        },
+        {
+          "line": 1161,
+          "text": "color: var(--code-text, #e9f1f7);"
+        },
+        {
+          "line": 1162,
+          "text": "background: var(--code-bg, #0b1118);"
+        },
+        {
+          "line": 1214,
+          "text": "color: var(--dark-panel-muted, #aab7c4);"
+        },
+        {
+          "line": 1215,
+          "text": "background: var(--code-bg, #0b1118);"
+        },
+        {
+          "line": 1229,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 1236,
+          "text": "var(--code-bg, #0b1118);"
+        },
+        {
+          "line": 1250,
+          "text": "color: var(--dark-panel-muted, #aab7c4);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 677,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 749,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 755,
+          "text": "font-size: 13px;"
+        },
+        {
+          "line": 837,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 855,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 900,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 938,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 949,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 972,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 980,
+          "text": "font-size: 18px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/CourseEngine/CourseCodeEditor.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/CourseEngine/CourseProgressPanel.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/CourseEngine/CourseStageTabs.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/CourseResume.razor",
+      "hardcoded_hex_colors": 5,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 7,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 1,
+      "small_font_count": 3,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 55,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 56,
+          "text": "background: var(--code-bg, #0b1118);"
+        },
+        {
+          "line": 57,
+          "text": "border: 1px solid var(--border-strong, #334252);"
+        },
+        {
+          "line": 74,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 80,
+          "text": "color: var(--dark-panel-muted, #aab7c4);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 63,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 69,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 75,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 81,
+          "text": "font-size: 9px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/CppMinigameHubCard.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/DisplayNameRenameControl.razor",
+      "hardcoded_hex_colors": 11,
+      "rgb_colors": 4,
+      "hsl_colors": 0,
+      "theme_variable_references": 8,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 1,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 1,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 458,
+          "text": "var(--accent, #31d7a4) 75%,"
+        },
+        {
+          "line": 461,
+          "text": "background: var(--accent, #31d7a4);"
+        },
+        {
+          "line": 462,
+          "text": "color: #07130f;"
+        },
+        {
+          "line": 492,
+          "text": "var(--panel, #152239) 86%,"
+        },
+        {
+          "line": 502,
+          "text": "var(--accent, #31d7a4) 55%,"
+        },
+        {
+          "line": 514,
+          "text": "border: 1px solid #ff8a8a;"
+        },
+        {
+          "line": 519,
+          "text": "border: 1px solid #64e3ad;"
+        },
+        {
+          "line": 541,
+          "text": "var(--accent, #31d7a4) 55%,"
+        },
+        {
+          "line": 546,
+          "text": "background: var(--panel, #152239);"
+        },
+        {
+          "line": 547,
+          "text": "color: var(--text, #f6f8ff);"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 463,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "Components/LeaderboardNavLink.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/LockMark.razor",
+      "hardcoded_hex_colors": 1,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 1,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 5,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 53,
+          "text": "background: var(--surface, #17212c);"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/MinigameNavLink.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Components/ProgressIdentity.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 13,
+      "transitions": 1,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 1,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 3,
+      "small_font_count": 4,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [
+        {
+          "line": 78,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 106,
+          "text": "font-size: 13px;"
+        },
+        {
+          "line": 123,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 130,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 153,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 165,
+          "text": "font-size: 9px;"
+        }
+      ],
+      "nowrap_examples": [
+        {
+          "line": 125,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "Components/TitleEffect.razor",
+      "hardcoded_hex_colors": 26,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 1,
+      "transitions": 0,
+      "animations": 6,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 1,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Heavy use of hard-coded colors with little theme-variable usage.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 8,
+          "text": "color: var(--text, #eef4f8);"
+        },
+        {
+          "line": 14,
+          "text": ".title-effect.stone { color: #d5dee7; text-shadow: 0 1px #536170; }"
+        },
+        {
+          "line": 14,
+          "text": ".title-effect.stone { color: #d5dee7; text-shadow: 0 1px #536170; }"
+        },
+        {
+          "line": 19,
+          "text": "background: linear-gradient(90deg, #8be9ff, #ffffff, #55d8ff, #8be9ff);"
+        },
+        {
+          "line": 19,
+          "text": "background: linear-gradient(90deg, #8be9ff, #ffffff, #55d8ff, #8be9ff);"
+        },
+        {
+          "line": 19,
+          "text": "background: linear-gradient(90deg, #8be9ff, #ffffff, #55d8ff, #8be9ff);"
+        },
+        {
+          "line": 19,
+          "text": "background: linear-gradient(90deg, #8be9ff, #ffffff, #55d8ff, #8be9ff);"
+        },
+        {
+          "line": 29,
+          "text": "background: linear-gradient(90deg, #ffcf70, #ff7a45, #fff0a5, #ff6a3d);"
+        },
+        {
+          "line": 29,
+          "text": "background: linear-gradient(90deg, #ffcf70, #ff7a45, #fff0a5, #ff6a3d);"
+        },
+        {
+          "line": 29,
+          "text": "background: linear-gradient(90deg, #ffcf70, #ff7a45, #fff0a5, #ff6a3d);"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 11,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "Layout/MainLayout.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Layout/MainLayout.razor.css",
+      "hardcoded_hex_colors": 3,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 1,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 12,
+          "text": "background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);"
+        },
+        {
+          "line": 16,
+          "text": "background-color: #f7f7f7;"
+        },
+        {
+          "line": 17,
+          "text": "border-bottom: 1px solid #d6d5d5;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 25,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "Layout/NavMenu.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Layout/NavMenu.razor.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Achievements.razor",
+      "hardcoded_hex_colors": 2,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 65,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 4,
+      "small_font_count": 11,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 251,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 266,
+          "text": "color: var(--code-muted, #aab7c4);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 210,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 243,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 267,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 273,
+          "text": "font-size: 28px;"
+        },
+        {
+          "line": 311,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 316,
+          "text": "font-size: 22px;"
+        },
+        {
+          "line": 330,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 375,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 380,
+          "text": "font-size: 22px;"
+        },
+        {
+          "line": 421,
+          "text": "font-size: 8px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/CSharp.razor",
+      "hardcoded_hex_colors": 15,
+      "rgb_colors": 8,
+      "hsl_colors": 0,
+      "theme_variable_references": 177,
+      "transitions": 2,
+      "animations": 1,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 1,
+      "overflow_hidden_rules": 5,
+      "fixed_height_count": 19,
+      "small_font_count": 20,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 715,
+          "text": "background-color: #292331;"
+        },
+        {
+          "line": 719,
+          "text": "background-size: 34px 34px; border: 5px solid #594a38; border-radius: 10px;"
+        },
+        {
+          "line": 720,
+          "text": "box-shadow: inset 0 0 42px #050608;"
+        },
+        {
+          "line": 730,
+          "text": "width: 31px; height: 31px; background: #78717f; border: 2px solid #a29baa;"
+        },
+        {
+          "line": 730,
+          "text": "width: 31px; height: 31px; background: #78717f; border: 2px solid #a29baa;"
+        },
+        {
+          "line": 735,
+          "text": "place-items: center; color: #092013; background: #78d58b;"
+        },
+        {
+          "line": 735,
+          "text": "place-items: center; color: #092013; background: #78d58b;"
+        },
+        {
+          "line": 736,
+          "text": "border: 2px solid #caffd3; border-radius: 50% 50% 40% 40%;"
+        },
+        {
+          "line": 874,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 915,
+          "text": "color: var(--code-muted, #aab7c4);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 481,
+          "text": ".brand h1 { margin: 0; font-size: 21px; }"
+        },
+        {
+          "line": 482,
+          "text": ".brand p { margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.4; }"
+        },
+        {
+          "line": 498,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 511,
+          "text": ".row-between { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }"
+        },
+        {
+          "line": 520,
+          "text": "margin: 20px 8px 8px; color: var(--text-muted); font-size: 11px;"
+        },
+        {
+          "line": 535,
+          "text": "background: var(--surface-strong); border-radius: 8px; font-size: 12px;"
+        },
+        {
+          "line": 542,
+          "text": ".lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }"
+        },
+        {
+          "line": 543,
+          "text": ".lesson-copy small { margin-top: 3px; color: var(--text-muted); font-size: 10px; }"
+        },
+        {
+          "line": 550,
+          "text": ".lesson-header h2 { margin: 0 0 7px; font-size: 28px; }"
+        },
+        {
+          "line": 555,
+          "text": "margin: 0 0 6px; color: var(--accent); font-size: 11px;"
+        }
+      ],
+      "nowrap_examples": [
+        {
+          "line": 542,
+          "text": ".lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }"
+        }
+      ]
+    },
+    {
+      "file": "Pages/CSharpDefense.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Counter.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Cpp.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/CppMinigame.razor",
+      "hardcoded_hex_colors": 93,
+      "rgb_colors": 13,
+      "hsl_colors": 0,
+      "theme_variable_references": 94,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 15,
+      "small_font_count": 17,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 364,
+          "text": "color: var(--text, #edf4ff);"
+        },
+        {
+          "line": 365,
+          "text": "background: var(--bg, #08111f);"
+        },
+        {
+          "line": 390,
+          "text": "background: var(--surface-soft, #111c2c);"
+        },
+        {
+          "line": 391,
+          "text": "border: 1px solid var(--border, #2b3b52);"
+        },
+        {
+          "line": 404,
+          "text": "color: var(--text-muted, #aab8cb);"
+        },
+        {
+          "line": 412,
+          "text": "color: var(--accent-contrast, #061120);"
+        },
+        {
+          "line": 413,
+          "text": "background: var(--accent, #61dafb);"
+        },
+        {
+          "line": 414,
+          "text": "border: 1px solid var(--accent-border, #9ae8ff);"
+        },
+        {
+          "line": 435,
+          "text": "border: 1px solid var(--accent-border, #4f7990);"
+        },
+        {
+          "line": 444,
+          "text": "color: var(--text-muted, #aab8cb);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 425,
+          "text": "font-size: 18px;"
+        },
+        {
+          "line": 440,
+          "text": "font-size: 24px;"
+        },
+        {
+          "line": 445,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 479,
+          "text": "font-size: 16px;"
+        },
+        {
+          "line": 497,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 515,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 540,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 547,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 565,
+          "text": "font-size: 18px;"
+        },
+        {
+          "line": 571,
+          "text": "font-size: 11px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/CppMinigameMissionFive.razor",
+      "hardcoded_hex_colors": 38,
+      "rgb_colors": 7,
+      "hsl_colors": 0,
+      "theme_variable_references": 37,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 3,
+      "small_font_count": 6,
+      "risks": [
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 249,
+          "text": ".m5-shell,.m5-gate{min-height:100vh;box-sizing:border-box;color:var(--text,#edf4ff);background:var(--bg,#08111f);font-family:Inter,system-ui,sans-serif}"
+        },
+        {
+          "line": 249,
+          "text": ".m5-shell,.m5-gate{min-height:100vh;box-sizing:border-box;color:var(--text,#edf4ff);background:var(--bg,#08111f);font-family:Inter,system-ui,sans-serif}"
+        },
+        {
+          "line": 250,
+          "text": ".m5-shell{padding:22px}.m5-gate{display:grid;place-items:center;padding:24px}.m5-gate section,.panel,.editor-panel,.profiles,.console{background:var(--surface-soft,#111c2c);border:1px solid var(--border,#2b3b52);border-r"
+        },
+        {
+          "line": 250,
+          "text": ".m5-shell{padding:22px}.m5-gate{display:grid;place-items:center;padding:24px}.m5-gate section,.panel,.editor-panel,.profiles,.console{background:var(--surface-soft,#111c2c);border:1px solid var(--border,#2b3b52);border-r"
+        },
+        {
+          "line": 251,
+          "text": ".m5-gate section{width:min(620px,100%);padding:32px;text-align:center}.m5-gate a,.m5-shell a,.controls button,.profile-buttons button{color:var(--text,#edf4ff);background:var(--surface-strong,#172539);border:1px solid va"
+        },
+        {
+          "line": 251,
+          "text": ".m5-gate section{width:min(620px,100%);padding:32px;text-align:center}.m5-gate a,.m5-shell a,.controls button,.profile-buttons button{color:var(--text,#edf4ff);background:var(--surface-strong,#172539);border:1px solid va"
+        },
+        {
+          "line": 251,
+          "text": ".m5-gate section{width:min(620px,100%);padding:32px;text-align:center}.m5-gate a,.m5-shell a,.controls button,.profile-buttons button{color:var(--text,#edf4ff);background:var(--surface-strong,#172539);border:1px solid va"
+        },
+        {
+          "line": 252,
+          "text": "header{max-width:1600px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:18px;align-items:center}header p{color:var(--accent,#61dafb);font-size:10px;font-weight:900}header span,.profiles p,.notice span,."
+        },
+        {
+          "line": 252,
+          "text": "header{max-width:1600px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:18px;align-items:center}header p{color:var(--accent,#61dafb);font-size:10px;font-weight:900}header span,.profiles p,.notice span,."
+        },
+        {
+          "line": 252,
+          "text": "header{max-width:1600px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:18px;align-items:center}header p{color:var(--accent,#61dafb);font-size:10px;font-weight:900}header span,.profiles p,.notice span,."
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 252,
+          "text": "header{max-width:1600px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:18px;align-items:center}header p{color:var(--accent,#61dafb);font-size:10px;font-weight:900}header span,.profiles p,.notice span,."
+        },
+        {
+          "line": 254,
+          "text": ".profiles{max-width:1600px;margin:0 auto 15px;padding:16px;display:grid;grid-template-columns:.8fr 1.2fr;gap:16px}.profile-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.profile-buttons button{text-ali"
+        },
+        {
+          "line": 255,
+          "text": ".grid{max-width:1600px;margin:auto;display:grid;grid-template-columns:265px minmax(470px,1fr) 345px;gap:14px}.panel{padding:16px}.check{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:9px;margin:7px 0;backgro"
+        },
+        {
+          "line": 258,
+          "text": ".record-summary small,.campaign-celebration small{color:var(--text-muted,#aab8cb);font-size:8px;text-transform:uppercase;letter-spacing:.08em}"
+        },
+        {
+          "line": 262,
+          "text": ".result small{color:var(--accent-soft,#9feaff);font-size:9px;line-height:1.45}"
+        },
+        {
+          "line": 265,
+          "text": ".score-panel small,.result span,.result p{color:var(--text-muted,#aab8cb);font-size:9px}"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/CppMinigameMissionFour.razor",
+      "hardcoded_hex_colors": 33,
+      "rgb_colors": 6,
+      "hsl_colors": 0,
+      "theme_variable_references": 31,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 2,
+      "small_font_count": 6,
+      "risks": [
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 158,
+          "text": ".m4-shell,.m4-gate{min-height:100vh;box-sizing:border-box;color:var(--text,#edf4ff);background:var(--bg,#08111f);font-family:Inter,system-ui,sans-serif}"
+        },
+        {
+          "line": 158,
+          "text": ".m4-shell,.m4-gate{min-height:100vh;box-sizing:border-box;color:var(--text,#edf4ff);background:var(--bg,#08111f);font-family:Inter,system-ui,sans-serif}"
+        },
+        {
+          "line": 159,
+          "text": ".m4-shell{padding:22px}.m4-gate{display:grid;place-items:center;padding:24px}.m4-gate section,.panel,.editor-panel,.profiles,.console{background:var(--surface-soft,#111c2c);border:1px solid var(--border,#2b3b52);border-r"
+        },
+        {
+          "line": 159,
+          "text": ".m4-shell{padding:22px}.m4-gate{display:grid;place-items:center;padding:24px}.m4-gate section,.panel,.editor-panel,.profiles,.console{background:var(--surface-soft,#111c2c);border:1px solid var(--border,#2b3b52);border-r"
+        },
+        {
+          "line": 160,
+          "text": ".m4-gate section{width:min(620px,100%);padding:32px;text-align:center}.m4-gate a,.m4-shell a,.controls button,.profile-buttons button{color:var(--text,#edf4ff);background:var(--surface-strong,#172539);border:1px solid va"
+        },
+        {
+          "line": 160,
+          "text": ".m4-gate section{width:min(620px,100%);padding:32px;text-align:center}.m4-gate a,.m4-shell a,.controls button,.profile-buttons button{color:var(--text,#edf4ff);background:var(--surface-strong,#172539);border:1px solid va"
+        },
+        {
+          "line": 160,
+          "text": ".m4-gate section{width:min(620px,100%);padding:32px;text-align:center}.m4-gate a,.m4-shell a,.controls button,.profile-buttons button{color:var(--text,#edf4ff);background:var(--surface-strong,#172539);border:1px solid va"
+        },
+        {
+          "line": 161,
+          "text": "header{max-width:1600px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:18px;align-items:center}header p{color:var(--accent,#61dafb);font-size:10px;font-weight:900}header span,.profiles p,.notice span,."
+        },
+        {
+          "line": 161,
+          "text": "header{max-width:1600px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:18px;align-items:center}header p{color:var(--accent,#61dafb);font-size:10px;font-weight:900}header span,.profiles p,.notice span,."
+        },
+        {
+          "line": 161,
+          "text": "header{max-width:1600px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:18px;align-items:center}header p{color:var(--accent,#61dafb);font-size:10px;font-weight:900}header span,.profiles p,.notice span,."
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 161,
+          "text": "header{max-width:1600px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:18px;align-items:center}header p{color:var(--accent,#61dafb);font-size:10px;font-weight:900}header span,.profiles p,.notice span,."
+        },
+        {
+          "line": 163,
+          "text": ".profiles{max-width:1600px;margin:0 auto 15px;padding:16px;display:grid;grid-template-columns:.8fr 1.2fr;gap:16px}.profile-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.profile-buttons button{text-ali"
+        },
+        {
+          "line": 164,
+          "text": ".grid{max-width:1600px;margin:auto;display:grid;grid-template-columns:265px minmax(470px,1fr) 345px;gap:14px}.panel{padding:16px}.check{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:9px;margin:7px 0;backgro"
+        },
+        {
+          "line": 167,
+          "text": ".record-summary small{color:var(--text-muted,#aab8cb);font-size:8px;text-transform:uppercase}"
+        },
+        {
+          "line": 168,
+          "text": ".result small{color:var(--accent-soft,#9feaff);font-size:9px}"
+        },
+        {
+          "line": 171,
+          "text": ".score-panel small,.result span,.result p{color:var(--text-muted,#aab8cb);font-size:9px}"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/CppMinigameMissionThree.razor",
+      "hardcoded_hex_colors": 70,
+      "rgb_colors": 9,
+      "hsl_colors": 0,
+      "theme_variable_references": 68,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 7,
+      "small_font_count": 17,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 310,
+          "text": "color: var(--text, #edf4ff);"
+        },
+        {
+          "line": 311,
+          "text": "background: var(--bg, #08111f);"
+        },
+        {
+          "line": 330,
+          "text": "background: var(--surface-soft, #111c2c);"
+        },
+        {
+          "line": 331,
+          "text": "border: 1px solid var(--border, #2b3b52);"
+        },
+        {
+          "line": 341,
+          "text": "color: var(--accent-contrast, #07111f);"
+        },
+        {
+          "line": 342,
+          "text": "background: var(--accent, #61dafb);"
+        },
+        {
+          "line": 349,
+          "text": "color: var(--accent, #61dafb);"
+        },
+        {
+          "line": 366,
+          "text": "color: var(--text-muted, #aab8cb);"
+        },
+        {
+          "line": 381,
+          "text": "background: var(--surface, #0d1726);"
+        },
+        {
+          "line": 382,
+          "text": "border: 1px solid var(--border, #2b3b52);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 350,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 409,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 462,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 468,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 513,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 548,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 577,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 584,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 606,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 611,
+          "text": "font-size: 9px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/CppMinigameMissionTwo.razor",
+      "hardcoded_hex_colors": 54,
+      "rgb_colors": 8,
+      "hsl_colors": 0,
+      "theme_variable_references": 51,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 6,
+      "small_font_count": 10,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 283,
+          "text": "color: var(--text, #edf4ff);"
+        },
+        {
+          "line": 284,
+          "text": "background: var(--bg, #08111f);"
+        },
+        {
+          "line": 303,
+          "text": "background: var(--surface-soft, #111c2c);"
+        },
+        {
+          "line": 304,
+          "text": "border: 1px solid var(--border, #2b3b52);"
+        },
+        {
+          "line": 314,
+          "text": "color: var(--accent-contrast, #07111f);"
+        },
+        {
+          "line": 315,
+          "text": "background: var(--accent, #61dafb);"
+        },
+        {
+          "line": 322,
+          "text": "color: var(--accent, #61dafb);"
+        },
+        {
+          "line": 339,
+          "text": "color: var(--text-muted, #aab8cb);"
+        },
+        {
+          "line": 349,
+          "text": "background: var(--surface, #0d1726);"
+        },
+        {
+          "line": 350,
+          "text": "border: 1px solid var(--border, #2b3b52);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 323,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 379,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 457,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 500,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 525,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 553,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 596,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 619,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 633,
+          "text": "font-size: 13px;"
+        },
+        {
+          "line": 652,
+          "text": "font-size: 10px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Home.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 2,
+      "hsl_colors": 0,
+      "theme_variable_references": 90,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 7,
+      "small_font_count": 6,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [
+        {
+          "line": 657,
+          "text": ".home-brand small { margin-top: 2px; color: var(--text-muted); font-size: 11px; }"
+        },
+        {
+          "line": 660,
+          "text": ".home-header nav a { padding: 9px 12px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 12px; font-weight: 800; }"
+        },
+        {
+          "line": 664,
+          "text": ".eyebrow { margin: 0 0 10px; color: var(--accent); font-size: 11px; font-weight: 900; letter-spacing: 1.4px; }"
+        },
+        {
+          "line": 666,
+          "text": ".hero-description { max-width: 660px; margin: 24px 0 0; color: var(--text-muted); font-size: 17px; line-height: 1.7; }"
+        },
+        {
+          "line": 673,
+          "text": ".terminal-bar { display: flex; justify-content: space-between; margin: -22px -22px 22px; padding: 11px 14px; color: var(--text-muted); background: var(--surface); border-bottom: 1px solid var(--border); font-size: 10px; "
+        },
+        {
+          "line": 680,
+          "text": ".path-count { color: var(--text-muted); font-size: 12px; }"
+        },
+        {
+          "line": 688,
+          "text": ".status { padding: 6px 9px; border-radius: 99px; font-size: 10px; font-weight: 850; }"
+        },
+        {
+          "line": 691,
+          "text": ".path-card h3 { margin: 24px 0 10px; font-size: 24px; }"
+        },
+        {
+          "line": 694,
+          "text": ".skill-tags span { padding: 6px 8px; color: var(--text-muted); background: var(--surface-soft); border: 1px solid var(--border); border-radius: 6px; font-size: 10px; }"
+        },
+        {
+          "line": 702,
+          "text": ".unlock-grid span { color: var(--accent); font-size: 10px; font-weight: 850; text-transform: uppercase; letter-spacing: .7px; }"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/HtmlCss.razor",
+      "hardcoded_hex_colors": 13,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Heavy use of hard-coded colors with little theme-variable usage."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 490,
+          "text": "color: #17202a;"
+        },
+        {
+          "line": 491,
+          "text": "background: #f4f7fb;"
+        },
+        {
+          "line": 501,
+          "text": "color: #17202a;"
+        },
+        {
+          "line": 502,
+          "text": "background: #f4f7fb;"
+        },
+        {
+          "line": 513,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 514,
+          "text": "background: #17202a;"
+        },
+        {
+          "line": 532,
+          "text": "background: #ffffff;"
+        },
+        {
+          "line": 533,
+          "text": "border: 1px solid #d8e0e8;"
+        },
+        {
+          "line": 539,
+          "text": "border: 2px dashed #315dc0;"
+        },
+        {
+          "line": 545,
+          "text": "color: #315dc0;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 547,
+          "text": "font-size: 11px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/HtmlCssMinigame.razor",
+      "hardcoded_hex_colors": 50,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 128,
+      "transitions": 3,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 13,
+      "small_font_count": 27,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 959,
+          "text": "background: #f5f7fb;"
+        },
+        {
+          "line": 1212,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1213,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1261,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1262,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1263,
+          "text": "border: 1px solid #64c58b;"
+        },
+        {
+          "line": 1271,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1272,
+          "text": "background: #10552e;"
+        },
+        {
+          "line": 1273,
+          "text": "border-color: #a6efc1;"
+        },
+        {
+          "line": 1277,
+          "text": "outline: 3px solid #ffd166;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 564,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 571,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 604,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 656,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 665,
+          "text": "font-size: 20px;"
+        },
+        {
+          "line": 680,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 710,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 720,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 727,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 751,
+          "text": "font-size: 8px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/HtmlCssMinigameCampaign.razor",
+      "hardcoded_hex_colors": 51,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 50,
+      "transitions": 1,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 4,
+      "small_font_count": 5,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 170,
+          "text": "--campaign-surface: color-mix(in srgb, var(--surface, #101927) 92%, transparent);"
+        },
+        {
+          "line": 172,
+          "text": "color: var(--text, #eef7ff);"
+        },
+        {
+          "line": 174,
+          "text": "radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent, #38bdf8) 20%, transparent), transparent 36%),"
+        },
+        {
+          "line": 175,
+          "text": "var(--background, #07101b);"
+        },
+        {
+          "line": 189,
+          "text": "border: 1px solid var(--border, #304158);"
+        },
+        {
+          "line": 199,
+          "text": "color: var(--accent, #38bdf8);"
+        },
+        {
+          "line": 202,
+          "text": "border: 1px solid color-mix(in srgb, var(--accent, #38bdf8) 55%, transparent);"
+        },
+        {
+          "line": 204,
+          "text": "box-shadow: 0 0 32px color-mix(in srgb, var(--accent, #38bdf8) 34%, transparent);"
+        },
+        {
+          "line": 212,
+          "text": "border-bottom: 1px solid var(--border, #304158);"
+        },
+        {
+          "line": 217,
+          "text": "color: var(--text-muted, #9db0c7);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 200,
+          "text": "font-size: 28px;"
+        },
+        {
+          "line": 218,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 236,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 279,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 286,
+          "text": "font-size: 18px;"
+        },
+        {
+          "line": 330,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 384,
+          "text": "font-size: 16px;"
+        },
+        {
+          "line": 389,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 402,
+          "text": "font-size: 10px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/HtmlCssMinigameEndless.razor",
+      "hardcoded_hex_colors": 36,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 33,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 4,
+      "small_font_count": 3,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 122,
+          "text": "color: var(--text, #eef7ff);"
+        },
+        {
+          "line": 124,
+          "text": "radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent, #38bdf8) 23%, transparent), transparent 40%),"
+        },
+        {
+          "line": 125,
+          "text": "var(--background, #07101b);"
+        },
+        {
+          "line": 141,
+          "text": "background: color-mix(in srgb, var(--surface, #101927) 92%, transparent);"
+        },
+        {
+          "line": 142,
+          "text": "border: 1px solid var(--border, #304158);"
+        },
+        {
+          "line": 152,
+          "text": "color: var(--accent, #38bdf8);"
+        },
+        {
+          "line": 155,
+          "text": "border: 1px solid color-mix(in srgb, var(--accent, #38bdf8) 60%, transparent);"
+        },
+        {
+          "line": 157,
+          "text": "box-shadow: 0 0 40px color-mix(in srgb, var(--accent, #38bdf8) 35%, transparent);"
+        },
+        {
+          "line": 166,
+          "text": "border-bottom: 1px solid var(--border, #304158);"
+        },
+        {
+          "line": 171,
+          "text": "color: var(--text-muted, #9db0c7);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 153,
+          "text": "font-size: 42px;"
+        },
+        {
+          "line": 172,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 192,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 237,
+          "text": "font-size: 62px;"
+        },
+        {
+          "line": 243,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 265,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 270,
+          "text": "font-size: 19px;"
+        },
+        {
+          "line": 329,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 333,
+          "text": "font-size: 15px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionFive.razor",
+      "hardcoded_hex_colors": 57,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 129,
+      "transitions": 3,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 14,
+      "small_font_count": 27,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 877,
+          "text": "background: #f5f7fb;"
+        },
+        {
+          "line": 1130,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1131,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1179,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1180,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1181,
+          "text": "border: 1px solid #64c58b;"
+        },
+        {
+          "line": 1189,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1190,
+          "text": "background: #10552e;"
+        },
+        {
+          "line": 1191,
+          "text": "border-color: #a6efc1;"
+        },
+        {
+          "line": 1195,
+          "text": "outline: 3px solid #ffd166;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 482,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 489,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 522,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 574,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 583,
+          "text": "font-size: 20px;"
+        },
+        {
+          "line": 598,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 628,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 638,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 645,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 669,
+          "text": "font-size: 8px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionFour.razor",
+      "hardcoded_hex_colors": 58,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 129,
+      "transitions": 3,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 15,
+      "small_font_count": 27,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 877,
+          "text": "background: #f5f7fb;"
+        },
+        {
+          "line": 1130,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1131,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1179,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1180,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1181,
+          "text": "border: 1px solid #64c58b;"
+        },
+        {
+          "line": 1189,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1190,
+          "text": "background: #10552e;"
+        },
+        {
+          "line": 1191,
+          "text": "border-color: #a6efc1;"
+        },
+        {
+          "line": 1195,
+          "text": "outline: 3px solid #ffd166;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 482,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 489,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 522,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 574,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 583,
+          "text": "font-size: 20px;"
+        },
+        {
+          "line": 598,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 628,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 638,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 645,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 669,
+          "text": "font-size: 8px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionThree.razor",
+      "hardcoded_hex_colors": 56,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 129,
+      "transitions": 3,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 13,
+      "small_font_count": 27,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 877,
+          "text": "background: #f5f7fb;"
+        },
+        {
+          "line": 1130,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1131,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1179,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1180,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1181,
+          "text": "border: 1px solid #64c58b;"
+        },
+        {
+          "line": 1189,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1190,
+          "text": "background: #10552e;"
+        },
+        {
+          "line": 1191,
+          "text": "border-color: #a6efc1;"
+        },
+        {
+          "line": 1195,
+          "text": "outline: 3px solid #ffd166;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 482,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 489,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 522,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 574,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 583,
+          "text": "font-size: 20px;"
+        },
+        {
+          "line": 598,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 628,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 638,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 645,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 669,
+          "text": "font-size: 8px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/HtmlCssMinigameMissionTwo.razor",
+      "hardcoded_hex_colors": 49,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 129,
+      "transitions": 3,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 3,
+      "fixed_height_count": 15,
+      "small_font_count": 27,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 877,
+          "text": "background: #f5f7fb;"
+        },
+        {
+          "line": 1130,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1131,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1179,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1180,
+          "text": "background: #176b3a;"
+        },
+        {
+          "line": 1181,
+          "text": "border: 1px solid #64c58b;"
+        },
+        {
+          "line": 1189,
+          "text": "color: #ffffff;"
+        },
+        {
+          "line": 1190,
+          "text": "background: #10552e;"
+        },
+        {
+          "line": 1191,
+          "text": "border-color: #a6efc1;"
+        },
+        {
+          "line": 1195,
+          "text": "outline: 3px solid #ffd166;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 482,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 489,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 522,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 574,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 583,
+          "text": "font-size: 20px;"
+        },
+        {
+          "line": 598,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 628,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 638,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 645,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 669,
+          "text": "font-size: 8px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Leaderboard.razor",
+      "hardcoded_hex_colors": 48,
+      "rgb_colors": 2,
+      "hsl_colors": 0,
+      "theme_variable_references": 54,
+      "transitions": 1,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 3,
+      "fixed_height_count": 5,
+      "small_font_count": 12,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 580,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 581,
+          "text": "background: var(--code-bg, #0b1118);"
+        },
+        {
+          "line": 582,
+          "text": "border-color: var(--border-strong, #334252);"
+        },
+        {
+          "line": 587,
+          "text": "border-color: var(--border-strong, #334252);"
+        },
+        {
+          "line": 591,
+          "text": "color: var(--dark-panel-muted, #aab7c4);"
+        },
+        {
+          "line": 597,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 601,
+          "text": "color: var(--dark-panel-muted, #aab7c4);"
+        },
+        {
+          "line": 725,
+          "text": "\"#DCE6F0\", \"#C8D8E8\", \"#B4CAE0\", \"#A2BCD8\", \"#90AED0\","
+        },
+        {
+          "line": 725,
+          "text": "\"#DCE6F0\", \"#C8D8E8\", \"#B4CAE0\", \"#A2BCD8\", \"#90AED0\","
+        },
+        {
+          "line": 725,
+          "text": "\"#DCE6F0\", \"#C8D8E8\", \"#B4CAE0\", \"#A2BCD8\", \"#90AED0\","
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 212,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 232,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 283,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 289,
+          "text": "font-size: 30px;"
+        },
+        {
+          "line": 301,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 306,
+          "text": "font-size: 21px;"
+        },
+        {
+          "line": 312,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 349,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 355,
+          "text": "font-size: 17px;"
+        },
+        {
+          "line": 368,
+          "text": "font-size: 13px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Minigames.razor",
+      "hardcoded_hex_colors": 9,
+      "rgb_colors": 2,
+      "hsl_colors": 0,
+      "theme_variable_references": 44,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 3,
+      "small_font_count": 7,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 568,
+          "text": "color: #ffffff !important;"
+        },
+        {
+          "line": 569,
+          "text": "background: #1f6feb !important;"
+        },
+        {
+          "line": 570,
+          "text": "border: 1px solid #8bc1ff !important;"
+        },
+        {
+          "line": 571,
+          "text": "text-shadow: 0 1px 2px #0b1f36;"
+        },
+        {
+          "line": 576,
+          "text": "color: #ffffff !important;"
+        },
+        {
+          "line": 577,
+          "text": "background: #174ea6 !important;"
+        },
+        {
+          "line": 578,
+          "text": "border-color: #b9d8ff !important;"
+        },
+        {
+          "line": 582,
+          "text": "outline: 3px solid #ffd166;"
+        },
+        {
+          "line": 588,
+          "text": "outline: 3px solid #ffd166;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 297,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 316,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 382,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 395,
+          "text": "font-size: 14px;"
+        },
+        {
+          "line": 401,
+          "text": "font-size: 34px;"
+        },
+        {
+          "line": 430,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 436,
+          "text": "font-size: 15px;"
+        },
+        {
+          "line": 454,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 511,
+          "text": "font-size: 8px;"
+        },
+        {
+          "line": 518,
+          "text": "font-size: 10px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/NotFound.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Python.razor",
+      "hardcoded_hex_colors": 8,
+      "rgb_colors": 8,
+      "hsl_colors": 0,
+      "theme_variable_references": 192,
+      "transitions": 1,
+      "animations": 1,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 1,
+      "overflow_hidden_rules": 5,
+      "fixed_height_count": 18,
+      "small_font_count": 20,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 787,
+          "text": "background: color-mix(in srgb, var(--surface) 78%, #000);"
+        },
+        {
+          "line": 965,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 1006,
+          "text": "color: var(--code-muted, #aab7c4);"
+        },
+        {
+          "line": 1029,
+          "text": "color: var(--code-muted, #aab7c4);"
+        },
+        {
+          "line": 1043,
+          "text": "color: var(--code-muted, #aab7c4);"
+        },
+        {
+          "line": 1072,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 1077,
+          "text": "color: var(--code-muted, #aab7c4);"
+        },
+        {
+          "line": 1117,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 495,
+          "text": ".brand h1 { margin: 0; font-size: 21px; }"
+        },
+        {
+          "line": 496,
+          "text": ".brand p { margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.4; }"
+        },
+        {
+          "line": 512,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 525,
+          "text": ".row-between { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }"
+        },
+        {
+          "line": 534,
+          "text": "margin: 20px 8px 8px; color: var(--text-muted); font-size: 11px;"
+        },
+        {
+          "line": 549,
+          "text": "background: var(--surface-strong); border-radius: 8px; font-size: 12px;"
+        },
+        {
+          "line": 556,
+          "text": ".lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }"
+        },
+        {
+          "line": 557,
+          "text": ".lesson-copy small { margin-top: 3px; color: var(--text-muted); font-size: 10px; }"
+        },
+        {
+          "line": 564,
+          "text": ".lesson-header h2 { margin: 0 0 7px; font-size: 28px; }"
+        },
+        {
+          "line": 569,
+          "text": "margin: 0 0 6px; color: var(--accent); font-size: 11px;"
+        }
+      ],
+      "nowrap_examples": [
+        {
+          "line": 556,
+          "text": ".lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }"
+        }
+      ]
+    },
+    {
+      "file": "Pages/PythonControlRoom.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Settings.razor",
+      "hardcoded_hex_colors": 34,
+      "rgb_colors": 2,
+      "hsl_colors": 0,
+      "theme_variable_references": 91,
+      "transitions": 3,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 14,
+      "small_font_count": 12,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 569,
+          "text": "color: var(--dark-panel-text, #eef4f8);"
+        },
+        {
+          "line": 583,
+          "text": "color: var(--code-muted, #aab7c4);"
+        },
+        {
+          "line": 619,
+          "text": "color: var(--code-muted, #aab7c4);"
+        },
+        {
+          "line": 645,
+          "text": "color: var(--code-muted, #aab7c4);"
+        },
+        {
+          "line": 944,
+          "text": "new(\"cave-classic\", \"Cave Classic\", \"Emerald and torch gold.\", \"#0b1118\", \"#17212c\", \"#73e59b\"),"
+        },
+        {
+          "line": 944,
+          "text": "new(\"cave-classic\", \"Cave Classic\", \"Emerald and torch gold.\", \"#0b1118\", \"#17212c\", \"#73e59b\"),"
+        },
+        {
+          "line": 944,
+          "text": "new(\"cave-classic\", \"Cave Classic\", \"Emerald and torch gold.\", \"#0b1118\", \"#17212c\", \"#73e59b\"),"
+        },
+        {
+          "line": 945,
+          "text": "new(\"midnight-crystal\", \"Midnight Crystal\", \"Cyan and violet crystal light.\", \"#080b16\", \"#14182b\", \"#66e3ff\"),"
+        },
+        {
+          "line": 945,
+          "text": "new(\"midnight-crystal\", \"Midnight Crystal\", \"Cyan and violet crystal light.\", \"#080b16\", \"#14182b\", \"#66e3ff\"),"
+        },
+        {
+          "line": 945,
+          "text": "new(\"midnight-crystal\", \"Midnight Crystal\", \"Cyan and violet crystal light.\", \"#080b16\", \"#14182b\", \"#66e3ff\"),"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 286,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 310,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 357,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 363,
+          "text": "font-size: 20px;"
+        },
+        {
+          "line": 370,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 394,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 419,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 483,
+          "text": "font-size: 14px;"
+        },
+        {
+          "line": 500,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 517,
+          "text": "font-size: 8px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "Pages/Weather.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "_Imports.razor",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/app.css",
+      "hardcoded_hex_colors": 10,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 3,
+      "transitions": 1,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 10,
+          "text": "color: #0071c1;"
+        },
+        {
+          "line": 14,
+          "text": "color: #fff;"
+        },
+        {
+          "line": 15,
+          "text": "background-color: #1b6ec2;"
+        },
+        {
+          "line": 16,
+          "text": "border-color: #1861ac;"
+        },
+        {
+          "line": 20,
+          "text": "box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;"
+        },
+        {
+          "line": 28,
+          "text": "outline: 1px solid #26b050;"
+        },
+        {
+          "line": 61,
+          "text": "background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbG"
+        },
+        {
+          "line": 81,
+          "text": "stroke: #e0e0e0;"
+        },
+        {
+          "line": 88,
+          "text": "stroke: #1b6ec2;"
+        },
+        {
+          "line": 105,
+          "text": "color: #c02d76;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cavecode-global-contrast-system.css",
+      "hardcoded_hex_colors": 39,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 120,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 83,
+          "text": "--cc-text-primary: #000;"
+        },
+        {
+          "line": 84,
+          "text": "--cc-text-secondary: #111;"
+        },
+        {
+          "line": 85,
+          "text": "--cc-text-muted: #222;"
+        },
+        {
+          "line": 86,
+          "text": "--cc-text-disabled: #3a3a3a;"
+        },
+        {
+          "line": 87,
+          "text": "--cc-link: #3f3900;"
+        },
+        {
+          "line": 88,
+          "text": "--cc-accent-panel-text: #000;"
+        },
+        {
+          "line": 92,
+          "text": "--cc-text-primary: #fff;"
+        },
+        {
+          "line": 93,
+          "text": "--cc-text-secondary: #f1f1f1;"
+        },
+        {
+          "line": 94,
+          "text": "--cc-text-muted: #d8d8d8;"
+        },
+        {
+          "line": 95,
+          "text": "--cc-text-disabled: #b9b9b9;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 773,
+          "text": "font-size: 15px;"
+        },
+        {
+          "line": 799,
+          "text": "font-size: 16px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cavecode-language-finder-81d.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 6,
+      "hsl_colors": 0,
+      "theme_variable_references": 73,
+      "transitions": 3,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 16,
+      "small_font_count": 3,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [
+        {
+          "line": 49,
+          "text": "font-size: 14px;"
+        },
+        {
+          "line": 54,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 106,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 219,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 261,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 293,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 317,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 340,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 403,
+          "text": "font-size: 20px;"
+        },
+        {
+          "line": 439,
+          "text": "font-size: 10px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cavecode-modern-loading-screen.css",
+      "hardcoded_hex_colors": 12,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 14,
+      "transitions": 2,
+      "animations": 4,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 2,
+      "fixed_height_count": 2,
+      "small_font_count": 1,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 16,
+          "text": "color: var(--text, #edf4ff);"
+        },
+        {
+          "line": 22,
+          "text": "var(--accent, #61dafb) 12%,"
+        },
+        {
+          "line": 27,
+          "text": "var(--bg, #08111f);"
+        },
+        {
+          "line": 40,
+          "text": "var(--accent, #61dafb) 14%,"
+        },
+        {
+          "line": 62,
+          "text": "var(--accent, #61dafb) 32%,"
+        },
+        {
+          "line": 92,
+          "text": "color: var(--text-muted, #aab8cb);"
+        },
+        {
+          "line": 106,
+          "text": "var(--text, #edf4ff) 10%,"
+        },
+        {
+          "line": 113,
+          "text": "var(--text, #edf4ff) 12%,"
+        },
+        {
+          "line": 130,
+          "text": "var(--accent, #61dafb) 74%,"
+        },
+        {
+          "line": 133,
+          "text": "var(--accent, #61dafb)"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 93,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 154,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 237,
+          "text": "font-size: 23px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cavecode-official-branding-pass-1.css",
+      "hardcoded_hex_colors": 1,
+      "rgb_colors": 2,
+      "hsl_colors": 0,
+      "theme_variable_references": 3,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 4,
+      "small_font_count": 1,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 15,
+          "text": "background: #ffffff;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 45,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 74,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 80,
+          "text": "font-size: 10px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cavecode-official-branding-pass-2.css",
+      "hardcoded_hex_colors": 7,
+      "rgb_colors": 2,
+      "hsl_colors": 0,
+      "theme_variable_references": 6,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 7,
+      "small_font_count": 2,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 9,
+          "text": "background: #ffffff;"
+        },
+        {
+          "line": 39,
+          "text": "color: var(--text-muted, #8f9daa);"
+        },
+        {
+          "line": 77,
+          "text": "border-bottom: 1px solid var(--border, #2b3948);"
+        },
+        {
+          "line": 88,
+          "text": "color: var(--text-muted, #8f9daa);"
+        },
+        {
+          "line": 118,
+          "text": "color: var(--text, #eef4f8);"
+        },
+        {
+          "line": 124,
+          "text": "color: var(--text-muted, #8f9daa);"
+        },
+        {
+          "line": 134,
+          "text": "background: var(--bg, #0b1118);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 40,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 89,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 119,
+          "text": "font-size: 14px;"
+        },
+        {
+          "line": 125,
+          "text": "font-size: 11px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cavecode-official-branding-pass-3.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 3,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cavecode-static-language-panels.css",
+      "hardcoded_hex_colors": 3,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 25,
+      "transitions": 3,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 1,
+      "fixed_height_count": 11,
+      "small_font_count": 1,
+      "risks": [
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 192,
+          "text": "color: var(--text-muted, #46586a);"
+        },
+        {
+          "line": 199,
+          "text": "color-mix(in srgb, var(--accent-surface) 58%, #ffffff),"
+        },
+        {
+          "line": 200,
+          "text": "color-mix(in srgb, var(--surface) 92%, #eef3f7)"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 66,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 142,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 162,
+          "text": "font-size: 10px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cavecode-ui-contrast-v1.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 31,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/cpp-course-shell.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 3,
+      "hsl_colors": 0,
+      "theme_variable_references": 174,
+      "transitions": 3,
+      "animations": 4,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 3,
+      "overflow_hidden_rules": 8,
+      "fixed_height_count": 16,
+      "small_font_count": 21,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [
+        {
+          "line": 31,
+          "text": "font-size: 13px;"
+        },
+        {
+          "line": 34,
+          "text": ".cpp-brand h1 { margin: 0; font-size: 21px; }"
+        },
+        {
+          "line": 35,
+          "text": ".cpp-brand p { margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.4; }"
+        },
+        {
+          "line": 46,
+          "text": ".cpp-availability-note strong { color: var(--accent-soft); font-size: 10px; letter-spacing: .08em; }"
+        },
+        {
+          "line": 47,
+          "text": ".cpp-availability-note p { margin: 6px 0 0; color: var(--text-muted); font-size: 11px; line-height: 1.5; }"
+        },
+        {
+          "line": 52,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 83,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 93,
+          "text": ".cpp-lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }"
+        },
+        {
+          "line": 94,
+          "text": ".cpp-lesson-copy small { margin-top: 3px; color: var(--text-muted); font-size: 10px; }"
+        },
+        {
+          "line": 104,
+          "text": ".cpp-lesson-header h2 { margin: 0 0 7px; font-size: 28px; }"
+        }
+      ],
+      "nowrap_examples": [
+        {
+          "line": 93,
+          "text": ".cpp-lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }"
+        },
+        {
+          "line": 631,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 672,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/css/html-css-course-shell.css",
+      "hardcoded_hex_colors": 1,
+      "rgb_colors": 2,
+      "hsl_colors": 0,
+      "theme_variable_references": 171,
+      "transitions": 0,
+      "animations": 2,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 2,
+      "overflow_hidden_rules": 6,
+      "fixed_height_count": 16,
+      "small_font_count": 23,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 803,
+          "text": "background: #f4f7fb;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 51,
+          "text": "font-size: 21px;"
+        },
+        {
+          "line": 57,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 77,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 84,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 91,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 139,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 160,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 168,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 186,
+          "text": "font-size: 28px;"
+        },
+        {
+          "line": 199,
+          "text": "font-size: 11px;"
+        }
+      ],
+      "nowrap_examples": [
+        {
+          "line": 162,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 863,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/css/learning-path-discovery.css",
+      "hardcoded_hex_colors": 1,
+      "rgb_colors": 2,
+      "hsl_colors": 0,
+      "theme_variable_references": 96,
+      "transitions": 0,
+      "animations": 1,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 1,
+      "overflow_hidden_rules": 3,
+      "fixed_height_count": 18,
+      "small_font_count": 7,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected.",
+        "Uses both nowrap and overflow:hidden; text clipping is possible.",
+        "Small fixed-height controls combined with sub-11px text may clip under text scaling.",
+        "Contains many font sizes below 11px; readability may suffer."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 577,
+          "text": "color: var(--text-muted, #46586a);"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 32,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 47,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 72,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 133,
+          "text": "font-size: 9px;"
+        },
+        {
+          "line": 197,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 236,
+          "text": "font-size: 11px;"
+        },
+        {
+          "line": 269,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 354,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 404,
+          "text": "font-size: 10px;"
+        },
+        {
+          "line": 485,
+          "text": "font-size: 10px;"
+        }
+      ],
+      "nowrap_examples": [
+        {
+          "line": 556,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/css/learning-path-real-world-uses.css",
+      "hardcoded_hex_colors": 19,
+      "rgb_colors": 1,
+      "hsl_colors": 0,
+      "theme_variable_references": 24,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 1,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 13,
+          "text": "color: var(--text, #e8edf2);"
+        },
+        {
+          "line": 17,
+          "text": "color-mix(in srgb, var(--accent-surface, transparent) 72%, var(--surface, #151a20)),"
+        },
+        {
+          "line": 18,
+          "text": "var(--surface-soft, var(--surface, #151a20))"
+        },
+        {
+          "line": 20,
+          "text": "border: 1px solid var(--accent-border, var(--border, #35404a));"
+        },
+        {
+          "line": 29,
+          "text": "color: var(--text, #e8edf2);"
+        },
+        {
+          "line": 59,
+          "text": "color: var(--text-muted, #bac5cf);"
+        },
+        {
+          "line": 77,
+          "text": "color: var(--text-muted, #bac5cf);"
+        },
+        {
+          "line": 78,
+          "text": "border-top: 1px solid var(--border, #35404a);"
+        },
+        {
+          "line": 84,
+          "text": "color: var(--text, #e8edf2);"
+        },
+        {
+          "line": 107,
+          "text": "color: var(--text-primary, var(--text, #172029));"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 30,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 40,
+          "text": "font-size: 15px;"
+        },
+        {
+          "line": 60,
+          "text": "font-size: 12px;"
+        },
+        {
+          "line": 70,
+          "text": "font-size: 15px;"
+        },
+        {
+          "line": 79,
+          "text": "font-size: 11px;"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/light-mode-contrast.css",
+      "hardcoded_hex_colors": 52,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 14,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 9,
+          "text": "--text-primary: var(--text, #172029);"
+        },
+        {
+          "line": 10,
+          "text": "--text-secondary: #344556;"
+        },
+        {
+          "line": 11,
+          "text": "--text-muted: #46586a;"
+        },
+        {
+          "line": 12,
+          "text": "--text-dim: #5d6d7c;"
+        },
+        {
+          "line": 13,
+          "text": "--text-disabled: #687785;"
+        },
+        {
+          "line": 14,
+          "text": "--text-placeholder: #657482;"
+        },
+        {
+          "line": 15,
+          "text": "--notice-text: #344556;"
+        },
+        {
+          "line": 16,
+          "text": "--notice-strong: #172029;"
+        },
+        {
+          "line": 21,
+          "text": "--text-secondary: #4d2f3a;"
+        },
+        {
+          "line": 22,
+          "text": "--text-muted: #60404c;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/light-mode-notice-icon-contrast-hotfix.css",
+      "hardcoded_hex_colors": 20,
+      "rgb_colors": 3,
+      "hsl_colors": 0,
+      "theme_variable_references": 16,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 9,
+          "text": "color: var(--text-primary, var(--text, #172029)) !important;"
+        },
+        {
+          "line": 31,
+          "text": "color: var(--text-primary, var(--text, #172029)) !important;"
+        },
+        {
+          "line": 35,
+          "text": "color-mix(in srgb, var(--accent, #66a9ff) 8%, #ffffff),"
+        },
+        {
+          "line": 35,
+          "text": "color-mix(in srgb, var(--accent, #66a9ff) 8%, #ffffff),"
+        },
+        {
+          "line": 36,
+          "text": "var(--surface-soft, #f4f6f8)"
+        },
+        {
+          "line": 41,
+          "text": "var(--accent, #66a9ff) 42%,"
+        },
+        {
+          "line": 42,
+          "text": "var(--border-strong, #98a8b4)"
+        },
+        {
+          "line": 66,
+          "text": "color: var(--text-secondary, var(--text, #344556)) !important;"
+        },
+        {
+          "line": 85,
+          "text": "color: var(--text-primary, var(--text, #172029)) !important;"
+        },
+        {
+          "line": 96,
+          "text": "color: var(--text-primary, var(--text, #172029)) !important;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/themed-code-and-page-header-contrast.css",
+      "hardcoded_hex_colors": 15,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 41,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 53,
+          "text": "color-mix(in srgb, var(--accent-surface) 86%, #000),"
+        },
+        {
+          "line": 69,
+          "text": "#000"
+        },
+        {
+          "line": 109,
+          "text": "color-mix(in srgb, var(--accent-surface) 90%, #000),"
+        },
+        {
+          "line": 122,
+          "text": "#000"
+        },
+        {
+          "line": 175,
+          "text": "color: #fffbd1 !important;"
+        },
+        {
+          "line": 176,
+          "text": "background: #171600 !important;"
+        },
+        {
+          "line": 177,
+          "text": "border-color: #000 !important;"
+        },
+        {
+          "line": 178,
+          "text": "box-shadow: inset 0 0 0 1px #ffe600 !important;"
+        },
+        {
+          "line": 186,
+          "text": "background: #050500 !important;"
+        },
+        {
+          "line": 187,
+          "text": "border-color: #ffe600 !important;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/css/themes.css",
+      "hardcoded_hex_colors": 254,
+      "rgb_colors": 22,
+      "hsl_colors": 0,
+      "theme_variable_references": 15,
+      "transitions": 1,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 2,
+          "text": "--bg: #0b1118;"
+        },
+        {
+          "line": 3,
+          "text": "--bg-deep: #080d12;"
+        },
+        {
+          "line": 4,
+          "text": "--surface: #101822;"
+        },
+        {
+          "line": 5,
+          "text": "--surface-soft: #121b25;"
+        },
+        {
+          "line": 6,
+          "text": "--surface-raised: #17212c;"
+        },
+        {
+          "line": 7,
+          "text": "--surface-strong: #263442;"
+        },
+        {
+          "line": 8,
+          "text": "--surface-hover: #18232e;"
+        },
+        {
+          "line": 9,
+          "text": "--border: #293746;"
+        },
+        {
+          "line": 10,
+          "text": "--border-strong: #3a495a;"
+        },
+        {
+          "line": 11,
+          "text": "--text: #edf5f0;"
+        }
+      ],
+      "small_font_examples": [
+        {
+          "line": 36,
+          "text": "--base-font-size: 16px;"
+        },
+        {
+          "line": 334,
+          "text": "html[data-text-size=\"large\"] { --base-font-size: 18px; }"
+        },
+        {
+          "line": 335,
+          "text": "html[data-text-size=\"extra-large\"] { --base-font-size: 20px; }"
+        }
+      ],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/index.html",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeAchievements.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeAuth.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeCourseEngine.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeCppMinigame.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeHtmlCssMinigame.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeMinigames.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeProfile.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeProgression.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeRenameButton.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/caveCodeTheme.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/cavecode-contrast-auditor.js",
+      "hardcoded_hex_colors": 1,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 483,
+          "text": ".replaceAll(\"'\", \"&#039;\");"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/cavecode-language-finder-81d.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/cavecode-language-finder-auto-81d3.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/cavecode-static-language-icons.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/learning-path-discovery.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/learning-path-real-world-uses.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/light-mode-notice-icon-contrast-hotfix.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/js/page-header-contrast.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 8,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 8,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 8,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 8,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+      "hardcoded_hex_colors": 109,
+      "rgb_colors": 15,
+      "hsl_colors": 0,
+      "theme_variable_references": 21,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 8,
+          "text": "--bs-blue: #0d6efd;"
+        },
+        {
+          "line": 9,
+          "text": "--bs-indigo: #6610f2;"
+        },
+        {
+          "line": 10,
+          "text": "--bs-purple: #6f42c1;"
+        },
+        {
+          "line": 11,
+          "text": "--bs-pink: #d63384;"
+        },
+        {
+          "line": 12,
+          "text": "--bs-red: #dc3545;"
+        },
+        {
+          "line": 13,
+          "text": "--bs-orange: #fd7e14;"
+        },
+        {
+          "line": 14,
+          "text": "--bs-yellow: #ffc107;"
+        },
+        {
+          "line": 15,
+          "text": "--bs-green: #198754;"
+        },
+        {
+          "line": 16,
+          "text": "--bs-teal: #20c997;"
+        },
+        {
+          "line": 17,
+          "text": "--bs-cyan: #0dcaf0;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "hardcoded_hex_colors": 109,
+      "rgb_colors": 14,
+      "hsl_colors": 0,
+      "theme_variable_references": 21,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+      "hardcoded_hex_colors": 109,
+      "rgb_colors": 15,
+      "hsl_colors": 0,
+      "theme_variable_references": 21,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 8,
+          "text": "--bs-blue: #0d6efd;"
+        },
+        {
+          "line": 9,
+          "text": "--bs-indigo: #6610f2;"
+        },
+        {
+          "line": 10,
+          "text": "--bs-purple: #6f42c1;"
+        },
+        {
+          "line": 11,
+          "text": "--bs-pink: #d63384;"
+        },
+        {
+          "line": 12,
+          "text": "--bs-red: #dc3545;"
+        },
+        {
+          "line": 13,
+          "text": "--bs-orange: #fd7e14;"
+        },
+        {
+          "line": 14,
+          "text": "--bs-yellow: #ffc107;"
+        },
+        {
+          "line": 15,
+          "text": "--bs-green: #198754;"
+        },
+        {
+          "line": 16,
+          "text": "--bs-teal: #20c997;"
+        },
+        {
+          "line": 17,
+          "text": "--bs-cyan: #0dcaf0;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+      "hardcoded_hex_colors": 109,
+      "rgb_colors": 14,
+      "hsl_colors": 0,
+      "theme_variable_references": 21,
+      "transitions": 0,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [],
+      "hardcoded_color_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+      "hardcoded_hex_colors": 117,
+      "rgb_colors": 139,
+      "hsl_colors": 0,
+      "theme_variable_references": 345,
+      "transitions": 2,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 3,
+      "overflow_hidden_rules": 3,
+      "fixed_height_count": 1,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 8,
+          "text": "--bs-blue: #0d6efd;"
+        },
+        {
+          "line": 9,
+          "text": "--bs-indigo: #6610f2;"
+        },
+        {
+          "line": 10,
+          "text": "--bs-purple: #6f42c1;"
+        },
+        {
+          "line": 11,
+          "text": "--bs-pink: #d63384;"
+        },
+        {
+          "line": 12,
+          "text": "--bs-red: #dc3545;"
+        },
+        {
+          "line": 13,
+          "text": "--bs-orange: #fd7e14;"
+        },
+        {
+          "line": 14,
+          "text": "--bs-yellow: #ffc107;"
+        },
+        {
+          "line": 15,
+          "text": "--bs-green: #198754;"
+        },
+        {
+          "line": 16,
+          "text": "--bs-teal: #20c997;"
+        },
+        {
+          "line": 17,
+          "text": "--bs-cyan: #0dcaf0;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 515,
+          "text": "white-space: nowrap !important;"
+        },
+        {
+          "line": 536,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 1837,
+          "text": "white-space: nowrap !important;"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+      "hardcoded_hex_colors": 117,
+      "rgb_colors": 139,
+      "hsl_colors": 0,
+      "theme_variable_references": 345,
+      "transitions": 2,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 3,
+      "overflow_hidden_rules": 3,
+      "fixed_height_count": 1,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+      "hardcoded_hex_colors": 117,
+      "rgb_colors": 139,
+      "hsl_colors": 0,
+      "theme_variable_references": 345,
+      "transitions": 2,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 3,
+      "overflow_hidden_rules": 3,
+      "fixed_height_count": 1,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 8,
+          "text": "--bs-blue: #0d6efd;"
+        },
+        {
+          "line": 9,
+          "text": "--bs-indigo: #6610f2;"
+        },
+        {
+          "line": 10,
+          "text": "--bs-purple: #6f42c1;"
+        },
+        {
+          "line": 11,
+          "text": "--bs-pink: #d63384;"
+        },
+        {
+          "line": 12,
+          "text": "--bs-red: #dc3545;"
+        },
+        {
+          "line": 13,
+          "text": "--bs-orange: #fd7e14;"
+        },
+        {
+          "line": 14,
+          "text": "--bs-yellow: #ffc107;"
+        },
+        {
+          "line": 15,
+          "text": "--bs-green: #198754;"
+        },
+        {
+          "line": 16,
+          "text": "--bs-teal: #20c997;"
+        },
+        {
+          "line": 17,
+          "text": "--bs-cyan: #0dcaf0;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 515,
+          "text": "white-space: nowrap !important;"
+        },
+        {
+          "line": 536,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 1837,
+          "text": "white-space: nowrap !important;"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+      "hardcoded_hex_colors": 117,
+      "rgb_colors": 139,
+      "hsl_colors": 0,
+      "theme_variable_references": 345,
+      "transitions": 2,
+      "animations": 0,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 3,
+      "overflow_hidden_rules": 3,
+      "fixed_height_count": 1,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "hardcoded_hex_colors": 424,
+      "rgb_colors": 201,
+      "hsl_colors": 0,
+      "theme_variable_references": 1372,
+      "transitions": 78,
+      "animations": 7,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 11,
+      "overflow_hidden_rules": 11,
+      "fixed_height_count": 2,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 9,
+          "text": "--bs-blue: #0d6efd;"
+        },
+        {
+          "line": 10,
+          "text": "--bs-indigo: #6610f2;"
+        },
+        {
+          "line": 11,
+          "text": "--bs-purple: #6f42c1;"
+        },
+        {
+          "line": 12,
+          "text": "--bs-pink: #d63384;"
+        },
+        {
+          "line": 13,
+          "text": "--bs-red: #dc3545;"
+        },
+        {
+          "line": 14,
+          "text": "--bs-orange: #fd7e14;"
+        },
+        {
+          "line": 15,
+          "text": "--bs-yellow: #ffc107;"
+        },
+        {
+          "line": 16,
+          "text": "--bs-green: #198754;"
+        },
+        {
+          "line": 17,
+          "text": "--bs-teal: #20c997;"
+        },
+        {
+          "line": 18,
+          "text": "--bs-cyan: #0dcaf0;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 2615,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 2741,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 3411,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 3664,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 3694,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 4000,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 4845,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 4983,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 7170,
+          "text": "white-space: nowrap !important;"
+        },
+        {
+          "line": 7191,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "hardcoded_hex_colors": 424,
+      "rgb_colors": 200,
+      "hsl_colors": 0,
+      "theme_variable_references": 1371,
+      "transitions": 78,
+      "animations": 7,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 11,
+      "overflow_hidden_rules": 11,
+      "fixed_height_count": 2,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "hardcoded_hex_colors": 424,
+      "rgb_colors": 201,
+      "hsl_colors": 0,
+      "theme_variable_references": 1371,
+      "transitions": 78,
+      "animations": 7,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 11,
+      "overflow_hidden_rules": 11,
+      "fixed_height_count": 2,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 9,
+          "text": "--bs-blue: #0d6efd;"
+        },
+        {
+          "line": 10,
+          "text": "--bs-indigo: #6610f2;"
+        },
+        {
+          "line": 11,
+          "text": "--bs-purple: #6f42c1;"
+        },
+        {
+          "line": 12,
+          "text": "--bs-pink: #d63384;"
+        },
+        {
+          "line": 13,
+          "text": "--bs-red: #dc3545;"
+        },
+        {
+          "line": 14,
+          "text": "--bs-orange: #fd7e14;"
+        },
+        {
+          "line": 15,
+          "text": "--bs-yellow: #ffc107;"
+        },
+        {
+          "line": 16,
+          "text": "--bs-green: #198754;"
+        },
+        {
+          "line": 17,
+          "text": "--bs-teal: #20c997;"
+        },
+        {
+          "line": 18,
+          "text": "--bs-cyan: #0dcaf0;"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 2613,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 2739,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 3409,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 3662,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 3692,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 3998,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 4843,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 4981,
+          "text": "white-space: nowrap;"
+        },
+        {
+          "line": 7152,
+          "text": "white-space: nowrap !important;"
+        },
+        {
+          "line": 7173,
+          "text": "white-space: nowrap;"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "hardcoded_hex_colors": 424,
+      "rgb_colors": 200,
+      "hsl_colors": 0,
+      "theme_variable_references": 1371,
+      "transitions": 78,
+      "animations": 7,
+      "reduced_motion_detected": true,
+      "nowrap_rules": 11,
+      "overflow_hidden_rules": 11,
+      "fixed_height_count": 2,
+      "small_font_count": 0,
+      "risks": [
+        "Uses both nowrap and overflow:hidden; text clipping is possible."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": [
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        },
+        {
+          "line": 5,
+          "text": "*/:root,[data-bs-theme=light]{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--"
+        }
+      ]
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "hardcoded_hex_colors": 2,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 4,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 3601,
+          "text": "// TODO: v6 revert #37011 & change markup https://getbootstrap.com/docs/5.3/forms/input-group/"
+        },
+        {
+          "line": 3857,
+          "text": "// TODO: v6 revert #37011 & change markup https://getbootstrap.com/docs/5.3/forms/input-group/"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 4,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected."
+      ],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "hardcoded_hex_colors": 2,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 4,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 1758,
+          "text": "// TODO: v6 revert #37011 & change markup https://getbootstrap.com/docs/5.3/forms/input-group/"
+        },
+        {
+          "line": 2014,
+          "text": "// TODO: v6 revert #37011 & change markup https://getbootstrap.com/docs/5.3/forms/input-group/"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 4,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected."
+      ],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "hardcoded_hex_colors": 2,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 4,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected."
+      ],
+      "hardcoded_color_examples": [
+        {
+          "line": 1781,
+          "text": "// TODO: v6 revert #37011 & change markup https://getbootstrap.com/docs/5.3/forms/input-group/"
+        },
+        {
+          "line": 2037,
+          "text": "// TODO: v6 revert #37011 & change markup https://getbootstrap.com/docs/5.3/forms/input-group/"
+        }
+      ],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    },
+    {
+      "file": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "hardcoded_hex_colors": 0,
+      "rgb_colors": 0,
+      "hsl_colors": 0,
+      "theme_variable_references": 0,
+      "transitions": 0,
+      "animations": 4,
+      "reduced_motion_detected": false,
+      "nowrap_rules": 0,
+      "overflow_hidden_rules": 0,
+      "fixed_height_count": 0,
+      "small_font_count": 0,
+      "risks": [
+        "Contains motion but no reduced-motion handling was detected."
+      ],
+      "hardcoded_color_examples": [],
+      "small_font_examples": [],
+      "nowrap_examples": []
+    }
+  ],
+  "notes": [
+    "This is a static audit and does not measure actual rendered contrast ratios.",
+    "Hard-coded colors may be intentional for logos, code editors, or preview swatches.",
+    "Motion support may be provided globally and not detected in the same file.",
+    "Small text findings are candidates for review, not automatic failures."
+  ]
+}
