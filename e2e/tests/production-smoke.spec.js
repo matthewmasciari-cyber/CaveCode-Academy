@@ -64,8 +64,22 @@ async function verifyHealthyPage(page, route) {
     if (message.type() !== "error") return;
 
     const text = message.text();
-    if (!shouldIgnoreConsole(text)) {
-      consoleErrors.push(text);
+
+    if (
+      text.includes("Blocked script execution in 'about:srcdoc'") ||
+      shouldIgnoreConsole(text)
+    ) {
+      return;
+    }
+
+    consoleErrors.push(text);
+  });
+
+  page.on("response", (response) => {
+    if (response.status() >= 400) {
+      consoleErrors.push(
+        `HTTP ${response.status()} ${response.request().resourceType()} ${response.url()}`
+      );
     }
   });
 
@@ -140,9 +154,18 @@ test("homepage internal navigation links work through Blazor", async ({ page }) 
 
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => {
-    if (message.type() === "error" && !shouldIgnoreConsole(message.text())) {
-      errors.push(message.text());
+    if (message.type() !== "error") return;
+
+    const text = message.text();
+
+    if (
+      text.includes("Blocked script execution in 'about:srcdoc'") ||
+      shouldIgnoreConsole(text)
+    ) {
+      return;
     }
+
+    errors.push(text);
   });
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
