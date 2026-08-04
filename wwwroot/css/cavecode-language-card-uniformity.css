@@ -1,0 +1,77 @@
+/* CaveCode Language Card Uniformity — Pass 4
+   Preserves the existing Learning Paths design and active user theme. */
+
+[data-learning-difficulty-level] {
+    min-width: 0;
+    height: 100%;
+}
+
+[data-learning-difficulty-level] > * {
+    min-width: 0;
+}
+
+[data-learning-difficulty-level] :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    li,
+    strong,
+    span,
+    a
+) {
+    overflow-wrap: anywhere;
+}
+
+[data-learning-difficulty-level]
+.cavecode-learning-difficulty {
+    width: 100%;
+}
+
+[data-learning-difficulty-level]
+.cavecode-controls-language-icon {
+    flex-shrink: 0;
+}
+
+[data-learning-difficulty-level]
+:where(
+    [class*="tag"],
+    [class*="chip"],
+    [class*="pill"],
+    [class*="stat"]
+) {
+    max-width: 100%;
+}
+
+[data-learning-difficulty-level]
+:where(
+    button,
+    a,
+    [role="button"]
+) {
+    min-width: 0;
+}
+
+@media (min-width: 761px) {
+    [data-learning-difficulty-level] {
+        transition:
+            min-height .18s ease,
+            border-color .18s ease,
+            box-shadow .18s ease,
+            transform .18s ease;
+    }
+}
+
+@media (max-width: 760px) {
+    [data-learning-difficulty-level] {
+        min-height: 0 !important;
+        height: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-learning-difficulty-level] {
+        transition: none !important;
+    }
+}
