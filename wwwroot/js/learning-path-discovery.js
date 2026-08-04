@@ -60,7 +60,7 @@
                 ["smartphone", "Mobile and desktop applications"],
                 ["puzzle", "Browser extensions and interface tools"]
             ],
-            examples: "Google Maps web features, Discord web, Netflix interfaces, interactive pages across the web"
+            examples: "Google Maps web features, Discord web, Netflix interfaces, interactive pages across the web",
             preview: true,
             href: "/html-css",
             action: "Preview the workshop →",
