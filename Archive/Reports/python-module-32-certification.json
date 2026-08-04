@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:08:14.243450+00:00",
+  "module": {
+    "ModuleNumber": 32,
+    "Chapter": "Chapter 4 \u00b7 Sensors, Devices, and Data",
+    "Topic": "Challenge",
+    "Title": "Facility Monitoring Challenge",
+    "Teaching": "Combine sensor lists, device dictionaries, loops, and aggregate calculations into one monitoring summary.",
+    "ExampleCode": "average = sum(readings) / len(readings)",
+    "TargetCode": "temperatures = [18.2, 19.1, 20.4, 18.9, 21.0]\nequipment = [\n    {\"name\": \"Pump 1\", \"alarm\": False, \"hours\": 125},\n    {\"name\": \"Fan 1\", \"alarm\": True, \"hours\": 82},\n    {\"name\": \"Valve 1\", \"alarm\": False, \"hours\": 41}\n]\nprint(f\"Low: {min(temperatures)}\")\nprint(f\"High: {max(temperatures)}\")\nprint(f\"Average: {sum(temperatures) / len(temperatures)}\")\nfor device in equipment:\n    if device[\"alarm\"]:\n        print(f\"ALARM: {device['name']}\")",
+    "FillStarter": "temperatures = [18.2, 19.1, 20.4, 18.9, 21.0]\nequipment = [\n    {\"name\": \"Pump 1\", \"alarm\": ___, \"hours\": 125},\n    {\"name\": \"Fan 1\", \"alarm\": ___, \"hours\": 82},\n    {\"name\": \"Valve 1\", \"alarm\": ___, \"hours\": 41}\n]\nprint(f\"Low: {___(temperatures)}\")\nprint(f\"High: {___(temperatures)}\")\nprint(f\"Average: {___(temperatures) / ___(temperatures)}\")",
+    "PredictionQuestion": "Which structure stores each equipment record?",
+    "PredictionOptions": [
+      "A dictionary",
+      "A float",
+      "A Boolean operator",
+      "A file"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "Each device is a dictionary inside the equipment list.",
+    "BrokenCode": "temperatures = [18.2, 19.1, 20.4]\nprint(f\"Low: {max(temperatures)}\")\nprint(f\"High: {min(temperatures)}\")\nprint(f\"Average: {len(temperatures) / sum(temperatures)}\")",
+    "DebugPrompt": "Repair low, high, and average calculations, then include alarmed equipment.",
+    "RecallPrompt": "Rebuild the complete monitoring challenge. Use these exact identifiers: device, equipment, f, print, temperatures. Use these exact values: 1, 125, 18.2, 18.9, 19.1, 20.4, 21.0, 41, 82, \"ALARM: {device['name']}\", \"Average: {sum(temperatures) / len(temperatures)}\", False, \"Fan 1\", \"High: {max(temperatures)}\", \"Low: {min(temperatures)}\", \"Pump 1\", True, \"Valve 1\", \"alarm\", \"hours\", \"name\".",
+    "TransferPrompt": "Create a pressure dashboard with three devices and a high-pressure alarm report. Use these exact identifiers: device, f, pressures, print. Use these exact values: 1, 41.2, 41.7, 42.0, 55.8, \"ALARM: {device['name']}\", \"Compressor 1\", \"Dryer 1\", False, \"Pressure average: {sum(pressures) / len(pressures)}\", \"Receiver 1\", True, \"name\".",
+    "TransferCode": "pressures = [41.2, 42.0, 55.8, 41.7]\ndevices = [\n    {\"name\": \"Compressor 1\", \"alarm\": False},\n    {\"name\": \"Receiver 1\", \"alarm\": True},\n    {\"name\": \"Dryer 1\", \"alarm\": False}\n]\nprint(f\"Pressure average: {sum(pressures) / len(pressures)}\")\nfor device in devices:\n    if device[\"alarm\"]:\n        print(f\"ALARM: {device['name']}\")",
+    "PreviewMessage": "Chapter 4 complete: the facility monitoring network is established."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

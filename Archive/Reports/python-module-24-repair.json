@@ -1,0 +1,19 @@
+{
+  "module_number": 24,
+  "module_title": "Automated Ventilation Challenge",
+  "changes": [
+    "RecallPrompt: added exact identifiers air_quality_ok, cycle_count, emergency_stop, f, minute, print, range, seconds",
+    "RecallPrompt: added exact values 0, 1, 3, 6, Monitoring minute {minute}, Ventilation blocked, Ventilation fan started",
+    "TransferPrompt: added exact identifiers cycle_count, f, level_high, print, range",
+    "TransferPrompt: added exact values 0, 1, 4, Pump cycle {cycle}, Pump sequence blocked"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-24-20260804-140621/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

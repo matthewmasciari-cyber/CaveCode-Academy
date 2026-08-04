@@ -1,0 +1,57 @@
+{
+  "pass": "C# Human Quality HQ3 Cleanup",
+  "affected_modules": [
+    8,
+    12,
+    16,
+    17,
+    40
+  ],
+  "changes": [
+    {
+      "module_number": 8,
+      "title": "Foundation Challenge",
+      "changes": [
+        "RecallPrompt: Removed non-identifiers from clause: Miner",
+        "TransferPrompt: Removed non-identifiers from clause: Slime"
+      ]
+    },
+    {
+      "module_number": 12,
+      "title": "Provide a Fallback Path",
+      "changes": [
+        "RecallPrompt: Removed non-identifiers from clause: Find, Ready, mine, to"
+      ]
+    },
+    {
+      "module_number": 16,
+      "title": "Decision Challenge: Mining Permission",
+      "changes": [
+        "RecallPrompt: Removed non-identifiers from clause: blocked",
+        "TransferPrompt: Removed non-identifiers from clause: Battle, Cannot, ready"
+      ]
+    },
+    {
+      "module_number": 17,
+      "title": "Create a Reusable Method",
+      "changes": [
+        "RecallPrompt: Removed non-identifiers from clause: Ready"
+      ]
+    },
+    {
+      "module_number": 40,
+      "title": "Final Challenge: Defeat the Slime",
+      "changes": [
+        "RecallPrompt: Removed non-identifiers from clause: defeated",
+        "TransferPrompt: Removed non-identifiers from clause: defeated"
+      ]
+    }
+  ],
+  "backup": ".csharp-human-quality-hq3-backups/hq3-20260804-132819/Pages/CSharp.razor",
+  "final_hq2_summary": {
+    "modules_reviewed": 40,
+    "affected_modules": 0,
+    "confirmed_high_issues": 0,
+    "build_passed": true
+  }
+}

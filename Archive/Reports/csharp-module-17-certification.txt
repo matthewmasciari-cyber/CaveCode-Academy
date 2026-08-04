@@ -61,7 +61,7 @@ DebugPrompt:
 A method declaration needs parentheses after its name.
 
 RecallPrompt:
-Write ShowMessage from memory. Use these exact identifiers: Console, Ready, WriteLine. Use the exact value "Ready!".
+Write ShowMessage from memory. Use these exact identifiers: Console, WriteLine. Use the exact value "Ready!".
 
 TransferPrompt:
 Create ShowInventory that prints "Inventory opened". Use these exact identifiers: Console, WriteLine.

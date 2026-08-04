@@ -1,0 +1,1114 @@
+{
+  "pass": "C# Human Quality HQ1",
+  "created_utc": "2026-08-04T13:14:43.148622+00:00",
+  "source": "Pages/CSharp.razor",
+  "summary": {
+    "modules_reviewed": 40,
+    "modules_with_high": 5,
+    "modules_with_medium": 38,
+    "high_issues": 8,
+    "medium_issues": 67,
+    "build_passed": true
+  },
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [
+      "/workspaces/CaveCode-Academy/Pages/HtmlCssMinigameMissionThree.razor(2274,20): warning CS8604: Possible null reference argument for parameter 'html' in 'bool HtmlCssMinigameMissionThree.HasTag(string html, string tag)'. [/workspaces/CaveCode-Academy/CaveCode.csproj]",
+      "/workspaces/CaveCode-Academy/Pages/HtmlCssMinigameMissionThree.razor(2274,20): warning CS8604: Possible null reference argument for parameter 'html' in 'bool HtmlCssMinigameMissionThree.HasTag(string html, string tag)'. [/workspaces/CaveCode-Academy/CaveCode.csproj]"
+    ],
+    "errors": []
+  },
+  "modules": [
+    {
+      "module_number": 1,
+      "title": "Store Player Health",
+      "chapter": "Chapter 1 \u00b7 Foundations",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 2,
+      "title": "Count Collected Stone",
+      "chapter": "Chapter 1 \u00b7 Foundations",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'stoneCount' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 3,
+      "title": "Store the Player Name",
+      "chapter": "Chapter 1 \u00b7 Foundations",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerName' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 4,
+      "title": "Remember Whether a Pickaxe Exists",
+      "chapter": "Chapter 1 \u00b7 Foundations",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 5,
+      "title": "Store Movement Speed",
+      "chapter": "Chapter 1 \u00b7 Foundations",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'moveSpeed' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 6,
+      "title": "Change an Existing Value",
+      "chapter": "Chapter 1 \u00b7 Foundations",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 7,
+      "title": "Add Collected Resources",
+      "chapter": "Chapter 1 \u00b7 Foundations",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'stoneCount' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 8,
+      "title": "Foundation Challenge",
+      "chapter": "Chapter 1 \u00b7 Foundations",
+      "issues": [
+        {
+          "severity": "HIGH",
+          "field": "RecallPrompt",
+          "type": "STRING_LITERAL_TOKENIZED_AS_IDENTIFIER",
+          "details": "Possible words from quoted strings treated as identifiers: Miner"
+        },
+        {
+          "severity": "HIGH",
+          "field": "TransferPrompt",
+          "type": "STRING_LITERAL_TOKENIZED_AS_IDENTIFIER",
+          "details": "Possible words from quoted strings treated as identifiers: Slime"
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerName' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'stoneCount' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 2,
+      "medium": 4,
+      "info": 1
+    },
+    {
+      "module_number": 9,
+      "title": "Compare Player Health",
+      "chapter": "Chapter 2 \u00b7 Decisions",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'isAlive' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 10,
+      "title": "Check the Pickaxe State",
+      "chapter": "Chapter 2 \u00b7 Decisions",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'canMine' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 11,
+      "title": "Run Code Only When Allowed",
+      "chapter": "Chapter 2 \u00b7 Decisions",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'canMine' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'stoneCount' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 12,
+      "title": "Provide a Fallback Path",
+      "chapter": "Chapter 2 \u00b7 Decisions",
+      "issues": [
+        {
+          "severity": "HIGH",
+          "field": "RecallPrompt",
+          "type": "STRING_LITERAL_TOKENIZED_AS_IDENTIFIER",
+          "details": "Possible words from quoted strings treated as identifiers: Find, Ready, mine, to"
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 1,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 13,
+      "title": "Create Multiple Health States",
+      "chapter": "Chapter 2 \u00b7 Decisions",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'status' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 14,
+      "title": "Require Two Conditions",
+      "chapter": "Chapter 2 \u00b7 Decisions",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'isAlive' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'safeToMine' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 3,
+      "info": 1
+    },
+    {
+      "module_number": 15,
+      "title": "Allow Either Condition",
+      "chapter": "Chapter 2 \u00b7 Decisions",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'hasLight' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'hasTorch' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'nearCore' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 3,
+      "info": 1
+    },
+    {
+      "module_number": 16,
+      "title": "Decision Challenge: Mining Permission",
+      "chapter": "Chapter 2 \u00b7 Decisions",
+      "issues": [
+        {
+          "severity": "HIGH",
+          "field": "RecallPrompt",
+          "type": "STRING_LITERAL_TOKENIZED_AS_IDENTIFIER",
+          "details": "Possible words from quoted strings treated as identifiers: blocked"
+        },
+        {
+          "severity": "HIGH",
+          "field": "TransferPrompt",
+          "type": "STRING_LITERAL_TOKENIZED_AS_IDENTIFIER",
+          "details": "Possible words from quoted strings treated as identifiers: Battle, Cannot, ready"
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'canMine' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'stoneCount' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 2,
+      "medium": 4,
+      "info": 1
+    },
+    {
+      "module_number": 17,
+      "title": "Create a Reusable Method",
+      "chapter": "Chapter 3 \u00b7 Methods and Movement",
+      "issues": [
+        {
+          "severity": "HIGH",
+          "field": "RecallPrompt",
+          "type": "STRING_LITERAL_TOKENIZED_AS_IDENTIFIER",
+          "details": "Possible words from quoted strings treated as identifiers: Ready"
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'ShowMessage' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 1,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 18,
+      "title": "Pass Information Into a Method",
+      "chapter": "Chapter 3 \u00b7 Methods and Movement",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'AddStone' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'stoneCount' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 19,
+      "title": "Return a Result",
+      "chapter": "Chapter 3 \u00b7 Methods and Movement",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'IsAlive' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'health' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 20,
+      "title": "Track Horizontal Position",
+      "chapter": "Chapter 3 \u00b7 Methods and Movement",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerX' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 21,
+      "title": "Track Vertical Position",
+      "chapter": "Chapter 3 \u00b7 Methods and Movement",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerY' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 22,
+      "title": "Move One Tile Right",
+      "chapter": "Chapter 3 \u00b7 Methods and Movement",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'MoveRight' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 23,
+      "title": "Keep the Player Inside the Cave",
+      "chapter": "Chapter 3 \u00b7 Methods and Movement",
+      "issues": [
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 0,
+      "info": 1
+    },
+    {
+      "module_number": 24,
+      "title": "Movement Challenge: WASD",
+      "chapter": "Chapter 3 \u00b7 Methods and Movement",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'playerY' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 25,
+      "title": "Create a Fixed Inventory",
+      "chapter": "Chapter 4 \u00b7 Collections and World",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'inventory' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 26,
+      "title": "Create a Flexible Rock List",
+      "chapter": "Chapter 4 \u00b7 Collections and World",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'rocks' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 27,
+      "title": "Add a Rock",
+      "chapter": "Chapter 4 \u00b7 Collections and World",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'rocks' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 28,
+      "title": "Remove a Mined Rock",
+      "chapter": "Chapter 4 \u00b7 Collections and World",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'rocks' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 29,
+      "title": "Visit Every Rock",
+      "chapter": "Chapter 4 \u00b7 Collections and World",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'rock' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'rocks' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 30,
+      "title": "Repeat With an Index",
+      "chapter": "Chapter 4 \u00b7 Collections and World",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'Count' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'rocks' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 31,
+      "title": "Create the Cave Grid",
+      "chapter": "Chapter 4 \u00b7 Collections and World",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'cave' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 32,
+      "title": "World Challenge: Mine a Rock",
+      "chapter": "Chapter 4 \u00b7 Collections and World",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'MineRock' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'rock' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'rocks' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'stoneCount' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 4,
+      "info": 1
+    },
+    {
+      "module_number": 33,
+      "title": "Define a Player Class",
+      "chapter": "Chapter 5 \u00b7 Objects and Combat",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'Player' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 34,
+      "title": "Add Player Properties",
+      "chapter": "Chapter 5 \u00b7 Objects and Combat",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'Health' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'Name' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'Player' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 3,
+      "info": 1
+    },
+    {
+      "module_number": 35,
+      "title": "Initialize New Players",
+      "chapter": "Chapter 5 \u00b7 Objects and Combat",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'Health' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'Player' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 36,
+      "title": "Create a Player Object",
+      "chapter": "Chapter 5 \u00b7 Objects and Combat",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'Player' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'miner' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 37,
+      "title": "Create Slime Health",
+      "chapter": "Chapter 5 \u00b7 Objects and Combat",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'slimeHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 1,
+      "info": 1
+    },
+    {
+      "module_number": 38,
+      "title": "Deal Damage",
+      "chapter": "Chapter 5 \u00b7 Objects and Combat",
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'DamageSlime' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'slimeHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 2,
+      "info": 1
+    },
+    {
+      "module_number": 39,
+      "title": "Model an Inventory Item",
+      "chapter": "Chapter 5 \u00b7 Objects and Combat",
+      "issues": [
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 0,
+      "medium": 0,
+      "info": 1
+    },
+    {
+      "module_number": 40,
+      "title": "Final Challenge: Defeat the Slime",
+      "chapter": "Chapter 5 \u00b7 Objects and Combat",
+      "issues": [
+        {
+          "severity": "HIGH",
+          "field": "RecallPrompt",
+          "type": "STRING_LITERAL_TOKENIZED_AS_IDENTIFIER",
+          "details": "Possible words from quoted strings treated as identifiers: defeated"
+        },
+        {
+          "severity": "HIGH",
+          "field": "TransferPrompt",
+          "type": "STRING_LITERAL_TOKENIZED_AS_IDENTIFIER",
+          "details": "Possible words from quoted strings treated as identifiers: defeated"
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'AttackSlime' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'slimeHealth' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'status' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "MEDIUM",
+          "field": "Teaching",
+          "type": "POSSIBLY_TESTED_BEFORE_TAUGHT",
+          "details": "Target identifier 'stoneCount' does not appear in Teaching or ExampleCode."
+        },
+        {
+          "severity": "INFO",
+          "field": "Teaching",
+          "type": "TITLE_NOT_ECHOED",
+          "details": "Teaching does not repeat the module title verbatim."
+        }
+      ],
+      "high": 2,
+      "medium": 4,
+      "info": 1
+    }
+  ]
+}

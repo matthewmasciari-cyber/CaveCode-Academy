@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:04:00.084249+00:00",
+  "module": {
+    "ModuleNumber": 11,
+    "Chapter": "Chapter 2 \u00b7 Decisions, Alarms, and Safety",
+    "Topic": "Elif",
+    "Title": "Create Alarm Levels",
+    "Teaching": "elif adds ordered conditions between if and else. Python stops at the first branch that matches.",
+    "ExampleCode": "if level >= 90:\n    print(\"High\")\nelif level >= 70:\n    print(\"Normal\")\nelse:\n    print(\"Low\")",
+    "TargetCode": "if temperature >= 40:\n    print(\"Critical\")\nelif temperature >= 30:\n    print(\"Warning\")\nelse:\n    print(\"Normal\")",
+    "FillStarter": "if temperature >= ___:\n    print(\"Critical\")\nelif temperature >= ___:\n    print(\"Warning\")\nelse:\n    print(\"Normal\")",
+    "PredictionQuestion": "Why must the critical condition come first?",
+    "PredictionOptions": [
+      "A critical value also meets the warning condition",
+      "elif always runs first",
+      "Python sorts conditions automatically",
+      "else can compare values"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "Checking the highest threshold first prevents it from being classified only as a warning.",
+    "BrokenCode": "if temperature >= 30:\n    print(\"Warning\")\nelif temperature >= 40:\n    print(\"Critical\")\nelse:\n    print(\"Normal\")",
+    "DebugPrompt": "The warning branch catches critical temperatures before the later condition can run.",
+    "RecallPrompt": "Create Critical, Warning, and Normal temperature branches. Use the exact identifier print. Use these exact values: 30, 40.",
+    "TransferPrompt": "Classify pressure as High at 80+, Elevated at 60+, otherwise Normal. Use the exact identifier print.",
+    "TransferCode": "if pressure >= 80:\n    print(\"High\")\nelif pressure >= 60:\n    print(\"Elevated\")\nelse:\n    print(\"Normal\")",
+    "PreviewMessage": "The alarm panel now displays three severity levels."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

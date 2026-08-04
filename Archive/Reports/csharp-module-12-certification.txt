@@ -77,7 +77,7 @@ DebugPrompt:
 The fallback block should use else, not a second if without a condition.
 
 RecallPrompt:
-Write the pickaxe if/else decision from memory. Use these exact identifiers: Find, Ready, hasPickaxe, mine, status, to. Use these exact values: "Find a pickaxe", "Ready to mine".
+Write the pickaxe if/else decision from memory. Use these exact identifiers: hasPickaxe, status. Use these exact values: "Find a pickaxe", "Ready to mine".
 
 TransferPrompt:
 Show Safe when isAlive is true, otherwise show Defeated. Use the exact identifier status.

@@ -1,0 +1,19 @@
+{
+  "module_number": 22,
+  "module_title": "Warn Before Motor Start",
+  "changes": [
+    "RecallPrompt: added exact identifiers print, range, seconds",
+    "RecallPrompt: added exact values 0, 1, 5, Motor starting",
+    "TransferPrompt: added exact identifiers print, range, seconds",
+    "TransferPrompt: added exact values 0, 1, 3, Fan starting"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-22-20260804-140556/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

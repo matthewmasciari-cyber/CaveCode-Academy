@@ -1,0 +1,19 @@
+{
+  "module_number": 20,
+  "module_title": "Stop an Unsafe Sequence",
+  "changes": [
+    "RecallPrompt: added exact identifiers emergency_stop, f, print, range, second",
+    "RecallPrompt: added exact values 60, Running: {second}",
+    "TransferPrompt: added exact identifiers f, print, range, sensor",
+    "TransferPrompt: added exact values 8, Sensor {sensor} checked"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-20-20260804-140534/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

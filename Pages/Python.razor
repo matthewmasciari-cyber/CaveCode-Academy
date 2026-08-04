@@ -521,8 +521,10 @@
             "print() displays the value placed inside its parentheses.",
             "print(Cave control terminal online.)",
             "The message is text, so it needs quotation marks.",
-            "From memory, display \"Cave control terminal online.\"",
-            "Display \"Ventilation controller ready.\"",
+            /* CAVECODE_PYTHON_MODULE_1_RECALLPROMPT_REPAIR */
+        "From memory, display \"Cave control terminal online.\". Use the exact identifier print.",
+            /* CAVECODE_PYTHON_MODULE_1_TRANSFERPROMPT_REPAIR */
+        "Display \"Ventilation controller ready.\". Use the exact identifier print.",
             "print(\"Ventilation controller ready.\")",
             "The facility terminal now displays a startup message."
         ),
@@ -597,8 +599,10 @@
             "input() returns a string unless you explicitly convert it.",
             "operator = print(\"Enter operator name: \")",
             "print() only displays text; input() collects a response.",
-            "Collect the operator name with the prompt \"Enter operator name: \".",
-            "Collect a zone name with the prompt \"Enter zone: \".",
+            /* CAVECODE_PYTHON_MODULE_5_RECALLPROMPT_REPAIR */
+        "Collect the operator name with the prompt \"Enter operator name: \". Use the exact identifier input.",
+            /* CAVECODE_PYTHON_MODULE_5_TRANSFERPROMPT_REPAIR */
+        "Collect a zone name with the prompt \"Enter zone: \". Use the exact identifier input.",
             "zone = input(\"Enter zone: \")",
             "The control terminal can now identify its operator."
         ),
@@ -616,8 +620,11 @@
             "float() converts numeric text into a decimal value.",
             "pressure = input(float(\"Enter pressure: \"))",
             "Call input() first, then pass its returned text into float().",
-            "Collect and convert a pressure reading using float(input(...)).",
-            "Collect and convert an integer cycle count.",
+            /* CAVECODE_PYTHON_MODULE_6_RECALLPROMPT_REPAIR */
+        "Collect and convert a pressure reading using float(input(...)). Use the exact value \"Enter pressure: \".",
+            /* CAVECODE_PYTHON_MODULE_6_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_6_TRANSFERPROMPT_REPAIR */
+        "Collect and convert an integer cycle count. Use these exact identifiers: cycle_count, input, int. Use the exact value \"Enter cycle count: \".",
             "cycle_count = int(input(\"Enter cycle count: \"))",
             "The terminal can now perform math with operator-entered readings."
         ),
@@ -635,7 +642,9 @@
             "Dividing the total by 2 gives the average of two values.",
             "average_temperature = zone_a + zone_b / 2",
             "Without parentheses, division happens before addition.",
-            "Write the average_temperature calculation from memory.",
+            /* CAVECODE_PYTHON_MODULE_7_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_7_RECALLPROMPT_REPAIR */
+        "Write the average_temperature calculation from memory. Use these exact identifiers: zone_a, zone_b. Use the exact value 2.",
             "Calculate total_runtime by adding pump_hours and fan_hours.",
             "total_runtime = pump_hours + fan_hours",
             "The facility dashboard can now calculate combined readings."
@@ -654,8 +663,12 @@
             "An f-string inserts expressions written inside braces.",
             "facility_name = \"Crystal Cavern\"\noperator = input(\"Enter operator name: \")\ntemperature = \"18.5\"\npressure = 42.0\nfan_running = true\nprint(\"{facility_name} | {operator} | {temperature}\")",
             "Repair the numeric temperature, Boolean capitalization, and missing f-string prefix.",
-            "Rebuild the complete startup summary from memory.",
-            "Create a startup summary for a wastewater pump station.",
+            /* CAVECODE_PYTHON_MODULE_8_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_8_RECALLPROMPT_REPAIR */
+        "Rebuild the complete startup summary from memory. Use these exact identifiers: f, facility_name, fan_running, input, operator, pressure, print, temperature. Use these exact values: 18.5, 42.0, \"Crystal Cavern\", \"Enter operator name: \", True, \"{facility_name} | {operator} | {temperature}°C | {pressure} PSI | Fan: {fan_running}\".",
+            /* CAVECODE_PYTHON_MODULE_8_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_8_TRANSFERPROMPT_REPAIR */
+        "Create a startup summary for a wastewater pump station. Use these exact identifiers: f, input, level, operator, print, pump_running, station_name. Use these exact values: 62.5, False, \"North Pump Station\", \"Operator: \", \"{station_name} | {operator} | Level: {level}% | Pump: {pump_running}\".",
             "station_name = \"North Pump Station\"\noperator = input(\"Operator: \")\nlevel = 62.5\npump_running = False\nprint(f\"{station_name} | {operator} | Level: {level}% | Pump: {pump_running}\")",
             "Chapter 1 complete: the control room is online."
         ),
@@ -673,8 +686,12 @@
             "The greater-than comparison becomes True above the setpoint.",
             "if temperature > 30\nprint(\"High temperature alarm\")",
             "Python needs a colon after the condition and indentation inside the block.",
-            "Write the high-temperature alarm from memory.",
-            "Print a low-level alarm when tank_level is below 20.",
+            /* CAVECODE_PYTHON_MODULE_9_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_9_RECALLPROMPT_REPAIR */
+        "Write the high-temperature alarm from memory. Use the exact identifier print. Use these exact values: 30, \"High temperature alarm\".",
+            /* CAVECODE_PYTHON_MODULE_9_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_9_TRANSFERPROMPT_REPAIR */
+        "Print a low-level alarm when tank_level is below 20. Use the exact identifier print. Use the exact value \"Low tank level\".",
             "if tank_level < 20:\n    print(\"Low tank level\")",
             "The controller now reacts to a high temperature."
         ),
@@ -692,7 +709,9 @@
             "The else branch handles every value that did not pass the if condition.",
             "if oxygen_level >= 19.5:\n    print(\"Safe\")\nelse\n    print(\"Unsafe\")",
             "The else keyword also needs a colon.",
-            "Rebuild the safe-or-unsafe oxygen check.",
+            /* CAVECODE_PYTHON_MODULE_10_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_10_RECALLPROMPT_REPAIR */
+        "Rebuild the safe-or-unsafe oxygen check. Use these exact identifiers: oxygen_level, print. Use these exact values: 19.5, \"Safe\", \"Unsafe\".",
             "Print Ready when door_closed is True, otherwise print Door open.",
             "if door_closed:\n    print(\"Ready\")\nelse:\n    print(\"Door open\")",
             "The safety display now has both safe and unsafe states."
@@ -711,8 +730,11 @@
             "Checking the highest threshold first prevents it from being classified only as a warning.",
             "if temperature >= 30:\n    print(\"Warning\")\nelif temperature >= 40:\n    print(\"Critical\")\nelse:\n    print(\"Normal\")",
             "The warning branch catches critical temperatures before the later condition can run.",
-            "Create Critical, Warning, and Normal temperature branches.",
-            "Classify pressure as High at 80+, Elevated at 60+, otherwise Normal.",
+            /* CAVECODE_PYTHON_MODULE_11_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_11_RECALLPROMPT_REPAIR */
+        "Create Critical, Warning, and Normal temperature branches. Use the exact identifier print. Use these exact values: 30, 40.",
+            /* CAVECODE_PYTHON_MODULE_11_TRANSFERPROMPT_REPAIR */
+        "Classify pressure as High at 80+, Elevated at 60+, otherwise Normal. Use the exact identifier print.",
             "if pressure >= 80:\n    print(\"High\")\nelif pressure >= 60:\n    print(\"Elevated\")\nelse:\n    print(\"Normal\")",
             "The alarm panel now displays three severity levels."
         ),
@@ -730,8 +752,12 @@
             "and returns True only when both sides are True.",
             "if door_closed or pressure_normal:\n    print(\"System ready\")",
             "or would allow the system to proceed when only one permissive is satisfied.",
-            "Write the two-condition system-ready check.",
-            "Allow pump start only when level_ok and overload_ok are both True.",
+            /* CAVECODE_PYTHON_MODULE_12_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_12_RECALLPROMPT_REPAIR */
+        "Write the two-condition system-ready check. Use these exact identifiers: door_closed, pressure_normal, print. Use the exact value \"System ready\".",
+            /* CAVECODE_PYTHON_MODULE_12_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_12_TRANSFERPROMPT_REPAIR */
+        "Allow pump start only when level_ok and overload_ok are both True. Use the exact identifier print. Use the exact value \"Pump start permitted\".",
             "if level_ok and overload_ok:\n    print(\"Pump start permitted\")",
             "Multiple safety permissives can now be evaluated together."
         ),
@@ -749,8 +775,12 @@
             "not converts False to True, allowing the safe condition to pass.",
             "if start_button and emergency_stop:\n    print(\"Motor starting\")",
             "The unsafe version starts specifically while the emergency stop is active.",
-            "Rebuild the start-button and emergency-stop interlock.",
-            "Start a fan only when command_on is True and smoke_alarm is False.",
+            /* CAVECODE_PYTHON_MODULE_13_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_13_RECALLPROMPT_REPAIR */
+        "Rebuild the start-button and emergency-stop interlock. Use these exact identifiers: emergency_stop, print, start_button. Use the exact value \"Motor starting\".",
+            /* CAVECODE_PYTHON_MODULE_13_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_13_TRANSFERPROMPT_REPAIR */
+        "Start a fan only when command_on is True and smoke_alarm is False. Use the exact identifier print. Use the exact value \"Fan starting\".",
             "if command_on and not smoke_alarm:\n    print(\"Fan starting\")",
             "The simulated equipment now respects an emergency interlock."
         ),
@@ -768,8 +798,10 @@
             "A comparison expression evaluates to a Boolean.",
             "low_level = tank_level = minimum_level",
             "One equals sign assigns; use < to compare the two values.",
-            "Store whether tank_level is below minimum_level.",
-            "Store whether pressure is greater than maximum_pressure.",
+            /* CAVECODE_PYTHON_MODULE_14_RECALLPROMPT_REPAIR */
+        "Store whether tank_level is below minimum_level. Use the exact identifier low_level.",
+            /* CAVECODE_PYTHON_MODULE_14_TRANSFERPROMPT_REPAIR */
+        "Store whether pressure is greater than maximum_pressure. Use the exact identifier high_pressure.",
             "high_pressure = pressure > maximum_pressure",
             "The controller can now store alarm conditions as Boolean values."
         ),
@@ -787,8 +819,12 @@
             "Two equals signs compare values without changing the variable.",
             "mode = \"AUTO\"\nif mode = \"HAND\":\n    print(\"Manual run\")\nelif mode = \"AUTO\":\n    print(\"Automatic control\")",
             "Use == for both comparisons and include an else path for OFF.",
-            "Rebuild the HAND-OFF-AUTO mode selector.",
-            "Create LOCAL and REMOTE modes with a fallback Disabled state.",
+            /* CAVECODE_PYTHON_MODULE_15_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_15_RECALLPROMPT_REPAIR */
+        "Rebuild the HAND-OFF-AUTO mode selector. Use the exact identifier print. Use these exact values: \"Automatic control\", \"Equipment off\", \"Manual run\".",
+            /* CAVECODE_PYTHON_MODULE_15_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_15_TRANSFERPROMPT_REPAIR */
+        "Create LOCAL and REMOTE modes with a fallback Disabled state. Use these exact identifiers: mode, print. Use these exact values: \"Local control\", \"Remote control\".",
             "mode = \"REMOTE\"\nif mode == \"LOCAL\":\n    print(\"Local control\")\nelif mode == \"REMOTE\":\n    print(\"Remote control\")\nelse:\n    print(\"Disabled\")",
             "The facility now supports familiar equipment operating modes."
         ),
@@ -806,8 +842,12 @@
             "All four parts of the and expression must evaluate to True.",
             "can_start = mode = \"AUTO\" and door_closed or level_ok and emergency_stop\nif can_start\n    print(\"Pump running\")",
             "Repair the comparison, Boolean grouping, emergency-stop logic, colon, and safe branches.",
-            "Rebuild the complete pump safety decision.",
-            "Create a fan safety decision using AUTO mode, air_quality_ok, door_closed, and smoke_alarm.",
+            /* CAVECODE_PYTHON_MODULE_16_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_16_RECALLPROMPT_REPAIR */
+        "Rebuild the complete pump safety decision. Use these exact identifiers: can_start, door_closed, emergency_stop, level_ok, mode, print. Use these exact values: \"AUTO\", \"Emergency stop active\", \"Pump running\", \"Start blocked\".",
+            /* CAVECODE_PYTHON_MODULE_16_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_16_TRANSFERPROMPT_REPAIR */
+        "Create a fan safety decision using AUTO mode, air_quality_ok, door_closed, and smoke_alarm. Use these exact identifiers: can_start, print. Use these exact values: \"Fan running\", \"Fan start blocked\", \"Smoke alarm active\".",
             "can_start = mode == \"AUTO\" and air_quality_ok and door_closed and not smoke_alarm\nif can_start:\n    print(\"Fan running\")\nelif smoke_alarm:\n    print(\"Smoke alarm active\")\nelse:\n    print(\"Fan start blocked\")",
             "Chapter 2 complete: safety and alarm logic are active."
         ),
@@ -825,8 +865,10 @@
             "The += operation moves temperature toward the target each iteration.",
             "temperature = 15\nwhile temperature < 20:\n    temperature -= 1",
             "Subtracting moves the value away from the target and creates an endless loop.",
-            "Write the temperature polling loop from memory.",
-            "Increase tank_level from 40 until it reaches 50.",
+            /* CAVECODE_PYTHON_MODULE_17_RECALLPROMPT_REPAIR */
+        "Write the temperature polling loop from memory. Use these exact values: 1, 15, 20.",
+            /* CAVECODE_PYTHON_MODULE_17_TRANSFERPROMPT_REPAIR */
+        "Increase tank_level from 40 until it reaches 50. Use the exact value 1.",
             "tank_level = 40\nwhile tank_level < 50:\n    tank_level += 1",
             "The simulator can now represent a changing process value."
         ),
@@ -844,8 +886,12 @@
             "range excludes its stop value, so range(1, 6) ends at 5.",
             "for zone in range(1, 5):\nprint(f\"Checking zone {zone}\")",
             "Use a stop value of 6 and indent the loop body.",
-            "Rebuild the five-zone inspection loop.",
-            "Inspect pumps 1 through 3.",
+            /* CAVECODE_PYTHON_MODULE_18_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_18_RECALLPROMPT_REPAIR */
+        "Rebuild the five-zone inspection loop. Use these exact identifiers: f, print, range. Use these exact values: 1, 6, \"Checking zone {zone}\".",
+            /* CAVECODE_PYTHON_MODULE_18_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_18_TRANSFERPROMPT_REPAIR */
+        "Inspect pumps 1 through 3. Use these exact identifiers: f, print, pump, range. Use these exact values: 4, \"Checking pump {pump}\".",
             "for pump in range(1, 4):\n    print(f\"Checking pump {pump}\")",
             "The inspection routine can now visit every facility zone."
         ),
@@ -863,8 +909,12 @@
             "The loop runs three times and adds one each time.",
             "cycle_count = 0\nfor cycle in range(3):\n    cycle_count =+ 1",
             "=+ assigns positive one each time; += is the increment operator.",
-            "Create and increment cycle_count through three cycles.",
-            "Count five successful sensor reads.",
+            /* CAVECODE_PYTHON_MODULE_19_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_19_RECALLPROMPT_REPAIR */
+        "Create and increment cycle_count through three cycles. Use these exact identifiers: cycle, range. Use these exact values: 0, 1, 3.",
+            /* CAVECODE_PYTHON_MODULE_19_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_19_TRANSFERPROMPT_REPAIR */
+        "Count five successful sensor reads. Use these exact identifiers: range, read_count, reading. Use these exact values: 0, 1, 5.",
             "read_count = 0\nfor reading in range(5):\n    read_count += 1",
             "The dashboard can now track equipment cycles."
         ),
@@ -882,8 +932,12 @@
             "break transfers execution to the first line after the loop.",
             "for second in range(60):\n    if emergency_stop:\n        continue\n    print(f\"Running: {second}\")",
             "continue skips one iteration but does not stop the sequence.",
-            "Rebuild the emergency-stop loop with break.",
-            "Stop checking sensors as soon as critical_alarm becomes True.",
+            /* CAVECODE_PYTHON_MODULE_20_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_20_RECALLPROMPT_REPAIR */
+        "Rebuild the emergency-stop loop with break. Use these exact identifiers: emergency_stop, f, print, range, second. Use these exact values: 60, \"Running: {second}\".",
+            /* CAVECODE_PYTHON_MODULE_20_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_20_TRANSFERPROMPT_REPAIR */
+        "Stop checking sensors as soon as critical_alarm becomes True. Use these exact identifiers: f, print, range, sensor. Use these exact values: 8, \"Sensor {sensor} checked\".",
             "for sensor in range(8):\n    if critical_alarm:\n        break\n    print(f\"Sensor {sensor} checked\")",
             "Unsafe equipment sequences can now terminate immediately."
         ),
@@ -901,8 +955,11 @@
             "continue bypasses the remaining lines for that one sensor.",
             "for sensor in sensors:\n    if sensor[\"online\"] is False:\n        break\n    print(sensor[\"name\"])",
             "break would stop checking all remaining sensors.",
-            "Write the offline-sensor skip logic from memory.",
-            "Skip readings equal to -1 while printing valid values.",
+            /* CAVECODE_PYTHON_MODULE_21_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_21_RECALLPROMPT_REPAIR */
+        "Write the offline-sensor skip logic from memory. Use these exact identifiers: print, sensors. Use these exact values: False, \"name\", \"online\".",
+            /* CAVECODE_PYTHON_MODULE_21_TRANSFERPROMPT_REPAIR */
+        "Skip readings equal to -1 while printing valid values. Use these exact identifiers: print, reading.",
             "for reading in readings:\n    if reading == -1:\n        continue\n    print(reading)",
             "The monitoring routine can ignore unavailable devices."
         ),
@@ -920,8 +977,12 @@
             "The third range argument is the step, and -1 subtracts one each time.",
             "for seconds in range(5, 0, 1):\n    print(seconds)",
             "A positive step cannot move from 5 toward the lower stop value.",
-            "Rebuild the five-second startup countdown.",
-            "Create a three-second fan-start countdown.",
+            /* CAVECODE_PYTHON_MODULE_22_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_22_RECALLPROMPT_REPAIR */
+        "Rebuild the five-second startup countdown. Use these exact identifiers: print, range, seconds. Use these exact values: 0, 1, 5, \"Motor starting\".",
+            /* CAVECODE_PYTHON_MODULE_22_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_22_TRANSFERPROMPT_REPAIR */
+        "Create a three-second fan-start countdown. Use these exact identifiers: print, range, seconds. Use these exact values: 0, 1, 3, \"Fan starting\".",
             "for seconds in range(3, 0, -1):\n    print(seconds)\nprint(\"Fan starting\")",
             "The system now gives operators a startup warning."
         ),
@@ -939,8 +1000,12 @@
             "Indentation groups the ordered startup actions under the safety condition.",
             "if safety_ok:\nprint(\"Start exhaust fan\")\nprint(\"Open damper\")\nelse:\nprint(\"Sequence blocked\")",
             "Indent the branch bodies so Python can identify each block.",
-            "Rebuild the ventilation startup sequence.",
-            "Create a shutdown sequence that stops equipment, closes a valve, then stops the fan.",
+            /* CAVECODE_PYTHON_MODULE_23_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_23_RECALLPROMPT_REPAIR */
+        "Rebuild the ventilation startup sequence. Use these exact identifiers: print, safety_ok. Use these exact values: \"Open damper\", \"Sequence blocked\", \"Start exhaust fan\", \"Start process equipment\".",
+            /* CAVECODE_PYTHON_MODULE_23_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_23_TRANSFERPROMPT_REPAIR */
+        "Create a shutdown sequence that stops equipment, closes a valve, then stops the fan. Use these exact identifiers: print, shutdown_command. Use these exact values: \"Close valve\", \"Stop exhaust fan\", \"Stop process equipment\".",
             "if shutdown_command:\n    print(\"Stop process equipment\")\n    print(\"Close valve\")\n    print(\"Stop exhaust fan\")",
             "The simulator now performs ordered equipment actions."
         ),
@@ -958,8 +1023,12 @@
             "The condition is checked each iteration and break ends operation when necessary.",
             "cycle_count = 0\nif air_quality_ok and emergency_stop:\n    for seconds in range(3, 0, 1):\n        print(seconds)\n    for minute in range(1, 6):\n        if emergency_stop:\n            continue\n        cycle_count =+ 1",
             "Repair the emergency logic, countdown step, loop stop behavior, and counter operator.",
-            "Rebuild the ventilation challenge from memory.",
-            "Create a three-cycle sump-pump sequence that stops on high_pressure.",
+            /* CAVECODE_PYTHON_MODULE_24_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_24_RECALLPROMPT_REPAIR */
+        "Rebuild the ventilation challenge from memory. Use these exact identifiers: air_quality_ok, cycle_count, emergency_stop, f, minute, print, range, seconds. Use these exact values: 0, 1, 3, 6, \"Monitoring minute {minute}\", \"Ventilation blocked\", \"Ventilation fan started\".",
+            /* CAVECODE_PYTHON_MODULE_24_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_24_TRANSFERPROMPT_REPAIR */
+        "Create a three-cycle sump-pump sequence that stops on high_pressure. Use these exact identifiers: cycle_count, f, level_high, print, range. Use these exact values: 0, 1, 4, \"Pump cycle {cycle}\", \"Pump sequence blocked\".",
             "cycle_count = 0\nif level_high and not high_pressure:\n    for cycle in range(1, 4):\n        if high_pressure:\n            break\n        cycle_count += 1\n        print(f\"Pump cycle {cycle}\")\nelse:\n    print(\"Pump sequence blocked\")",
             "Chapter 3 complete: automatic operating sequences are online."
         ),
@@ -977,7 +1046,8 @@
             "Python list literals use square brackets.",
             "temperatures = (18.2, 19.1, 20.4, 18.9)",
             "Parentheses create a tuple; use square brackets for this editable list.",
-            "Create the four-value temperatures list.",
+            /* CAVECODE_PYTHON_MODULE_25_RECALLPROMPT_REPAIR */
+        "Create the four-value temperatures list. Use these exact values: 18.2, 18.9, 19.1, 20.4.",
             "Create a pressures list containing 41.2, 42.0, and 41.7.",
             "pressures = [41.2, 42.0, 41.7]",
             "The sensor network can now retain multiple readings."
@@ -996,8 +1066,10 @@
             "The loop variable receives one list element at a time.",
             "for temperatures in temperature:\n    print(temperatures)",
             "The iterable and loop variable are reversed.",
-            "Loop through and print each temperature.",
-            "Loop through and print each pressure.",
+            /* CAVECODE_PYTHON_MODULE_26_RECALLPROMPT_REPAIR */
+        "Loop through and print each temperature. Use the exact identifier temperatures.",
+            /* CAVECODE_PYTHON_MODULE_26_TRANSFERPROMPT_REPAIR */
+        "Loop through and print each pressure. Use the exact identifier pressures.",
             "for pressure in pressures:\n    print(pressure)",
             "Every stored sensor reading can now be inspected."
         ),
@@ -1015,8 +1087,10 @@
             "len() returns the number of items in a collection.",
             "highest = min(temperatures)\nlowest = max(temperatures)\naverage = len(temperatures) / sum(temperatures)",
             "The min and max assignments are reversed, and average must divide the total by the count.",
-            "Rebuild the high, low, and average calculations.",
-            "Calculate total_flow and average_flow from flows.",
+            /* CAVECODE_PYTHON_MODULE_27_RECALLPROMPT_REPAIR */
+        "Rebuild the high, low, and average calculations. Use these exact identifiers: highest, len, lowest, max, min, sum, temperatures.",
+            /* CAVECODE_PYTHON_MODULE_27_TRANSFERPROMPT_REPAIR */
+        "Calculate total_flow and average_flow from flows. Use these exact identifiers: len, sum.",
             "total_flow = sum(flows)\naverage_flow = total_flow / len(flows)",
             "The dashboard can now summarize the sensor network."
         ),
@@ -1034,7 +1108,8 @@
             "Use the key inside square brackets: pump[\"name\"].",
             "pump = [\"name\": \"Transfer Pump 1\", \"running\": True, \"hours\": 125]",
             "Dictionary entries belong inside braces, not square brackets.",
-            "Create the pump dictionary from memory.",
+            /* CAVECODE_PYTHON_MODULE_28_RECALLPROMPT_REPAIR */
+        "Create the pump dictionary from memory. Use these exact values: 1, 125, \"Transfer Pump 1\", True, \"hours\", \"name\", \"running\".",
             "Create a fan dictionary with name EF-1, running False, and hours 82.",
             "fan = {\"name\": \"EF-1\", \"running\": False, \"hours\": 82}",
             "Equipment details are now grouped into meaningful records."
@@ -1053,8 +1128,10 @@
             "Only the addressed keys are modified.",
             "pump[\"running\"] == False\npump[\"hours\"] =+ 1",
             "Use assignment for running and += to increment hours.",
-            "Stop the pump and add one operating hour.",
-            "Start fan and add five hours to its runtime.",
+            /* CAVECODE_PYTHON_MODULE_29_RECALLPROMPT_REPAIR */
+        "Stop the pump and add one operating hour. Use these exact values: 1, False, \"hours\", \"running\".",
+            /* CAVECODE_PYTHON_MODULE_29_TRANSFERPROMPT_REPAIR */
+        "Start fan and add five hours to its runtime. Use these exact values: 5, True, \"running\".",
             "fan[\"running\"] = True\nfan[\"hours\"] += 5",
             "The dashboard can now reflect changing equipment state."
         ),
@@ -1072,8 +1149,11 @@
             "The outer square brackets create a list; each brace pair creates a device dictionary.",
             "pumps = {\n    [\"name\": \"Pump 1\", \"running\": True],\n    [\"name\": \"Pump 2\", \"running\": False]\n}",
             "Use a list outside and dictionaries inside.",
-            "Create the two-pump list from memory.",
-            "Create a list containing two fans with name and running fields.",
+            /* CAVECODE_PYTHON_MODULE_30_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_30_RECALLPROMPT_REPAIR */
+        "Create the two-pump list from memory. Use the exact identifier pumps. Use these exact values: 1, 2, False, \"Pump 1\", \"Pump 2\", True, \"name\", \"running\".",
+            /* CAVECODE_PYTHON_MODULE_30_TRANSFERPROMPT_REPAIR */
+        "Create a list containing two fans with name and running fields. Use these exact values: 1, 2, False, \"Fan 1\", \"Fan 2\", True.",
             "fans = [\n    {\"name\": \"Fan 1\", \"running\": True},\n    {\"name\": \"Fan 2\", \"running\": False}\n]",
             "The facility model can now manage multiple devices."
         ),
@@ -1091,8 +1171,12 @@
             "Single quotes inside a double-quoted f-string avoid a quote collision.",
             "for pump in pumps:\nprint(f\"{pump[\"name\"]}: {pump[\"hours\"]} hours\")",
             "Indent the body and avoid conflicting quotation marks inside the f-string.",
-            "Rebuild the maintenance report loop.",
-            "Report each fan's name and running state.",
+            /* CAVECODE_PYTHON_MODULE_31_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_31_RECALLPROMPT_REPAIR */
+        "Rebuild the maintenance report loop. Use these exact identifiers: f, print, pump, pumps. Use the exact value \"{pump['name']}: {pump['hours']} hours\".",
+            /* CAVECODE_PYTHON_MODULE_31_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_31_TRANSFERPROMPT_REPAIR */
+        "Report each fan's name and running state. Use these exact identifiers: f, fans, print. Use the exact value \"{fan['name']}: Running = {fan['running']}\".",
             "for fan in fans:\n    print(f\"{fan['name']}: Running = {fan['running']}\")",
             "The facility can now print readable maintenance information."
         ),
@@ -1110,8 +1194,12 @@
             "Each device is a dictionary inside the equipment list.",
             "temperatures = [18.2, 19.1, 20.4]\nprint(f\"Low: {max(temperatures)}\")\nprint(f\"High: {min(temperatures)}\")\nprint(f\"Average: {len(temperatures) / sum(temperatures)}\")",
             "Repair low, high, and average calculations, then include alarmed equipment.",
-            "Rebuild the complete monitoring challenge.",
-            "Create a pressure dashboard with three devices and a high-pressure alarm report.",
+            /* CAVECODE_PYTHON_MODULE_32_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_32_RECALLPROMPT_REPAIR */
+        "Rebuild the complete monitoring challenge. Use these exact identifiers: device, equipment, f, print, temperatures. Use these exact values: 1, 125, 18.2, 18.9, 19.1, 20.4, 21.0, 41, 82, \"ALARM: {device['name']}\", \"Average: {sum(temperatures) / len(temperatures)}\", False, \"Fan 1\", \"High: {max(temperatures)}\", \"Low: {min(temperatures)}\", \"Pump 1\", True, \"Valve 1\", \"alarm\", \"hours\", \"name\".",
+            /* CAVECODE_PYTHON_MODULE_32_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_32_TRANSFERPROMPT_REPAIR */
+        "Create a pressure dashboard with three devices and a high-pressure alarm report. Use these exact identifiers: device, f, pressures, print. Use these exact values: 1, 41.2, 41.7, 42.0, 55.8, \"ALARM: {device['name']}\", \"Compressor 1\", \"Dryer 1\", False, \"Pressure average: {sum(pressures) / len(pressures)}\", \"Receiver 1\", True, \"name\".",
             "pressures = [41.2, 42.0, 55.8, 41.7]\ndevices = [\n    {\"name\": \"Compressor 1\", \"alarm\": False},\n    {\"name\": \"Receiver 1\", \"alarm\": True},\n    {\"name\": \"Dryer 1\", \"alarm\": False}\n]\nprint(f\"Pressure average: {sum(pressures) / len(pressures)}\")\nfor device in devices:\n    if device[\"alarm\"]:\n        print(f\"ALARM: {device['name']}\")",
             "Chapter 4 complete: the facility monitoring network is established."
         ),
@@ -1129,7 +1217,8 @@
             "return makes the function's result available to other code.",
             "def read_temperature()\nreturn 21.5",
             "Add a colon to the function header and indent the return statement.",
-            "Create read_temperature from memory.",
+            /* CAVECODE_PYTHON_MODULE_33_RECALLPROMPT_REPAIR */
+        "Create read_temperature from memory. Use the exact value 21.5.",
             "Create read_pressure that returns 42.0.",
             "def read_pressure():\n    return 42.0",
             "The facility now has a reusable sensor-reading function."
@@ -1148,7 +1237,9 @@
             "The parameter is assigned the argument passed during each call.",
             "def check_temperature:\n    if value > 30\n        print \"Alarm\"",
             "Add the parameter list, colons, and return values.",
-            "Rebuild check_temperature from memory.",
+            /* CAVECODE_PYTHON_MODULE_34_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_34_RECALLPROMPT_REPAIR */
+        "Rebuild check_temperature from memory. Use the exact identifier value. Use these exact values: 30, \"Alarm\", \"Normal\".",
             "Create check_pressure(value) returning High above 80, otherwise Normal.",
             "def check_pressure(value):\n    if value > 80:\n        return \"High\"\n    return \"Normal\"",
             "One function can now evaluate any supplied sensor reading."
@@ -1167,7 +1258,8 @@
             "The and/not expression evaluates to True or False.",
             "def can_start(door_closed, emergency_stop):\n    print door_closed and emergency_stop",
             "Return the safe Boolean expression and reverse the emergency-stop condition.",
-            "Rebuild can_start from memory.",
+            /* CAVECODE_PYTHON_MODULE_35_RECALLPROMPT_REPAIR */
+        "Rebuild can_start from memory. Use these exact identifiers: door_closed, emergency_stop.",
             "Create can_run_pump(level_ok, overload) returning the safe permissive.",
             "def can_run_pump(level_ok, overload):\n    return level_ok and not overload",
             "Equipment permissives can now be reused throughout the program."
@@ -1186,8 +1278,12 @@
             "Small focused functions are easier to test and reuse.",
             "def read_sensors()\n    print({\"temperature\": 21.5})\ndef check_alarms(readings):\nreturn readings[\"temperature\"] > 30",
             "Repair the missing colon, use return for readings, and indent the second return.",
-            "Rebuild the three-function facility structure.",
-            "Create read_level(), check_low_level(value), and display_level(status).",
+            /* CAVECODE_PYTHON_MODULE_36_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_36_RECALLPROMPT_REPAIR */
+        "Rebuild the three-function facility structure. Use these exact identifiers: alarm, check_alarms, display_status, f, print, read_sensors, readings. Use these exact values: 21.5, 30, 42.0, \"Alarm active: {alarm}\", \"pressure\", \"temperature\".",
+            /* CAVECODE_PYTHON_MODULE_36_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_36_TRANSFERPROMPT_REPAIR */
+        "Create read_level(), check_low_level(value), and display_level(status). Use these exact identifiers: f, low_level, print. Use these exact values: 20, 62.5, \"Low level: {low_level}\".",
             "def read_level():\n    return 62.5\n\ndef check_low_level(value):\n    return value < 20\n\ndef display_level(low_level):\n    print(f\"Low level: {low_level}\")",
             "The automation program is now divided into maintainable functions."
         ),
@@ -1205,8 +1301,12 @@
             "Append mode writes at the end of the existing file.",
             "open \"readings.txt\" as file:\nfile.print(\"Temperature: 21.5\")",
             "Use a with statement, open(), append mode, indentation, and file.write().",
-            "Rebuild the temperature logging block.",
-            "Append Pump 1 started to events.txt.",
+            /* CAVECODE_PYTHON_MODULE_37_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_37_RECALLPROMPT_REPAIR */
+        "Rebuild the temperature logging block. Use these exact identifiers: file, open, write. Use these exact values: 21.5, \"Temperature: 21.5\\n\", \"readings.txt\".",
+            /* CAVECODE_PYTHON_MODULE_37_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_37_TRANSFERPROMPT_REPAIR */
+        "Append Pump 1 started to events.txt. Use these exact identifiers: file, open, write. Use the exact value \"Pump 1 started\\n\".",
             "with open(\"events.txt\", \"a\") as file:\n    file.write(\"Pump 1 started\\n\")",
             "The facility can now preserve a history of readings."
         ),
@@ -1224,8 +1324,12 @@
             "The r mode opens an existing file for reading.",
             "with open(\"readings.txt\", \"a\") as file:\n    history = file.write()\nprint(history)",
             "Use read mode, call read(), and keep operations that use the open file inside the block.",
-            "Rebuild the historical-data reader.",
-            "Read and display events.txt.",
+            /* CAVECODE_PYTHON_MODULE_38_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_38_RECALLPROMPT_REPAIR */
+        "Rebuild the historical-data reader. Use these exact identifiers: file, history, open, print, read. Use the exact value \"readings.txt\".",
+            /* CAVECODE_PYTHON_MODULE_38_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_38_TRANSFERPROMPT_REPAIR */
+        "Read and display events.txt. Use these exact identifiers: file, open, print, read. Use the exact value \"r\".",
             "with open(\"events.txt\", \"r\") as file:\n    events = file.read()\n    print(events)",
             "Operators can now review previous facility events."
         ),
@@ -1243,8 +1347,11 @@
             "global tells Python that assignment should update the existing module-level variable.",
             "relay_output = False\n\ndef energize_relay():\n    relay_output == True",
             "Declare the global variable and assign with one equals sign.",
-            "Rebuild the simulated relay function.",
-            "Create deenergize_relay() that turns the same output False.",
+            /* CAVECODE_PYTHON_MODULE_39_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_39_RECALLPROMPT_REPAIR */
+        "Rebuild the simulated relay function. Use these exact identifiers: energize_relay, relay_output. Use these exact values: False, True.",
+            /* CAVECODE_PYTHON_MODULE_39_TRANSFERPROMPT_REPAIR */
+        "Create deenergize_relay() that turns the same output False. Use the exact identifier relay_output.",
             "def deenergize_relay():\n    global relay_output\n    relay_output = False",
             "Python state now maps conceptually to a physical relay output."
         ),
@@ -1262,8 +1369,12 @@
             "The permissive controls startup, while the loop checks the emergency stop during operation.",
             "def can_start(mode, door_closed, level_ok, emergency_stop)\n    return mode = \"AUTO\" or door_closed or level_ok or emergency_stop\n\ndef log_event(message):\n    open(\"facility.log\", \"r\").write(message)\n\nif can_start(mode, door_closed, level_ok, emergency_stop)\n    pump_running == True",
             "Repair the function syntax, safe Boolean logic, append logging, condition colon, and assignments.",
-            "Rebuild the complete facility automation capstone.",
-            "Create a ventilation capstone using AUTO mode, air_quality_ok, smoke_alarm, three monitoring cycles, and event logging.",
+            /* CAVECODE_PYTHON_MODULE_40_RECALLPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_40_RECALLPROMPT_REPAIR */
+        "Rebuild the complete facility automation capstone. Use these exact identifiers: can_start, cycle, door_closed, emergency_stop, f, file, level_ok, log_event, message, mode, open, print, pump_running, range, write. Use these exact values: 1, 4, \"AUTO\", \"Emergency stop\", False, \"Monitoring cycle {cycle}\", \"Pump started\", \"Start blocked\", True, \"\\n\", \"facility.log\".",
+            /* CAVECODE_PYTHON_MODULE_40_TRANSFERPROMPT_REPAIR */
+        /* CAVECODE_PYTHON_MODULE_40_TRANSFERPROMPT_REPAIR */
+        "Create a ventilation capstone using AUTO mode, air_quality_ok, smoke_alarm, three monitoring cycles, and event logging. Use these exact identifiers: can_start_fan, cycle, f, fan_running, file, log_event, message, open, print, range, write. Use these exact values: 1, 4, \"Air-quality cycle {cycle}\", False, \"Fan start blocked\", \"Fan started\", \"Smoke shutdown\", True, \"\\n\", \"ventilation.log\".",
             "def can_start_fan(mode, air_quality_ok, smoke_alarm):\n    return mode == \"AUTO\" and air_quality_ok and not smoke_alarm\n\ndef log_event(message):\n    with open(\"ventilation.log\", \"a\") as file:\n        file.write(message + \"\\n\")\n\nmode = \"AUTO\"\nair_quality_ok = True\nsmoke_alarm = False\nfan_running = False\n\nif can_start_fan(mode, air_quality_ok, smoke_alarm):\n    fan_running = True\n    log_event(\"Fan started\")\n    for cycle in range(1, 4):\n        if smoke_alarm:\n            fan_running = False\n            log_event(\"Smoke shutdown\")\n            break\n        print(f\"Air-quality cycle {cycle}\")\nelse:\n    log_event(\"Fan start blocked\")",
             "Course complete: the underground facility is fully automated."
         )

@@ -1,0 +1,19 @@
+================================================================================
+PYTHON CURRICULUM CERTIFICATION SUMMARY
+================================================================================
+
+Module 38: repaired — Review Historical Data
+Module 39: repaired — Simulate a Raspberry Pi Relay
+Module 40: repaired — Cave Facility Automation Capstone
+
+SUMMARY
+-------
+Total modules: 40
+Already certified: 0
+Automatically repaired: 3
+Repairable in dry run: 0
+Manual review required: 0
+Failed: 0
+
+Text report: Archive/Reports/python-curriculum-certification-summary.txt
+JSON report: Archive/Reports/python-curriculum-certification-summary.json

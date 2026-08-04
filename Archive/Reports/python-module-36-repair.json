@@ -1,0 +1,19 @@
+{
+  "module_number": 36,
+  "module_title": "Organize the Facility Program",
+  "changes": [
+    "RecallPrompt: added exact identifiers alarm, check_alarms, display_status, f, print, read_sensors, readings",
+    "RecallPrompt: added exact values 21.5, 30, 42.0, Alarm active: {alarm}, pressure, temperature",
+    "TransferPrompt: added exact identifiers f, low_level, print",
+    "TransferPrompt: added exact values 20, 62.5, Low level: {low_level}"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-36-20260804-140850/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

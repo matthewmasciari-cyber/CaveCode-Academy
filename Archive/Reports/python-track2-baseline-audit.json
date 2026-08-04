@@ -1,0 +1,432 @@
+{
+  "pass": "Python Track 2 Baseline",
+  "created_utc": "2026-08-04T13:39:31.156369+00:00",
+  "summary": {
+    "source": "Pages/Python.razor",
+    "constructor": "new Lesson(",
+    "module_count": 40,
+    "estimated_constructor_count": 40,
+    "csharp_17_field_model_reusable": true,
+    "build_passed": true
+  },
+  "consistency": {
+    "consistent_argument_count": true,
+    "argument_counts_found": [
+      17
+    ],
+    "consistent_string_field_count": true,
+    "string_field_counts_found": [
+      16
+    ],
+    "all_modules_have_fill_blank": true,
+    "modules_missing_fill_blank": []
+  },
+  "build": {
+    "passed": true,
+    "exit_code": 0,
+    "warnings": [],
+    "errors": []
+  },
+  "modules": [
+    {
+      "module_number": 1,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 1 \u00b7 Control-Room Foundations"
+    },
+    {
+      "module_number": 2,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 1 \u00b7 Control-Room Foundations"
+    },
+    {
+      "module_number": 3,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 1 \u00b7 Control-Room Foundations"
+    },
+    {
+      "module_number": 4,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 1 \u00b7 Control-Room Foundations"
+    },
+    {
+      "module_number": 5,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 1 \u00b7 Control-Room Foundations"
+    },
+    {
+      "module_number": 6,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 1 \u00b7 Control-Room Foundations"
+    },
+    {
+      "module_number": 7,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 1 \u00b7 Control-Room Foundations"
+    },
+    {
+      "module_number": 8,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 1 \u00b7 Control-Room Foundations"
+    },
+    {
+      "module_number": 9,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 2 \u00b7 Decisions, Alarms, and Safety"
+    },
+    {
+      "module_number": 10,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 2 \u00b7 Decisions, Alarms, and Safety"
+    },
+    {
+      "module_number": 11,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 2 \u00b7 Decisions, Alarms, and Safety"
+    },
+    {
+      "module_number": 12,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 2 \u00b7 Decisions, Alarms, and Safety"
+    },
+    {
+      "module_number": 13,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 2 \u00b7 Decisions, Alarms, and Safety"
+    },
+    {
+      "module_number": 14,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 2 \u00b7 Decisions, Alarms, and Safety"
+    },
+    {
+      "module_number": 15,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 2 \u00b7 Decisions, Alarms, and Safety"
+    },
+    {
+      "module_number": 16,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 2 \u00b7 Decisions, Alarms, and Safety"
+    },
+    {
+      "module_number": 17,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 3 \u00b7 Repeating Processes and Sequences"
+    },
+    {
+      "module_number": 18,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 3 \u00b7 Repeating Processes and Sequences"
+    },
+    {
+      "module_number": 19,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 3 \u00b7 Repeating Processes and Sequences"
+    },
+    {
+      "module_number": 20,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": true,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 3 \u00b7 Repeating Processes and Sequences"
+    },
+    {
+      "module_number": 21,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 3 \u00b7 Repeating Processes and Sequences"
+    },
+    {
+      "module_number": 22,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 3 \u00b7 Repeating Processes and Sequences"
+    },
+    {
+      "module_number": 23,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 3 \u00b7 Repeating Processes and Sequences"
+    },
+    {
+      "module_number": 24,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 3 \u00b7 Repeating Processes and Sequences"
+    },
+    {
+      "module_number": 25,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 4 \u00b7 Sensors, Devices, and Data"
+    },
+    {
+      "module_number": 26,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 4 \u00b7 Sensors, Devices, and Data"
+    },
+    {
+      "module_number": 27,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 4 \u00b7 Sensors, Devices, and Data"
+    },
+    {
+      "module_number": 28,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": true,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 4 \u00b7 Sensors, Devices, and Data"
+    },
+    {
+      "module_number": 29,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 4 \u00b7 Sensors, Devices, and Data"
+    },
+    {
+      "module_number": 30,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 4 \u00b7 Sensors, Devices, and Data"
+    },
+    {
+      "module_number": 31,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 4 \u00b7 Sensors, Devices, and Data"
+    },
+    {
+      "module_number": 32,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 4 \u00b7 Sensors, Devices, and Data"
+    },
+    {
+      "module_number": 33,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi"
+    },
+    {
+      "module_number": 34,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi"
+    },
+    {
+      "module_number": 35,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi"
+    },
+    {
+      "module_number": 36,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi"
+    },
+    {
+      "module_number": 37,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi"
+    },
+    {
+      "module_number": 38,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi"
+    },
+    {
+      "module_number": 39,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi"
+    },
+    {
+      "module_number": 40,
+      "argument_count": 17,
+      "string_field_count": 16,
+      "contains_fill_blank": true,
+      "contains_recall_word": false,
+      "contains_transfer_word": false,
+      "contains_debug_word": false,
+      "title_guess": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi"
+    }
+  ]
+}

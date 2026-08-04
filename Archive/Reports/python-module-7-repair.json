@@ -1,0 +1,17 @@
+{
+  "module_number": 7,
+  "module_title": "Calculate an Average",
+  "changes": [
+    "RecallPrompt: added exact identifiers zone_a, zone_b",
+    "RecallPrompt: added exact values 2"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-7-20260804-140253/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

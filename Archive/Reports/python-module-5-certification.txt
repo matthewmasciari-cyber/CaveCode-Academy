@@ -1,0 +1,13 @@
+Python Module 5 Certification
+
+Module: Identify the Operator
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/python-module-5-certification.txt
+JSON report: Archive/Reports/python-module-5-certification.json
+
+No production code was modified.

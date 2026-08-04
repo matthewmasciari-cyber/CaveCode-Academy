@@ -1,0 +1,19 @@
+{
+  "module_number": 13,
+  "module_title": "Build an Emergency-Stop Interlock",
+  "changes": [
+    "RecallPrompt: added exact identifiers emergency_stop, print, start_button",
+    "RecallPrompt: added exact values Motor starting",
+    "TransferPrompt: added exact identifiers print",
+    "TransferPrompt: added exact values Fan starting"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-13-20260804-140412/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

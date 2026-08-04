@@ -1,6 +1,6 @@
 {
   "pass": "C# Module 8 certification",
-  "created_utc": "2026-08-04T12:36:03.143313+00:00",
+  "created_utc": "2026-08-04T13:28:44.082468+00:00",
   "source": "Pages/CSharp.razor",
   "module_number": 8,
   "module": {
@@ -22,8 +22,8 @@
     "PredictionExplanation": "hasPickaxe uses bool, which stores true or false.",
     "BrokenCode": "int playerHealth = 100\nint stoneCount = \"0\";\nstring playerName = Miner;\nbool hasPickaxe = \"true\";",
     "DebugPrompt": "Repair the missing semicolon and the incorrect types or quotation marks.",
-    "RecallPrompt": "Rebuild all four player variables from memory. Use these exact identifiers: Miner, hasPickaxe, playerHealth, playerName, stoneCount. Use these exact values: 0, 100, \"Miner\", true.",
-    "TransferPrompt": "Create enemyHealth, enemyName, and enemyActive. Use the exact identifier Slime. Use these exact values: 30, \"Slime\", true.",
+    "RecallPrompt": "Rebuild all four player variables from memory. Use these exact identifiers: hasPickaxe, playerHealth, playerName, stoneCount. Use these exact values: 0, 100, \"Miner\", true.",
+    "TransferPrompt": "Create enemyHealth, enemyName, and enemyActive. Use these exact values: 30, \"Slime\", true.",
     "TransferCode": "int enemyHealth = 30;\nstring enemyName = \"Slime\";\nbool enemyActive = true;",
     "PreviewMessage": "The complete foundation state is ready."
   },
@@ -146,7 +146,7 @@
       "    0 Warning(s)",
       "    0 Error(s)",
       "",
-      "Time Elapsed 00:00:04.19"
+      "Time Elapsed 00:00:04.17"
     ]
   },
   "summary": {

@@ -1,0 +1,477 @@
+====================================================================================================
+CAVECODE C# HUMAN-QUALITY AUDIT — PASS HQ1
+====================================================================================================
+
+Modules reviewed: 40
+Modules with HIGH issues: 5
+Modules with MEDIUM issues: 38
+Total HIGH issues: 8
+Total MEDIUM issues: 67
+Build passed: YES
+
+IMPORTANT
+---------
+This is a heuristic human-quality audit.
+It does not modify production code and does not replace a live beginner playthrough.
+
+====================================================================================================
+MODULE 1: Store Player Health
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerHealth' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 2: Count Collected Stone
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'stoneCount' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 3: Store the Player Name
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerName' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 4: Remember Whether a Pickaxe Exists
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 5: Store Movement Speed
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'moveSpeed' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 6: Change an Existing Value
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerHealth' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 7: Add Collected Resources
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'stoneCount' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 8: Foundation Challenge
+====================================================================================================
+
+[HIGH] STRING_LITERAL_TOKENIZED_AS_IDENTIFIER
+Field: RecallPrompt
+Details: Possible words from quoted strings treated as identifiers: Miner
+
+[HIGH] STRING_LITERAL_TOKENIZED_AS_IDENTIFIER
+Field: TransferPrompt
+Details: Possible words from quoted strings treated as identifiers: Slime
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerHealth' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerName' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'stoneCount' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 9: Compare Player Health
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'isAlive' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerHealth' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 10: Check the Pickaxe State
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'canMine' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 11: Run Code Only When Allowed
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'canMine' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'stoneCount' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 12: Provide a Fallback Path
+====================================================================================================
+
+[HIGH] STRING_LITERAL_TOKENIZED_AS_IDENTIFIER
+Field: RecallPrompt
+Details: Possible words from quoted strings treated as identifiers: Find, Ready, mine, to
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 13: Create Multiple Health States
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerHealth' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'status' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 14: Require Two Conditions
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'isAlive' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'safeToMine' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 15: Allow Either Condition
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'hasLight' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'hasTorch' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'nearCore' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 16: Decision Challenge: Mining Permission
+====================================================================================================
+
+[HIGH] STRING_LITERAL_TOKENIZED_AS_IDENTIFIER
+Field: RecallPrompt
+Details: Possible words from quoted strings treated as identifiers: blocked
+
+[HIGH] STRING_LITERAL_TOKENIZED_AS_IDENTIFIER
+Field: TransferPrompt
+Details: Possible words from quoted strings treated as identifiers: Battle, Cannot, ready
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'canMine' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'hasPickaxe' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerHealth' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'stoneCount' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 17: Create a Reusable Method
+====================================================================================================
+
+[HIGH] STRING_LITERAL_TOKENIZED_AS_IDENTIFIER
+Field: RecallPrompt
+Details: Possible words from quoted strings treated as identifiers: Ready
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'ShowMessage' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 18: Pass Information Into a Method
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'AddStone' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'stoneCount' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 19: Return a Result
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'IsAlive' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'health' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 20: Track Horizontal Position
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerX' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 21: Track Vertical Position
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerY' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 22: Move One Tile Right
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'MoveRight' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 24: Movement Challenge: WASD
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'playerY' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 25: Create a Fixed Inventory
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'inventory' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 26: Create a Flexible Rock List
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'rocks' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 27: Add a Rock
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'rocks' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 28: Remove a Mined Rock
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'rocks' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 29: Visit Every Rock
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'rock' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'rocks' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 30: Repeat With an Index
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'Count' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'rocks' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 31: Create the Cave Grid
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'cave' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 32: World Challenge: Mine a Rock
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'MineRock' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'rock' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'rocks' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'stoneCount' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 33: Define a Player Class
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'Player' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 34: Add Player Properties
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'Health' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'Name' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'Player' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 35: Initialize New Players
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'Health' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'Player' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 36: Create a Player Object
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'Player' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'miner' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 37: Create Slime Health
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'slimeHealth' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 38: Deal Damage
+====================================================================================================
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'DamageSlime' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'slimeHealth' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+MODULE 40: Final Challenge: Defeat the Slime
+====================================================================================================
+
+[HIGH] STRING_LITERAL_TOKENIZED_AS_IDENTIFIER
+Field: RecallPrompt
+Details: Possible words from quoted strings treated as identifiers: defeated
+
+[HIGH] STRING_LITERAL_TOKENIZED_AS_IDENTIFIER
+Field: TransferPrompt
+Details: Possible words from quoted strings treated as identifiers: defeated
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'AttackSlime' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'slimeHealth' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'status' does not appear in Teaching or ExampleCode.
+
+[MEDIUM] POSSIBLY_TESTED_BEFORE_TAUGHT
+Field: Teaching
+Details: Target identifier 'stoneCount' does not appear in Teaching or ExampleCode.
+
+====================================================================================================
+NEXT STEP
+====================================================================================================
+
+Review all HIGH findings first.
+Then inspect MEDIUM findings for awkward wording, duplication, and progression.
+
+Text report: Archive/Reports/csharp-human-quality-pass-hq1.txt
+JSON report: Archive/Reports/csharp-human-quality-pass-hq1.json

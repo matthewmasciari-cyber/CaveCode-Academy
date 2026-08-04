@@ -60,10 +60,10 @@ DebugPrompt:
 Repair the missing semicolon and the incorrect types or quotation marks.
 
 RecallPrompt:
-Rebuild all four player variables from memory. Use these exact identifiers: Miner, hasPickaxe, playerHealth, playerName, stoneCount. Use these exact values: 0, 100, "Miner", true.
+Rebuild all four player variables from memory. Use these exact identifiers: hasPickaxe, playerHealth, playerName, stoneCount. Use these exact values: 0, 100, "Miner", true.
 
 TransferPrompt:
-Create enemyHealth, enemyName, and enemyActive. Use the exact identifier Slime. Use these exact values: 30, "Slime", true.
+Create enemyHealth, enemyName, and enemyActive. Use these exact values: 30, "Slime", true.
 
 TransferCode:
 int enemyHealth = 30;

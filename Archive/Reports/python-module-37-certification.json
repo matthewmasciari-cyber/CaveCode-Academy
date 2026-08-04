@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:17:11.194670+00:00",
+  "module": {
+    "ModuleNumber": 37,
+    "Chapter": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi",
+    "Topic": "File output",
+    "Title": "Log Sensor Readings",
+    "Teaching": "with open(..., 'a') opens a file safely in append mode, preserving existing log entries.",
+    "ExampleCode": "with open(\"events.txt\", \"a\") as file:\n    file.write(\"Pump started\\n\")",
+    "TargetCode": "with open(\"readings.txt\", \"a\") as file:\n    file.write(\"Temperature: 21.5\\n\")",
+    "FillStarter": "with open(\"readings.txt\", \"___\") as file:\n    file.___(\"Temperature: 21.5\\n\")",
+    "PredictionQuestion": "Why use append mode a?",
+    "PredictionOptions": [
+      "To add new entries without erasing earlier ones",
+      "To read only",
+      "To delete the file",
+      "To convert text to a float"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "Append mode writes at the end of the existing file.",
+    "BrokenCode": "open \"readings.txt\" as file:\nfile.print(\"Temperature: 21.5\")",
+    "DebugPrompt": "Use a with statement, open(), append mode, indentation, and file.write().",
+    "RecallPrompt": "Rebuild the temperature logging block. Use these exact identifiers: file, open, write. Use these exact values: 21.5, \"Temperature: 21.5\\n\", \"readings.txt\".",
+    "TransferPrompt": "Append Pump 1 started to events.txt. Use these exact identifiers: file, open, write. Use the exact value \"Pump 1 started\\n\".",
+    "TransferCode": "with open(\"events.txt\", \"a\") as file:\n    file.write(\"Pump 1 started\\n\")",
+    "PreviewMessage": "The facility can now preserve a history of readings."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

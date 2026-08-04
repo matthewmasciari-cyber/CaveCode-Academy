@@ -1,0 +1,13 @@
+Python Module 7 Certification
+
+Module: Calculate an Average
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/python-module-7-certification.txt
+JSON report: Archive/Reports/python-module-7-certification.json
+
+No production code was modified.

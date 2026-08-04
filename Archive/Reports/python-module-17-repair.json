@@ -1,0 +1,17 @@
+{
+  "module_number": 17,
+  "module_title": "Poll a Sensor Until Target",
+  "changes": [
+    "RecallPrompt: added exact values 1, 15, 20",
+    "TransferPrompt: added exact values 1"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-17-20260804-140500/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

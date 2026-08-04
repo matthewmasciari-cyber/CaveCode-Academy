@@ -79,10 +79,10 @@ DebugPrompt:
 Repair the damage direction, defeat comparison, and reward direction.
 
 RecallPrompt:
-Rebuild AttackSlime from memory. Use these exact identifiers: damage, defeated, slimeHealth, status, stoneCount. Use these exact values: 0, 5, "Slime defeated".
+Rebuild AttackSlime from memory. Use these exact identifiers: damage, slimeHealth, status, stoneCount. Use these exact values: 0, 5, "Slime defeated".
 
 TransferPrompt:
-Create AttackBoss that grants 20 coins when bossHealth reaches zero or less. Use these exact identifiers: coinCount, damage, defeated, status. Use the exact value "Boss defeated".
+Create AttackBoss that grants 20 coins when bossHealth reaches zero or less. Use these exact identifiers: coinCount, damage, status. Use the exact value "Boss defeated".
 
 TransferCode:
 void AttackBoss(int damage)

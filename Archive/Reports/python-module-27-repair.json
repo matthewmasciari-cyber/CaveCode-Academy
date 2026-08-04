@@ -1,0 +1,17 @@
+{
+  "module_number": 27,
+  "module_title": "Summarize Sensor Values",
+  "changes": [
+    "RecallPrompt: added exact identifiers highest, len, lowest, max, min, sum, temperatures",
+    "TransferPrompt: added exact identifiers len, sum"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-27-20260804-140657/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "module_number": 40,
+  "module_title": "Cave Facility Automation Capstone",
+  "changes": [
+    "RecallPrompt: added exact identifiers can_start, cycle, door_closed, emergency_stop, f, file, level_ok, log_event, message, mode, open, print, pump_running, range, write",
+    "RecallPrompt: added exact values 1, 4, AUTO, Emergency stop, False, Monitoring cycle {cycle}, Pump started, Start blocked, True, \\n, facility.log",
+    "TransferPrompt: added exact identifiers can_start_fan, cycle, f, fan_running, file, log_event, message, open, print, range, write",
+    "TransferPrompt: added exact values 1, 4, Air-quality cycle {cycle}, False, Fan start blocked, Fan started, Smoke shutdown, True, \\n, ventilation.log"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-40-20260804-141740/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

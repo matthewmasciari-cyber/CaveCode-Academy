@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:06:32.782099+00:00",
+  "module": {
+    "ModuleNumber": 24,
+    "Chapter": "Chapter 3 \u00b7 Repeating Processes and Sequences",
+    "Topic": "Challenge",
+    "Title": "Automated Ventilation Challenge",
+    "Teaching": "Combine inspection, a countdown, repeated monitoring, counters, and an emergency break into one ventilation simulation.",
+    "ExampleCode": "for second in range(3, 0, -1):\n    print(second)",
+    "TargetCode": "cycle_count = 0\nif air_quality_ok and not emergency_stop:\n    for seconds in range(3, 0, -1):\n        print(seconds)\n    print(\"Ventilation fan started\")\n    for minute in range(1, 6):\n        if emergency_stop:\n            break\n        cycle_count += 1\n        print(f\"Monitoring minute {minute}\")\nelse:\n    print(\"Ventilation blocked\")",
+    "FillStarter": "cycle_count = ___\nif air_quality_ok and ___ emergency_stop:\n    for seconds in range(___, ___, ___):\n        print(seconds)\n    print(\"Ventilation fan started\")\n    for minute in range(1, 6):\n        if emergency_stop:\n            ___\n        cycle_count ___ 1",
+    "PredictionQuestion": "What protects the monitoring loop after startup?",
+    "PredictionOptions": [
+      "The emergency-stop check and break",
+      "The countdown alone",
+      "The f-string",
+      "The cycle counter"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "The condition is checked each iteration and break ends operation when necessary.",
+    "BrokenCode": "cycle_count = 0\nif air_quality_ok and emergency_stop:\n    for seconds in range(3, 0, 1):\n        print(seconds)\n    for minute in range(1, 6):\n        if emergency_stop:\n            continue\n        cycle_count =+ 1",
+    "DebugPrompt": "Repair the emergency logic, countdown step, loop stop behavior, and counter operator.",
+    "RecallPrompt": "Rebuild the ventilation challenge from memory. Use these exact identifiers: air_quality_ok, cycle_count, emergency_stop, f, minute, print, range, seconds. Use these exact values: 0, 1, 3, 6, \"Monitoring minute {minute}\", \"Ventilation blocked\", \"Ventilation fan started\".",
+    "TransferPrompt": "Create a three-cycle sump-pump sequence that stops on high_pressure. Use these exact identifiers: cycle_count, f, level_high, print, range. Use these exact values: 0, 1, 4, \"Pump cycle {cycle}\", \"Pump sequence blocked\".",
+    "TransferCode": "cycle_count = 0\nif level_high and not high_pressure:\n    for cycle in range(1, 4):\n        if high_pressure:\n            break\n        cycle_count += 1\n        print(f\"Pump cycle {cycle}\")\nelse:\n    print(\"Pump sequence blocked\")",
+    "PreviewMessage": "Chapter 3 complete: automatic operating sequences are online."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

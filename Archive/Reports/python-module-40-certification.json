@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:17:54.592868+00:00",
+  "module": {
+    "ModuleNumber": 40,
+    "Chapter": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi",
+    "Topic": "Capstone",
+    "Title": "Cave Facility Automation Capstone",
+    "Teaching": "Combine functions, safety logic, modes, sensors, equipment records, repeated monitoring, and logging into one controller.",
+    "ExampleCode": "def can_start(level_ok, emergency_stop):\n    return level_ok and not emergency_stop",
+    "TargetCode": "def can_start(mode, door_closed, level_ok, emergency_stop):\n    return mode == \"AUTO\" and door_closed and level_ok and not emergency_stop\n\ndef log_event(message):\n    with open(\"facility.log\", \"a\") as file:\n        file.write(message + \"\\n\")\n\nmode = \"AUTO\"\ndoor_closed = True\nlevel_ok = True\nemergency_stop = False\npump_running = False\n\nif can_start(mode, door_closed, level_ok, emergency_stop):\n    pump_running = True\n    log_event(\"Pump started\")\n    for cycle in range(1, 4):\n        if emergency_stop:\n            pump_running = False\n            log_event(\"Emergency stop\")\n            break\n        print(f\"Monitoring cycle {cycle}\")\nelse:\n    log_event(\"Start blocked\")",
+    "FillStarter": "def can_start(mode, door_closed, level_ok, emergency_stop):\n    return mode == \"___\" and door_closed and level_ok and ___ emergency_stop\n\ndef log_event(message):\n    with open(\"facility.log\", \"___\") as file:\n        file.write(message + \"\\n\")\n\nmode = \"AUTO\"\ndoor_closed = ___\nlevel_ok = ___\nemergency_stop = ___",
+    "PredictionQuestion": "Which parts protect the pump after it starts?",
+    "PredictionOptions": [
+      "The repeated emergency-stop check and safe shutdown",
+      "The file name alone",
+      "The range stop value only",
+      "The print statement"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "The permissive controls startup, while the loop checks the emergency stop during operation.",
+    "BrokenCode": "def can_start(mode, door_closed, level_ok, emergency_stop)\n    return mode = \"AUTO\" or door_closed or level_ok or emergency_stop\n\ndef log_event(message):\n    open(\"facility.log\", \"r\").write(message)\n\nif can_start(mode, door_closed, level_ok, emergency_stop)\n    pump_running == True",
+    "DebugPrompt": "Repair the function syntax, safe Boolean logic, append logging, condition colon, and assignments.",
+    "RecallPrompt": "Rebuild the complete facility automation capstone. Use these exact identifiers: can_start, cycle, door_closed, emergency_stop, f, file, level_ok, log_event, message, mode, open, print, pump_running, range, write. Use these exact values: 1, 4, \"AUTO\", \"Emergency stop\", False, \"Monitoring cycle {cycle}\", \"Pump started\", \"Start blocked\", True, \"\\n\", \"facility.log\".",
+    "TransferPrompt": "Create a ventilation capstone using AUTO mode, air_quality_ok, smoke_alarm, three monitoring cycles, and event logging. Use these exact identifiers: can_start_fan, cycle, f, fan_running, file, log_event, message, open, print, range, write. Use these exact values: 1, 4, \"Air-quality cycle {cycle}\", False, \"Fan start blocked\", \"Fan started\", \"Smoke shutdown\", True, \"\\n\", \"ventilation.log\".",
+    "TransferCode": "def can_start_fan(mode, air_quality_ok, smoke_alarm):\n    return mode == \"AUTO\" and air_quality_ok and not smoke_alarm\n\ndef log_event(message):\n    with open(\"ventilation.log\", \"a\") as file:\n        file.write(message + \"\\n\")\n\nmode = \"AUTO\"\nair_quality_ok = True\nsmoke_alarm = False\nfan_running = False\n\nif can_start_fan(mode, air_quality_ok, smoke_alarm):\n    fan_running = True\n    log_event(\"Fan started\")\n    for cycle in range(1, 4):\n        if smoke_alarm:\n            fan_running = False\n            log_event(\"Smoke shutdown\")\n            break\n        print(f\"Air-quality cycle {cycle}\")\nelse:\n    log_event(\"Fan start blocked\")",
+    "PreviewMessage": "Course complete: the underground facility is fully automated."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

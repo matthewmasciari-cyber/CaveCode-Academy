@@ -73,10 +73,10 @@ DebugPrompt:
 Repair the logical operator, comparison, parentheses, and missing semicolon.
 
 RecallPrompt:
-Rebuild the complete mining permission rule. Use these exact identifiers: blocked, canMine, hasPickaxe, playerHealth, status, stoneCount. Use these exact values: 0, 1, "Mining blocked".
+Rebuild the complete mining permission rule. Use these exact identifiers: canMine, hasPickaxe, playerHealth, status, stoneCount. Use these exact values: 0, 1, "Mining blocked".
 
 TransferPrompt:
-Create canFight from hasWeapon and playerHealth > 0, then set status accordingly. Use these exact identifiers: Battle, Cannot, ready. Use these exact values: "Battle ready", "Cannot fight".
+Create canFight from hasWeapon and playerHealth > 0, then set status accordingly. Use these exact values: "Battle ready", "Cannot fight".
 
 TransferCode:
 bool canFight = hasWeapon && playerHealth > 0;

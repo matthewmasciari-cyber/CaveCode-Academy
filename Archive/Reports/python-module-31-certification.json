@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:08:02.285249+00:00",
+  "module": {
+    "ModuleNumber": 31,
+    "Chapter": "Chapter 4 \u00b7 Sensors, Devices, and Data",
+    "Topic": "Reports",
+    "Title": "Create a Maintenance Report",
+    "Teaching": "Loop through equipment records and use f-strings to create readable reports.",
+    "ExampleCode": "for fan in fans:\n    print(f\"{fan['name']}: {fan['hours']} hours\")",
+    "TargetCode": "for pump in pumps:\n    print(f\"{pump['name']}: {pump['hours']} hours\")",
+    "FillStarter": "for pump in pumps:\n    print(f\"{pump['___']}: {pump['___']} hours\")",
+    "PredictionQuestion": "Why use different quotation marks around dictionary keys?",
+    "PredictionOptions": [
+      "To avoid ending the outer f-string",
+      "Python requires all keys to use single quotes",
+      "It converts the value",
+      "It creates comments"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "Single quotes inside a double-quoted f-string avoid a quote collision.",
+    "BrokenCode": "for pump in pumps:\nprint(f\"{pump[\"name\"]}: {pump[\"hours\"]} hours\")",
+    "DebugPrompt": "Indent the body and avoid conflicting quotation marks inside the f-string.",
+    "RecallPrompt": "Rebuild the maintenance report loop. Use these exact identifiers: f, print, pump, pumps. Use the exact value \"{pump['name']}: {pump['hours']} hours\".",
+    "TransferPrompt": "Report each fan's name and running state. Use these exact identifiers: f, fans, print. Use the exact value \"{fan['name']}: Running = {fan['running']}\".",
+    "TransferCode": "for fan in fans:\n    print(f\"{fan['name']}: Running = {fan['running']}\")",
+    "PreviewMessage": "The facility can now print readable maintenance information."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

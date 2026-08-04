@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:08:38.444432+00:00",
+  "module": {
+    "ModuleNumber": 34,
+    "Chapter": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi",
+    "Topic": "Parameters",
+    "Title": "Check Different Readings",
+    "Teaching": "A parameter receives a value when the function is called, allowing one function to evaluate many readings.",
+    "ExampleCode": "def check_level(value):\n    return value < 20",
+    "TargetCode": "def check_temperature(value):\n    if value > 30:\n        return \"Alarm\"\n    return \"Normal\"",
+    "FillStarter": "def check_temperature(___):\n    if value > ___:\n        return \"Alarm\"\n    return \"Normal\"",
+    "PredictionQuestion": "What is value inside the function?",
+    "PredictionOptions": [
+      "The argument supplied by the caller",
+      "A fixed global constant",
+      "The function name",
+      "A list of all readings"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "The parameter is assigned the argument passed during each call.",
+    "BrokenCode": "def check_temperature:\n    if value > 30\n        print \"Alarm\"",
+    "DebugPrompt": "Add the parameter list, colons, and return values.",
+    "RecallPrompt": "Rebuild check_temperature from memory. Use the exact identifier value. Use these exact values: 30, \"Alarm\", \"Normal\".",
+    "TransferPrompt": "Create check_pressure(value) returning High above 80, otherwise Normal.",
+    "TransferCode": "def check_pressure(value):\n    if value > 80:\n        return \"High\"\n    return \"Normal\"",
+    "PreviewMessage": "One function can now evaluate any supplied sensor reading."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:17:39.960838+00:00",
+  "module": {
+    "ModuleNumber": 39,
+    "Chapter": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi",
+    "Topic": "GPIO concepts",
+    "Title": "Simulate a Raspberry Pi Relay",
+    "Teaching": "Browser exercises use a Boolean to simulate an output. On Raspberry Pi, gpiozero exposes physical pins through Python objects.",
+    "ExampleCode": "output_on = False\noutput_on = True",
+    "TargetCode": "relay_output = False\n\ndef energize_relay():\n    global relay_output\n    relay_output = True",
+    "FillStarter": "relay_output = ___\n\ndef energize_relay():\n    global relay_output\n    relay_output = ___",
+    "PredictionQuestion": "Why declare global relay_output?",
+    "PredictionOptions": [
+      "The function changes the variable created outside it",
+      "It imports gpiozero",
+      "It creates a loop",
+      "It converts the value to text"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "global tells Python that assignment should update the existing module-level variable.",
+    "BrokenCode": "relay_output = False\n\ndef energize_relay():\n    relay_output == True",
+    "DebugPrompt": "Declare the global variable and assign with one equals sign.",
+    "RecallPrompt": "Rebuild the simulated relay function. Use these exact identifiers: energize_relay, relay_output. Use these exact values: False, True.",
+    "TransferPrompt": "Create deenergize_relay() that turns the same output False. Use the exact identifier relay_output.",
+    "TransferCode": "def deenergize_relay():\n    global relay_output\n    relay_output = False",
+    "PreviewMessage": "Python state now maps conceptually to a physical relay output."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

@@ -1,0 +1,13 @@
+Python Module 21 Certification
+
+Module: Skip Offline Sensors
+Checks passed: 17 / 17
+Failed checks: 0
+Blockers: 0
+High: 0
+Medium: 0
+
+Text report: Archive/Reports/python-module-21-certification.txt
+JSON report: Archive/Reports/python-module-21-certification.json
+
+No production code was modified.

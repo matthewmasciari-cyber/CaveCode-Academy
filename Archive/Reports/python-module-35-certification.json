@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:08:49.725966+00:00",
+  "module": {
+    "ModuleNumber": 35,
+    "Chapter": "Chapter 5 \u00b7 Functions, Files, and Raspberry Pi",
+    "Topic": "Return values",
+    "Title": "Build a Start-Permissive Function",
+    "Teaching": "A function can return a Boolean expression directly, making safety rules reusable and testable.",
+    "ExampleCode": "def valve_can_open(command, interlock):\n    return command and not interlock",
+    "TargetCode": "def can_start(door_closed, emergency_stop):\n    return door_closed and not emergency_stop",
+    "FillStarter": "def can_start(___, ___):\n    return door_closed and ___ emergency_stop",
+    "PredictionQuestion": "What type does can_start return?",
+    "PredictionOptions": [
+      "A Boolean",
+      "A list",
+      "A file",
+      "A loop"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "The and/not expression evaluates to True or False.",
+    "BrokenCode": "def can_start(door_closed, emergency_stop):\n    print door_closed and emergency_stop",
+    "DebugPrompt": "Return the safe Boolean expression and reverse the emergency-stop condition.",
+    "RecallPrompt": "Rebuild can_start from memory. Use these exact identifiers: door_closed, emergency_stop.",
+    "TransferPrompt": "Create can_run_pump(level_ok, overload) returning the safe permissive.",
+    "TransferCode": "def can_run_pump(level_ok, overload):\n    return level_ok and not overload",
+    "PreviewMessage": "Equipment permissives can now be reused throughout the program."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

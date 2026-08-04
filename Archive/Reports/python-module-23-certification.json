@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:06:21.119672+00:00",
+  "module": {
+    "ModuleNumber": 23,
+    "Chapter": "Chapter 3 \u00b7 Repeating Processes and Sequences",
+    "Topic": "Sequences",
+    "Title": "Run an Equipment Sequence",
+    "Teaching": "A sequence combines ordered steps with safety checks. Each step should happen only after required conditions pass.",
+    "ExampleCode": "if ready:\n    print(\"Step 1\")\n    print(\"Step 2\")",
+    "TargetCode": "if safety_ok:\n    print(\"Start exhaust fan\")\n    print(\"Open damper\")\n    print(\"Start process equipment\")\nelse:\n    print(\"Sequence blocked\")",
+    "FillStarter": "if safety_ok:\n    print(\"___\")\n    print(\"___\")\n    print(\"___\")\nelse:\n    print(\"Sequence blocked\")",
+    "PredictionQuestion": "Why are all three startup lines indented?",
+    "PredictionOptions": [
+      "They belong to the safe branch",
+      "They are comments",
+      "They create three loops",
+      "Python ignores indentation"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "Indentation groups the ordered startup actions under the safety condition.",
+    "BrokenCode": "if safety_ok:\nprint(\"Start exhaust fan\")\nprint(\"Open damper\")\nelse:\nprint(\"Sequence blocked\")",
+    "DebugPrompt": "Indent the branch bodies so Python can identify each block.",
+    "RecallPrompt": "Rebuild the ventilation startup sequence. Use these exact identifiers: print, safety_ok. Use these exact values: \"Open damper\", \"Sequence blocked\", \"Start exhaust fan\", \"Start process equipment\".",
+    "TransferPrompt": "Create a shutdown sequence that stops equipment, closes a valve, then stops the fan. Use these exact identifiers: print, shutdown_command. Use these exact values: \"Close valve\", \"Stop exhaust fan\", \"Stop process equipment\".",
+    "TransferCode": "if shutdown_command:\n    print(\"Stop process equipment\")\n    print(\"Close valve\")\n    print(\"Stop exhaust fan\")",
+    "PreviewMessage": "The simulator now performs ordered equipment actions."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

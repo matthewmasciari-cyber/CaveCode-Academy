@@ -1,0 +1,19 @@
+{
+  "module_number": 15,
+  "module_title": "Add HAND-OFF-AUTO",
+  "changes": [
+    "RecallPrompt: added exact identifiers print",
+    "RecallPrompt: added exact values Automatic control, Equipment off, Manual run",
+    "TransferPrompt: added exact identifiers mode, print",
+    "TransferPrompt: added exact values Local control, Remote control"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-15-20260804-140436/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

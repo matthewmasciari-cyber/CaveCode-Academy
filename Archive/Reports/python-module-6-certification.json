@@ -1,0 +1,141 @@
+{
+  "pass": "Python Module Certification",
+  "created_utc": "2026-08-04T14:02:52.111272+00:00",
+  "module": {
+    "ModuleNumber": 6,
+    "Chapter": "Chapter 1 \u00b7 Control-Room Foundations",
+    "Topic": "Conversion",
+    "Title": "Convert a Pressure Reading",
+    "Teaching": "Values from input() are text. float() converts numeric text into a decimal number that can be calculated.",
+    "ExampleCode": "flow = float(input(\"Flow: \"))",
+    "TargetCode": "pressure = float(input(\"Enter pressure: \"))",
+    "FillStarter": "pressure = ___(input(\"Enter pressure: \"))",
+    "PredictionQuestion": "Why wrap input() with float()?",
+    "PredictionOptions": [
+      "To convert text into a decimal number",
+      "To repeat the question",
+      "To make the value True",
+      "To create a file"
+    ],
+    "PredictionCorrect": 0,
+    "PredictionExplanation": "float() converts numeric text into a decimal value.",
+    "BrokenCode": "pressure = input(float(\"Enter pressure: \"))",
+    "DebugPrompt": "Call input() first, then pass its returned text into float().",
+    "RecallPrompt": "Collect and convert a pressure reading using float(input(...)). Use the exact value \"Enter pressure: \".",
+    "TransferPrompt": "Collect and convert an integer cycle count. Use these exact identifiers: cycle_count, input, int. Use the exact value \"Enter cycle count: \".",
+    "TransferCode": "cycle_count = int(input(\"Enter cycle count: \"))",
+    "PreviewMessage": "The terminal can now perform math with operator-entered readings."
+  },
+  "checks": [
+    {
+      "name": "All lesson fields are populated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "Every required lesson field must contain content."
+    },
+    {
+      "name": "Fill stage contains blank",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "FillStarter must contain at least one ___ placeholder."
+    },
+    {
+      "name": "Prediction has four options",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionOptions contains 4 option(s)."
+    },
+    {
+      "name": "Prediction options are unique",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Prediction answers must not contain duplicates."
+    },
+    {
+      "name": "Prediction correct index is valid",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "PredictionCorrect is 0."
+    },
+    {
+      "name": "Prediction explanation exists",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "PredictionExplanation must explain the correct answer."
+    },
+    {
+      "name": "Debug code differs from target",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "BrokenCode must differ from TargetCode."
+    },
+    {
+      "name": "Debug prompt explains the task",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "DebugPrompt should clearly describe what needs fixing."
+    },
+    {
+      "name": "Recall names are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Recall values are fair",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer names are stated",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "All required identifiers are stated."
+    },
+    {
+      "name": "Transfer values are stated",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "All exact required values are stated."
+    },
+    {
+      "name": "Transfer wording matches exact validator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": "Transfer wording is deterministic."
+    },
+    {
+      "name": "Target code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TargetCode must not be empty."
+    },
+    {
+      "name": "Transfer code exists",
+      "passed": true,
+      "severity": "BLOCKER",
+      "details": "TransferCode must not be empty."
+    },
+    {
+      "name": "Preview message exists",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "PreviewMessage must not be empty."
+    },
+    {
+      "name": "Teaching includes Python content",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": "Teaching or ExampleCode should demonstrate Python syntax."
+    }
+  ],
+  "summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}

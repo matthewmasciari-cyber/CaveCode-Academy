@@ -1,0 +1,19 @@
+{
+  "module_number": 12,
+  "module_title": "Combine Safety Conditions",
+  "changes": [
+    "RecallPrompt: added exact identifiers door_closed, pressure_normal, print",
+    "RecallPrompt: added exact values System ready",
+    "TransferPrompt: added exact identifiers print",
+    "TransferPrompt: added exact values Pump start permitted"
+  ],
+  "backup": ".python-curriculum-repair-backups/module-12-20260804-140400/Pages/Python.razor",
+  "final_summary": {
+    "total_checks": 17,
+    "passed_checks": 17,
+    "failed_checks": 0,
+    "blockers": 0,
+    "high": 0,
+    "medium": 0
+  }
+}
