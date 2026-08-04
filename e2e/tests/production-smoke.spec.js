@@ -87,8 +87,12 @@ async function verifyHealthyPage(page, route) {
     }
 
     if (status >= 400) {
+      console.error(
+        `[RESOURCE ${status}] ${type} ${url}`
+      );
+
       consoleErrors.push(
-        `HTTP ${status} ${type} ${url}`
+        `[RESOURCE ${status}] ${type} ${url}`
       );
     }
   });
