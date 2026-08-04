@@ -76,9 +76,19 @@ async function verifyHealthyPage(page, route) {
   });
 
   page.on("response", (response) => {
-    if (response.status() >= 400) {
+    const status = response.status();
+    const type = response.request().resourceType();
+    const url = response.url();
+
+    // GitHub Pages may return the Blazor 404 fallback document
+    // for direct client-side routes before Blazor handles the URL.
+    if (type === "document") {
+      return;
+    }
+
+    if (status >= 400) {
       consoleErrors.push(
-        `HTTP ${response.status()} ${response.request().resourceType()} ${response.url()}`
+        `HTTP ${status} ${type} ${url}`
       );
     }
   });
