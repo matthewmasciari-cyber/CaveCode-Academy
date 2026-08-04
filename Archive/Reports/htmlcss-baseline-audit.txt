@@ -1,0 +1,171 @@
+====================================================================================================
+CAVECODE HTML/CSS TRACK BASELINE AUDIT
+====================================================================================================
+
+GLOBAL CHECKS
+-------------
+[PASS] Required HTML/CSS certification files
+       OK
+[PASS] HTML/CSS playable module count
+       Declared: 8; Parsed: 8
+[PASS] Unique module titles
+       Unique titles: 8 / 8
+[PASS] Distinct module topics
+       Unique topics: 8 / 8
+[PASS] HTML/CSS page course-engine integration
+       OK
+[PASS] HTML validator integration
+       OK
+[PASS] dotnet build
+       Exit: 0; warnings: 0; errors: 0
+[PASS] Course-engine regression gate
+       PASS
+
+MODULE CHECKS
+-------------
+
+Module 1: Build the Workshop Page Skeleton
+--------------------------------------------------------------------------------
+[PASS] Constructor field count
+       Expected 17; found 17
+[PASS] Required lesson text
+       OK
+[PASS] Prediction question contract
+       Options: 4; correct index: 0
+[PASS] Concept-point support
+       Concept points: 3
+[PASS] Editor filename
+       Editor file: 'index.html'
+[PASS] Guided/fill/debug/transfer code contract
+       Target chars: 135; fill placeholders: 4; broken differs: True; transfer differs: True
+[PASS] Instructional prompt depth
+       All major instructional fields contain at least 20 characters.
+
+Module 2: Add Headings and Paragraphs
+--------------------------------------------------------------------------------
+[PASS] Constructor field count
+       Expected 17; found 17
+[PASS] Required lesson text
+       OK
+[PASS] Prediction question contract
+       Options: 4; correct index: 0
+[PASS] Concept-point support
+       Concept points: 3
+[PASS] Editor filename
+       Editor file: 'index.html'
+[PASS] Guided/fill/debug/transfer code contract
+       Target chars: 77; fill placeholders: 4; broken differs: True; transfer differs: True
+[PASS] Instructional prompt depth
+       All major instructional fields contain at least 20 characters.
+
+Module 3: Connect the Workshop Navigation
+--------------------------------------------------------------------------------
+[PASS] Constructor field count
+       Expected 17; found 17
+[PASS] Required lesson text
+       OK
+[PASS] Prediction question contract
+       Options: 4; correct index: 0
+[PASS] Concept-point support
+       Concept points: 3
+[PASS] Editor filename
+       Editor file: 'index.html'
+[PASS] Guided/fill/debug/transfer code contract
+       Target chars: 117; fill placeholders: 3; broken differs: True; transfer differs: True
+[PASS] Instructional prompt depth
+       All major instructional fields contain at least 20 characters.
+
+Module 4: Place an Accessible Project Image
+--------------------------------------------------------------------------------
+[PASS] Constructor field count
+       Expected 17; found 17
+[PASS] Required lesson text
+       OK
+[PASS] Prediction question contract
+       Options: 4; correct index: 0
+[PASS] Concept-point support
+       Concept points: 3
+[PASS] Editor filename
+       Editor file: 'index.html'
+[PASS] Guided/fill/debug/transfer code contract
+       Target chars: 81; fill placeholders: 2; broken differs: True; transfer differs: True
+[PASS] Instructional prompt depth
+       All major instructional fields contain at least 20 characters.
+
+Module 5: Build the Feature List
+--------------------------------------------------------------------------------
+[PASS] Constructor field count
+       Expected 17; found 17
+[PASS] Required lesson text
+       OK
+[PASS] Prediction question contract
+       Options: 4; correct index: 0
+[PASS] Concept-point support
+       Concept points: 3
+[PASS] Editor filename
+       Editor file: 'index.html'
+[PASS] Guided/fill/debug/transfer code contract
+       Target chars: 98; fill placeholders: 4; broken differs: True; transfer differs: True
+[PASS] Instructional prompt depth
+       All major instructional fields contain at least 20 characters.
+
+Module 6: Divide the Page into Meaningful Regions
+--------------------------------------------------------------------------------
+[PASS] Constructor field count
+       Expected 17; found 17
+[PASS] Required lesson text
+       OK
+[PASS] Prediction question contract
+       Options: 4; correct index: 0
+[PASS] Concept-point support
+       Concept points: 3
+[PASS] Editor filename
+       Editor file: 'index.html'
+[PASS] Guided/fill/debug/transfer code contract
+       Target chars: 153; fill placeholders: 4; broken differs: True; transfer differs: True
+[PASS] Instructional prompt depth
+       All major instructional fields contain at least 20 characters.
+
+Module 7: Build the Complete Site Header
+--------------------------------------------------------------------------------
+[PASS] Constructor field count
+       Expected 17; found 17
+[PASS] Required lesson text
+       OK
+[PASS] Prediction question contract
+       Options: 4; correct index: 0
+[PASS] Concept-point support
+       Concept points: 3
+[PASS] Editor filename
+       Editor file: 'index.html'
+[PASS] Guided/fill/debug/transfer code contract
+       Target chars: 195; fill placeholders: 5; broken differs: True; transfer differs: True
+[PASS] Instructional prompt depth
+       All major instructional fields contain at least 20 characters.
+
+Module 8: Complete the First Workshop Page
+--------------------------------------------------------------------------------
+[PASS] Constructor field count
+       Expected 17; found 17
+[PASS] Required lesson text
+       OK
+[PASS] Prediction question contract
+       Options: 4; correct index: 0
+[PASS] Concept-point support
+       Concept points: 3
+[PASS] Editor filename
+       Editor file: 'index.html'
+[PASS] Guided/fill/debug/transfer code contract
+       Target chars: 969; fill placeholders: 7; broken differs: True; transfer differs: True
+[PASS] Instructional prompt depth
+       All major instructional fields contain at least 20 characters.
+
+SUMMARY
+-------
+Overall: PASS
+Global checks: 8 / 8
+Module checks: 56 / 56
+Modules parsed: 8
+
+Text report: Archive/Reports/htmlcss-baseline-audit.txt
+JSON report: Archive/Reports/htmlcss-baseline-audit.json

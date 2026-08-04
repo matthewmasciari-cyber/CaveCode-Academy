@@ -1,0 +1,445 @@
+{
+  "overall": "PASS",
+  "global_checks_passed": 8,
+  "global_checks_total": 8,
+  "module_checks_passed": 56,
+  "module_checks_total": 56,
+  "global_checks": [
+    {
+      "name": "Required HTML/CSS certification files",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "name": "HTML/CSS playable module count",
+      "passed": true,
+      "detail": "Declared: 8; Parsed: 8"
+    },
+    {
+      "name": "Unique module titles",
+      "passed": true,
+      "detail": "Unique titles: 8 / 8"
+    },
+    {
+      "name": "Distinct module topics",
+      "passed": true,
+      "detail": "Unique topics: 8 / 8"
+    },
+    {
+      "name": "HTML/CSS page course-engine integration",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "name": "HTML validator integration",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "name": "dotnet build",
+      "passed": true,
+      "detail": "Exit: 0; warnings: 0; errors: 0"
+    },
+    {
+      "name": "Course-engine regression gate",
+      "passed": true,
+      "detail": "PASS"
+    }
+  ],
+  "module_checks": [
+    {
+      "module": 1,
+      "title": "Build the Workshop Page Skeleton",
+      "name": "Constructor field count",
+      "passed": true,
+      "detail": "Expected 17; found 17"
+    },
+    {
+      "module": 1,
+      "title": "Build the Workshop Page Skeleton",
+      "name": "Required lesson text",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "module": 1,
+      "title": "Build the Workshop Page Skeleton",
+      "name": "Prediction question contract",
+      "passed": true,
+      "detail": "Options: 4; correct index: 0"
+    },
+    {
+      "module": 1,
+      "title": "Build the Workshop Page Skeleton",
+      "name": "Concept-point support",
+      "passed": true,
+      "detail": "Concept points: 3"
+    },
+    {
+      "module": 1,
+      "title": "Build the Workshop Page Skeleton",
+      "name": "Editor filename",
+      "passed": true,
+      "detail": "Editor file: 'index.html'"
+    },
+    {
+      "module": 1,
+      "title": "Build the Workshop Page Skeleton",
+      "name": "Guided/fill/debug/transfer code contract",
+      "passed": true,
+      "detail": "Target chars: 135; fill placeholders: 4; broken differs: True; transfer differs: True"
+    },
+    {
+      "module": 1,
+      "title": "Build the Workshop Page Skeleton",
+      "name": "Instructional prompt depth",
+      "passed": true,
+      "detail": "All major instructional fields contain at least 20 characters."
+    },
+    {
+      "module": 2,
+      "title": "Add Headings and Paragraphs",
+      "name": "Constructor field count",
+      "passed": true,
+      "detail": "Expected 17; found 17"
+    },
+    {
+      "module": 2,
+      "title": "Add Headings and Paragraphs",
+      "name": "Required lesson text",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "module": 2,
+      "title": "Add Headings and Paragraphs",
+      "name": "Prediction question contract",
+      "passed": true,
+      "detail": "Options: 4; correct index: 0"
+    },
+    {
+      "module": 2,
+      "title": "Add Headings and Paragraphs",
+      "name": "Concept-point support",
+      "passed": true,
+      "detail": "Concept points: 3"
+    },
+    {
+      "module": 2,
+      "title": "Add Headings and Paragraphs",
+      "name": "Editor filename",
+      "passed": true,
+      "detail": "Editor file: 'index.html'"
+    },
+    {
+      "module": 2,
+      "title": "Add Headings and Paragraphs",
+      "name": "Guided/fill/debug/transfer code contract",
+      "passed": true,
+      "detail": "Target chars: 77; fill placeholders: 4; broken differs: True; transfer differs: True"
+    },
+    {
+      "module": 2,
+      "title": "Add Headings and Paragraphs",
+      "name": "Instructional prompt depth",
+      "passed": true,
+      "detail": "All major instructional fields contain at least 20 characters."
+    },
+    {
+      "module": 3,
+      "title": "Connect the Workshop Navigation",
+      "name": "Constructor field count",
+      "passed": true,
+      "detail": "Expected 17; found 17"
+    },
+    {
+      "module": 3,
+      "title": "Connect the Workshop Navigation",
+      "name": "Required lesson text",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "module": 3,
+      "title": "Connect the Workshop Navigation",
+      "name": "Prediction question contract",
+      "passed": true,
+      "detail": "Options: 4; correct index: 0"
+    },
+    {
+      "module": 3,
+      "title": "Connect the Workshop Navigation",
+      "name": "Concept-point support",
+      "passed": true,
+      "detail": "Concept points: 3"
+    },
+    {
+      "module": 3,
+      "title": "Connect the Workshop Navigation",
+      "name": "Editor filename",
+      "passed": true,
+      "detail": "Editor file: 'index.html'"
+    },
+    {
+      "module": 3,
+      "title": "Connect the Workshop Navigation",
+      "name": "Guided/fill/debug/transfer code contract",
+      "passed": true,
+      "detail": "Target chars: 117; fill placeholders: 3; broken differs: True; transfer differs: True"
+    },
+    {
+      "module": 3,
+      "title": "Connect the Workshop Navigation",
+      "name": "Instructional prompt depth",
+      "passed": true,
+      "detail": "All major instructional fields contain at least 20 characters."
+    },
+    {
+      "module": 4,
+      "title": "Place an Accessible Project Image",
+      "name": "Constructor field count",
+      "passed": true,
+      "detail": "Expected 17; found 17"
+    },
+    {
+      "module": 4,
+      "title": "Place an Accessible Project Image",
+      "name": "Required lesson text",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "module": 4,
+      "title": "Place an Accessible Project Image",
+      "name": "Prediction question contract",
+      "passed": true,
+      "detail": "Options: 4; correct index: 0"
+    },
+    {
+      "module": 4,
+      "title": "Place an Accessible Project Image",
+      "name": "Concept-point support",
+      "passed": true,
+      "detail": "Concept points: 3"
+    },
+    {
+      "module": 4,
+      "title": "Place an Accessible Project Image",
+      "name": "Editor filename",
+      "passed": true,
+      "detail": "Editor file: 'index.html'"
+    },
+    {
+      "module": 4,
+      "title": "Place an Accessible Project Image",
+      "name": "Guided/fill/debug/transfer code contract",
+      "passed": true,
+      "detail": "Target chars: 81; fill placeholders: 2; broken differs: True; transfer differs: True"
+    },
+    {
+      "module": 4,
+      "title": "Place an Accessible Project Image",
+      "name": "Instructional prompt depth",
+      "passed": true,
+      "detail": "All major instructional fields contain at least 20 characters."
+    },
+    {
+      "module": 5,
+      "title": "Build the Feature List",
+      "name": "Constructor field count",
+      "passed": true,
+      "detail": "Expected 17; found 17"
+    },
+    {
+      "module": 5,
+      "title": "Build the Feature List",
+      "name": "Required lesson text",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "module": 5,
+      "title": "Build the Feature List",
+      "name": "Prediction question contract",
+      "passed": true,
+      "detail": "Options: 4; correct index: 0"
+    },
+    {
+      "module": 5,
+      "title": "Build the Feature List",
+      "name": "Concept-point support",
+      "passed": true,
+      "detail": "Concept points: 3"
+    },
+    {
+      "module": 5,
+      "title": "Build the Feature List",
+      "name": "Editor filename",
+      "passed": true,
+      "detail": "Editor file: 'index.html'"
+    },
+    {
+      "module": 5,
+      "title": "Build the Feature List",
+      "name": "Guided/fill/debug/transfer code contract",
+      "passed": true,
+      "detail": "Target chars: 98; fill placeholders: 4; broken differs: True; transfer differs: True"
+    },
+    {
+      "module": 5,
+      "title": "Build the Feature List",
+      "name": "Instructional prompt depth",
+      "passed": true,
+      "detail": "All major instructional fields contain at least 20 characters."
+    },
+    {
+      "module": 6,
+      "title": "Divide the Page into Meaningful Regions",
+      "name": "Constructor field count",
+      "passed": true,
+      "detail": "Expected 17; found 17"
+    },
+    {
+      "module": 6,
+      "title": "Divide the Page into Meaningful Regions",
+      "name": "Required lesson text",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "module": 6,
+      "title": "Divide the Page into Meaningful Regions",
+      "name": "Prediction question contract",
+      "passed": true,
+      "detail": "Options: 4; correct index: 0"
+    },
+    {
+      "module": 6,
+      "title": "Divide the Page into Meaningful Regions",
+      "name": "Concept-point support",
+      "passed": true,
+      "detail": "Concept points: 3"
+    },
+    {
+      "module": 6,
+      "title": "Divide the Page into Meaningful Regions",
+      "name": "Editor filename",
+      "passed": true,
+      "detail": "Editor file: 'index.html'"
+    },
+    {
+      "module": 6,
+      "title": "Divide the Page into Meaningful Regions",
+      "name": "Guided/fill/debug/transfer code contract",
+      "passed": true,
+      "detail": "Target chars: 153; fill placeholders: 4; broken differs: True; transfer differs: True"
+    },
+    {
+      "module": 6,
+      "title": "Divide the Page into Meaningful Regions",
+      "name": "Instructional prompt depth",
+      "passed": true,
+      "detail": "All major instructional fields contain at least 20 characters."
+    },
+    {
+      "module": 7,
+      "title": "Build the Complete Site Header",
+      "name": "Constructor field count",
+      "passed": true,
+      "detail": "Expected 17; found 17"
+    },
+    {
+      "module": 7,
+      "title": "Build the Complete Site Header",
+      "name": "Required lesson text",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "module": 7,
+      "title": "Build the Complete Site Header",
+      "name": "Prediction question contract",
+      "passed": true,
+      "detail": "Options: 4; correct index: 0"
+    },
+    {
+      "module": 7,
+      "title": "Build the Complete Site Header",
+      "name": "Concept-point support",
+      "passed": true,
+      "detail": "Concept points: 3"
+    },
+    {
+      "module": 7,
+      "title": "Build the Complete Site Header",
+      "name": "Editor filename",
+      "passed": true,
+      "detail": "Editor file: 'index.html'"
+    },
+    {
+      "module": 7,
+      "title": "Build the Complete Site Header",
+      "name": "Guided/fill/debug/transfer code contract",
+      "passed": true,
+      "detail": "Target chars: 195; fill placeholders: 5; broken differs: True; transfer differs: True"
+    },
+    {
+      "module": 7,
+      "title": "Build the Complete Site Header",
+      "name": "Instructional prompt depth",
+      "passed": true,
+      "detail": "All major instructional fields contain at least 20 characters."
+    },
+    {
+      "module": 8,
+      "title": "Complete the First Workshop Page",
+      "name": "Constructor field count",
+      "passed": true,
+      "detail": "Expected 17; found 17"
+    },
+    {
+      "module": 8,
+      "title": "Complete the First Workshop Page",
+      "name": "Required lesson text",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "module": 8,
+      "title": "Complete the First Workshop Page",
+      "name": "Prediction question contract",
+      "passed": true,
+      "detail": "Options: 4; correct index: 0"
+    },
+    {
+      "module": 8,
+      "title": "Complete the First Workshop Page",
+      "name": "Concept-point support",
+      "passed": true,
+      "detail": "Concept points: 3"
+    },
+    {
+      "module": 8,
+      "title": "Complete the First Workshop Page",
+      "name": "Editor filename",
+      "passed": true,
+      "detail": "Editor file: 'index.html'"
+    },
+    {
+      "module": 8,
+      "title": "Complete the First Workshop Page",
+      "name": "Guided/fill/debug/transfer code contract",
+      "passed": true,
+      "detail": "Target chars: 969; fill placeholders: 7; broken differs: True; transfer differs: True"
+    },
+    {
+      "module": 8,
+      "title": "Complete the First Workshop Page",
+      "name": "Instructional prompt depth",
+      "passed": true,
+      "detail": "All major instructional fields contain at least 20 characters."
+    }
+  ],
+  "build_output": "  Determining projects to restore...\n  All projects are up-to-date for restore.\n  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll\n  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot\n\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:13.44\n",
+  "regression_output": "Course Engine Regression Gate Pass 87F completed.\n\nOverall: PASS\nChecks passed: 21 / 21\nBuild warnings: 0\nBuild errors: 0\n\nText report: Archive/Reports/course-engine-regression-gate-pass-87f.txt\nJSON report: Archive/Reports/course-engine-regression-gate-pass-87f.json\n"
+}
