@@ -2427,16 +2427,16 @@ else
         return value;
     }
 
-    private static bool HasTag(string html, string tag) =>
+    private static bool HasTag(string? html, string tag) =>
         Regex.IsMatch(html ?? "", $@"<\s*{Regex.Escape(tag)}\b", RegexOptions.IgnoreCase);
 
-    private static int CountTags(string html, string tag) =>
+    private static int CountTags(string? html, string tag) =>
         Regex.Matches(html ?? "", $@"<\s*{Regex.Escape(tag)}\b", RegexOptions.IgnoreCase).Count;
 
-    private static bool HasId(string html, string id) =>
+    private static bool HasId(string? html, string id) =>
         Regex.IsMatch(html ?? "", $@"\bid\s*=\s*[""']{Regex.Escape(id)}[""']", RegexOptions.IgnoreCase);
 
-    private static bool HasClass(string html, string className) =>
+    private static bool HasClass(string? html, string className) =>
         Regex.IsMatch(html ?? "", $@"\bclass\s*=\s*[""'][^""']*\b{Regex.Escape(className)}\b[^""']*[""']", RegexOptions.IgnoreCase);
 
     private static bool HasAnchorClass(string html, string className) =>
