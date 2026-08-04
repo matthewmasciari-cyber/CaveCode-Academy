@@ -87,7 +87,18 @@
     }
     .lesson-copy { min-width: 0; }
     .lesson-copy strong, .lesson-copy small { display: block; }
-    .lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+    .lesson-copy strong {
+        display: block;
+        min-width: 0;
+        max-width: 100%;
+        overflow: visible;
+        font-size: 12px;
+        line-height: 1.3;
+        text-overflow: clip;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
     .lesson-copy small { margin-top: 3px; color: var(--text-muted); font-size: 10px; }
 
     .lesson-main { padding: 28px; overflow-y: auto; }
