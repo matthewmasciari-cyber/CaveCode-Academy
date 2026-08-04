@@ -1,0 +1,86 @@
+name: Production Smoke Test
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Deploy CaveCode to GitHub Pages
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cavecode-production-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    defaults:
+      run:
+        working-directory: e2e
+
+    env:
+      CAVECODE_BASE_URL: https://cavecodeacademy.dev
+      CI: true
+
+    steps:
+      - name: Check out deployed commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install test dependencies
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Wait for production deployment
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error \
+              -H "Cache-Control: no-cache" \
+              "$CAVECODE_BASE_URL/?smoke=$GITHUB_RUN_ID-$attempt" \
+              | grep -q "_framework/blazor.webassembly"; then
+              echo "Production shell is available."
+              exit 0
+            fi
+            sleep 10
+          done
+
+          echo "Production shell did not become available."
+          exit 1
+
+      - name: Run Playwright production smoke tests
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cavecode-playwright-report
+          path: e2e/playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cavecode-smoke-failure-evidence
+          path: e2e/test-results/
+          if-no-files-found: ignore
+          retention-days: 14
