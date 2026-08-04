@@ -1,132 +1,114 @@
 {
-  "pass": "87F",
-  "created_utc": "2026-08-04T02:12:16.958575+00:00",
-  "passed": false,
-  "checks": [
+  "overall": "PASS",
+  "checks_passed": 21,
+  "checks_total": 21,
+  "build_warnings": 0,
+  "build_errors": 0,
+  "results": [
     {
-      "check": "Python: shared UI components",
+      "name": "Required file: Python page",
       "passed": true,
-      "details": "OK"
+      "detail": "Pages/Python.razor"
     },
     {
-      "check": "Python: shared session foundation",
+      "name": "Required file: CSharp page",
       "passed": true,
-      "details": "OK"
+      "detail": "Pages/CSharp.razor"
     },
     {
-      "check": "Python: shared session transitions",
+      "name": "Required file: CourseSession",
       "passed": true,
-      "details": "OK"
+      "detail": "CourseEngine/CourseSession.cs"
     },
     {
-      "check": "Python: snapshot export and restore",
-      "passed": false,
-      "details": "Missing: Session.RestoreState("
-    },
-    {
-      "check": "Python: parent-owned behavior retained",
+      "name": "Required file: CourseProgressPanel",
       "passed": true,
-      "details": "OK"
+      "detail": "Components/CourseEngine/CourseProgressPanel.razor"
     },
     {
-      "check": "Python: original duplicated UI removed",
+      "name": "Required file: CourseStageTabs",
       "passed": true,
-      "details": "OK"
+      "detail": "Components/CourseEngine/CourseStageTabs.razor"
     },
     {
-      "check": "Python: basic Razor tag balance",
-      "passed": false,
-      "details": "<nav/</nav>: 3/1"
-    },
-    {
-      "check": "CSharp: shared UI components",
+      "name": "Required file: CourseCodeEditor",
       "passed": true,
-      "details": "OK"
+      "detail": "Components/CourseEngine/CourseCodeEditor.razor"
     },
     {
-      "check": "CSharp: shared session foundation",
+      "name": "Required file: CourseExerciseActions",
       "passed": true,
-      "details": "OK"
+      "detail": "Components/CourseEngine/CourseExerciseActions.razor"
     },
     {
-      "check": "CSharp: shared session transitions",
+      "name": "Required file: _Imports",
       "passed": true,
-      "details": "OK"
+      "detail": "_Imports.razor"
     },
     {
-      "check": "CSharp: snapshot export and restore",
-      "passed": false,
-      "details": "Missing: Session.RestoreState("
-    },
-    {
-      "check": "CSharp: parent-owned behavior retained",
+      "name": "Python: shared UI components",
       "passed": true,
-      "details": "OK"
+      "detail": "OK"
     },
     {
-      "check": "CSharp: original duplicated UI removed",
+      "name": "Python: shared CourseSession integration",
       "passed": true,
-      "details": "OK"
+      "detail": "OK"
     },
     {
-      "check": "CSharp: basic Razor tag balance",
-      "passed": false,
-      "details": "<nav/</nav>: 3/1"
-    },
-    {
-      "check": "CourseSession: shared state and calculations",
+      "name": "Python: progress save and restore contract",
       "passed": true,
-      "details": "OK"
+      "detail": "OK"
     },
     {
-      "check": "CourseSession: transitions and lifecycle",
+      "name": "Python: Razor nav-tag balance",
       "passed": true,
-      "details": "OK"
+      "detail": "<nav>: 1, </nav>: 1"
     },
     {
-      "check": "CourseSession: persistence",
-      "passed": false,
-      "details": "Missing: public void RestoreState( | Enumerable.Repeat(-1, totalModules) | Array.Copy("
-    },
-    {
-      "check": "CourseSessionSnapshot: stable JSON contract",
+      "name": "CSharp: shared UI components",
       "passed": true,
-      "details": "OK"
+      "detail": "OK"
     },
     {
-      "check": "_Imports: shared engine namespaces",
+      "name": "CSharp: shared CourseSession integration",
       "passed": true,
-      "details": "OK"
+      "detail": "OK"
     },
     {
-      "check": "dotnet build",
+      "name": "CSharp: progress save and restore contract",
       "passed": true,
-      "details": "Build succeeded."
+      "detail": "OK"
+    },
+    {
+      "name": "CSharp: Razor nav-tag balance",
+      "passed": true,
+      "detail": "<nav>: 1, </nav>: 1"
+    },
+    {
+      "name": "CourseSession: shared state",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "name": "CourseSession: current lifecycle API",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "name": "CourseSession: bounds and validation",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "name": "_Imports: CourseEngine namespace",
+      "passed": true,
+      "detail": "OK"
+    },
+    {
+      "name": "dotnet build",
+      "passed": true,
+      "detail": "Build succeeded with 0 warning(s)."
     }
-  ],
-  "build": {
-    "exit_code": 0,
-    "passed": true,
-    "errors": [],
-    "warnings": [],
-    "tail": [
-      "Determining projects to restore...",
-      "  All projects are up-to-date for restore.",
-      "  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll",
-      "  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot",
-      "",
-      "Build succeeded.",
-      "    0 Warning(s)",
-      "    0 Error(s)",
-      "",
-      "Time Elapsed 00:00:03.58"
-    ]
-  },
-  "summary": {
-    "total_checks": 20,
-    "passed_checks": 15,
-    "failed_checks": 5,
-    "build_warnings": 0,
-    "build_errors": 0
-  }
+  ]
 }

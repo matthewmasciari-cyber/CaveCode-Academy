@@ -2,61 +2,68 @@
 CAVECODE COURSE ENGINE REGRESSION GATE — PASS 87F
 ====================================================================================================
 
+[PASS] Required file: Python page
+       Pages/Python.razor
+[PASS] Required file: CSharp page
+       Pages/CSharp.razor
+[PASS] Required file: CourseSession
+       CourseEngine/CourseSession.cs
+[PASS] Required file: CourseProgressPanel
+       Components/CourseEngine/CourseProgressPanel.razor
+[PASS] Required file: CourseStageTabs
+       Components/CourseEngine/CourseStageTabs.razor
+[PASS] Required file: CourseCodeEditor
+       Components/CourseEngine/CourseCodeEditor.razor
+[PASS] Required file: CourseExerciseActions
+       Components/CourseEngine/CourseExerciseActions.razor
+[PASS] Required file: _Imports
+       _Imports.razor
 [PASS] Python: shared UI components
        OK
-[PASS] Python: shared session foundation
+[PASS] Python: shared CourseSession integration
        OK
-[PASS] Python: shared session transitions
+[PASS] Python: progress save and restore contract
        OK
-[FAIL] Python: snapshot export and restore
-       Missing: Session.RestoreState(
-[PASS] Python: parent-owned behavior retained
-       OK
-[PASS] Python: original duplicated UI removed
-       OK
-[FAIL] Python: basic Razor tag balance
-       <nav/</nav>: 3/1
+[PASS] Python: Razor nav-tag balance
+       <nav>: 1, </nav>: 1
 [PASS] CSharp: shared UI components
        OK
-[PASS] CSharp: shared session foundation
+[PASS] CSharp: shared CourseSession integration
        OK
-[PASS] CSharp: shared session transitions
+[PASS] CSharp: progress save and restore contract
        OK
-[FAIL] CSharp: snapshot export and restore
-       Missing: Session.RestoreState(
-[PASS] CSharp: parent-owned behavior retained
+[PASS] CSharp: Razor nav-tag balance
+       <nav>: 1, </nav>: 1
+[PASS] CourseSession: shared state
        OK
-[PASS] CSharp: original duplicated UI removed
+[PASS] CourseSession: current lifecycle API
        OK
-[FAIL] CSharp: basic Razor tag balance
-       <nav/</nav>: 3/1
-[PASS] CourseSession: shared state and calculations
+[PASS] CourseSession: bounds and validation
        OK
-[PASS] CourseSession: transitions and lifecycle
-       OK
-[FAIL] CourseSession: persistence
-       Missing: public void RestoreState( | Enumerable.Repeat(-1, totalModules) | Array.Copy(
-[PASS] CourseSessionSnapshot: stable JSON contract
-       OK
-[PASS] _Imports: shared engine namespaces
+[PASS] _Imports: CourseEngine namespace
        OK
 [PASS] dotnet build
-       Build succeeded.
-
-BUILD WARNINGS
---------------
-None.
-
-BUILD ERRORS
-------------
-None.
+       Build succeeded with 0 warning(s).
 
 SUMMARY
 -------
-Overall: FAIL
-Checks passed: 15 / 20
+Overall: PASS
+Checks passed: 21 / 21
 Build warnings: 0
 Build errors: 0
 
 Text report: Archive/Reports/course-engine-regression-gate-pass-87f.txt
 JSON report: Archive/Reports/course-engine-regression-gate-pass-87f.json
+
+BUILD OUTPUT
+------------
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CaveCode -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/CaveCode.dll
+  CaveCode (Blazor output) -> /workspaces/CaveCode-Academy/bin/Debug/net10.0/wwwroot
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:03.87
