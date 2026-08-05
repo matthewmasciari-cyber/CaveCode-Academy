@@ -211,14 +211,25 @@ window.caveCodeAuth = {
         };
     },
 
-    // Backward-compatible C# progress functions.
-    saveCourseProgress: function (progress) {
-        saveLocalProgress("csharp", progress);
-    },
+loadCourseProgress: async function () {
+    const local = readLocalProgress("csharp");
 
-    loadCourseProgress: function () {
-        return readLocalProgress("csharp");
-    },
+    try {
+        const cloud = await this.loadCloudProgress("csharp");
+
+        if (cloud) {
+            return {
+                ...local,
+                CurrentModuleIndex: cloud.currentModuleIndex || 0,
+                CurrentStage: cloud.currentStage || 0
+            };
+        }
+    } catch {
+        // Fall back to local progress
+    }
+
+    return local;
+},
 
     // Course-specific functions used by all new learning paths.
     saveCourseProgressFor: function (courseKey, progress) {
