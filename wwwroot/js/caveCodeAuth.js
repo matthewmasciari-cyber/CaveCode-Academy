@@ -313,8 +313,9 @@ loadCloudProgress: async function(courseKey = "csharp") {
         currentStage: data.current_stage || 0,
         updatedAt: data.updated_at
     };
+},
 
-    upsertLeaderboardProfile: async function (profile) {
+upsertLeaderboardProfile: async function (profile) {
         if (!supabaseClient) {
             return { available: false, message: "Supabase is not initialized." };
         }
