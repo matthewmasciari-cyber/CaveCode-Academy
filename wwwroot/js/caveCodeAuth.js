@@ -218,11 +218,26 @@ loadCourseProgress: async function () {
         const cloud = await this.loadCloudProgress("csharp");
 
         if (cloud) {
-            return {
-                ...local,
-                CurrentModuleIndex: cloud.currentModuleIndex || 0,
-                CurrentStage: cloud.currentStage || 0
-            };
+const highestCompletedStage = Array.isArray(local.HighestCompletedStage)
+    ? local.HighestCompletedStage
+    : Array(40).fill(-1);
+
+const moduleCompleted = Array.isArray(local.ModuleCompleted)
+    ? local.ModuleCompleted
+    : Array(40).fill(false);
+
+for (let i = 0; i < (cloud.currentModuleIndex || 0); i++) {
+    moduleCompleted[i] = true;
+    highestCompletedStage[i] = 7;
+}
+
+return {
+    ...local,
+    HighestCompletedStage: highestCompletedStage,
+    ModuleCompleted: moduleCompleted,
+    CurrentModuleIndex: cloud.currentModuleIndex || 0,
+    CurrentStage: cloud.currentStage || 0
+};
         }
     } catch {
         // Fall back to local progress
@@ -232,9 +247,10 @@ loadCourseProgress: async function () {
 },
 
     // Course-specific functions used by all new learning paths.
-    saveCourseProgressFor: function (courseKey, progress) {
-        saveLocalProgress(courseKey, progress);
-    },
+saveCourseProgressFor: async function (courseKey, progress) {
+    saveLocalProgress(courseKey, progress);
+    await this.syncLocalProgressToCloud(courseKey);
+},
 
     loadCourseProgressFor: function (courseKey) {
         return readLocalProgress(courseKey);
