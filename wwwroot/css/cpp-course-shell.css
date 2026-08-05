@@ -538,9 +538,7 @@
 }
 .cpp-grid-floor {
     position: absolute;
-    right: 0;
-    bottom: -18%;
-    left: 0;
+    inset: 0;
     height: 55%;
     overflow: hidden;
     background-image:
@@ -550,6 +548,7 @@
     opacity: .32;
     transform: perspective(200px) rotateX(56deg);
     transform-origin: center top;
+    pointer-events: none;
 }
 .cpp-engine-core {
     position: absolute;
