@@ -45,6 +45,7 @@ async function initializeProgression() {
                 cSharpLines: Number(profile.csharp_lines || 0),
                 pythonLines: Number(profile.python_lines || 0),
                 cppLines: Number(profile.cpp_lines || 0),
+                htmlCssLines: Number(profile.html_css_lines || 0),
 
                 awardedModules: profile.awarded_modules || {},
                 awardedStages: profile.awarded_stages || {},
