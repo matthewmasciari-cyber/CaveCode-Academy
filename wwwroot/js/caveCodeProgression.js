@@ -26,38 +26,49 @@
 
     let progressionReady = false;
 
-    async function initializeProgression() {
-        try {
-            const cloud =
-                await window.caveCodeAuth?.loadCloudProgress?.("csharp");
+async function initializeProgression() {
+    try {
+        const profile =
+            await window.caveCodeAuth?.loadUserProfile?.();
 
-            if (cloud) {
-                current = {
-                    ...defaults,
-                    ...cloud,
-                    awardedModules: cloud.awardedModules || {},
-                    awardedStages: cloud.awardedStages || {},
-                    awardedChapters: cloud.awardedChapters || {}
-                };
+        if (profile) {
+            current = {
+                ...defaults,
 
-                progressionReady = true;
-                return;
-            }
-        } catch {
-            // Fall back to local migration
+                totalXp: Number(profile.total_xp || 0),
+                cSharpXp: Number(profile.csharp_xp || 0),
+                pythonXp: Number(profile.python_xp || 0),
+                cppXp: Number(profile.cpp_xp || 0),
+                htmlCssXp: Number(profile.html_css_xp || 0),
+
+                totalLines: Number(profile.total_lines || 0),
+                cSharpLines: Number(profile.csharp_lines || 0),
+                pythonLines: Number(profile.python_lines || 0),
+                cppLines: Number(profile.cpp_lines || 0),
+
+                awardedModules: profile.awarded_modules || {},
+                awardedStages: profile.awarded_stages || {},
+                awardedChapters: profile.awarded_chapters || {}
+            };
+
+            progressionReady = true;
+            return;
         }
-
-        current = load();
-
-        try {
-            await window.caveCodeAuth
-                ?.syncLocalProgressToCloud?.("csharp");
-        } catch {
-            // Keep local progress
-        }
-
-        progressionReady = true;
+    } catch {
+        // Fall back to local migration
     }
+
+    current = load();
+
+    try {
+        await window.caveCodeAuth
+            ?.syncLocalProgressToCloud?.("csharp");
+    } catch {
+        // Keep local progress
+    }
+
+    progressionReady = true;
+}
 
     function load() {
         try {
