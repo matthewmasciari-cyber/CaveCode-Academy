@@ -25,6 +25,7 @@
     };
 
     let progressionReady = false;
+    let progressionReadyPromise = null;
 
 async function initializeProgression() {
     try {
@@ -57,9 +58,9 @@ const profile =
             progressionReady = true;
             return;
         }
-    } catch (error) {
-    console.error("Progression cloud load failed:", error);
-}
+       } catch (error) {
+        console.error("Progression cloud load failed:", error);
+    }
 
     current = load();
 
@@ -320,16 +321,21 @@ const profile =
         });
     }
 
-    initializeProgression();
+progressionReadyPromise = initializeProgression();
 
-    window.caveCodeProgression = {
-        getState: function () {
-            if (!progressionReady) {
-                return stateView();
-            }
-            reconcileAll();
-            return stateView();
-        },
+window.caveCodeProgression = {
+    ready: function () {
+        return progressionReadyPromise;
+    },
+
+getState: async function () {
+    if (!progressionReady) {
+        await progressionReadyPromise;
+    }
+
+    reconcileAll();
+    return stateView();
+},
 
         awardStage: function (
             course,
