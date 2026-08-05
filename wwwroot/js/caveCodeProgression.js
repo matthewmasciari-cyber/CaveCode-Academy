@@ -57,9 +57,9 @@ const profile =
             progressionReady = true;
             return;
         }
-    } catch {
-        // Fall back to local migration
-    }
+    } catch (error) {
+    console.error("Progression cloud load failed:", error);
+}
 
     current = load();
 
