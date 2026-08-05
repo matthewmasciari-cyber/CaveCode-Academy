@@ -229,8 +229,91 @@ window.caveCodeAuth = {
         return readLocalProgress(courseKey);
     },
 
-    syncLocalProgressToCloud: async function (courseKey = "csharp") {
-        return readLocalProgress(courseKey);
+    syncLocalProgressToCloud: async function(courseKey = "csharp") {
+    if (!supabaseClient) {
+        return {
+            available: false,
+            message: "Supabase is not initialized."
+        };
+    }
+
+    const user = await currentUser();
+
+    if (!user) {
+        return {
+            available: false,
+            message: "Sign in required."
+        };
+    }
+
+    const progress = readLocalProgress(courseKey);
+
+    if (!progress) {
+        return {
+            available: false,
+            message: "No local progress found."
+        };
+    }
+
+    const payload = {
+        user_id: user.id,
+        course_id: normalizeCourseKey(courseKey),
+        awarded_modules: progress.awardedModules || {},
+        awarded_stages: progress.awardedStages || {},
+        awarded_chapters: progress.awardedChapters || {},
+        current_module: Number(progress.currentModuleIndex || 0),
+        current_stage: Number(progress.currentStage || 0),
+        updated_at: new Date().toISOString()
+    };
+
+    const { error } = await supabaseClient
+        .from("user_course_progress")
+        .upsert(payload, {
+            onConflict: "user_id,course_id"
+        });
+
+    return error
+        ? {
+            available: false,
+            message: error.message
+        }
+        : {
+            available: true,
+            message: "Progress synced."
+        };
+},
+
+loadCloudProgress: async function(courseKey = "csharp") {
+    if (!supabaseClient) {
+        return null;
+    }
+
+    const user = await currentUser();
+
+    if (!user) {
+        return null;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("user_course_progress")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("course_id", normalizeCourseKey(courseKey))
+        .maybeSingle();
+
+    if (error || !data) {
+        return null;
+    }
+
+    return {
+        awardedModules: data.awarded_modules || {},
+        awardedStages: data.awarded_stages || {},
+        awardedChapters: data.awarded_chapters || {},
+        currentModuleIndex: data.current_module || 0,
+        currentStage: data.current_stage || 0,
+        updatedAt: data.updated_at
+    };
+},
     },
 
     upsertLeaderboardProfile: async function (profile) {
