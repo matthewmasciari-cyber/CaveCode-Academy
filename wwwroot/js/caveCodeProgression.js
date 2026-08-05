@@ -28,8 +28,10 @@
 
 async function initializeProgression() {
     try {
-        const profile =
-            await window.caveCodeAuth?.loadUserProfile?.();
+await window.caveCodeAuth?.waitForReady?.();
+
+const profile =
+    await window.caveCodeAuth?.loadUserProfile?.();
 
         if (profile) {
             current = {
