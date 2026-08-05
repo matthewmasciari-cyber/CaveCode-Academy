@@ -446,5 +446,76 @@ upsertLeaderboardProfile: async function (profile) {
         });
 
         return { available: true, entries, message: "" };
+    },
+
+    loadUserProfile: async function () {
+        if (!supabaseClient) {
+            return null;
+        }
+
+        const user = await currentUser();
+
+        if (!user) {
+            return null;
+        }
+
+        const { data, error } = await supabaseClient
+            .from("user_profiles")
+            .select("*")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (error) {
+            console.error("Failed loading user profile:", error);
+            return null;
+        }
+
+        return data;
+    },
+
+    saveUserProfile: async function (profile) {
+        if (!supabaseClient) {
+            return {
+                available: false,
+                message: "Supabase is not initialized."
+            };
+        }
+
+        const user = await currentUser();
+
+        if (!user) {
+            return {
+                available: false,
+                message: "Sign in required."
+            };
+        }
+
+        const payload = {
+            id: user.id,
+            ...profile,
+            updated_at: new Date().toISOString()
+        };
+
+        const { data, error } = await supabaseClient
+            .from("user_profiles")
+            .upsert(payload, {
+                onConflict: "id"
+            })
+            .select()
+            .single();
+
+        if (error) {
+            console.error("Failed saving user profile:", error);
+
+            return {
+                available: false,
+                message: error.message
+            };
+        }
+
+        return {
+            available: true,
+            profile: data
+        };
     }
 };
