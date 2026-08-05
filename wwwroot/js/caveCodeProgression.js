@@ -17,7 +17,47 @@
         awardedChapters: {}
     };
 
-    let current = load();
+    let current = {
+        ...defaults,
+        awardedModules: {},
+        awardedStages: {},
+        awardedChapters: {}
+    };
+
+    let progressionReady = false;
+
+    async function initializeProgression() {
+        try {
+            const cloud =
+                await window.caveCodeAuth?.loadCloudProgress?.("csharp");
+
+            if (cloud) {
+                current = {
+                    ...defaults,
+                    ...cloud,
+                    awardedModules: cloud.awardedModules || {},
+                    awardedStages: cloud.awardedStages || {},
+                    awardedChapters: cloud.awardedChapters || {}
+                };
+
+                progressionReady = true;
+                return;
+            }
+        } catch {
+            // Fall back to local migration
+        }
+
+        current = load();
+
+        try {
+            await window.caveCodeAuth
+                ?.syncLocalProgressToCloud?.("csharp");
+        } catch {
+            // Keep local progress
+        }
+
+        progressionReady = true;
+    }
 
     function load() {
         try {
@@ -66,7 +106,14 @@
     }
 
     function save() {
-        localStorage.setItem(storageKey, JSON.stringify(current));
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(current)
+        );
+
+        window.caveCodeAuth
+            ?.syncLocalProgressToCloud?.("csharp")
+            .catch(() => {});
 
         window.dispatchEvent(
             new CustomEvent(
@@ -259,9 +306,13 @@
         });
     }
 
+    initializeProgression();
+
     window.caveCodeProgression = {
         getState: function () {
-            current = load();
+            if (!progressionReady) {
+                return stateView();
+            }
             reconcileAll();
             return stateView();
         },
@@ -272,7 +323,9 @@
             stageIndex,
             code
         ) {
-            current = load();
+            if (!progressionReady) {
+                return stateView();
+            }
             course = normalizeCourse(course);
 
             if (![1, 2, 4, 5, 6].includes(Number(stageIndex))) {
@@ -293,7 +346,9 @@
         },
 
         awardModule: function (course, moduleIndex) {
-            current = load();
+            if (!progressionReady) {
+                return stateView();
+            }
             course = normalizeCourse(course);
 
             const key = `${course}:${moduleIndex}`;
@@ -431,7 +486,9 @@
             xp,
             validatedLines
         ) {
-            current = load();
+            if (!progressionReady) {
+                return stateView();
+            }
             course = normalizeCourse(course);
 
             current.awardedMinigameRuns =
@@ -463,14 +520,18 @@
         },
 
         setPublicLeaderboard: function (isPublic) {
-            current = load();
+            if (!progressionReady) {
+                return stateView();
+            }
             current.publicLeaderboard = Boolean(isPublic);
             save();
             return stateView();
         },
 
         getLeaderboard: async function (filter, profile) {
-            current = load();
+            if (!progressionReady) {
+                return stateView();
+            }
             reconcileAll();
 
             filter =
@@ -488,7 +549,7 @@
             } catch {
                 user = null;
             }
-            // CAVECODE_LEADERBOARD_SYNC_REPAIR_82B
+
             const local = localEntry(profile, user);
             const cacheKey =
                 `cavecode.leaderboard.cache.v1.${filter}`;
@@ -554,8 +615,6 @@
                                 ? cloud.entries
                                 : [];
 
-                        // Never replace a fuller shared list with a
-                        // transient empty or one-player response.
                         entries =
                             cachedEntries.length > cloudEntries.length
                                 ? cachedEntries
