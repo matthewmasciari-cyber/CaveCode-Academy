@@ -538,12 +538,10 @@
 }
 .cpp-grid-floor {
     position: absolute;
-    right: -10%;
+    left: 0;
+    right: 0;
     bottom: -18%;
-    left: -10%;
-    width: 120%;
     height: 55%;
-    overflow: hidden;
     background-image:
         linear-gradient(var(--accent-border) 1px, transparent 1px),
         linear-gradient(90deg, var(--accent-border) 1px, transparent 1px);
