@@ -252,9 +252,27 @@ saveCourseProgressFor: async function (courseKey, progress) {
     await this.syncLocalProgressToCloud(courseKey);
 },
 
-    loadCourseProgressFor: function (courseKey) {
-        return readLocalProgress(courseKey);
-    },
+loadCourseProgressFor: async function (courseKey) {
+    const local = readLocalProgress(courseKey) || {};
+
+    try {
+        const cloud = await this.loadCloudProgress(courseKey);
+
+        if (cloud) {
+            return {
+                ...local,
+                currentModuleIndex: cloud.currentModuleIndex || 0,
+                currentStage: cloud.currentStage || 0,
+                CurrentModuleIndex: cloud.currentModuleIndex || 0,
+                CurrentStage: cloud.currentStage || 0
+            };
+        }
+    } catch {
+        // Fall back to local progress
+    }
+
+    return local;
+},
 
     syncLocalProgressToCloud: async function(courseKey = "csharp") {
     if (!supabaseClient) {
