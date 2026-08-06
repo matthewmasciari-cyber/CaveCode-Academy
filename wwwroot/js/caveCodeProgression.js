@@ -27,52 +27,126 @@
     let progressionReady = false;
     let progressionReadyPromise = null;
 
-async function initializeProgression() {
-    try {
-await window.caveCodeAuth?.waitForReady?.();
+    function profileFromCloud(profile) {
+        return {
+            ...defaults,
+            totalXp: Number(profile.total_xp || 0),
+            cSharpXp: Number(profile.csharp_xp || 0),
+            pythonXp: Number(profile.python_xp || 0),
+            cppXp: Number(profile.cpp_xp || 0),
+            htmlCssXp: Number(profile.html_css_xp || 0),
+            totalLines: Number(profile.total_lines || 0),
+            cSharpLines: Number(profile.csharp_lines || 0),
+            pythonLines: Number(profile.python_lines || 0),
+            cppLines: Number(profile.cpp_lines || 0),
+            htmlCssLines: Number(profile.html_css_lines || 0),
+            publicLeaderboard: Boolean(
+                profile.public_leaderboard ?? profile.publicLeaderboard
+            ),
+            awardedModules: profile.awarded_modules || {},
+            awardedStages: profile.awarded_stages || {},
+            awardedChapters: profile.awarded_chapters || {},
+            awardedMinigameRuns: profile.awarded_minigame_runs || {}
+        };
+    }
 
-const profile =
-    await window.caveCodeAuth?.loadUserProfile?.();
+    function cloudPayloadFromCurrent() {
+        return {
+            total_xp: current.totalXp,
+            csharp_xp: current.cSharpXp,
+            python_xp: current.pythonXp,
+            cpp_xp: current.cppXp,
+            html_css_xp: current.htmlCssXp,
+            total_lines: current.totalLines,
+            csharp_lines: current.cSharpLines,
+            python_lines: current.pythonLines,
+            cpp_lines: current.cppLines,
+            html_css_lines: current.htmlCssLines,
+            public_leaderboard: current.publicLeaderboard,
+            awarded_modules: current.awardedModules || {},
+            awarded_stages: current.awardedStages || {},
+            awarded_chapters: current.awardedChapters || {},
+            awarded_minigame_runs: current.awardedMinigameRuns || {}
+        };
+    }
 
-        if (profile) {
-            current = {
-                ...defaults,
-
-                totalXp: Number(profile.total_xp || 0),
-                cSharpXp: Number(profile.csharp_xp || 0),
-                pythonXp: Number(profile.python_xp || 0),
-                cppXp: Number(profile.cpp_xp || 0),
-                htmlCssXp: Number(profile.html_css_xp || 0),
-
-                totalLines: Number(profile.total_lines || 0),
-                cSharpLines: Number(profile.csharp_lines || 0),
-                pythonLines: Number(profile.python_lines || 0),
-                cppLines: Number(profile.cpp_lines || 0),
-                htmlCssLines: Number(profile.html_css_lines || 0),
-
-                awardedModules: profile.awarded_modules || {},
-                awardedStages: profile.awarded_stages || {},
-                awardedChapters: profile.awarded_chapters || {}
-            };
-
-            progressionReady = true;
+    async function hydrateCourseProgressFromCloud() {
+        if (!window.caveCodeAuth?.loadCourseProgressFor) {
             return;
         }
-       } catch (error) {
-        console.error("Progression cloud load failed:", error);
+
+        const courses = ["csharp", "python", "cpp", "htmlcss"];
+
+        for (const course of courses) {
+            try {
+                await window.caveCodeAuth.loadCourseProgressFor(course);
+            } catch {
+                // Keep going; one course failure must not block others.
+            }
+        }
     }
 
-    current = load();
+    async function initializeProgression() {
+        try {
+            await window.caveCodeAuth?.waitForReady?.(8000);
 
-    try {
-        await window.caveCodeAuth
-            ?.syncLocalProgressToCloud?.("csharp");
-    } catch {
-        // Keep local progress
+            const profile =
+                await window.caveCodeAuth?.loadUserProfile?.();
+
+            if (profile) {
+                current = profileFromCloud(profile);
+
+                // Mirror cloud into localStorage so UI/reconcile see it.
+                localStorage.setItem(
+                    storageKey,
+                    JSON.stringify(current)
+                );
+
+                await hydrateCourseProgressFromCloud();
+
+                progressionReady = true;
+                window.dispatchEvent(
+                    new CustomEvent("cavecode-progression-changed", {
+                        detail: stateView()
+                    })
+                );
+                return;
+            }
+        } catch (error) {
+            console.error("Progression cloud load failed:", error);
+        }
+
+        current = load();
+
+        try {
+            await window.caveCodeAuth?.syncLocalProgressToCloud?.(
+                "csharp"
+            );
+        } catch {
+            // Keep local progress
+        }
+
+        // If signed in with local XP but no profile row yet, push it up.
+        try {
+            const signedIn =
+                await window.caveCodeAuth?.isSignedIn?.();
+
+            if (signedIn && (current.totalXp > 0 || current.totalLines > 0)) {
+                await window.caveCodeAuth?.saveUserProfile?.(
+                    cloudPayloadFromCurrent()
+                );
+            }
+        } catch {
+            // Offline / RLS — local still works
+        }
+
+        progressionReady = true;
+        window.dispatchEvent(
+            new CustomEvent("cavecode-progression-changed", {
+                detail: stateView()
+            })
+        );
     }
-
-    progressionReady = true;
-}
 
     function load() {
         try {
@@ -121,20 +195,26 @@ const profile =
     }
 
     function save() {
-        localStorage.setItem(
-            storageKey,
-            JSON.stringify(current)
-        );
+        localStorage.setItem(storageKey, JSON.stringify(current));
 
+        // Push XP + awards to user_profiles (cross-browser source of truth).
         window.caveCodeAuth
-            ?.syncLocalProgressToCloud?.("csharp")
+            ?.saveUserProfile?.(cloudPayloadFromCurrent())
             .catch(() => {});
 
+        // Sync course rows (awards merged from progression in auth.js).
+        const courses = ["csharp", "python", "cpp", "htmlcss"];
+
+        courses.forEach(course => {
+            window.caveCodeAuth
+                ?.syncLocalProgressToCloud?.(course)
+                .catch(() => {});
+        });
+
         window.dispatchEvent(
-            new CustomEvent(
-                "cavecode-progression-changed",
-                { detail: stateView() }
-            )
+            new CustomEvent("cavecode-progression-changed", {
+                detail: stateView()
+            })
         );
     }
 
@@ -153,8 +233,7 @@ const profile =
             level,
             xpIntoLevel: remaining,
             xpForNextLevel: required,
-            levelProgress:
-                Math.floor(remaining * 100 / required)
+            levelProgress: Math.floor((remaining * 100) / required)
         };
     }
 
@@ -207,8 +286,7 @@ const profile =
         return String(code || "")
             .replace(/\r\n/g, "\n")
             .split("\n")
-            .filter(line => line.trim().length > 0)
-            .length;
+            .filter(line => line.trim().length > 0).length;
     }
 
     function reconcile(course) {
@@ -309,40 +387,44 @@ const profile =
                         : "totalLines";
 
         return [...entries].sort((a, b) => {
-            const xp = Number(b[xpField] || 0) -
-                Number(a[xpField] || 0);
+            const xp =
+                Number(b[xpField] || 0) - Number(a[xpField] || 0);
 
             if (xp !== 0) {
                 return xp;
             }
 
-            return Number(b[linesField] || 0) -
-                Number(a[linesField] || 0);
+            return (
+                Number(b[linesField] || 0) -
+                Number(a[linesField] || 0)
+            );
         });
     }
 
-progressionReadyPromise = initializeProgression();
+    progressionReadyPromise = initializeProgression();
 
-window.caveCodeProgression = {
-    ready: function () {
-        return progressionReadyPromise;
-    },
+    window.caveCodeProgression = {
+        ready: function () {
+            return progressionReadyPromise;
+        },
 
-getState: async function () {
-    if (!progressionReady) {
-        await progressionReadyPromise;
-    }
+        reloadFromCloud: async function () {
+            progressionReady = false;
+            progressionReadyPromise = initializeProgression();
+            await progressionReadyPromise;
+            return stateView();
+        },
 
-    reconcileAll();
-    return stateView();
-},
+        getState: async function () {
+            if (!progressionReady) {
+                await progressionReadyPromise;
+            }
 
-        awardStage: function (
-            course,
-            moduleIndex,
-            stageIndex,
-            code
-        ) {
+            reconcileAll();
+            return stateView();
+        },
+
+        awardStage: function (course, moduleIndex, stageIndex, code) {
             if (!progressionReady) {
                 return stateView();
             }
@@ -435,53 +517,50 @@ getState: async function () {
                 };
             }
 
-            const completedFlags =
-                Array.isArray(snapshot.moduleCompleted)
-                    ? snapshot.moduleCompleted
-                    : [];
+            const completedFlags = Array.isArray(
+                snapshot.moduleCompleted
+            )
+                ? snapshot.moduleCompleted
+                : [];
 
-            const highestStages =
-                Array.isArray(snapshot.highestCompletedStage)
-                    ? snapshot.highestCompletedStage
-                    : [];
+            const highestStages = Array.isArray(
+                snapshot.highestCompletedStage
+            )
+                ? snapshot.highestCompletedStage
+                : [];
 
             const completedModules =
                 completedFlags.filter(Boolean).length;
 
-            const currentModuleIndex =
-                Math.max(
+            const currentModuleIndex = Math.max(
+                0,
+                Math.min(
+                    totalModules - 1,
+                    Number(snapshot.currentModuleIndex) || 0
+                )
+            );
+
+            const currentStage = Math.max(
+                0,
+                Math.min(7, Number(snapshot.currentStage) || 0)
+            );
+
+            const moduleMastery = completedFlags[currentModuleIndex]
+                ? 100
+                : Math.max(
                     0,
                     Math.min(
-                        totalModules - 1,
-                        Number(snapshot.currentModuleIndex) || 0
+                        100,
+                        (
+                            Number(
+                                highestStages[currentModuleIndex] ??
+                                    -1
+                            ) + 1
+                        ) *
+                            100 /
+                            8
                     )
                 );
-
-            const currentStage =
-                Math.max(
-                    0,
-                    Math.min(
-                        7,
-                        Number(snapshot.currentStage) || 0
-                    )
-                );
-
-            const moduleMastery =
-                completedFlags[currentModuleIndex]
-                    ? 100
-                    : Math.max(
-                        0,
-                        Math.min(
-                            100,
-                            (
-                                Number(
-                                    highestStages[
-                                        currentModuleIndex
-                                    ] ?? -1
-                                ) + 1
-                            ) * 100 / 8
-                        )
-                    );
 
             return {
                 hasProgress:
@@ -489,14 +568,12 @@ getState: async function () {
                     currentModuleIndex > 0 ||
                     currentStage > 0 ||
                     moduleMastery > 0,
-                courseComplete:
-                    completedModules >= totalModules,
+                courseComplete: completedModules >= totalModules,
                 currentModuleIndex,
                 currentStage,
                 completedModules,
                 totalModules,
-                moduleMastery:
-                    Math.floor(moduleMastery)
+                moduleMastery: Math.floor(moduleMastery)
             };
         },
 
@@ -522,17 +599,11 @@ getState: async function () {
 
             current.awardedMinigameRuns[key] = true;
 
-            addXp(
-                course,
-                Math.max(0, Number(xp) || 0)
-            );
+            addXp(course, Math.max(0, Number(xp) || 0));
 
             addLines(
                 course,
-                Math.max(
-                    0,
-                    Number(validatedLines) || 0
-                )
+                Math.max(0, Number(validatedLines) || 0)
             );
 
             save();
@@ -550,7 +621,7 @@ getState: async function () {
 
         getLeaderboard: async function (filter, profile) {
             if (!progressionReady) {
-                return stateView();
+                await progressionReadyPromise;
             }
             reconcileAll();
 
@@ -571,8 +642,7 @@ getState: async function () {
             }
 
             const local = localEntry(profile, user);
-            const cacheKey =
-                `cavecode.leaderboard.cache.v1.${filter}`;
+            const cacheKey = `cavecode.leaderboard.cache.v1.${filter}`;
 
             let cloudAvailable = false;
             let entries = [];
@@ -589,9 +659,7 @@ getState: async function () {
 
                     const parsed = JSON.parse(raw);
 
-                    return Array.isArray(parsed)
-                        ? parsed
-                        : [];
+                    return Array.isArray(parsed) ? parsed : [];
                 } catch {
                     return [];
                 }
@@ -614,33 +682,39 @@ getState: async function () {
             if (user && window.caveCodeAuth) {
                 try {
                     const sync =
-                        await window.caveCodeAuth
-                            .upsertLeaderboardProfile({
+                        await window.caveCodeAuth.upsertLeaderboardProfile(
+                            {
                                 ...local,
-                                isPublic:
-                                    current.publicLeaderboard
-                            });
+                                isPublic: current.publicLeaderboard
+                            }
+                        );
 
                     cloudAvailable = Boolean(sync?.available);
 
                     const cloud =
-                        await window.caveCodeAuth
-                            .getLeaderboardProfiles(filter);
+                        await window.caveCodeAuth.getLeaderboardProfiles(
+                            filter
+                        );
 
                     if (cloud?.available) {
                         cloudAvailable = true;
 
-                        const cloudEntries =
-                            Array.isArray(cloud.entries)
-                                ? cloud.entries
-                                : [];
+                        const cloudEntries = Array.isArray(
+                            cloud.entries
+                        )
+                            ? cloud.entries
+                            : [];
 
                         entries =
-                            cachedEntries.length > cloudEntries.length
+                            cachedEntries.length >
+                            cloudEntries.length
                                 ? cachedEntries
                                 : cloudEntries;
 
-                        if (cloudEntries.length >= cachedEntries.length) {
+                        if (
+                            cloudEntries.length >=
+                            cachedEntries.length
+                        ) {
                             saveCachedEntries(cloudEntries);
                         }
                     } else {

@@ -74,6 +74,104 @@ function saveLocalProgress(courseKey, progress) {
     );
 }
 
+function filterAwardsByCourse(awards, courseKey) {
+    const prefix = `${normalizeCourseKey(courseKey)}:`;
+    const source = awards && typeof awards === "object" ? awards : {};
+
+    return Object.fromEntries(
+        Object.entries(source).filter(([key]) =>
+            String(key).startsWith(prefix)
+        )
+    );
+}
+
+function readProgressionAwards(courseKey) {
+    try {
+        const raw = window.localStorage.getItem("cavecode.progression.v1");
+        if (!raw) {
+            return {
+                awardedModules: {},
+                awardedStages: {},
+                awardedChapters: {}
+            };
+        }
+
+        const prog = JSON.parse(raw);
+
+        return {
+            awardedModules: filterAwardsByCourse(
+                prog.awardedModules,
+                courseKey
+            ),
+            awardedStages: filterAwardsByCourse(
+                prog.awardedStages,
+                courseKey
+            ),
+            awardedChapters: filterAwardsByCourse(
+                prog.awardedChapters,
+                courseKey
+            )
+        };
+    } catch {
+        return {
+            awardedModules: {},
+            awardedStages: {},
+            awardedChapters: {}
+        };
+    }
+}
+
+function mergeAwardMaps(a, b) {
+    return {
+        ...(a && typeof a === "object" ? a : {}),
+        ...(b && typeof b === "object" ? b : {})
+    };
+}
+
+function buildModuleCompletedFromCloud(courseKey, cloud, local) {
+    const key = normalizeCourseKey(courseKey);
+    const length = 40;
+
+    const fromLocal =
+        Array.isArray(local?.moduleCompleted)
+            ? local.moduleCompleted
+            : Array.isArray(local?.ModuleCompleted)
+                ? local.ModuleCompleted
+                : null;
+
+    const moduleCompleted = fromLocal
+        ? [...fromLocal]
+        : Array(length).fill(false);
+
+    while (moduleCompleted.length < length) {
+        moduleCompleted.push(false);
+    }
+
+    const awarded = cloud?.awardedModules || {};
+
+    Object.keys(awarded).forEach(awardKey => {
+        const match = String(awardKey).match(
+            new RegExp(`^${key}:(\\d+)$`)
+        );
+
+        if (match) {
+            const index = Number(match[1]);
+
+            if (index >= 0 && index < length) {
+                moduleCompleted[index] = true;
+            }
+        }
+    });
+
+    for (let i = 0; i < (cloud?.currentModuleIndex || 0); i++) {
+        if (i < length) {
+            moduleCompleted[i] = true;
+        }
+    }
+
+    return moduleCompleted;
+}
+
 async function currentUser() {
     if (!supabaseClient) {
         return null;
@@ -211,169 +309,214 @@ window.caveCodeAuth = {
         };
     },
 
-loadCourseProgress: async function () {
-    const local = readLocalProgress("csharp");
-
-    try {
-        const cloud = await this.loadCloudProgress("csharp");
-
-        if (cloud) {
-const highestCompletedStage = Array.isArray(local.HighestCompletedStage)
-    ? local.HighestCompletedStage
-    : Array(40).fill(-1);
-
-const moduleCompleted = Array.isArray(local.ModuleCompleted)
-    ? local.ModuleCompleted
-    : Array(40).fill(false);
-
-for (let i = 0; i < (cloud.currentModuleIndex || 0); i++) {
-    moduleCompleted[i] = true;
-    highestCompletedStage[i] = 7;
-}
-
-return {
-    ...local,
-    HighestCompletedStage: highestCompletedStage,
-    ModuleCompleted: moduleCompleted,
-    CurrentModuleIndex: cloud.currentModuleIndex || 0,
-    CurrentStage: cloud.currentStage || 0
-};
-        }
-    } catch {
-        // Fall back to local progress
-    }
-
-    return local;
-},
+    loadCourseProgress: async function () {
+        return window.caveCodeAuth.loadCourseProgressFor("csharp");
+    },
 
     // Course-specific functions used by all new learning paths.
-saveCourseProgressFor: async function (courseKey, progress) {
-    saveLocalProgress(courseKey, progress);
-    await this.syncLocalProgressToCloud(courseKey);
-},
+    saveCourseProgressFor: async function (courseKey, progress) {
+        saveLocalProgress(courseKey, progress);
+        await this.syncLocalProgressToCloud(courseKey);
+    },
 
-loadCourseProgressFor: async function (courseKey) {
-    const local = readLocalProgress(courseKey) || {};
+    loadCourseProgressFor: async function (courseKey) {
+        const local = readLocalProgress(courseKey) || {};
 
-    try {
-        const cloud = await this.loadCloudProgress(courseKey);
+        try {
+            const cloud = await this.loadCloudProgress(courseKey);
 
-        if (cloud) {
-            return {
+            if (!cloud) {
+                return local;
+            }
+
+            const moduleCompleted = buildModuleCompletedFromCloud(
+                courseKey,
+                cloud,
+                local
+            );
+
+            const highestCompletedStage = Array.isArray(
+                local.HighestCompletedStage
+            )
+                ? [...local.HighestCompletedStage]
+                : Array.isArray(local.highestCompletedStage)
+                    ? [...local.highestCompletedStage]
+                    : Array(40).fill(-1);
+
+            while (highestCompletedStage.length < 40) {
+                highestCompletedStage.push(-1);
+            }
+
+            for (let i = 0; i < (cloud.currentModuleIndex || 0); i++) {
+                highestCompletedStage[i] = Math.max(
+                    Number(highestCompletedStage[i] ?? -1),
+                    7
+                );
+            }
+
+            const merged = {
                 ...local,
+                moduleCompleted,
+                ModuleCompleted: moduleCompleted,
+                highestCompletedStage,
+                HighestCompletedStage: highestCompletedStage,
                 currentModuleIndex: cloud.currentModuleIndex || 0,
                 currentStage: cloud.currentStage || 0,
                 CurrentModuleIndex: cloud.currentModuleIndex || 0,
-                CurrentStage: cloud.currentStage || 0
+                CurrentStage: cloud.currentStage || 0,
+                awardedModules: cloud.awardedModules || {},
+                awardedStages: cloud.awardedStages || {},
+                awardedChapters: cloud.awardedChapters || {}
             };
+
+            // Persist so refresh / other code paths see cloud state.
+            saveLocalProgress(courseKey, merged);
+            return merged;
+        } catch {
+            // Fall back to local progress
         }
-    } catch {
-        // Fall back to local progress
-    }
 
-    return local;
-},
+        return local;
+    },
 
-    syncLocalProgressToCloud: async function(courseKey = "csharp") {
-    if (!supabaseClient) {
-        return {
-            available: false,
-            message: "Supabase is not initialized."
-        };
-    }
-
-    const user = await currentUser();
-
-    if (!user) {
-        return {
-            available: false,
-            message: "Sign in required."
-        };
-    }
-
-    const progress = readLocalProgress(courseKey);
-
-    if (!progress) {
-        return {
-            available: false,
-            message: "No local progress found."
-        };
-    }
-
-    const payload = {
-        user_id: user.id,
-        course_id: normalizeCourseKey(courseKey),
-        awarded_modules: progress.awardedModules || {},
-        awarded_stages: progress.awardedStages || {},
-        awarded_chapters: progress.awardedChapters || {},
-        current_module: Number(progress.currentModuleIndex || 0),
-        current_stage: Number(progress.currentStage || 0),
-        updated_at: new Date().toISOString()
-    };
-
-    const { error } = await supabaseClient
-        .from("user_course_progress")
-        .upsert(payload, {
-            onConflict: "user_id,course_id"
-        });
-
-    return error
-        ? {
-            available: false,
-            message: error.message
-        }
-        : {
-            available: true,
-            message: "Progress synced."
-        };
-},
-
-loadCloudProgress: async function(courseKey = "csharp") {
-    if (!supabaseClient) {
-        return null;
-    }
-
-    const user = await currentUser();
-
-    if (!user) {
-        return null;
-    }
-
-    const { data, error } = await supabaseClient
-        .from("user_course_progress")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("course_id", normalizeCourseKey(courseKey))
-        .maybeSingle();
-
-    if (error || !data) {
-        return null;
-    }
-
-    return {
-        awardedModules: data.awarded_modules || {},
-        awardedStages: data.awarded_stages || {},
-        awardedChapters: data.awarded_chapters || {},
-        currentModuleIndex: data.current_module || 0,
-        currentStage: data.current_stage || 0,
-        updatedAt: data.updated_at
-    };
-},
-
-upsertLeaderboardProfile: async function (profile) {
+    syncLocalProgressToCloud: async function (courseKey = "csharp") {
         if (!supabaseClient) {
-            return { available: false, message: "Supabase is not initialized." };
+            return {
+                available: false,
+                message: "Supabase is not initialized."
+            };
         }
 
         const user = await currentUser();
 
         if (!user) {
-            return { available: false, message: "Sign in to publish rankings." };
+            return {
+                available: false,
+                message: "Sign in required."
+            };
+        }
+
+        const progress = readLocalProgress(courseKey) || {};
+        const progressionAwards = readProgressionAwards(courseKey);
+
+        const awardedModules = mergeAwardMaps(
+            progressionAwards.awardedModules,
+            progress.awardedModules
+        );
+        const awardedStages = mergeAwardMaps(
+            progressionAwards.awardedStages,
+            progress.awardedStages
+        );
+        const awardedChapters = mergeAwardMaps(
+            progressionAwards.awardedChapters,
+            progress.awardedChapters
+        );
+
+        // Also encode moduleCompleted[] as awarded_modules when present.
+        const completedFlags = Array.isArray(progress.moduleCompleted)
+            ? progress.moduleCompleted
+            : Array.isArray(progress.ModuleCompleted)
+                ? progress.ModuleCompleted
+                : null;
+
+        if (completedFlags) {
+            const key = normalizeCourseKey(courseKey);
+
+            completedFlags.forEach((complete, index) => {
+                if (complete) {
+                    awardedModules[`${key}:${index}`] = true;
+                }
+            });
+        }
+
+        const payload = {
+            user_id: user.id,
+            course_id: normalizeCourseKey(courseKey),
+            awarded_modules: awardedModules,
+            awarded_stages: awardedStages,
+            awarded_chapters: awardedChapters,
+            current_module: Number(
+                progress.currentModuleIndex ??
+                    progress.CurrentModuleIndex ??
+                    0
+            ),
+            current_stage: Number(
+                progress.currentStage ?? progress.CurrentStage ?? 0
+            ),
+            updated_at: new Date().toISOString()
+        };
+
+        const { error } = await supabaseClient
+            .from("user_course_progress")
+            .upsert(payload, {
+                onConflict: "user_id,course_id"
+            });
+
+        return error
+            ? {
+                available: false,
+                message: error.message
+            }
+            : {
+                available: true,
+                message: "Progress synced."
+            };
+    },
+
+    loadCloudProgress: async function (courseKey = "csharp") {
+        if (!supabaseClient) {
+            return null;
+        }
+
+        const user = await currentUser();
+
+        if (!user) {
+            return null;
+        }
+
+        const { data, error } = await supabaseClient
+            .from("user_course_progress")
+            .select("*")
+            .eq("user_id", user.id)
+            .eq("course_id", normalizeCourseKey(courseKey))
+            .maybeSingle();
+
+        if (error || !data) {
+            return null;
+        }
+
+        return {
+            awardedModules: data.awarded_modules || {},
+            awardedStages: data.awarded_stages || {},
+            awardedChapters: data.awarded_chapters || {},
+            currentModuleIndex: data.current_module || 0,
+            currentStage: data.current_stage || 0,
+            updatedAt: data.updated_at
+        };
+    },
+
+    upsertLeaderboardProfile: async function (profile) {
+        if (!supabaseClient) {
+            return {
+                available: false,
+                message: "Supabase is not initialized."
+            };
+        }
+
+        const user = await currentUser();
+
+        if (!user) {
+            return {
+                available: false,
+                message: "Sign in to publish rankings."
+            };
         }
 
         const payload = {
             id: user.id,
-            display_name: String(profile.displayName || "CaveCode Learner").slice(0, 24),
+            display_name: String(
+                profile.displayName || "CaveCode Learner"
+            ).slice(0, 24),
             emblem: profile.emblem || "crystal",
             title: profile.title || "Cave Explorer",
             total_xp: Number(profile.totalXp || 0),
@@ -397,7 +540,11 @@ upsertLeaderboardProfile: async function (profile) {
 
     getLeaderboardProfiles: async function (filter = "overall") {
         if (!supabaseClient) {
-            return { available: false, entries: [], message: "Supabase is not initialized." };
+            return {
+                available: false,
+                entries: [],
+                message: "Supabase is not initialized."
+            };
         }
 
         const orderColumn =
@@ -409,13 +556,19 @@ upsertLeaderboardProfile: async function (profile) {
 
         const { data, error } = await supabaseClient
             .from("leaderboard_profiles")
-            .select("id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines")
+            .select(
+                "id, display_name, emblem, title, total_xp, csharp_xp, python_xp, total_lines, csharp_lines, python_lines"
+            )
             .eq("is_public", true)
             .order(orderColumn, { ascending: false })
             .limit(100);
 
         if (error) {
-            return { available: false, entries: [], message: error.message };
+            return {
+                available: false,
+                entries: [],
+                message: error.message
+            };
         }
 
         const entries = (data || []).map(row => {
