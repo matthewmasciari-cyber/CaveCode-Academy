@@ -529,6 +529,7 @@
     min-height: 410px;
     margin-top: 18px;
     overflow: hidden;
+    contain: paint;
     background:
         radial-gradient(circle at 50% 39%, var(--accent-surface), transparent 32%),
         linear-gradient(180deg, var(--code-bg), var(--bg-deep));
@@ -538,17 +539,24 @@
 }
 .cpp-grid-floor {
     position: absolute;
-    inset: 0;
-    height: 55%;
+    left: 0;
+    right: 0;
+    top: 40%;
+    bottom: 0;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
     overflow: hidden;
     background-image:
         linear-gradient(var(--accent-border) 1px, transparent 1px),
         linear-gradient(90deg, var(--accent-border) 1px, transparent 1px);
     background-size: 28px 28px;
     opacity: .32;
-    transform: perspective(200px) rotateX(56deg);
+    transform: perspective(180px) rotateX(50deg);
     transform-origin: center top;
     pointer-events: none;
+    contain: strict;
+    clip-path: inset(0);
 }
 .cpp-engine-core {
     position: absolute;
