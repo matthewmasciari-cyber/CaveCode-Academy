@@ -168,6 +168,106 @@
         );
     }
 
+    function clearLeaderboardCache() {
+        try {
+            Object.keys(window.localStorage || {})
+                .filter(key =>
+                    key.startsWith("cavecode.leaderboard.cache")
+                )
+                .forEach(key => window.localStorage.removeItem(key));
+        } catch {
+            // Cache clear is best-effort.
+        }
+    }
+
+    function readProfileForLeaderboard() {
+        try {
+            if (
+                window.caveCodeProfile &&
+                typeof window.caveCodeProfile.getPreferences ===
+                    "function"
+            ) {
+                return window.caveCodeProfile.getPreferences() || {};
+            }
+        } catch {
+            // Fall through.
+        }
+
+        try {
+            return JSON.parse(
+                window.localStorage.getItem("cavecode.profile.v1") ||
+                    "{}"
+            );
+        } catch {
+            return {};
+        }
+    }
+
+    // Keep leaderboard_profiles aligned with XP + display name.
+    async function publishLeaderboardRow(forcePublic) {
+        if (!window.caveCodeAuth?.upsertLeaderboardProfile) {
+            return { available: false, message: "Auth unavailable." };
+        }
+
+        const signedIn = await window.caveCodeAuth.isSignedIn?.();
+
+        if (!signedIn) {
+            return { available: false, message: "Sign in required." };
+        }
+
+        const isPublic =
+            forcePublic === true
+                ? true
+                : forcePublic === false
+                    ? false
+                    : Boolean(current.publicLeaderboard);
+
+        if (!isPublic) {
+            clearLeaderboardCache();
+            window.dispatchEvent(
+                new CustomEvent("cavecode-leaderboard-changed", {
+                    detail: { isPublic: false }
+                })
+            );
+            return { available: true, message: "Private." };
+        }
+
+        const profile = readProfileForLeaderboard();
+        const displayName =
+            String(profile.displayName || "").trim() ||
+            "CaveCode Learner";
+
+        clearLeaderboardCache();
+
+        const result =
+            await window.caveCodeAuth.upsertLeaderboardProfile({
+                displayName,
+                emblem: profile.emblem || "crystal",
+                title: profile.title || "Cave Explorer",
+                totalXp: Number(current.totalXp || 0),
+                cSharpXp: Number(current.cSharpXp || 0),
+                pythonXp: Number(current.pythonXp || 0),
+                cppXp: Number(current.cppXp || 0),
+                htmlCssXp: Number(current.htmlCssXp || 0),
+                totalLines: Number(current.totalLines || 0),
+                cSharpLines: Number(current.cSharpLines || 0),
+                pythonLines: Number(current.pythonLines || 0),
+                isPublic: true
+            });
+
+        window.dispatchEvent(
+            new CustomEvent("cavecode-leaderboard-changed", {
+                detail: {
+                    isPublic: true,
+                    totalXp: Number(current.totalXp || 0),
+                    displayName
+                }
+            })
+        );
+
+        return result;
+    }
+
     // Upload only when local is at least as rich as cloud (never clobber up).
     async function pushToCloudIfSafe() {
         if (!window.caveCodeAuth?.saveUserProfile) {
@@ -223,6 +323,12 @@
             } catch {
                 // One course failure must not block the rest.
             }
+        }
+
+        try {
+            await publishLeaderboardRow();
+        } catch {
+            // Leaderboard publish must never block progression.
         }
     }
 
@@ -759,7 +865,16 @@
             }
             current.publicLeaderboard = Boolean(isPublic);
             save();
+            // Immediate board publish/hide when the toggle changes.
+            publishLeaderboardRow(Boolean(isPublic)).catch(() => {});
             return stateView();
+        },
+
+        publishLeaderboardNow: async function (forcePublic) {
+            if (!progressionReady) {
+                await progressionReadyPromise;
+            }
+            return await publishLeaderboardRow(forcePublic);
         },
 
         getLeaderboard: async function (filter, profile) {
@@ -927,6 +1042,63 @@
                 message,
                 entries: sortEntries(entries, filter)
             };
+        }
+    };
+
+    // Bridge: leaderboard page listens and re-renders without full reload.
+    let leaderboardDotNetRef = null;
+    let leaderboardHandler = null;
+
+    window.caveCodeLeaderboard = {
+        attach: function (dotNetRef) {
+            leaderboardDotNetRef = dotNetRef;
+
+            if (leaderboardHandler) {
+                return;
+            }
+
+            leaderboardHandler = function () {
+                if (!leaderboardDotNetRef) {
+                    return;
+                }
+
+                leaderboardDotNetRef
+                    .invokeMethodAsync("OnLeaderboardNeedsRefresh")
+                    .catch(() => {});
+            };
+
+            window.addEventListener(
+                "cavecode-leaderboard-changed",
+                leaderboardHandler
+            );
+            window.addEventListener(
+                "cavecode-progression-changed",
+                leaderboardHandler
+            );
+            window.addEventListener(
+                "cavecode-profile-changed",
+                leaderboardHandler
+            );
+        },
+
+        detach: function () {
+            if (leaderboardHandler) {
+                window.removeEventListener(
+                    "cavecode-leaderboard-changed",
+                    leaderboardHandler
+                );
+                window.removeEventListener(
+                    "cavecode-progression-changed",
+                    leaderboardHandler
+                );
+                window.removeEventListener(
+                    "cavecode-profile-changed",
+                    leaderboardHandler
+                );
+                leaderboardHandler = null;
+            }
+
+            leaderboardDotNetRef = null;
         }
     };
 })();

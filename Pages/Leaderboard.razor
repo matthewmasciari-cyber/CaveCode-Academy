@@ -1,4 +1,5 @@
 @page "/leaderboard"
+@implements IDisposable
 @inject ProgressionService ProgressionService
 @inject IJSRuntime JS
 @inject ProfileService ProfileService
@@ -628,6 +629,8 @@
             _ => "Overall academy"
         };
 
+    private DotNetObjectReference<Leaderboard>? _refreshRef;
+
     // LEADERBOARD_AUTH_READY_REFRESH_79A
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -659,8 +662,51 @@
             // Keep the local leaderboard result if cloud auth is unavailable.
         }
 
+        // Live refresh when XP, name, or visibility changes.
+        try
+        {
+            _refreshRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync(
+                "caveCodeLeaderboard.attach",
+                _refreshRef
+            );
+        }
+        catch
+        {
+            // Page still works without live event binding.
+        }
+
         Ready = true;
         await InvokeAsync(StateHasChanged);
+    }
+
+    [JSInvokable]
+    public async Task OnLeaderboardNeedsRefresh()
+    {
+        try
+        {
+            Profile = await ProfileService.GetPreferencesAsync();
+            State = await ProgressionService.GetStateAsync();
+            await RefreshLeaderboard();
+        }
+        catch
+        {
+            // Ignore transient refresh failures.
+        }
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            _ = JS.InvokeVoidAsync("caveCodeLeaderboard.detach");
+        }
+        catch
+        {
+            // Ignore dispose-time JS failures.
+        }
+
+        _refreshRef?.Dispose();
     }
 
     private async Task SelectFilter(string filter)

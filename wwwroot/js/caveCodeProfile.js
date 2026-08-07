@@ -384,6 +384,21 @@
             const statusAfter =
                 renameStatus();
 
+            // Keep leaderboard_profiles.display_name in sync when public.
+            try {
+                if (
+                    window.caveCodeProgression &&
+                    typeof window.caveCodeProgression
+                        .publishLeaderboardNow === "function"
+                ) {
+                    window.caveCodeProgression
+                        .publishLeaderboardNow()
+                        .catch(() => {});
+                }
+            } catch {
+                // Name change still succeeds even if board publish fails.
+            }
+
             return {
                 success: true,
                 message:
@@ -477,7 +492,26 @@
                     nextValue
             };
 
-            return save();
+            const preferences = save();
+
+            // Title / emblem also appear on the public board.
+            if (name === "title" || name === "emblem") {
+                try {
+                    if (
+                        window.caveCodeProgression &&
+                        typeof window.caveCodeProgression
+                            .publishLeaderboardNow === "function"
+                    ) {
+                        window.caveCodeProgression
+                            .publishLeaderboardNow()
+                            .catch(() => {});
+                    }
+                } catch {
+                    // Preference still saves if board publish fails.
+                }
+            }
+
+            return preferences;
         },
 
         reset: function () {
