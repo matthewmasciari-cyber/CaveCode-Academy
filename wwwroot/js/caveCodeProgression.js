@@ -84,7 +84,151 @@
         }
     }
 
+    function mergeAwardMaps(a, b) {
+        return {
+            ...(a || {}),
+            ...(b || {})
+        };
+    }
+
+    // Take the richer of local + cloud so a new device never wins with zeros.
+    function mergeLocalAndCloud(localState, cloudProfile) {
+        const cloud = profileFromCloud(cloudProfile || {});
+
+        return {
+            ...defaults,
+            totalXp: Math.max(
+                Number(localState.totalXp || 0),
+                Number(cloud.totalXp || 0)
+            ),
+            cSharpXp: Math.max(
+                Number(localState.cSharpXp || 0),
+                Number(cloud.cSharpXp || 0)
+            ),
+            pythonXp: Math.max(
+                Number(localState.pythonXp || 0),
+                Number(cloud.pythonXp || 0)
+            ),
+            cppXp: Math.max(
+                Number(localState.cppXp || 0),
+                Number(cloud.cppXp || 0)
+            ),
+            htmlCssXp: Math.max(
+                Number(localState.htmlCssXp || 0),
+                Number(cloud.htmlCssXp || 0)
+            ),
+            totalLines: Math.max(
+                Number(localState.totalLines || 0),
+                Number(cloud.totalLines || 0)
+            ),
+            cSharpLines: Math.max(
+                Number(localState.cSharpLines || 0),
+                Number(cloud.cSharpLines || 0)
+            ),
+            pythonLines: Math.max(
+                Number(localState.pythonLines || 0),
+                Number(cloud.pythonLines || 0)
+            ),
+            cppLines: Math.max(
+                Number(localState.cppLines || 0),
+                Number(cloud.cppLines || 0)
+            ),
+            htmlCssLines: Math.max(
+                Number(localState.htmlCssLines || 0),
+                Number(cloud.htmlCssLines || 0)
+            ),
+            publicLeaderboard: Boolean(
+                localState.publicLeaderboard || cloud.publicLeaderboard
+            ),
+            awardedModules: mergeAwardMaps(
+                localState.awardedModules,
+                cloud.awardedModules
+            ),
+            awardedStages: mergeAwardMaps(
+                localState.awardedStages,
+                cloud.awardedStages
+            ),
+            awardedChapters: mergeAwardMaps(
+                localState.awardedChapters,
+                cloud.awardedChapters
+            ),
+            awardedMinigameRuns: mergeAwardMaps(
+                localState.awardedMinigameRuns,
+                cloud.awardedMinigameRuns
+            )
+        };
+    }
+
+    function persistLocalOnly() {
+        localStorage.setItem(storageKey, JSON.stringify(current));
+        window.dispatchEvent(
+            new CustomEvent("cavecode-progression-changed", {
+                detail: stateView()
+            })
+        );
+    }
+
+    // Upload only when local is at least as rich as cloud (never clobber up).
+    async function pushToCloudIfSafe() {
+        if (!window.caveCodeAuth?.saveUserProfile) {
+            return;
+        }
+
+        const signedIn = await window.caveCodeAuth.isSignedIn?.();
+
+        if (!signedIn) {
+            return;
+        }
+
+        let cloudXp = 0;
+
+        try {
+            const cloud = await window.caveCodeAuth.loadUserProfile?.();
+            cloudXp = Number(cloud?.total_xp || 0);
+
+            if (cloud) {
+                current = mergeLocalAndCloud(current, cloud);
+                localStorage.setItem(
+                    storageKey,
+                    JSON.stringify(current)
+                );
+            }
+        } catch {
+            // If cloud cannot be read, only upload when we have real local XP.
+        }
+
+        const localXp = Number(current.totalXp || 0);
+
+        // Empty/new device must not overwrite real cloud progress.
+        if (localXp < cloudXp) {
+            return;
+        }
+
+        // Nothing meaningful to upload.
+        if (localXp <= 0 && Number(current.totalLines || 0) <= 0) {
+            return;
+        }
+
+        await window.caveCodeAuth.saveUserProfile(
+            cloudPayloadFromCurrent()
+        );
+
+        const courses = ["csharp", "python", "cpp", "htmlcss"];
+
+        for (const course of courses) {
+            try {
+                await window.caveCodeAuth.syncLocalProgressToCloud?.(
+                    course
+                );
+            } catch {
+                // One course failure must not block the rest.
+            }
+        }
+    }
+
     async function initializeProgression() {
+        const localSnapshot = load();
+
         try {
             await window.caveCodeAuth?.waitForReady?.(8000);
 
@@ -92,15 +236,29 @@
                 await window.caveCodeAuth?.loadUserProfile?.();
 
             if (profile) {
-                current = profileFromCloud(profile);
+                // Merge so a device with higher local XP is not discarded,
+                // and a device with empty local adopts cloud XP.
+                current = mergeLocalAndCloud(localSnapshot, profile);
 
-                // Mirror cloud into localStorage so UI/reconcile see it.
                 localStorage.setItem(
                     storageKey,
                     JSON.stringify(current)
                 );
 
                 await hydrateCourseProgressFromCloud();
+
+                // Only push if local brought new progress above cloud.
+                const cloudXp = Number(profile.total_xp || 0);
+
+                if (Number(current.totalXp || 0) > cloudXp) {
+                    try {
+                        await window.caveCodeAuth.saveUserProfile?.(
+                            cloudPayloadFromCurrent()
+                        );
+                    } catch {
+                        // Keep merged local state even if upload fails.
+                    }
+                }
 
                 progressionReady = true;
                 window.dispatchEvent(
@@ -114,22 +272,18 @@
             console.error("Progression cloud load failed:", error);
         }
 
-        current = load();
+        current = localSnapshot;
 
-        try {
-            await window.caveCodeAuth?.syncLocalProgressToCloud?.(
-                "csharp"
-            );
-        } catch {
-            // Keep local progress
-        }
-
-        // If signed in with local XP but no profile row yet, push it up.
+        // No cloud row yet: only upload when this device has real progress.
         try {
             const signedIn =
                 await window.caveCodeAuth?.isSignedIn?.();
 
-            if (signedIn && (current.totalXp > 0 || current.totalLines > 0)) {
+            if (
+                signedIn &&
+                (Number(current.totalXp || 0) > 0 ||
+                    Number(current.totalLines || 0) > 0)
+            ) {
                 await window.caveCodeAuth?.saveUserProfile?.(
                     cloudPayloadFromCurrent()
                 );
@@ -193,27 +347,18 @@
     }
 
     function save() {
+        // Always keep local cache for offline play.
         localStorage.setItem(storageKey, JSON.stringify(current));
-
-        // Push XP + awards to user_profiles (cross-browser source of truth).
-        window.caveCodeAuth
-            ?.saveUserProfile?.(cloudPayloadFromCurrent())
-            .catch(() => {});
-
-        // Sync course rows (awards merged from progression in auth.js).
-        const courses = ["csharp", "python", "cpp", "htmlcss"];
-
-        courses.forEach(course => {
-            window.caveCodeAuth
-                ?.syncLocalProgressToCloud?.(course)
-                .catch(() => {});
-        });
 
         window.dispatchEvent(
             new CustomEvent("cavecode-progression-changed", {
                 detail: stateView()
             })
         );
+
+        // Cloud upload is async and guarded: never clobber higher cloud XP
+        // with empty/stale local (the phone wipe bug).
+        pushToCloudIfSafe().catch(() => {});
     }
 
     function levelView(totalXp) {
