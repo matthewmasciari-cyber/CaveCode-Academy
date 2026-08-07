@@ -576,9 +576,10 @@
         }
     }
 
-    /* Fixed dark leaderboard surface and level-name tiers */
+    /* Ranking table stays on a dark surface in all modes for score readability.
+       Use high-contrast panel tokens (not washed gray on navy). */
     .ranking-card {
-        color: var(--dark-panel-text, #eef4f8);
+        color: var(--dark-panel-text, #f3f7fb);
         background: var(--code-bg, #0b1118);
         border-color: var(--border-strong, #334252);
     }
@@ -589,17 +590,17 @@
     }
 
     .table-head {
-        color: var(--dark-panel-muted, #aab7c4);
-        background: rgba(255, 255, 255, .045);
+        color: var(--dark-panel-muted, #c5d0dc);
+        background: rgba(255, 255, 255, .06);
     }
 
     .player-cell strong,
     .leaderboard-row > strong:not(.rank) {
-        color: var(--dark-panel-text, #eef4f8);
+        color: var(--dark-panel-text, #f3f7fb);
     }
 
     .player-cell small {
-        color: var(--dark-panel-muted, #aab7c4);
+        color: var(--dark-panel-muted, #c5d0dc);
     }
 
     .level-colored-name {

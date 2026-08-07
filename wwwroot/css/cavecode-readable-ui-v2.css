@@ -1,0 +1,255 @@
+/* ==================================================================
+   CaveCode Academy — Readable UI v2
+   Load LAST (after themes + existing contrast sheets).
+
+   Goal: keep every theme’s accent personality, but guarantee text is
+   readable on its background in both light and dark modes.
+
+   Does NOT change layout, spacing, or component structure.
+   ================================================================== */
+
+/* ------------------------------------------------------------------
+   1) Stronger semantic text roles (mode-aware)
+   ------------------------------------------------------------------ */
+
+html[data-mode="dark"] {
+    --cc-text-primary: var(--text);
+    --cc-text-secondary: #d0dae4;
+    --cc-text-muted: #b7c3d0;
+    --cc-text-disabled: #9aa8b6;
+
+    --text-muted: var(--cc-text-muted);
+    --text-dim: var(--cc-text-disabled);
+    --dark-panel-text: #f3f7fb;
+    --dark-panel-muted: #c5d0dc;
+    --code-muted: #b3c0cd;
+}
+
+html[data-mode="light"] {
+    --cc-text-primary: var(--text);
+    --cc-text-secondary: #2a3642;
+    --cc-text-muted: #44525e;
+    --cc-text-disabled: #5c6b78;
+
+    --text-muted: var(--cc-text-muted);
+    --text-dim: var(--cc-text-disabled);
+    --dark-panel-text: var(--text);
+    --dark-panel-muted: var(--text-muted);
+}
+
+html[data-mode="light"][data-theme="high-contrast"] {
+    --cc-text-primary: #000;
+    --cc-text-secondary: #111;
+    --cc-text-muted: #222;
+    --cc-text-disabled: #333;
+}
+
+/* ------------------------------------------------------------------
+   2) Page chrome — never let body/header copy go low-contrast
+   ------------------------------------------------------------------ */
+
+html body {
+    color: var(--cc-text-primary, var(--text));
+    background-color: var(--bg);
+}
+
+html :where(
+    h1, h2, h3, h4, h5, h6,
+    .page-title,
+    .section-title
+) {
+    color: var(--cc-text-primary, var(--text));
+}
+
+html :where(
+    p,
+    li,
+    label,
+    td,
+    th,
+    span,
+    small,
+    .description,
+    .subtitle,
+    .helper-text,
+    .supporting-text,
+    .meta,
+    .caption,
+    .note,
+    .muted,
+    .text-muted
+) {
+    color: inherit;
+}
+
+/* Explicit secondary roles */
+html :where(
+    .text-muted,
+    .muted,
+    .subtitle,
+    .description,
+    .helper-text,
+    .supporting-text,
+    .caption,
+    .meta,
+    .metadata,
+    .fine-print,
+    .secondary-text,
+    .card-description,
+    .section-description
+) {
+    color: var(--cc-text-secondary, var(--text-muted)) !important;
+    opacity: 1 !important;
+}
+
+html :where(
+    .text-dim,
+    .dim,
+    .tertiary-text,
+    .timestamp,
+    .microcopy
+) {
+    color: var(--cc-text-muted, var(--text-dim)) !important;
+    opacity: 1 !important;
+}
+
+/* ------------------------------------------------------------------
+   3) Leaderboard — known dark-gray-on-navy problem area
+   ------------------------------------------------------------------ */
+
+html :where(.leaderboard-page) {
+    color: var(--cc-text-primary, var(--text));
+}
+
+html :where(
+    .leaderboard-header h1,
+    .leaderboard-header strong,
+    .player-summary strong,
+    .summary-stats strong,
+    .level-orb strong,
+    .leaderboard-row .value,
+    .leaderboard-row .rank
+) {
+    color: var(--cc-text-primary, var(--text)) !important;
+    opacity: 1 !important;
+}
+
+html :where(
+    .leaderboard-header p,
+    .leaderboard-header small,
+    .visibility-card p,
+    .visibility-card small,
+    .player-summary small,
+    .summary-stats span,
+    .level-orb span,
+    .leaderboard-row small,
+    .leaderboard-message,
+    .table-head
+) {
+    color: var(--cc-text-secondary, var(--text-muted)) !important;
+    opacity: 1 !important;
+}
+
+html :where(
+    .leaderboard-card,
+    .player-summary,
+    .visibility-card,
+    .leaderboard-table,
+    .leaderboard-row
+) {
+    color: var(--cc-text-primary, var(--text));
+}
+
+html :where(.leaderboard-row.current-player) {
+    color: var(--cc-text-primary, var(--text));
+}
+
+html :where(.leaderboard-row .level-colored-name) {
+    opacity: 1 !important;
+}
+
+/* ------------------------------------------------------------------
+   4) Cards / panels / auth — shared surfaces
+   ------------------------------------------------------------------ */
+
+html :where(
+    .card,
+    .panel,
+    .auth-card,
+    .settings-panel,
+    .achievement-card,
+    .profile-card,
+    .course-card,
+    .path-card,
+    .mission-card,
+    .notice-card,
+    .status-card
+) {
+    color: var(--cc-text-primary, var(--text));
+}
+
+html :where(
+    .card p,
+    .panel p,
+    .auth-card p,
+    .auth-status,
+    .signed-in-user small,
+    .settings-panel p,
+    .achievement-card p,
+    .profile-card p
+) {
+    color: var(--cc-text-secondary, var(--text-muted)) !important;
+    opacity: 1 !important;
+}
+
+/* ------------------------------------------------------------------
+   5) Buttons: text on accent must use contrast token
+   ------------------------------------------------------------------ */
+
+html :where(
+    .primary,
+    .primary-action,
+    .github-button,
+    button.primary,
+    a.primary
+) {
+    color: var(--accent-contrast) !important;
+}
+
+/* ------------------------------------------------------------------
+   6) Code panels stay high-contrast on dark code surfaces
+   ------------------------------------------------------------------ */
+
+html :where(
+    pre,
+    code,
+    .code-panel,
+    .code-editor,
+    .editor-pane
+) {
+    color: var(--code-text, var(--text));
+}
+
+html :where(
+    .code-muted,
+    .editor-meta,
+    .line-meta
+) {
+    color: var(--code-muted, var(--cc-text-muted)) !important;
+}
+
+/* ------------------------------------------------------------------
+   7) Kill accidental transparency that kills contrast
+   ------------------------------------------------------------------ */
+
+html :where(
+    .leaderboard-page,
+    .leaderboard-header,
+    .player-summary,
+    .visibility-card,
+    .settings-page,
+    .achievements-page,
+    .academy-home
+) :where(p, small, span, label, li) {
+    opacity: 1;
+}
