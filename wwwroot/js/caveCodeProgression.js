@@ -46,7 +46,6 @@
             awardedModules: profile.awarded_modules || {},
             awardedStages: profile.awarded_stages || {},
             awardedChapters: profile.awarded_chapters || {},
-            awardedMinigameRuns: profile.awarded_minigame_runs || {}
         };
     }
 
@@ -66,7 +65,6 @@
             awarded_modules: current.awardedModules || {},
             awarded_stages: current.awardedStages || {},
             awarded_chapters: current.awardedChapters || {},
-            awarded_minigame_runs: current.awardedMinigameRuns || {}
         };
     }
 
