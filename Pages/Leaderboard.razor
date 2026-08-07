@@ -299,7 +299,7 @@
 
     .summary-copy > span {
         color: var(--text-muted);
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .summary-copy > strong {
@@ -310,7 +310,7 @@
     .summary-copy > small {
         margin-top: 7px;
         color: var(--text-muted);
-        font-size: 9px;
+        font-size: 12px;
     }
 
     .summary-xp-track {
@@ -347,7 +347,9 @@
 
     .summary-stats span {
         color: var(--text-muted);
-        font-size: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
     }
 
@@ -425,39 +427,64 @@
         font-size: 10px;
     }
 
+    /* Ranking board: always a dark panel so column headers and scores stay readable
+       in both site light mode and dark mode (no gray-on-navy). */
     .ranking-card {
         overflow: hidden;
+        color: #f3f7fb;
+        background: #0b1118;
+        border: 1px solid #3a495a;
+        box-shadow: 0 18px 65px rgba(0, 0, 0, .35);
     }
 
     .ranking-toolbar {
-        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 18px 20px;
+        border-bottom: 1px solid #334252;
+        background: #101822;
+    }
+
+    .ranking-toolbar .eyebrow {
+        color: #8cf0ad;
     }
 
     .ranking-toolbar h2 {
         margin: 0;
-        font-size: 21px;
+        color: #f3f7fb;
+        font-size: 22px;
+        letter-spacing: -0.4px;
     }
 
     .filter-tabs {
         display: flex;
-        gap: 6px;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
     .filter-tabs button {
-        padding: 8px 12px;
-        color: var(--text-muted);
-        background: var(--surface-soft);
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        padding: 9px 14px;
+        color: #d0dae4;
+        background: #17212c;
+        border: 1px solid #3a495a;
+        border-radius: 999px;
         cursor: pointer;
-        font-size: 10px;
-        font-weight: 850;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+    }
+
+    .filter-tabs button:hover {
+        color: #fff;
+        border-color: #73e59b;
     }
 
     .filter-tabs button.selected {
-        color: var(--accent-soft);
-        background: var(--accent-surface);
-        border-color: var(--accent-border);
+        color: #07140c;
+        background: #73e59b;
+        border-color: #73e59b;
     }
 
     .leaderboard-table {
@@ -466,29 +493,35 @@
 
     .leaderboard-row {
         display: grid;
-        grid-template-columns: 60px minmax(210px, 1fr) 90px 135px 135px;
+        grid-template-columns: 64px minmax(210px, 1fr) 90px 140px 140px;
         align-items: center;
         min-width: 720px;
         gap: 12px;
-        padding: 13px 18px;
-        border-bottom: 1px solid var(--border);
+        padding: 14px 18px;
+        color: #f3f7fb;
+        border-bottom: 1px solid #243140;
     }
 
     .table-head {
-        color: var(--text-muted);
-        background: var(--surface-soft);
-        font-size: 8px;
-        font-weight: 900;
+        color: #e8eef5;
+        background: #141c27;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
     }
 
+    .table-head span {
+        color: #e8eef5;
+    }
+
     .leaderboard-row.current-player {
-        background: var(--accent-surface);
-        box-shadow: inset 3px 0 var(--accent);
+        background: rgba(115, 229, 155, 0.12);
+        box-shadow: inset 3px 0 #73e59b;
     }
 
     .rank {
-        color: var(--accent);
+        color: #8cf0ad;
         font-size: 16px;
     }
 
@@ -505,8 +538,8 @@
         height: 34px;
         flex: 0 0 34px;
         place-items: center;
-        color: var(--accent-contrast);
-        background: var(--accent);
+        color: #07140c;
+        background: #73e59b;
         border-radius: 9px;
         font-size: 12px;
         font-weight: 950;
@@ -517,10 +550,20 @@
         display: block;
     }
 
+    .player-cell strong,
+    .leaderboard-row > strong:not(.rank) {
+        color: #f3f7fb;
+    }
+
     .player-cell small {
         margin-top: 3px;
-        color: var(--text-muted);
-        font-size: 9px;
+        color: #c5d0dc;
+        font-size: 11px;
+    }
+
+    .level-colored-name {
+        font-weight: 950;
+        text-shadow: 0 0 12px rgba(255, 255, 255, .12);
     }
 
     .xp-rules {
@@ -549,7 +592,8 @@
 
     .xp-rules strong {
         margin-top: 4px;
-        font-size: 9px;
+        color: var(--text);
+        font-size: 11px;
     }
 
     @@media (max-width: 760px) {
@@ -574,38 +618,10 @@
         .xp-rules {
             grid-template-columns: repeat(2, 1fr);
         }
-    }
 
-    /* Ranking table stays on a dark surface in all modes for score readability.
-       Use high-contrast panel tokens (not washed gray on navy). */
-    .ranking-card {
-        color: var(--dark-panel-text, #f3f7fb);
-        background: var(--code-bg, #0b1118);
-        border-color: var(--border-strong, #334252);
-    }
-
-    .ranking-toolbar,
-    .leaderboard-row {
-        border-color: var(--border-strong, #334252);
-    }
-
-    .table-head {
-        color: var(--dark-panel-muted, #c5d0dc);
-        background: rgba(255, 255, 255, .06);
-    }
-
-    .player-cell strong,
-    .leaderboard-row > strong:not(.rank) {
-        color: var(--dark-panel-text, #f3f7fb);
-    }
-
-    .player-cell small {
-        color: var(--dark-panel-muted, #c5d0dc);
-    }
-
-    .level-colored-name {
-        font-weight: 950;
-        text-shadow: 0 0 12px rgba(255, 255, 255, .12);
+        .table-head {
+            font-size: 10px;
+        }
     }
 
 </style>
