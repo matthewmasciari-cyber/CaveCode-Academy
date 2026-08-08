@@ -66,7 +66,7 @@ public sealed class CourseCatalogService
                 EditorFileName = "index.html",
                 EditorLanguageLabel = "HTML / CSS",
                 PreviewKind = "live-web-preview",
-                IsAvailable = false,
+                IsAvailable = true,
                 HasMinigame = false
             }
         };

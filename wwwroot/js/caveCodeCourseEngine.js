@@ -70,7 +70,7 @@
             chapterCount: 5,
             modulesPerChapter: 8,
             courseVersion: 1,
-            isAvailable: false,
+            isAvailable: true,
             hasMinigame: false
         })
     ]);
