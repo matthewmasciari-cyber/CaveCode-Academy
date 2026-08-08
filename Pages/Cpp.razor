@@ -506,8 +506,10 @@
 
 @code {
     private const int PlayableModuleCount =
-        CppChapterOneLessons.PlayableModuleCount;
+        CppCourseLessons.PlayableModuleCount;
     private const int ChapterOneLastModuleIndex = 7;
+    private const int FinalModuleIndex =
+        CppCourseLessons.PlayableModuleCount - 1;
 
     private CourseManifest Manifest = null!;
     private CourseProgressSnapshot Progress = new();
@@ -531,7 +533,7 @@
     private bool ShowChapterOneSignInPrompt;
     private bool PendingChapterOneSignInPrompt;
 
-    private IReadOnlyList<CourseLesson> Lessons => CppChapterOneLessons.All;
+    private IReadOnlyList<CourseLesson> Lessons => CppCourseLessons.All;
     private IReadOnlyList<CppRoadmapModule> Roadmap => CppCourseRoadmap.Modules;
     private CourseLesson CurrentLesson => Lessons[CurrentModuleIndex];
 
