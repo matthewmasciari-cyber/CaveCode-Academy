@@ -54,7 +54,7 @@
             modulesPerChapter: 8,
             courseVersion: 1,
             isAvailable: true,
-            hasMinigame: false
+            hasMinigame: true
         }),
         Object.freeze({
             id: "htmlcss",
@@ -71,7 +71,7 @@
             modulesPerChapter: 8,
             courseVersion: 1,
             isAvailable: true,
-            hasMinigame: false
+            hasMinigame: true
         })
     ]);
 

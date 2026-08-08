@@ -52,7 +52,7 @@ public sealed class CourseCatalogService
                 EditorLanguageLabel = "C++",
                 PreviewKind = "engine-workshop",
                 IsAvailable = true,
-                HasMinigame = false
+                HasMinigame = true
             },
             new CourseManifest
             {
@@ -67,7 +67,7 @@ public sealed class CourseCatalogService
                 EditorLanguageLabel = "HTML / CSS",
                 PreviewKind = "live-web-preview",
                 IsAvailable = true,
-                HasMinigame = false
+                HasMinigame = true
             }
         };
 
