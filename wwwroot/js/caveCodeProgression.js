@@ -836,13 +836,21 @@
                 }
             }
 
+            let crystalsAwarded = 0;
             if (xpAwarded > 0) {
                 save();
+                try {
+                    if (window.caveCodeCrystalShop && window.caveCodeCrystalShop.grantModuleCrystals) {
+                        const grant = window.caveCodeCrystalShop.grantModuleCrystals(course, moduleIndex);
+                        crystalsAwarded = Number(grant && grant.awarded) || 0;
+                    }
+                } catch (e) {}
             }
 
             return {
                 newlyAwarded: xpAwarded > 0,
                 xpAwarded,
+                crystalsAwarded,
                 state: stateView()
             };
         },

@@ -1,0 +1,275 @@
+/* =========================================================
+   CaveCode — Title effects (Discord-style name flair)
+   ========================================================= */
+
+.title-effect-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    vertical-align: baseline;
+}
+
+.title-effect {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--text, #eef4f8);
+    font-weight: 900;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+.title-effect-badge {
+    flex: 0 0 auto;
+    font-size: 0.85em;
+    opacity: 0.95;
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent, #73e59b) 50%, transparent));
+}
+
+/* --- Base palette effects --- */
+.title-effect.stone {
+    color: #d5dee7;
+    text-shadow: 0 1px #536170;
+}
+
+.title-effect.electric,
+.title-effect.circuit {
+    color: transparent;
+    background: linear-gradient(90deg, #8be9ff, #ffffff, #55d8ff, #8be9ff);
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-electric 2.2s linear infinite;
+    filter: drop-shadow(0 0 5px rgba(85, 216, 255, .35));
+}
+
+.title-effect.fire {
+    color: transparent;
+    background: linear-gradient(90deg, #ffcf70, #ff7a45, #fff0a5, #ff6a3d);
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-flow 2.8s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(255, 120, 50, .4));
+}
+
+.title-effect.water {
+    color: transparent;
+    background: linear-gradient(90deg, #7cecff, #4f8dff, #a7f6ff, #31c9ea);
+    background-size: 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-flow 3.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 5px rgba(80, 180, 255, .35));
+}
+
+.title-effect.safety {
+    color: transparent;
+    background: linear-gradient(90deg, #9cff78, #fff179, #b5ff8f, #63e87c);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-pulse 2.4s ease-in-out infinite;
+}
+
+.title-effect.prismatic {
+    color: transparent;
+    background: linear-gradient(90deg, #ff8fbd, #d8a4ff, #66e3ff, #73e59b, #ffe178, #ff9b8a, #ff8fbd);
+    background-size: 320% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-prismatic 4s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(180, 140, 255, .35));
+}
+
+/* --- Course signatures --- */
+.title-effect.control {
+    color: transparent;
+    background: linear-gradient(90deg, #3dff9a, #b8ffe0, #5ddea0, #e8fff4, #3dff9a);
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-electric 2.6s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(93, 222, 160, .45));
+}
+
+.title-effect.solder {
+    color: transparent;
+    background: linear-gradient(90deg, #ffb347, #ffe0a0, #ff8c32, #fff3d0, #ffb347);
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-flow 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(255, 160, 60, .45));
+}
+
+.title-effect.berry {
+    color: transparent;
+    background: linear-gradient(90deg, #ff6b9d, #ffd0e3, #e35d8c, #ffffff, #ff6b9d);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-electric 2.4s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(227, 93, 140, .4));
+}
+
+.title-effect.forge {
+    color: transparent;
+    background: linear-gradient(90deg, #3fd0ff, #ffffff, #7a8cff, #66f0ff, #3fd0ff);
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: title-electric 2s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(63, 208, 255, .5));
+}
+
+/* --- Crackling lightning --- */
+.title-fx-lightning .title-effect {
+    animation:
+        title-electric 1.6s linear infinite,
+        title-lightning-flash 2.8s ease-in-out infinite;
+    filter:
+        drop-shadow(0 0 4px rgba(180, 230, 255, .7))
+        drop-shadow(0 0 10px rgba(100, 200, 255, .35));
+}
+
+.title-fx-lightning::after {
+    content: "";
+    position: absolute;
+    inset: -4px -8px;
+    pointer-events: none;
+    background:
+        linear-gradient(115deg, transparent 40%, rgba(200, 240, 255, .0) 45%, rgba(200, 240, 255, .55) 50%, rgba(200, 240, 255, .0) 55%, transparent 60%);
+    background-size: 200% 100%;
+    animation: title-bolt-sweep 3.2s ease-in-out infinite;
+    mix-blend-mode: screen;
+    opacity: 0.65;
+    border-radius: 6px;
+}
+
+.title-effect-wrap.title-fx-lightning {
+    position: relative;
+}
+
+/* --- Soft flame underlay --- */
+.title-effect-wrap.title-fx-softflame {
+    position: relative;
+    isolation: isolate;
+}
+
+.title-fx-softflame::before {
+    content: "";
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: -2px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(255, 140, 50, .55), rgba(255, 80, 20, .15) 55%, transparent 70%);
+    filter: blur(3px);
+    animation: title-flame-wobble 1.8s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* --- Sparkle dust --- */
+.title-effect-wrap.title-fx-sparkle {
+    position: relative;
+}
+
+.title-fx-sparkle::after {
+    content: "✦";
+    position: absolute;
+    top: -0.35em;
+    right: -0.15em;
+    font-size: 0.55em;
+    color: #fff;
+    opacity: 0;
+    animation: title-sparkle 2.4s ease-in-out infinite;
+    text-shadow: 0 0 6px #fff, 0 0 10px var(--accent, #8be9ff);
+    pointer-events: none;
+}
+
+/* --- RGB / chromatic glow --- */
+.title-effect-wrap.title-fx-rgb .title-effect {
+    animation:
+        title-prismatic 3.2s linear infinite,
+        title-rgb-glow 2.5s ease-in-out infinite;
+    filter:
+        drop-shadow(0 0 4px rgba(255, 100, 180, .45))
+        drop-shadow(0 0 8px rgba(100, 200, 255, .35))
+        drop-shadow(0 0 12px rgba(140, 255, 160, .25));
+}
+
+.title-effect-wrap.title-fx-pulse .title-effect {
+    animation:
+        title-electric 2.2s linear infinite,
+        title-pulse 2.2s ease-in-out infinite;
+}
+
+/* --- Keyframes --- */
+@keyframes title-electric { to { background-position: -240% 0; } }
+@keyframes title-prismatic { to { background-position: -320% 0; } }
+@keyframes title-flow {
+    0%, 100% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
+}
+@keyframes title-pulse {
+    0%, 100% { background-position: 0 50%; opacity: .88; }
+    50% { background-position: 100% 50%; opacity: 1; }
+}
+@keyframes title-lightning-flash {
+    0%, 86%, 100% { filter: drop-shadow(0 0 4px rgba(180, 230, 255, .5)); }
+    88% { filter: drop-shadow(0 0 12px rgba(255, 255, 255, .95)) drop-shadow(0 0 18px rgba(120, 210, 255, .8)); }
+    92% { filter: drop-shadow(0 0 5px rgba(180, 230, 255, .55)); }
+}
+@keyframes title-bolt-sweep {
+    0%, 70%, 100% { background-position: 120% 0; opacity: 0; }
+    75% { opacity: 0.7; }
+    82% { background-position: -20% 0; opacity: 0.35; }
+}
+@keyframes title-flame-wobble {
+    0%, 100% { transform: scaleX(1) translateY(0); opacity: .7; }
+    50% { transform: scaleX(1.15) translateY(-1px); opacity: 1; }
+}
+@keyframes title-sparkle {
+    0%, 100% { opacity: 0; transform: scale(0.6) translateY(2px); }
+    40% { opacity: 1; transform: scale(1) translateY(0); }
+    70% { opacity: 0.2; }
+}
+@keyframes title-rgb-glow {
+    0%, 100% {
+        filter:
+            drop-shadow(0 0 4px rgba(255, 100, 180, .5))
+            drop-shadow(0 0 8px rgba(100, 200, 255, .3));
+    }
+    33% {
+        filter:
+            drop-shadow(0 0 5px rgba(100, 220, 255, .55))
+            drop-shadow(0 0 10px rgba(140, 255, 160, .35));
+    }
+    66% {
+        filter:
+            drop-shadow(0 0 5px rgba(255, 220, 100, .5))
+            drop-shadow(0 0 10px rgba(255, 100, 180, .35));
+    }
+}
+
+/* Reduced motion */
+html[data-reduced-motion="true"] .title-effect,
+html[data-reduced-motion="true"] .title-effect-wrap::before,
+html[data-reduced-motion="true"] .title-effect-wrap::after {
+    animation: none !important;
+}
+html[data-reduced-motion="true"] .title-effect {
+    background-position: 50% 50%;
+    opacity: 1;
+}
+
+/* Dark wells: keep effects bright */
+.leaderboard-row .title-effect.stone,
+.profile-preview .title-effect.stone {
+    color: #d5dee7 !important;
+}

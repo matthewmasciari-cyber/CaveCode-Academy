@@ -249,7 +249,7 @@
             courseName: "GCL+ Control Line Lab",
             chapter: 1,
             name: "Control Lab Booted",
-            description: "Complete GCL+ Chapter 1 and learn variables, modes, and startup shells.",
+            description: "Complete GCL+ Chapter 1 — variables, modes, and the startup shell.",
             titleReward: "Control Cadet",
             crystals: 100
         },
@@ -258,17 +258,37 @@
             course: "gcl",
             courseName: "GCL+ Control Line Lab",
             chapter: 2,
-            name: "Sequence Tech Certified",
-            description: "Complete GCL+ Chapter 2 and work timing, enables, and interlocks.",
+            name: "Sequence Rails Live",
+            description: "Complete GCL+ Chapter 2 — timing, enables, and safe sequencing.",
             titleReward: "Sequence Tech",
             crystals: 125
+        },
+        {
+            id: "gcl-chapter-3",
+            course: "gcl",
+            courseName: "GCL+ Control Line Lab",
+            chapter: 3,
+            name: "Interlocks Proven",
+            description: "Complete GCL+ Chapter 3 — interlocks, guards, and fault-aware logic.",
+            titleReward: "Interlock Operator",
+            crystals: 150
+        },
+        {
+            id: "gcl-chapter-4",
+            course: "gcl",
+            courseName: "GCL+ Control Line Lab",
+            chapter: 4,
+            name: "Timing Authority",
+            description: "Complete GCL+ Chapter 4 — multi-step timers and production-style flows.",
+            titleReward: "Timing Specialist",
+            crystals: 175
         },
         {
             id: "gcl-chapter-5",
             course: "gcl",
             courseName: "GCL+ Control Line Lab",
             chapter: 5,
-            name: "Control Line Master",
+            name: "Line Under Command",
             description: "Complete the full GCL+ Control Line Lab path.",
             titleReward: "Line Boss",
             crystals: 250
@@ -279,29 +299,49 @@
             courseName: "Arduino C++",
             chapter: 1,
             name: "Maker Lab Powered",
-            description: "Complete Arduino Chapter 1 and get sketches, pins, and blink online.",
+            description: "Complete Arduino Chapter 1 — sketches, pins, and the first blink.",
             titleReward: "Pin Rookie",
-            crystals: 100
+            crystals: 120
         },
         {
             id: "arduino-chapter-2",
             course: "arduino",
             courseName: "Arduino C++",
             chapter: 2,
-            name: "Sketch Smith Badge",
-            description: "Complete Arduino Chapter 2 digital output patterns.",
+            name: "Output Patterns Certified",
+            description: "Complete Arduino Chapter 2 — digital writes, timing, and LED patterns.",
             titleReward: "Sketch Smith",
-            crystals: 125
+            crystals: 150
+        },
+        {
+            id: "arduino-chapter-3",
+            course: "arduino",
+            courseName: "Arduino C++",
+            chapter: 3,
+            name: "Sense Loop Online",
+            description: "Complete Arduino Chapter 3 — inputs, sensors, and reactive sketches.",
+            titleReward: "Sensor Apprentice",
+            crystals: 180
+        },
+        {
+            id: "arduino-chapter-4",
+            course: "arduino",
+            courseName: "Arduino C++",
+            chapter: 4,
+            name: "Shield Integration",
+            description: "Complete Arduino Chapter 4 — modules, libraries, and multi-device control.",
+            titleReward: "Shield Builder",
+            crystals: 210
         },
         {
             id: "arduino-chapter-5",
             course: "arduino",
             courseName: "Arduino C++",
             chapter: 5,
-            name: "Board Captain",
+            name: "Board Commissioned",
             description: "Complete the full Arduino C++ maker path.",
             titleReward: "Board Captain",
-            crystals: 250
+            crystals: 300
         },
         {
             id: "raspi-chapter-1",
@@ -309,29 +349,49 @@
             courseName: "Raspberry Pi Python",
             chapter: 1,
             name: "Pi Lab Online",
-            description: "Complete Raspberry Pi Chapter 1 script foundations.",
+            description: "Complete Raspberry Pi Chapter 1 — scripts, REPL habits, and lab setup.",
             titleReward: "GPIO Scout",
-            crystals: 100
+            crystals: 120
         },
         {
             id: "raspi-chapter-2",
             course: "raspi",
             courseName: "Raspberry Pi Python",
             chapter: 2,
-            name: "Pi Tinkerer",
-            description: "Complete Raspberry Pi Chapter 2 digital output with gpiozero.",
+            name: "gpiozero Active",
+            description: "Complete Raspberry Pi Chapter 2 — digital output with gpiozero.",
             titleReward: "Pi Tinkerer",
-            crystals: 125
+            crystals: 150
+        },
+        {
+            id: "raspi-chapter-3",
+            course: "raspi",
+            courseName: "Raspberry Pi Python",
+            chapter: 3,
+            name: "Sense Stack Wired",
+            description: "Complete Raspberry Pi Chapter 3 — inputs, sensors, and event loops.",
+            titleReward: "Sense Hacker",
+            crystals: 180
+        },
+        {
+            id: "raspi-chapter-4",
+            course: "raspi",
+            courseName: "Raspberry Pi Python",
+            chapter: 4,
+            name: "Automation Hand",
+            description: "Complete Raspberry Pi Chapter 4 — services, schedules, and lab automation.",
+            titleReward: "Automation Hand",
+            crystals: 210
         },
         {
             id: "raspi-chapter-5",
             course: "raspi",
             courseName: "Raspberry Pi Python",
             chapter: 5,
-            name: "Lab Lead",
+            name: "Lab Stack Complete",
             description: "Complete the full Raspberry Pi Python path.",
             titleReward: "Lab Lead",
-            crystals: 250
+            crystals: 300
         },
         {
             id: "javascript-chapter-1",
@@ -339,7 +399,7 @@
             courseName: "JavaScript Web Forge",
             chapter: 1,
             name: "Forge Boot Complete",
-            description: "Complete JavaScript Chapter 1 console and value foundations.",
+            description: "Complete JavaScript Chapter 1 — console, values, and first scripts.",
             titleReward: "Console Cadet",
             crystals: 100
         },
@@ -348,17 +408,37 @@
             course: "javascript",
             courseName: "JavaScript Web Forge",
             chapter: 2,
-            name: "Decision Branch",
-            description: "Complete JavaScript Chapter 2 decisions and branching.",
+            name: "Branch Logic Online",
+            description: "Complete JavaScript Chapter 2 — decisions, branches, and flow.",
             titleReward: "DOM Jockey",
             crystals: 125
+        },
+        {
+            id: "javascript-chapter-3",
+            course: "javascript",
+            courseName: "JavaScript Web Forge",
+            chapter: 3,
+            name: "Event Rails Hot",
+            description: "Complete JavaScript Chapter 3 — events, listeners, and interaction.",
+            titleReward: "Event Wrangler",
+            crystals: 150
+        },
+        {
+            id: "javascript-chapter-4",
+            course: "javascript",
+            courseName: "JavaScript Web Forge",
+            chapter: 4,
+            name: "Module Bay Open",
+            description: "Complete JavaScript Chapter 4 — functions, modules, and structure.",
+            titleReward: "Module Pilot",
+            crystals: 175
         },
         {
             id: "javascript-chapter-5",
             course: "javascript",
             courseName: "JavaScript Web Forge",
             chapter: 5,
-            name: "Web Forge Ace",
+            name: "Arcade Cleared",
             description: "Complete the full JavaScript Web Forge path.",
             titleReward: "Web Forge Ace",
             crystals: 250

@@ -82,17 +82,31 @@
                         </div>
                         <div class="field-label">
                             <span>Emblem</span>
-
-                            <div class="emblem-grid">
-                                @foreach (EmblemChoice emblem in Emblems)
+                            <div class="emblem-shop">
+                                <div class="emblem-shop-header">
+                                    <h3>Emblem shop</h3>
+                                    <span class="crystal-balance">@CrystalBalance Code Crystals</span>
+                                </div>
+                                <p class="emblem-shop-note">Earn crystals by completing modules (+3, or +8 at chapter end) and claiming chapter achievements. Common emblems are free.</p>
+                                @foreach (var rarity in EmblemRarityOrder)
                                 {
-                                    <button type="button"
-                                            class="emblem-choice @(Profile.Emblem == emblem.Id ? "selected" : "")"
-                                            aria-pressed="@(Profile.Emblem == emblem.Id)"
-                                            @onclick="() => SelectEmblem(emblem.Id)">
-                                        <strong class="emblem-glyph"><i data-lucide="@emblem.Symbol"></i></strong>
-                                        <small>@emblem.Name</small>
-                                    </button>
+                                    <div class="emblem-rarity-block">
+                                        <div class="emblem-rarity-label">@rarity</div>
+                                        <div class="emblem-grid">
+                                            @foreach (EmblemChoice emblem in Emblems.Where(e => e.Rarity == rarity))
+                                            {
+                                                var owned = OwnedEmblems.Contains(emblem.Id);
+                                                <button type="button"
+                                                        class="emblem-choice @(Profile.Emblem == emblem.Id ? "selected" : "") @(!owned ? "locked" : "owned")"
+                                                        aria-pressed="@(Profile.Emblem == emblem.Id)"
+                                                        @onclick="() => OnEmblemClick(emblem)">
+                                                    <strong class="emblem-glyph"><i data-lucide="@emblem.Symbol"></i></strong>
+                                                    <small>@emblem.Name</small>
+                                                    <span class="price">@(owned ? "Owned" : (emblem.Cost == 0 ? "Free" : emblem.Cost + " crystals"))</span>
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -992,33 +1006,125 @@
 
     private static readonly EmblemChoice[] Emblems =
     {
-        new("crystal", "Crystal", "gem"),
-        new("cave", "Cave", "mountain"),
-        new("torch", "Torch", "flame"),
-        new("sparkles", "Sparkles", "sparkles"),
-        new("cpu", "CPU", "cpu"),
-        new("circuit", "Circuit", "circuit-board"),
-        new("plug", "Plug", "plug-zap"),
-        new("bot", "Bot", "bot"),
-        new("bulb", "Bulb", "lightbulb"),
-        new("gauge", "Gauge", "gauge"),
-        new("terminal", "Terminal", "terminal"),
-        new("code", "Code", "code-2"),
-        new("window", "Window", "app-window"),
-        new("pointer", "Pointer", "mouse-pointer-click"),
-        new("zap", "Zap", "zap"),
-        new("fan", "Fan", "fan"),
-        new("thermo", "Thermo", "thermometer"),
-        new("activity", "Activity", "activity"),
-        new("sliders", "Sliders", "sliders-horizontal"),
-        new("shield", "Shield", "shield-check"),
-        new("rocket", "Rocket", "rocket"),
-        new("ghost", "Ghost", "ghost"),
-        new("crown", "Crown", "crown"),
-        new("star", "Star", "star"),
-        new("cat", "Cat", "cat"),
-        new("pizza", "Pizza", "pizza")
+        new("crystal", "Crystal", "gem", "common", 0),
+        new("cave", "Cave", "mountain", "common", 0),
+        new("terminal", "Terminal", "terminal", "common", 0),
+        new("code", "Code", "code-2", "common", 0),
+        new("torch", "Torch", "flame", "uncommon", 25),
+        new("sparkles", "Sparkles", "sparkles", "uncommon", 25),
+        new("bulb", "Bulb", "lightbulb", "uncommon", 25),
+        new("star", "Star", "star", "uncommon", 25),
+        new("activity", "Activity", "activity", "uncommon", 25),
+        new("cpu", "CPU", "cpu", "rare", 50),
+        new("circuit", "Circuit", "circuit-board", "rare", 50),
+        new("plug", "Plug", "plug-zap", "rare", 50),
+        new("bot", "Bot", "bot", "rare", 50),
+        new("gauge", "Gauge", "gauge", "rare", 50),
+        new("window", "Window", "app-window", "rare", 50),
+        new("pointer", "Pointer", "mouse-pointer-click", "rare", 50),
+        new("zap", "Zap", "zap", "epic", 100),
+        new("fan", "Fan", "fan", "epic", 100),
+        new("thermo", "Thermo", "thermometer", "epic", 100),
+        new("sliders", "Sliders", "sliders-horizontal", "epic", 100),
+        new("shield", "Shield", "shield-check", "epic", 100),
+        new("rocket", "Rocket", "rocket", "epic", 100),
+        new("ghost", "Ghost", "ghost", "legendary", 150),
+        new("crown", "Crown", "crown", "legendary", 150),
+        new("cat", "Cat", "cat", "legendary", 150),
+        new("pizza", "Pizza", "pizza", "legendary", 150)
     };
+
+
+    private async Task LoadCrystalShopAsync()
+    {
+        try
+        {
+            var catalog = await JS.InvokeAsync<CrystalShopCatalog>("caveCodeCrystalShop.getCatalog");
+            CrystalBalance = catalog?.Balance ?? 0;
+            OwnedEmblems = catalog?.Items?
+                .Where(i => i.Owned)
+                .Select(i => i.Id)
+                .ToList()
+                ?? new List<string> { "crystal", "cave", "terminal", "code" };
+        }
+        catch
+        {
+            CrystalBalance = 0;
+        }
+
+        try
+        {
+            await JS.InvokeVoidAsync("eval", "window.lucide && window.lucide.createIcons && window.lucide.createIcons()");
+        }
+        catch { }
+    }
+
+    private async Task OnEmblemClick(EmblemChoice emblem)
+    {
+        if (OwnedEmblems.Contains(emblem.Id))
+        {
+            await SelectEmblem(emblem.Id);
+            return;
+        }
+
+        try
+        {
+            var result = await JS.InvokeAsync<CrystalBuyResult>("caveCodeCrystalShop.buy", emblem.Id);
+            if (result is null || !result.Success)
+            {
+                ProfileSaveMessage = result?.Message ?? "Not enough Code Crystals.";
+                await LoadCrystalShopAsync();
+                return;
+            }
+
+            CrystalBalance = result.Balance;
+            if (result.Owned is { Count: > 0 })
+            {
+                OwnedEmblems = result.Owned;
+            }
+            else if (!OwnedEmblems.Contains(emblem.Id))
+            {
+                OwnedEmblems.Add(emblem.Id);
+            }
+
+            ProfileSaveMessage = emblem.Cost > 0
+                ? $"Unlocked {emblem.Name} for {emblem.Cost} crystals."
+                : $"Unlocked {emblem.Name}.";
+            await SelectEmblem(emblem.Id);
+            await LoadCrystalShopAsync();
+        }
+        catch
+        {
+            ProfileSaveMessage = "Could not complete purchase.";
+        }
+    }
+
+    private sealed class CrystalShopCatalog
+    {
+        public int Balance { get; set; }
+        public List<CrystalShopItem> Items { get; set; } = new();
+    }
+
+    private sealed class CrystalShopItem
+    {
+        public string Id { get; set; } = "";
+        public bool Owned { get; set; }
+    }
+
+    private sealed class CrystalBuyResult
+    {
+        public bool Success { get; set; }
+        public string? Message { get; set; }
+        public int Balance { get; set; }
+        public List<string>? Owned { get; set; }
+    }
+
+
+    private static readonly string[] EmblemRarityOrder =
+        { "common", "uncommon", "rare", "epic", "legendary" };
+
+    private List<string> OwnedEmblems = new() { "crystal", "cave", "terminal", "code" };
+    private int CrystalBalance;
 
     private EmblemChoice SelectedEmblem =>
         Emblems.FirstOrDefault(
@@ -1045,6 +1151,8 @@
 
         TitleOptions =
             await AchievementService.GetTitleOptionsAsync();
+
+        await LoadCrystalShopAsync();
 
         Ready = true;
         try { await JS.InvokeVoidAsync("eval", "window.lucide && window.lucide.createIcons && window.lucide.createIcons()"); } catch { }
@@ -1099,6 +1207,7 @@
 
     private async Task SelectEmblem(string emblem)
     {
+        if (!OwnedEmblems.Contains(emblem)) { ProfileSaveMessage = "Unlock this emblem in the shop first."; return; }
         Profile = await ProfileService.SetEmblemAsync(emblem);
         ProfileSaveMessage = "Emblem saved.";
     }
@@ -1166,9 +1275,5 @@
         string PreviewSize
     );
 
-    private sealed record EmblemChoice(
-        string Id,
-        string Name,
-        string Symbol
-    );
+    private sealed record EmblemChoice(string Id, string Name, string Symbol, string Rarity, int Cost);
 }
