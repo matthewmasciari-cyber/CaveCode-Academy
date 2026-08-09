@@ -12,4 +12,22 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.4" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="**/arduino-tmp/**" />
+    <Compile Remove="**/arduino-deploy/**" />
+    <Compile Remove="**/gcl-deploy/**" />
+    <Compile Remove="**/*-deploy/**" />
+    <Compile Remove="**/*-tmp/**" />
+    <Compile Remove="**/CaveCode-Academy/**" />
+    <Content Remove="**/arduino-tmp/**" />
+    <Content Remove="**/arduino-deploy/**" />
+    <Content Remove="**/gcl-deploy/**" />
+    <Content Remove="**/*-deploy/**" />
+    <Content Remove="**/*-tmp/**" />
+    <RazorComponent Remove="**/arduino-tmp/**" />
+    <RazorComponent Remove="**/arduino-deploy/**" />
+    <RazorComponent Remove="**/gcl-deploy/**" />
+    <RazorComponent Remove="**/*-deploy/**" />
+    <RazorComponent Remove="**/*-tmp/**" />
+  </ItemGroup>
 </Project>
