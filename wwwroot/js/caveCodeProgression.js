@@ -8,6 +8,7 @@
         htmlCssXp: 0,
         gclXp: 0,
         arduinoXp: 0,
+        raspiXp: 0,
         totalLines: 0,
         cSharpLines: 0,
         pythonLines: 0,
@@ -15,6 +16,7 @@
         htmlCssLines: 0,
         gclLines: 0,
         arduinoLines: 0,
+        raspiLines: 0,
         publicLeaderboard: false,
         awardedModules: {},
         awardedStages: {},
@@ -41,6 +43,7 @@
             htmlCssXp: Number(profile.html_css_xp || 0),
             gclXp: Number(profile.gcl_xp || 0),
             arduinoXp: Number(profile.arduino_xp || 0),
+            raspiXp: Number(profile.raspi_xp || 0),
             totalLines: Number(profile.total_lines || 0),
             cSharpLines: Number(profile.csharp_lines || 0),
             pythonLines: Number(profile.python_lines || 0),
@@ -48,6 +51,7 @@
             htmlCssLines: Number(profile.html_css_lines || 0),
             gclLines: Number(profile.gcl_lines || 0),
             arduinoLines: Number(profile.arduino_lines || 0),
+            raspiLines: Number(profile.raspi_lines || 0),
             publicLeaderboard: Boolean(
                 profile.public_leaderboard ?? profile.publicLeaderboard
             ),
@@ -66,6 +70,7 @@
             html_css_xp: current.htmlCssXp,
             gcl_xp: current.gclXp,
             arduino_xp: current.arduinoXp,
+            raspi_xp: current.raspiXp,
             total_lines: current.totalLines,
             csharp_lines: current.cSharpLines,
             python_lines: current.pythonLines,
@@ -73,6 +78,7 @@
             html_css_lines: current.htmlCssLines,
             gcl_lines: current.gclLines,
             arduino_lines: current.arduinoLines,
+            raspi_lines: current.raspiLines,
             public_leaderboard: current.publicLeaderboard,
             awarded_modules: current.awardedModules || {},
             awarded_stages: current.awardedStages || {},
@@ -85,7 +91,7 @@
             return;
         }
 
-        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino"];
+        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino", "raspi"];
 
         for (const course of courses) {
             try {
@@ -137,6 +143,10 @@
                 Number(localState.arduinoXp || 0),
                 Number(cloud.arduinoXp || 0)
             ),
+            raspiXp: Math.max(
+                Number(localState.raspiXp || 0),
+                Number(cloud.raspiXp || 0)
+            ),
             totalLines: Math.max(
                 Number(localState.totalLines || 0),
                 Number(cloud.totalLines || 0)
@@ -164,6 +174,10 @@
             arduinoLines: Math.max(
                 Number(localState.arduinoLines || 0),
                 Number(cloud.arduinoLines || 0)
+            ),
+            raspiLines: Math.max(
+                Number(localState.raspiLines || 0),
+                Number(cloud.raspiLines || 0)
             ),
             publicLeaderboard: Boolean(
                 localState.publicLeaderboard || cloud.publicLeaderboard
@@ -343,7 +357,7 @@
             cloudPayloadFromCurrent()
         );
 
-        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino"];
+        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino", "raspi"];
 
         for (const course of courses) {
             try {
@@ -493,6 +507,16 @@
             return "arduino";
         }
 
+        if (
+            course === "raspi" ||
+            course === "raspberry" ||
+            course === "raspberrypi" ||
+            course === "raspberry-pi" ||
+            course === "pi"
+        ) {
+            return "raspi";
+        }
+
         return "csharp";
     }
 
@@ -539,6 +563,7 @@
             htmlCssXp: current.htmlCssXp,
             gclXp: current.gclXp,
             arduinoXp: current.arduinoXp,
+            raspiXp: current.raspiXp,
             totalLines: current.totalLines,
             cSharpLines: current.cSharpLines,
             pythonLines: current.pythonLines,
@@ -546,6 +571,7 @@
             htmlCssLines: current.htmlCssLines,
             gclLines: current.gclLines,
             arduinoLines: current.arduinoLines,
+            raspiLines: current.raspiLines,
             publicLeaderboard: current.publicLeaderboard,
             ...levelView(current.totalXp)
         };
@@ -564,6 +590,8 @@
             current.gclXp += amount;
         } else if (course === "arduino") {
             current.arduinoXp += amount;
+        } else if (course === "raspi") {
+            current.raspiXp += amount;
         } else {
             current.cSharpXp += amount;
         }
@@ -582,6 +610,8 @@
             current.gclLines += amount;
         } else if (course === "arduino") {
             current.arduinoLines += amount;
+        } else if (course === "raspi") {
+            current.raspiLines += amount;
         } else {
             current.cSharpLines += amount;
         }
@@ -643,6 +673,7 @@
         reconcile("htmlcss");
         reconcile("gcl");
         reconcile("arduino");
+        reconcile("raspi");
 
         if (before !== JSON.stringify(current)) {
             save();

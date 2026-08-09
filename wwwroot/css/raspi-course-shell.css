@@ -1,0 +1,1089 @@
+/* CaveCode Academy - Raspi+ Control Line Lab playable Chapter 1 */
+
+.raspi-academy {
+    display: grid;
+    grid-template-columns: 280px minmax(520px, 1fr) 370px;
+    min-height: 100vh;
+    color: var(--text);
+    background: var(--bg);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.raspi-academy * { box-sizing: border-box; }
+.raspi-academy button, .raspi-academy textarea { font: inherit; }
+
+.raspi-sidebar {
+    padding: 20px 14px;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+}
+.raspi-brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 18px; }
+.raspi-brand-mark {
+    display: grid;
+    width: 50px;
+    height: 46px;
+    place-items: center;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border: 1px solid var(--accent-border);
+    border-radius: 11px;
+    box-shadow: 0 8px 22px var(--shadow);
+    font-size: 13px;
+    font-weight: 950;
+}
+.raspi-brand h1 { margin: 0; font-size: 21px; }
+.raspi-brand p { margin: 3px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.4; }
+.raspi-course-nav { display: grid; margin: 0 0 14px; }
+
+.raspi-availability-note {
+    padding: 13px;
+    margin: 0 0 17px;
+    color: var(--text);
+    background: var(--accent-surface);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+}
+.raspi-availability-note strong { color: var(--accent-soft); font-size: 10px; letter-spacing: .08em; }
+.raspi-availability-note p { margin: 6px 0 0; color: var(--text-muted); font-size: 11px; line-height: 1.5; }
+
+.raspi-lesson-list h2 {
+    margin: 20px 8px 8px;
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: .75px;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+.raspi-lesson-button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 6px;
+    color: var(--text);
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    cursor: pointer;
+}
+.raspi-lesson-button:hover:not(:disabled) { background: var(--surface-hover); }
+.raspi-lesson-button.active { background: var(--accent-surface); border-color: var(--accent-border); }
+.raspi-lesson-button.complete { color: var(--accent-soft); }
+.raspi-lesson-button:disabled { color: var(--text-dim); cursor: not-allowed; opacity: .62; }
+.raspi-lesson-number {
+    display: grid;
+    flex: 0 0 31px;
+    height: 31px;
+    place-items: center;
+    color: var(--text-muted);
+    background: var(--surface-strong);
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 850;
+}
+.raspi-lesson-button.active .raspi-lesson-number,
+.raspi-lesson-button.complete .raspi-lesson-number {
+    color: var(--accent-contrast);
+    background: var(--accent);
+}
+.raspi-lesson-copy { min-width: 0; }
+.raspi-lesson-copy strong, .raspi-lesson-copy small { display: block; }
+.raspi-lesson-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.raspi-lesson-copy small { margin-top: 3px; color: var(--text-muted); font-size: 10px; }
+
+.raspi-lesson-main { padding: 28px; overflow-y: auto; }
+.raspi-lesson-header {
+    display: flex;
+    max-width: 950px;
+    justify-content: space-between;
+    gap: 24px;
+    margin: 0 auto;
+}
+.raspi-lesson-header h2 { margin: 0 0 7px; font-size: 28px; }
+.raspi-lesson-header > div:first-child > p:last-child {
+    max-width: 760px;
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+.raspi-academy .eyebrow {
+    margin: 0 0 6px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: 1px;
+}
+.raspi-mastery-ring {
+    display: grid;
+    flex: 0 0 88px;
+    height: 88px;
+    place-items: center;
+    align-content: center;
+    text-align: center;
+    background: var(--accent-surface);
+    border: 2px solid var(--accent-border);
+    border-radius: 50%;
+}
+.raspi-mastery-ring strong { font-size: 18px; }
+.raspi-mastery-ring span { color: var(--text-muted); font-size: 10px; }
+
+.raspi-academy .stage-tabs {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(70px, 1fr));
+    max-width: 950px;
+    margin: 23px auto 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+}
+.raspi-academy .stage-tab {
+    min-height: 57px;
+    padding: 8px 5px;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 0;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 11px;
+}
+.raspi-academy .stage-tab:last-child { border-right: 0; }
+.raspi-academy .stage-tab span {
+    display: grid;
+    width: 21px;
+    height: 21px;
+    margin: 0 auto 4px;
+    place-items: center;
+    background: var(--surface-strong);
+    border-radius: 50%;
+    font-size: 10px;
+}
+.raspi-academy .stage-tab.active { color: var(--text); background: var(--accent-surface); }
+.raspi-academy .stage-tab.active span,
+.raspi-academy .stage-tab.done span {
+    color: var(--accent-contrast);
+    background: var(--accent);
+}
+.raspi-academy .stage-tab:disabled { opacity: .38; cursor: not-allowed; }
+
+.raspi-stage-card {
+    max-width: 950px;
+    min-height: 560px;
+    padding: 23px;
+    margin: 18px auto 0;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+}
+.raspi-stage-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+.raspi-stage-heading h3 { margin: 0; font-size: 21px; }
+.raspi-support-badge {
+    padding: 7px 10px;
+    color: var(--warning-text);
+    background: var(--warning-surface);
+    border: 1px solid var(--warning-border);
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.raspi-learn-grid {
+    display: grid;
+    grid-template-columns: 1.25fr .75fr;
+    gap: 18px;
+    margin: 23px 0;
+}
+.raspi-learn-grid h4,
+.raspi-exercise-intro h4,
+.raspi-prediction-card h4 {
+    margin: 0 0 8px;
+    font-size: 17px;
+}
+.raspi-learn-grid p,
+.raspi-exercise-intro p,
+.raspi-prediction-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+.raspi-reference-example,
+.raspi-revealed-target {
+    padding: 15px;
+    margin: 16px 0;
+    background: var(--code-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 9px;
+}
+.raspi-reference-example > span,
+.raspi-revealed-target > span,
+.raspi-mini-label {
+    color: var(--dark-panel-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+.raspi-reference-example pre,
+.raspi-revealed-target pre {
+    margin: 10px 0 0;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+.raspi-reference-example code,
+.raspi-revealed-target code {
+    color: var(--code-text);
+    font-family: Consolas, Monaco, monospace;
+}
+.raspi-concept-points div { display: flex; gap: 9px; }
+.raspi-concept-points span { color: var(--accent); }
+.raspi-concept-points p { margin: 5px 0; }
+.raspi-memory-aid {
+    padding: 18px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+}
+.raspi-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin: 20px 0;
+}
+.raspi-flow div {
+    padding: 11px 9px;
+    background: var(--surface-soft);
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 800;
+}
+.raspi-flow span { color: var(--accent); }
+
+.raspi-exercise-intro { margin: 22px 0 14px; }
+.raspi-compiler-note {
+    padding: 13px 15px;
+    margin-bottom: 13px;
+    color: var(--warning-text);
+    background: var(--warning-surface);
+    border-left: 4px solid var(--warning-accent);
+}
+.raspi-compiler-note p { margin: 5px 0 0; color: var(--warning-muted); }
+
+.raspi-typing-guide {
+    margin-top: 14px;
+    overflow: hidden;
+    background: var(--code-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+}
+.raspi-editor-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 13px;
+    color: var(--dark-panel-muted);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .7px;
+}
+.raspi-character-guide {
+    min-height: 76px;
+    padding: 18px;
+    color: var(--code-text);
+    white-space: pre-wrap;
+    font: 18px/1.55 Consolas, Monaco, monospace;
+}
+.raspi-character-correct { color: var(--accent); }
+.raspi-character-wrong {
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 16%, transparent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+.raspi-character-current {
+    color: var(--code-text);
+    background: var(--accent-border);
+    animation: raspi-cursor-pulse 1s infinite;
+}
+.raspi-character-pending { color: var(--code-muted); }
+.raspi-space-mark { display: inline-block; min-width: .55em; }
+.raspi-newline-mark { color: var(--code-muted); font-size: 12px; }
+
+.raspi-academy .code-editor {
+    margin-top: 14px;
+    overflow: hidden;
+    background: var(--code-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+}
+.raspi-academy .code-editor .editor-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 13px;
+    color: var(--dark-panel-muted);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .7px;
+}
+.raspi-academy .code-editor textarea {
+    display: block;
+    width: 100%;
+    min-height: 160px;
+    resize: vertical;
+    padding: 18px;
+    color: var(--code-text);
+    background: var(--code-bg);
+    border: 0;
+    outline: none;
+    font: 17px/1.55 Consolas, Monaco, monospace;
+}
+.raspi-academy .typing-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border-strong);
+}
+.raspi-academy .typing-stats div {
+    padding: 9px 12px;
+    border-right: 1px solid var(--border-strong);
+}
+.raspi-academy .typing-stats div:last-child { border-right: 0; }
+.raspi-academy .typing-stats span,
+.raspi-academy .typing-stats strong {
+    display: block;
+}
+.raspi-academy .typing-stats span {
+    color: var(--code-muted);
+    font-size: 8px;
+    text-transform: uppercase;
+}
+.raspi-academy .typing-stats strong {
+    margin-top: 3px;
+    color: var(--code-text);
+    font-size: 11px;
+}
+
+.raspi-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 13px;
+}
+.raspi-primary,
+.raspi-secondary {
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 850;
+}
+.raspi-primary {
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+}
+.raspi-secondary {
+    color: var(--text);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+}
+.raspi-continue-button { margin-top: 12px; }
+
+.raspi-feedback {
+    padding: 13px 15px;
+    margin-top: 13px;
+    border-radius: 9px;
+    line-height: 1.5;
+}
+.raspi-feedback.success {
+    color: var(--accent-soft);
+    background: var(--accent-surface);
+    border: 1px solid var(--accent-border);
+}
+.raspi-feedback.error {
+    color: var(--danger-text);
+    background: var(--danger-surface);
+    border: 1px solid var(--danger-border);
+}
+
+.raspi-prediction-card { margin: 22px 0; }
+.raspi-prediction-options {
+    display: grid;
+    gap: 9px;
+    margin: 15px 0;
+}
+.raspi-prediction-options button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    color: var(--text);
+    text-align: left;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    cursor: pointer;
+}
+.raspi-prediction-options button span {
+    display: grid;
+    width: 25px;
+    height: 25px;
+    place-items: center;
+    color: var(--text-muted);
+    background: var(--surface-strong);
+    border-radius: 6px;
+}
+.raspi-prediction-options button.correct {
+    color: var(--accent-soft);
+    border-color: var(--accent-border);
+    background: var(--accent-surface);
+}
+.raspi-prediction-options button.wrong {
+    color: var(--danger-text);
+    border-color: var(--danger-border);
+    background: var(--danger-surface);
+}
+
+.raspi-completion-panel {
+    max-width: 720px;
+    margin: 36px auto;
+    text-align: center;
+}
+.raspi-completion-icon {
+    display: grid;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 16px;
+    place-items: center;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-radius: 50%;
+    font-size: 31px;
+    font-weight: 950;
+}
+.raspi-completion-panel > p {
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+.raspi-completion-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+.raspi-completion-summary div {
+    padding: 13px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+.raspi-completion-summary span,
+.raspi-completion-summary strong,
+.raspi-completion-summary code {
+    display: block;
+}
+.raspi-completion-summary span {
+    color: var(--text-muted);
+    font-size: 9px;
+    text-transform: uppercase;
+}
+.raspi-completion-summary strong,
+.raspi-completion-summary code {
+    margin-top: 6px;
+    overflow-wrap: anywhere;
+    color: var(--text);
+    font-size: 11px;
+}
+
+.raspi-preview-panel {
+    padding: 22px;
+    overflow-y: auto;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+}
+.raspi-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.raspi-preview-header h2 { margin: 0; font-size: 22px; }
+.raspi-live {
+    padding: 6px 9px;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-radius: 99px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+
+.raspi-foundry-scene {
+    position: relative;
+    min-height: 410px;
+    margin-top: 18px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 39%, var(--accent-surface), transparent 32%),
+        linear-gradient(180deg, var(--code-bg), var(--bg-deep));
+    border: 1px solid var(--border-strong);
+    border-radius: 13px;
+    box-shadow: inset 0 0 45px rgb(0 0 0 / 35%);
+}
+.raspi-grid-floor {
+    position: absolute;
+    inset: 0;
+    height: 55%;
+    overflow: hidden;
+    background-image:
+        linear-gradient(var(--accent-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--accent-border) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: .32;
+    transform: perspective(200px) rotateX(56deg);
+    transform-origin: center top;
+    pointer-events: none;
+}
+.raspi-engine-core {
+    position: absolute;
+    top: 92px;
+    left: 50%;
+    width: 140px;
+    height: 140px;
+    opacity: .28;
+    filter: grayscale(1);
+    transform: translateX(-50%);
+    transition: opacity .25s ease, filter .25s ease;
+}
+.raspi-engine-core.active {
+    opacity: 1;
+    filter: none;
+}
+.raspi-core-ring {
+    position: absolute;
+    inset: 0;
+    border: 7px solid var(--accent-border);
+    border-radius: 50%;
+}
+.raspi-core-ring--outer {
+    box-shadow:
+        0 0 22px var(--accent-border),
+        inset 0 0 22px var(--accent-border);
+    animation: raspi-core-spin 13s linear infinite;
+}
+.raspi-core-ring--middle {
+    inset: 27px;
+    border-width: 3px;
+    border-style: dashed;
+    animation: raspi-core-spin-reverse 9s linear infinite;
+}
+.raspi-core-center {
+    position: absolute;
+    inset: 44px;
+    display: grid;
+    place-items: center;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 28px var(--accent-border);
+    font-size: 17px;
+    font-weight: 950;
+}
+.raspi-foundry-system {
+    position: absolute;
+    display: grid;
+    width: 78px;
+    min-height: 50px;
+    place-items: center;
+    align-content: center;
+    padding: 7px;
+    color: var(--code-muted);
+    background: rgb(0 0 0 / 28%);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    opacity: .38;
+    transition: .25s ease;
+}
+.raspi-foundry-system.active {
+    color: var(--accent-soft);
+    background: var(--accent-surface);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 16px var(--accent-border);
+    opacity: 1;
+}
+.raspi-foundry-system span {
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: .09em;
+}
+.raspi-foundry-system strong {
+    max-width: 100%;
+    margin-top: 4px;
+    overflow: hidden;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.raspi-foundry-system--messages { top: 24px; left: 20px; }
+.raspi-foundry-system--thermal { top: 24px; right: 20px; }
+.raspi-foundry-system--instruments { top: 105px; left: 18px; }
+.raspi-foundry-system--labels { top: 105px; right: 18px; }
+.raspi-foundry-system--input { bottom: 96px; left: 28px; }
+.raspi-foundry-system--power { right: 28px; bottom: 96px; }
+.raspi-foundry-system--dashboard {
+    right: 50%;
+    bottom: 27px;
+    width: 120px;
+    transform: translateX(50%);
+}
+
+.raspi-preview-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 13px;
+}
+.raspi-preview-stats div {
+    padding: 10px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+.raspi-preview-stats span,
+.raspi-preview-stats strong {
+    display: block;
+}
+.raspi-preview-stats span {
+    color: var(--text-muted);
+    font-size: 9px;
+    text-transform: uppercase;
+}
+.raspi-preview-stats strong {
+    margin-top: 4px;
+    overflow: hidden;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.raspi-load-track {
+    height: 8px;
+    margin: 13px 0;
+    overflow: hidden;
+    background: var(--surface-strong);
+    border-radius: 99px;
+}
+.raspi-load-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width .25s ease;
+}
+
+.raspi-terminal {
+    padding: 14px;
+    color: var(--dark-panel-text);
+    background: var(--code-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 9px;
+    font: 10px/1.55 Consolas, Monaco, monospace;
+}
+.raspi-terminal-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    color: var(--dark-panel-muted);
+    border-bottom: 1px solid var(--border-strong);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+.raspi-terminal p { margin: 4px 0; }
+
+.raspi-xp-award-toast {
+    position: fixed;
+    z-index: 1200;
+    right: 18px;
+    bottom: 18px;
+    display: grid;
+    min-width: 230px;
+    gap: 4px;
+    padding: 15px;
+    color: var(--accent-contrast);
+    text-align: left;
+    background: var(--accent);
+    border: 1px solid var(--accent-border);
+    border-radius: 13px;
+    box-shadow: 0 20px 65px var(--shadow);
+    cursor: pointer;
+}
+.raspi-xp-award-toast span,
+.raspi-xp-award-toast small {
+    font-size: 9px;
+}
+.raspi-xp-award-toast strong { font-size: 20px; }
+
+.raspi-achievement-overlay,
+.raspi-save-progress-overlay {
+    position: fixed;
+    z-index: 1300;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 22px;
+    background: rgb(3 8 13 / 78%);
+    backdrop-filter: blur(8px);
+}
+.raspi-achievement-dialog,
+.raspi-save-progress-dialog {
+    width: min(500px, 100%);
+    padding: 28px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--accent-border);
+    border-radius: 18px;
+    box-shadow: 0 28px 90px var(--shadow);
+    text-align: center;
+}
+.raspi-achievement-kicker,
+.raspi-save-progress-kicker {
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+}
+.raspi-achievement-medal {
+    display: grid;
+    width: 76px;
+    height: 76px;
+    margin: 17px auto;
+    place-items: center;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-radius: 50%;
+    font-weight: 950;
+}
+.raspi-achievement-dialog h2,
+.raspi-save-progress-dialog h2 {
+    margin: 8px 0 10px;
+}
+.raspi-achievement-dialog > p,
+.raspi-save-progress-dialog > p {
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+.raspi-achievement-rewards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 17px;
+}
+.raspi-achievement-rewards div {
+    padding: 12px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+.raspi-achievement-rewards span,
+.raspi-achievement-rewards strong {
+    display: block;
+}
+.raspi-achievement-rewards span {
+    color: var(--text-muted);
+    font-size: 8px;
+}
+.raspi-achievement-rewards strong {
+    margin-top: 5px;
+    color: var(--accent-soft);
+    font-size: 12px;
+}
+.raspi-achievement-dialog > small,
+.raspi-save-progress-dialog > small {
+    display: block;
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 9px;
+}
+.raspi-achievement-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 17px;
+}
+.raspi-achievement-actions a,
+.raspi-achievement-actions button,
+.raspi-continue-guest {
+    display: grid;
+    min-height: 42px;
+    place-items: center;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 900;
+    text-decoration: none;
+    cursor: pointer;
+}
+.raspi-achievement-actions a {
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+}
+.raspi-achievement-actions button,
+.raspi-continue-guest {
+    color: var(--text);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+}
+.raspi-continue-guest {
+    width: 100%;
+    padding: 11px 13px;
+}
+
+.path-card.preview,
+.path-card.available {
+    border-color: var(--accent-border);
+}
+.path-card .preview-status {
+    color: var(--warning-text);
+    background: var(--warning-surface);
+    border-color: var(--warning-border);
+}
+
+@keyframes raspi-core-spin {
+    to { transform: rotate(360deg); }
+}
+@keyframes raspi-core-spin-reverse {
+    to { transform: rotate(-360deg); }
+}
+@keyframes raspi-cursor-pulse {
+    50% { opacity: .45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .raspi-core-ring,
+    .raspi-character-current {
+        animation: none;
+    }
+}
+
+@media (max-width: 1250px) {
+    .raspi-academy {
+        grid-template-columns: 250px minmax(480px, 1fr);
+    }
+
+    .raspi-preview-panel {
+        grid-column: 1 / -1;
+        border-top: 1px solid var(--border);
+        border-left: 0;
+    }
+}
+
+@media (max-width: 820px) {
+    .raspi-academy { display: block; }
+
+    .raspi-sidebar,
+    .raspi-preview-panel {
+        overflow: visible;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .raspi-lesson-main { padding: 20px 14px; }
+
+    .raspi-lesson-header,
+    .raspi-stage-heading {
+        display: grid;
+    }
+
+    .raspi-learn-grid,
+    .raspi-completion-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .raspi-academy .stage-tabs {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .raspi-achievement-rewards,
+    .raspi-achievement-actions,
+    .raspi-preview-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Raspi maker lab preview — calm board + breadboard (no tron floor) */
+.raspi-lab-scene {
+    position: relative;
+    min-height: 380px;
+    margin-top: 18px;
+    padding: 18px;
+    overflow: hidden;
+    background: var(--surface-strong);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    display: grid;
+    gap: 14px;
+    align-content: start;
+}
+.raspi-board {
+    position: relative;
+    height: 120px;
+    border-radius: 10px;
+    background: #6b2d5c;
+    border: 1px solid color-mix(in srgb, #0d3d2a 40%, var(--border));
+    opacity: .55;
+    transition: opacity .25s ease, box-shadow .25s ease;
+}
+.raspi-board.powered {
+    opacity: 1;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #7dffb2 25%, transparent);
+}
+.raspi-board-label {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    color: #dfffea;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+.raspi-usb {
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    width: 48px;
+    height: 10px;
+    transform: translateX(-50%);
+    background: #2a2a2a;
+    border-radius: 2px;
+}
+.raspi-mcu {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    width: 54px;
+    height: 54px;
+    transform: translateX(-50%);
+    display: grid;
+    place-items: center;
+    background: #111;
+    color: #9ad;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+}
+.raspi-pins {
+    position: absolute;
+    right: 10px;
+    top: 16px;
+    display: grid;
+    gap: 4px;
+}
+.raspi-pins span {
+    min-width: 28px;
+    padding: 2px 6px;
+    text-align: center;
+    border-radius: 4px;
+    background: #0f0f0f;
+    color: #aaa;
+    font-size: 10px;
+    font-weight: 700;
+}
+.raspi-pins span.active {
+    color: #041;
+    background: #7dffb2;
+}
+.raspi-breadboard {
+    position: relative;
+    height: 90px;
+    border-radius: 8px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #d8d2c4 0 10px,
+            #cfc8b8 10px 12px
+        );
+    border: 1px solid var(--border);
+}
+.raspi-led {
+    position: absolute;
+    left: 28px;
+    top: 28px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #5a5a5a;
+    box-shadow: inset 0 0 4px #0008;
+    transition: background .2s ease, box-shadow .2s ease;
+}
+.raspi-led.on {
+    background: #ff4d4d;
+    box-shadow: 0 0 12px #ff4d4d99;
+}
+.raspi-led.blink {
+    animation: raspi-led-blink 1s step-end infinite;
+}
+.raspi-resistor {
+    position: absolute;
+    left: 56px;
+    top: 34px;
+    width: 36px;
+    height: 10px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #c4a574, #e8d2a8, #c4a574);
+}
+.raspi-rail {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+    height: 4px;
+    border-radius: 2px;
+    background: #c0392b55;
+}
+.raspi-sensor {
+    position: absolute;
+    right: 16px;
+    top: 20px;
+    min-width: 54px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: #eee;
+    color: #333;
+    opacity: .35;
+    font-size: 10px;
+    text-align: center;
+}
+.raspi-sensor.active { opacity: 1; }
+.raspi-sensor strong { display: block; font-size: 12px; }
+.raspi-readout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.raspi-readout div {
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+.raspi-readout span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 10px;
+}
+.raspi-readout strong { font-size: 13px; }
+@keyframes raspi-led-blink {
+    50% { background: #5a5a5a; box-shadow: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .raspi-led.blink { animation: none; }
+}

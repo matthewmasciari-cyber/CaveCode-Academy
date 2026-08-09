@@ -100,6 +100,23 @@ public sealed class CourseCatalogService
                 IsAvailable = true,
                 HasMinigame = false
             }
+            ,
+            new CourseManifest
+            {
+                Id = CourseIds.Raspi,
+                DisplayName = "Raspberry Pi Python",
+                ShortMark = "Pi",
+                LanguageName = "Python (Pi)",
+                Route = "/raspi",
+                Description = "Applied Python for Raspberry Pi: GPIO, LEDs, buttons, timing, and sensor-style projects.",
+                ProjectName = "Pi Lab",
+                EditorFileName = "gpio_lab.py",
+                EditorLanguageLabel = "PYTHON",
+                PreviewKind = "raspi-lab",
+                IsAvailable = true,
+                HasMinigame = false
+            }
+
 
         };
 

@@ -100,8 +100,25 @@
             editorFileName: "Sketch.ino",
             editorLanguageLabel: "ARDUINO",
             previewKind: "arduino-lab",
-            moduleCount: 8,
-            chapterCount: 1,
+            moduleCount: 40,
+            chapterCount: 5,
+            modulesPerChapter: 8,
+            courseVersion: 2,
+            isAvailable: true,
+            hasMinigame: false
+        }),
+        Object.freeze({
+            id: "raspi",
+            displayName: "Raspberry Pi Python",
+            shortMark: "Pi",
+            languageName: "Python (Pi)",
+            route: "/raspi",
+            projectName: "Pi Lab",
+            editorFileName: "gpio_lab.py",
+            editorLanguageLabel: "PYTHON",
+            previewKind: "raspi-lab",
+            moduleCount: 40,
+            chapterCount: 5,
             modulesPerChapter: 8,
             courseVersion: 1,
             isAvailable: true,
@@ -129,7 +146,12 @@
         "cgline+": "gcl",
         "arduino": "arduino",
         "arduino-cpp": "arduino",
-        "arduinocpp": "arduino"
+        "arduinocpp": "arduino",
+        "raspi": "raspi",
+        "raspberry": "raspi",
+        "raspberrypi": "raspi",
+        "raspberry-pi": "raspi",
+        "pi": "raspi"
     });
 
     function normalizeCourseId(value) {
