@@ -6,29 +6,35 @@ public static class CourseIds
     public const string Python = "python";
     public const string Cpp = "cpp";
     public const string HtmlCss = "htmlcss";
+    public const string Gcl = "gcl";
 
     public static IReadOnlySet<string> Known { get; } =
         new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            CSharp, Python, Cpp, HtmlCss
+            CSharp, Python, Cpp, HtmlCss, Gcl
         };
 
     public static bool IsKnown(string? courseId) =>
         !string.IsNullOrWhiteSpace(courseId) &&
         Known.Contains(courseId.Trim());
 
-    public static string Normalize(string courseId)
+    public static string Normalize(string? courseId)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(courseId);
-        string value = courseId.Trim().ToLowerInvariant();
+        if (string.IsNullOrWhiteSpace(courseId))
+        {
+            return string.Empty;
+        }
 
-        return value switch
+        string source = courseId.Trim().ToLowerInvariant();
+
+        return source switch
         {
             "c#" or "cs" or "csharp" => CSharp,
             "py" or "python" => Python,
             "c++" or "cplusplus" or "cpp" => Cpp,
             "html" or "css" or "html-css" or "htmlcss" => HtmlCss,
-            _ => value
+            "gcl" or "gcl+" or "cgline" or "cgl" or "cgline+" => Gcl,
+            _ => source
         };
     }
 }

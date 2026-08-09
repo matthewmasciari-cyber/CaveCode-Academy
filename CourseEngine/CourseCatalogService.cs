@@ -68,6 +68,21 @@ public sealed class CourseCatalogService
                 PreviewKind = "live-web-preview",
                 IsAvailable = true,
                 HasMinigame = true
+            },
+            new CourseManifest
+            {
+                Id = CourseIds.Gcl,
+                DisplayName = "GCL+ Control Line Lab",
+                ShortMark = "GCL+",
+                LanguageName = "GCL+",
+                Route = "/gcl",
+                Description = "Build control sequences, timing logic, staging, and point-driven automation programs.",
+                ProjectName = "Control Line Lab",
+                EditorFileName = "Sequence.gcl",
+                EditorLanguageLabel = "GCL+",
+                PreviewKind = "control-line-lab",
+                IsAvailable = true,
+                HasMinigame = true
             }
         };
 

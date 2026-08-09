@@ -72,6 +72,23 @@
             courseVersion: 1,
             isAvailable: true,
             hasMinigame: true
+        }),
+        Object.freeze({
+            id: "gcl",
+            displayName: "GCL+ Control Line Lab",
+            shortMark: "GCL+",
+            languageName: "GCL+",
+            route: "/gcl",
+            projectName: "Control Line Lab",
+            editorFileName: "Sequence.gcl",
+            editorLanguageLabel: "GCL+",
+            previewKind: "control-line-lab",
+            moduleCount: 40,
+            chapterCount: 5,
+            modulesPerChapter: 8,
+            courseVersion: 1,
+            isAvailable: true,
+            hasMinigame: true
         })
     ]);
 
@@ -87,7 +104,12 @@
         "html": "htmlcss",
         "css": "htmlcss",
         "html-css": "htmlcss",
-        "htmlcss": "htmlcss"
+        "htmlcss": "htmlcss",
+        "gcl": "gcl",
+        "gcl+": "gcl",
+        "cgl": "gcl",
+        "cgline": "gcl",
+        "cgline+": "gcl"
     });
 
     function normalizeCourseId(value) {

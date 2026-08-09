@@ -1,0 +1,107 @@
+@using CaveCode.CourseEngine
+@inject CourseEngineService CourseEngine
+
+<article class="mode-card gcl-line-mode @(!IsUnlocked ? "locked" : "")"
+         title="@CardTooltip">
+    <div class="mode-topline">
+        <span class="mode-mark gcl-line-mark">GCL+</span>
+        <span>@StatusText</span>
+    </div>
+
+    <p class="eyebrow">GCL+ CONTROL LINE LAB</p>
+    <h2>Sequence Repair</h2>
+    <p>
+        Repair damaged control sequences using variables, If / IfOnce,
+        OnFor prove timers, Limit, bias, and stage flags from the course.
+    </p>
+
+    <div class="mode-stats">
+        <div>
+            <span>Missions</span>
+            <strong>5</strong>
+        </div>
+        <div>
+            <span>Gate</span>
+            <strong>Chapter 1</strong>
+        </div>
+        <div>
+            <span>Rewards</span>
+            <strong>XP + crystals</strong>
+        </div>
+    </div>
+
+    @if (!StateLoaded)
+    {
+        <span class="mode-action locked-action">
+            Checking GCL+ Chapter 1 progress…
+        </span>
+    }
+    else if (!IsUnlocked)
+    {
+        <span class="mode-action locked-action"
+              title="Complete GCL+ Chapter 1 modules 1–8 to unlock Sequence Repair">
+            Complete GCL+ Chapter 1 to unlock
+        </span>
+    }
+    else
+    {
+        <NavLink class="mode-action gcl-line-action"
+                 href="/minigames/gcl">
+            Enter Sequence Repair →
+        </NavLink>
+    }
+</article>
+
+<style>
+    .gcl-line-mark {
+        background: #1d4ed8;
+        color: #eff6ff;
+    }
+    .gcl-line-action {
+        background: #2563eb;
+        color: #eff6ff;
+    }
+</style>
+
+@code {
+    private bool StateLoaded;
+    private bool IsUnlocked;
+
+    private string StatusText =>
+        !StateLoaded ? "Checking…" :
+        IsUnlocked ? "Unlocked" : "Locked";
+
+    private string CardTooltip =>
+        IsUnlocked
+            ? "Open the GCL+ sequence repair minigame"
+            : "Complete GCL+ Chapter 1 modules 1–8 to unlock";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            CourseProgressSnapshot progress =
+                await CourseEngine.GetProgressAsync(CourseIds.Gcl);
+
+            int completed = 0;
+            int limit = Math.Min(8, progress.ModuleCompleted?.Length ?? 0);
+            for (int i = 0; i < limit; i++)
+            {
+                if (progress.ModuleCompleted[i])
+                {
+                    completed++;
+                }
+            }
+
+            IsUnlocked = completed >= 8;
+        }
+        catch
+        {
+            IsUnlocked = false;
+        }
+        finally
+        {
+            StateLoaded = true;
+        }
+    }
+}

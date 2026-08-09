@@ -232,6 +232,7 @@ C# CAVE ADVENTURE</p>
 
                 @* CAVECODE_CPP_MINIGAME_DYNAMIC_CARD_V2 *@
                 <CppMinigameHubCard />
+                <GclMinigameHubCard />
             </section>
 
             <section class="reward-guide">
@@ -608,6 +609,28 @@ C# CAVE ADVENTURE</p>
     }
 
     .cpp-foundry-mode .cpp-foundry-action:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 3px;
+    }
+
+    /* CAVECODE_GCL_MINIGAME_HUB_STYLES_V1 */
+    .gcl-line-mode .gcl-line-mark {
+        font-size: 8px;
+        letter-spacing: -.04em;
+    }
+
+    .gcl-line-mode .gcl-line-action {
+        color: var(--accent-contrast) !important;
+        background: var(--accent) !important;
+        border-color: var(--accent-border) !important;
+    }
+
+    .gcl-line-mode .gcl-line-action:hover,
+    .gcl-line-mode .gcl-line-action:focus-visible {
+        filter: brightness(1.08);
+    }
+
+    .gcl-line-mode .gcl-line-action:focus-visible {
         outline: 3px solid var(--focus);
         outline-offset: 3px;
     }
