@@ -73,6 +73,27 @@
             icon: "shield-check",
             reason: "Excellent for memory-safe systems work, performance, WebAssembly, and low-level tools.",
             available: false
+        },
+        gcl: {
+            name: "GCL+",
+            course: "GCL+ Control Line Lab",
+            icon: "fan",
+            reason: "Built for building-automation style control sequences, timers, staging, and point-driven logic.",
+            available: true
+        },
+        arduino: {
+            name: "Arduino C++",
+            course: "Arduino C++ Maker Lab",
+            icon: "circuit-board",
+            reason: "Best when you want applied C++ on microcontrollers: LEDs, buttons, sensors, and sketches.",
+            available: true
+        },
+        raspi: {
+            name: "Raspberry Pi Python",
+            course: "Raspberry Pi Python Lab",
+            icon: "cpu",
+            reason: "Best when you want applied Python on a Pi: GPIO, LEDs, buttons, and physical computing.",
+            available: true
         }
     };
 
@@ -157,7 +178,7 @@
         games: { csharp: 8, cpp: 7, javascript: 3, htmlcss: 2, rust: 2 },
         web: { htmlcss: 8, javascript: 7, typescript: 5, csharp: 3, python: 2, go: 2 },
         automation: { python: 10, csharp: 2, go: 2 },
-        hardware: { cpp: 9, rust: 6, python: 4, csharp: 2 },
+        hardware: { arduino: 10, raspi: 9, cpp: 7, python: 4, rust: 3, csharp: 2 },
         business: { csharp: 8, java: 7, sql: 6, typescript: 4, go: 3 },
         cyber: { python: 8, rust: 6, cpp: 5, javascript: 2 },
         data: { python: 8, sql: 8, go: 2 },
