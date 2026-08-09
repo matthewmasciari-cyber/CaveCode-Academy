@@ -354,7 +354,7 @@
     <aside class="jsforge-preview-panel">
         <header class="jsforge-preview-header">
             <div>
-                <p class="eyebrow">LIVE MAKER LAB</p>
+                <p class="eyebrow">LIVE WEB FORGE</p>
                 <h2>Web Forge</h2>
             </div>
             <span class="jsforge-live">LIVE</span>
@@ -377,11 +377,12 @@
                 <pre class="jsforge-console-out">@(string.IsNullOrWhiteSpace(Preview.SerialLine) ? "> ready" : $"> {Preview.SerialLine}")</pre>
             </div>
             <div class="jsforge-preview-stats">
-            <div><span>Board</span><strong>@(Preview.BoardPowered ? "POWER ON" : "STANDBY")</strong></div>
-            <div><span>Pin</span><strong>@(Preview.ActivePin > 0 ? Preview.ActivePin.ToString() : "—")</strong></div>
-            <div><span>HUD</span><strong>@(Preview.LedOn ? (Preview.LedBlink ? "ACTIVE" : "HIGH") : "LOW")</strong></div>
+            <div><span>Page</span><strong>@(Preview.BoardPowered ? "LIVE" : "IDLE")</strong></div>
+            <div><span>Mode</span><strong>@(Preview.LedBlink ? "ANIM" : (Preview.LedOn ? "RUN" : "IDLE"))</strong></div>
+            <div><span>HUD</span><strong>@(Preview.LedOn ? (Preview.LedBlink ? "ACTIVE" : "ON") : "OFF")</strong></div>
             <div><span>Script</span><strong>@Preview.SketchLabel</strong></div>
             <div><span>Completed</span><strong>@CompletedModuleCount / @PlayableModuleCount</strong></div>
+            </div>
         </div>
 
         <section class="jsforge-terminal">
@@ -1068,6 +1069,8 @@
     private JavaScriptPreviewState BuildPreview()
     {
         var state = new JavaScriptPreviewState();
+        state.SerialLine = "ready";
+        state.BoardPowered = true;
 
         for (int module = 0; module < PlayableModuleCount; module++)
         {
@@ -1097,27 +1100,33 @@
         {
             case 0:
                 state.BoardPowered = true;
-                state.SketchLabel = "setup/loop";
+                state.SketchLabel = "forge.js";
+                state.SerialLine = "Forge online";
+                state.LedOn = true;
                 break;
             case 1:
                 state.BoardPowered = true;
                 state.ActivePin = 13;
                 state.PinModeLabel = "OUTPUT";
-                state.SketchLabel = "pinMode";
+                state.SketchLabel = "strings";
+                state.SerialLine = "Neon Arcade";
                 break;
             case 2:
                 state.BoardPowered = true;
                 state.ActivePin = 13;
                 state.PinModeLabel = "OUTPUT";
                 state.LedOn = true;
-                state.SketchLabel = "digitalWrite";
+                state.SketchLabel = "let score";
+                state.SerialLine = "0";
+                state.LedOn = true;
                 break;
             case 3:
                 state.BoardPowered = true;
                 state.ActivePin = 13;
                 state.PinModeLabel = "OUTPUT";
                 state.LedOn = true;
-                state.SketchLabel = "delay";
+                state.SketchLabel = "const title";
+                state.SerialLine = "Web Forge";
                 break;
             case 4:
                 state.BoardPowered = true;
@@ -1125,20 +1134,26 @@
                 state.PinModeLabel = "OUTPUT";
                 state.LedOn = true;
                 state.LedBlink = true;
-                state.SketchLabel = "blink";
+                state.SketchLabel = "score + 10";
+                state.SerialLine = "10";
+                state.LedOn = true;
+                state.LedBlink = true;
                 break;
             case 5:
                 state.BoardPowered = true;
                 state.ActivePin = 13;
                 state.LedOn = true;
-                state.SketchLabel = "commented";
+                state.SketchLabel = "boolean";
+                state.SerialLine = "true";
+                state.LedOn = true;
                 break;
             case 6:
                 state.BoardPowered = true;
                 state.ActivePin = 13;
                 state.PinModeLabel = "OUTPUT";
                 state.LedOn = true;
-                state.SketchLabel = "ledPin";
+                state.SketchLabel = "comment";
+                state.SerialLine = "// note";
                 break;
             case 7:
                 state.BoardPowered = true;
@@ -1146,7 +1161,10 @@
                 state.PinModeLabel = "OUTPUT";
                 state.LedOn = true;
                 state.LedBlink = true;
-                state.SketchLabel = "chapter-1";
+                state.SketchLabel = "boot complete";
+                state.SerialLine = "Chapter 1 clear";
+                state.LedOn = true;
+                state.LedBlink = true;
                 break;
         }
     }
@@ -1160,7 +1178,8 @@
         public int ActivePin { get; set; }
         public int SensorValue { get; set; }
         public string PinModeLabel { get; set; } = "—";
-        public string SketchLabel { get; set; } = "idle";
-        public string Status { get; set; } = "Board awaiting sketch.";
+        public string SketchLabel { get; set; } = "forge.js";
+        public string SerialLine { get; set; } = "ready";
+        public string Status { get; set; } = "Console awaiting script.";
     }
 }
