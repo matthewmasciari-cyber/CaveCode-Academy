@@ -917,3 +917,49 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* === GCL preview: kill Tron grid / rings, use normal panels === */
+.gcl-foundry-scene,
+.gcl-control.lab-scene,
+div.gcl-control.lab-scene {
+    background: var(--surface-strong) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: 1px solid var(--border) !important;
+}
+
+.gcl-grid-floor {
+    display: none !important;
+    opacity: 0 !important;
+    background: none !important;
+    background-image: none !important;
+}
+
+.gcl-core-ring,
+.gcl-core-ring--outer,
+.gcl-core-ring--middle {
+    display: none !important;
+    animation: none !important;
+}
+
+.gcl-engine-core {
+    opacity: 1 !important;
+    filter: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.gcl-core-center {
+    box-shadow: none !important;
+    background: var(--accent-surface) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--accent-border);
+}
+
+.gcl-foundry-system,
+.gcl-control.lab-system {
+    background: var(--surface) !important;
+    box-shadow: none !important;
+    border: 1px solid var(--border) !important;
+}
+}
