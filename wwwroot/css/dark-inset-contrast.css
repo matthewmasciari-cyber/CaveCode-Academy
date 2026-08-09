@@ -1,0 +1,218 @@
+/* =========================================================
+   CaveCode — Dark-inset contrast (light + dark safe)
+   Load LAST among stylesheets.
+   ========================================================= */
+
+:root {
+  --dark-panel-bg: #14352c;
+  --dark-panel-text: #eef6f2;
+  --dark-panel-muted: #b7cfc4;
+  --dark-panel-strong: #ffffff;
+  --dark-panel-border: color-mix(in srgb, #eef6f2 18%, transparent);
+}
+
+/* ---------- Shared dark wells ---------- */
+.leaderboard-table,
+.leaderboard-row,
+.course-resume,
+.profile-preview,
+.emblem-choice,
+.jsforge-terminal,
+.jsforge-reference-example,
+.jsforge-console-pane,
+.jsforge-browser-frame,
+.gcl-terminal,
+.arduino-terminal,
+.raspi-terminal,
+[class*="-terminal"],
+[class*="-reference-example"],
+[class*="-console-pane"],
+.preview-identity,
+.player-cell {
+  color: var(--dark-panel-text) !important;
+}
+
+/* Children inherit light type on dark wells */
+.leaderboard-row strong,
+.leaderboard-row .rank,
+.leaderboard-row span,
+.course-resume strong,
+.course-resume p,
+.course-resume small,
+.course-resume .resume-label,
+.profile-preview strong,
+.profile-preview small,
+.profile-preview p,
+.emblem-choice strong,
+.emblem-choice small,
+.jsforge-lesson-button strong,
+.jsforge-lesson-button small,
+.jsforge-lesson-button .jsforge-lesson-number,
+.jsforge-terminal p,
+.jsforge-terminal span,
+.jsforge-reference-example span,
+.jsforge-reference-example pre,
+.jsforge-reference-example code,
+[class*="-terminal"] p,
+[class*="-terminal"] span,
+[class*="-reference-example"] pre,
+[class*="-reference-example"] code {
+  color: inherit !important;
+}
+
+/* Muted labels on dark wells */
+.course-resume .resume-label,
+.profile-preview > p,
+.jsforge-terminal-title,
+.jsforge-reference-example > span,
+[class*="-terminal-title"],
+.leaderboard-row.table-head span {
+  color: var(--dark-panel-muted) !important;
+}
+
+/* Strong emphasis */
+.leaderboard-row .rank,
+.course-resume strong,
+.profile-preview strong,
+.emblem-choice strong {
+  color: var(--dark-panel-strong) !important;
+}
+
+/* ---------- Leaderboard ---------- */
+.leaderboard-table {
+  background: var(--dark-panel-bg);
+}
+
+.leaderboard-row {
+  border-color: var(--dark-panel-border) !important;
+}
+
+.leaderboard-row.current-player {
+  background: color-mix(in srgb, var(--dark-panel-bg) 70%, #0b1f19);
+}
+
+/* Stone / level names on dark rows: keep light, not page --text */
+.leaderboard-row .title-effect.stone,
+.profile-preview .title-effect.stone {
+  color: #d5dee7 !important;
+  text-shadow: 0 1px #536170;
+}
+
+.leaderboard-row .level-colored-name {
+  /* inline styles may set a light gray; ensure it never falls to black */
+  color: #dce6f0 !important;
+}
+
+/* ---------- Course resume (home cards) ---------- */
+.course-resume {
+  background: var(--dark-panel-bg) !important;
+  border-color: var(--dark-panel-border) !important;
+  color: var(--dark-panel-text) !important;
+}
+
+.course-resume strong {
+  color: var(--dark-panel-strong) !important;
+}
+
+.course-resume p,
+.course-resume small {
+  color: var(--dark-panel-muted) !important;
+}
+
+.course-resume .resume-progress {
+  background: color-mix(in srgb, #eef6f2 14%, transparent) !important;
+}
+
+.course-resume .resume-progress > i {
+  background: color-mix(in srgb, #8be9ff 80%, #ffffff) !important;
+}
+
+/* ---------- Profile preview / emblems ---------- */
+.profile-preview {
+  background: var(--dark-panel-bg) !important;
+  border-color: var(--dark-panel-border) !important;
+}
+
+.profile-preview small {
+  color: var(--dark-panel-muted) !important;
+}
+
+.emblem-choice {
+  background: color-mix(in srgb, var(--dark-panel-bg) 85%, #000) !important;
+  border-color: var(--dark-panel-border) !important;
+  color: var(--dark-panel-text) !important;
+}
+
+.emblem-choice small {
+  color: var(--dark-panel-muted) !important;
+}
+
+.emblem-choice.selected {
+  border-color: color-mix(in srgb, #8be9ff 55%, transparent) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #8be9ff 25%, transparent);
+}
+
+.emblem-choice.selected strong,
+.emblem-choice.selected small {
+  color: var(--dark-panel-strong) !important;
+}
+
+/* ---------- Course shells: lesson list + reference + terminal ---------- */
+.jsforge-lesson-button,
+[class*="-lesson-button"] {
+  color: var(--dark-panel-text) !important;
+}
+
+.jsforge-lesson-button small,
+[class*="-lesson-button"] small {
+  color: var(--dark-panel-muted) !important;
+}
+
+.jsforge-lesson-button.active,
+[class*="-lesson-button"].active {
+  color: var(--dark-panel-strong) !important;
+}
+
+.jsforge-reference-example,
+[class*="-reference-example"] {
+  background: #0f241e !important;
+  border: 1px solid var(--dark-panel-border) !important;
+  color: var(--dark-panel-text) !important;
+}
+
+.jsforge-reference-example pre,
+.jsforge-reference-example code,
+[class*="-reference-example"] pre,
+[class*="-reference-example"] code {
+  color: #d7f5ea !important;
+}
+
+.jsforge-terminal,
+[class*="-terminal"] {
+  background: #0c1c18 !important;
+  color: var(--dark-panel-text) !important;
+  border-color: var(--dark-panel-border) !important;
+}
+
+.jsforge-terminal p,
+[class*="-terminal"] p {
+  color: var(--dark-panel-muted) !important;
+}
+
+/* ---------- Safety: never let page light-mode --text paint dark wells ---------- */
+html[data-theme="light"] .leaderboard-table,
+html[data-theme="light"] .course-resume,
+html[data-theme="light"] .profile-preview,
+html[data-theme="light"] .emblem-choice,
+html[data-theme="light"] .jsforge-terminal,
+html[data-theme="light"] .jsforge-reference-example,
+html[data-theme="light"] [class*="-terminal"],
+html[data-theme="light"] [class*="-reference-example"],
+html.theme-light .leaderboard-table,
+html.theme-light .course-resume,
+html.theme-light .profile-preview,
+body.light-mode .leaderboard-table,
+body.light-mode .course-resume,
+body.light-mode .profile-preview {
+  color: var(--dark-panel-text) !important;
+}
