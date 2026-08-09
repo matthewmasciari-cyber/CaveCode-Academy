@@ -58,36 +58,57 @@
 
                         <div class="field-label">
                             <span>Title</span>
-                            <div class="title-choice-grid">
-                                @foreach (TitleUnlockOption option in TitleOptions)
+                            <div class="title-language-sections">
+                                @foreach (var group in TitleLanguageGroups)
                                 {
-                                    <button type="button"
-                                            class="title-choice @(Profile.Title == option.Title ? "selected" : "") @(!option.Unlocked ? "locked" : "")"
-                                            disabled="@(!option.Unlocked)"
-                                            @onclick="() => SelectTitle(option)">
-                                        <span class="title-choice-top">
-                                            <TitleEffect Title="@option.Title" />
-                                            @if (!option.Unlocked)
+                                    <div class="title-lang-block">
+                                        <div class="title-lang-label">@group.Label</div>
+                                        <div class="title-choice-grid">
+                                            @foreach (TitleUnlockOption option in group.Options)
                                             {
-                                                <LockMark Compact="true" />
+                                                <button type="button"
+                                                        class="title-choice @(Profile.Title == option.Title ? "selected" : "") @(!option.Unlocked ? "locked" : "")"
+                                                        disabled="@(!option.Unlocked)"
+                                                        @onclick="() => SelectTitle(option)">
+                                                    <span class="title-choice-top">
+                                                        <TitleEffect Title="@option.Title" />
+                                                    </span>
+                                                    <small>@option.Requirement</small>
+                                                    <span class="title-state">@(option.Unlocked ? (Profile.Title == option.Title ? "Equipped" : "Unlocked") : "Locked")</span>
+                                                </button>
                                             }
-                                        </span>
-                                        <small>@TitleRequirement(option)</small>
-                                        <span class="title-state">
-                                            @(Profile.Title == option.Title ? "EQUIPPED" : option.Unlocked ? "AVAILABLE" : "LOCKED")
-                                        </span>
-                                    </button>
+                                        </div>
+                                    </div>
                                 }
                             </div>
                         </div>
                         <div class="field-label">
                             <span>Emblem</span>
-                            <div class="emblem-shop">
+                            <div class="emblem-shop settings-shop-panel">
                                 <div class="emblem-shop-header">
                                     <h3>Emblem shop</h3>
                                     <span class="crystal-balance">@CrystalBalance Code Crystals</span>
                                 </div>
                                 <p class="emblem-shop-note">Earn crystals by completing modules (+3, or +8 at chapter end) and claiming chapter achievements. Common emblems are free.</p>
+                                @if (PendingEmblemPurchase is not null)
+                                {
+                                    <div class="shop-confirm" role="dialog" aria-label="Confirm emblem purchase">
+                                        <p>
+                                            Unlock <strong>@PendingEmblemPurchase.Name</strong> for
+                                            <strong>@PendingEmblemPurchase.Cost</strong> Code Crystals?
+                                            (Balance: @CrystalBalance)
+                                        </p>
+                                        <div class="shop-confirm-actions">
+                                            <button type="button" class="confirm-buy" @onclick="() => ConfirmBuyEmblem(PendingEmblemPurchase!)">Confirm purchase</button>
+                                            <button type="button" class="confirm-cancel" @onclick="CancelBuyEmblem">Cancel</button>
+                                        </div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(ShopToast))
+                                {
+                                    <div class="shop-toast">@ShopToast</div>
+                                }
+
                                 @foreach (var rarity in EmblemRarityOrder)
                                 {
                                     <div class="emblem-rarity-block">
@@ -1035,6 +1056,41 @@
     };
 
 
+    
+    private IEnumerable<(string Label, List<TitleUnlockOption> Options)> TitleLanguageGroups
+    {
+        get
+        {
+            var groups = new (string Key, string Label, string[] Match)[]
+            {
+                ("starter", "Starter", new[] { "Cave Explorer", "Academy Pathfinder" }),
+                ("csharp", "C#", new[] { "Code Apprentice", "Logic Pathfinder", "Systems Builder", "C# Adventurer", "CaveCode Champion" }),
+                ("python", "Python", new[] { "Control Room", "Automation", "Python" }),
+                ("cpp", "C++", new[] { "Engine", "Memory Steward", "C++" }),
+                ("htmlcss", "HTML & CSS", new[] { "Markup", "Interface" }),
+                ("gcl", "GCL+", new[] { "Control Cadet", "Sequence", "Interlock", "Timing Specialist", "Line Boss" }),
+                ("arduino", "Arduino", new[] { "Pin Rookie", "Sketch Smith", "Sensor Apprentice", "Shield Builder", "Board Captain" }),
+                ("raspi", "Raspberry Pi", new[] { "GPIO", "Pi Tinkerer", "Sense Hacker", "Automation Hand", "Lab Lead" }),
+                ("javascript", "JavaScript", new[] { "Console Cadet", "DOM Jockey", "Event Wrangler", "Module Pilot", "Web Forge" }),
+                ("other", "Other", Array.Empty<string>())
+            };
+            var used = new HashSet<string>();
+            foreach (var g in groups)
+            {
+                List<TitleUnlockOption> opts;
+                if (g.Key == "other")
+                    opts = TitleOptions.Where(o => !used.Contains(o.Title)).ToList();
+                else if (g.Key == "starter")
+                    opts = TitleOptions.Where(o => g.Match.Any(m => o.Title.Equals(m, StringComparison.OrdinalIgnoreCase))).ToList();
+                else
+                    opts = TitleOptions.Where(o => g.Match.Any(m => o.Title.Contains(m, StringComparison.OrdinalIgnoreCase))).ToList();
+                foreach (var o in opts) used.Add(o.Title);
+                if (opts.Count > 0)
+                    yield return (g.Label, opts);
+            }
+        }
+    }
+
     private async Task LoadCrystalShopAsync()
     {
         try
@@ -1067,6 +1123,23 @@
             return;
         }
 
+        if (emblem.Cost > 0)
+        {
+            PendingEmblemPurchase = emblem;
+            ShopToast = "";
+            return;
+        }
+
+        await ConfirmBuyEmblem(emblem);
+    }
+
+    private void CancelBuyEmblem()
+    {
+        PendingEmblemPurchase = null;
+    }
+
+    private async Task ConfirmBuyEmblem(EmblemChoice emblem)
+    {
         try
         {
             var result = await JS.InvokeAsync<CrystalBuyResult>("caveCodeCrystalShop.buy", emblem.Id);
@@ -1092,10 +1165,13 @@
                 : $"Unlocked {emblem.Name}.";
             await SelectEmblem(emblem.Id);
             await LoadCrystalShopAsync();
+            ShopToast = ProfileSaveMessage;
+            PendingEmblemPurchase = null;
         }
         catch
         {
             ProfileSaveMessage = "Could not complete purchase.";
+            PendingEmblemPurchase = null;
         }
     }
 
@@ -1125,6 +1201,9 @@
 
     private List<string> OwnedEmblems = new() { "crystal", "cave", "terminal", "code" };
     private int CrystalBalance;
+    private EmblemChoice? PendingEmblemPurchase;
+    private string ShopToast = "";
+
 
     private EmblemChoice SelectedEmblem =>
         Emblems.FirstOrDefault(
