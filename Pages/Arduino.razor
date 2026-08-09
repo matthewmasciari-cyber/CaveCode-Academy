@@ -1,0 +1,1178 @@
+@page "/arduino"
+@using System.Text.RegularExpressions
+@using Microsoft.JSInterop
+@using CaveCode.CourseEngine
+@using CaveCode.Components.CourseEngine
+@inject IJSRuntime JS
+@inject CourseEngineService CourseEngine
+@inject ProgressionService ProgressionService
+@inject AchievementService AchievementService
+
+<PageTitle>Arduino Maker Lab | CaveCode Academy</PageTitle>
+
+<div class="arduino-academy arduino-academy--playable">
+    <aside class="arduino-sidebar">
+        <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
+        <div class="cavecode-course-academy-brand"
+             aria-label="CaveCode Academy">
+            <span class="cavecode-context-logo-surface cavecode-context-logo-surface--course">
+                <img class="cavecode-context-logo-image"
+                     src="branding/cavecode-academy-logo.svg?v=1"
+                     alt="" />
+            </span>
+        </div>
+        <div class="arduino-brand">
+            <span class="arduino-brand-mark">Arduino</span>
+            <div>
+                <h1>CaveCode</h1>
+                    <!-- CAVECODE_OFFICIAL_BRANDING_PASS_3_V1 -->
+            </div>
+        </div>
+
+        <nav class="arduino-course-nav" aria-label="Course navigation">
+            <AcademyHomeButton Compact="true" />
+        </nav>
+
+        <AuthPanel />
+
+        <CourseProgressPanel
+            Label="Arduino course progress"
+            CompletedModules="@CompletedModuleCount"
+            TotalModules="@Manifest.ModuleCount" />
+
+        <div class="arduino-availability-note">
+            <strong>FULL COURSE AVAILABLE</strong>
+            <p>
+                Modules 1–8 are fully playable. Later chapters remain visible
+                on the roadmap and unlock during the expansion phase.
+            </p>
+        </div>
+
+        <div class="arduino-lesson-list">
+            @{
+                string? lastChapter = null;
+            }
+
+            @for (int index = 0; index < Roadmap.Count; index++)
+            {
+                int moduleIndex = index;
+                ArduinoRoadmapModule module = Roadmap[index];
+                bool available = IsModuleAvailable(index);
+                bool unlocked = IsLessonUnlocked(index);
+                bool active = index == CurrentModuleIndex;
+
+                if (module.Chapter != lastChapter)
+                {
+                    lastChapter = module.Chapter;
+                    <h2>@module.Chapter</h2>
+                }
+
+                <button type="button"
+                        class="arduino-lesson-button @(active ? "active" : "") @(ModuleCompleted[index] ? "complete" : "")"
+                        disabled="@(!unlocked)"
+                        @onclick="() => SelectLessonAsync(moduleIndex)">
+                    <span class="arduino-lesson-number">
+                        @if (ModuleCompleted[index])
+                        {
+                            <span class="arduino-lesson-complete-mark">✓</span>
+                        }
+                        else if (unlocked)
+                        {
+                            <span>@(index + 1)</span>
+                        }
+                        else
+                        {
+                            <LockMark Compact="true" />
+                        }
+                    </span>
+
+                    <span class="arduino-lesson-copy">
+                        <strong>@module.Title</strong>
+                        <small>
+                            @(available
+                                ? $"{ModuleMastery(index)}% mastery"
+                                : "Planned expansion")
+                        </small>
+                    </span>
+                </button>
+            }
+        </div>
+    </aside>
+
+    <main class="arduino-lesson-main">
+        <header class="arduino-lesson-header">
+            <div>
+                <p class="eyebrow">
+                    MODULE @(CurrentModuleIndex + 1) OF @Manifest.ModuleCount ·
+                    @CurrentLesson.Topic.ToUpperInvariant()
+                </p>
+                <h2>@CurrentLesson.Title</h2>
+                <p>@CurrentLesson.Teaching</p>
+            </div>
+
+            <div class="arduino-mastery-ring">
+                <strong>@ModuleMastery(CurrentModuleIndex)%</strong>
+                <span>mastery</span>
+            </div>
+        </header>
+
+        <CourseStageTabs
+            CurrentStage="@((int)CurrentStage)"
+            HighestCompletedStage="@HighestCompletedStage[CurrentModuleIndex]"
+            UnlockedThroughStage="@UnlockedThroughStage"
+            StageSelected="SelectStageAsync" />
+
+        <section class="arduino-stage-card">
+            <div class="arduino-stage-heading">
+                <div>
+                    <p class="eyebrow">
+                        STAGE @((int)CurrentStage + 1) ·
+                        @CourseStageCatalog.Label((int)CurrentStage).ToUpperInvariant()
+                    </p>
+                    <h3>@StageHeading(CurrentStage)</h3>
+                </div>
+                <span class="arduino-support-badge">
+                    @CourseStageCatalog.Get((int)CurrentStage).SupportLabel
+                </span>
+            </div>
+
+            @if (CurrentStage == CourseTrainingStage.Learn)
+            {
+                <div class="arduino-learn-grid">
+                    <div>
+                        <h4>Understand the idea</h4>
+                        <p>@CurrentLesson.Teaching</p>
+
+                        <div class="arduino-reference-example">
+                            <span>Reference example</span>
+                            <pre><code>@CurrentLesson.ExampleCode</code></pre>
+                        </div>
+
+                        <div class="arduino-concept-points">
+                            @foreach (string point in CurrentLesson.ConceptPoints)
+                            {
+                                <div><span>◆</span><p>@point</p></div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="arduino-memory-aid">
+                        <span class="arduino-mini-label">Bench memory aid</span>
+                        <div class="arduino-flow">
+                            <div>CODE</div><span>→</span>
+                            <div>STATE</div><span>→</span>
+                            <div>ENGINE</div>
+                        </div>
+                        <p>@CurrentLesson.PreviewMessage</p>
+                    </div>
+                </div>
+
+                <button type="button"
+                        class="arduino-primary"
+                        @onclick="CompleteLearnStageAsync">
+                    Begin guided typing →
+                </button>
+            }
+            else if (CurrentStage == CourseTrainingStage.Predict)
+            {
+                <div class="arduino-prediction-card">
+                    <h4>Predict before checking</h4>
+                    <p>@CurrentLesson.PredictionQuestion</p>
+
+                    <div class="arduino-prediction-options">
+                        @for (int index = 0;
+                              index < CurrentLesson.PredictionOptions.Length;
+                              index++)
+                        {
+                            int optionIndex = index;
+                            string option =
+                                CurrentLesson.PredictionOptions[index];
+
+                            <button type="button"
+                                    class="@PredictionClass(index)"
+                                    @onclick="() => SelectPrediction(optionIndex)">
+                                <span>@((char)('A' + index))</span>
+                                @option
+                            </button>
+                        }
+                    </div>
+
+                    @if (SelectedPrediction.HasValue)
+                    {
+                        <div class="arduino-feedback @(StagePassed ? "success" : "error")">
+                            @Feedback
+                        </div>
+                    }
+                </div>
+
+                @if (StagePassed)
+                {
+                    <button type="button"
+                            class="arduino-primary"
+                            @onclick="AdvanceStageAsync">
+                        Continue to debugging →
+                    </button>
+                }
+            }
+            else if (CurrentStage == CourseTrainingStage.Complete)
+            {
+                <div class="arduino-completion-panel">
+                    <div class="arduino-completion-icon">✓</div>
+                    <h3>Module mastery reached</h3>
+                    <p>
+                        You practiced the concept through explanation,
+                        guided typing, completion, prediction, debugging,
+                        recall, and transfer.
+                    </p>
+
+                    <div class="arduino-completion-summary">
+                        <div>
+                            <span>Concept</span>
+                            <strong>@CurrentLesson.Topic</strong>
+                        </div>
+                        <div>
+                            <span>Core code</span>
+                            <code>@CurrentLesson.TargetCode</code>
+                        </div>
+                        <div>
+                            <span>Foundry result</span>
+                            <strong>@CurrentLesson.PreviewMessage</strong>
+                        </div>
+                    </div>
+
+                    <button type="button"
+                            class="arduino-primary"
+                            @onclick="FinishModuleAsync">
+                        @(CurrentModuleIndex < PlayableModuleCount - 1
+                            ? "Complete module and unlock next →"
+                            : "Complete Chapter 1 →")
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="arduino-exercise-intro">
+                    <h4>@ExerciseTitle(CurrentStage)</h4>
+                    <p>@ExercisePrompt(CurrentStage)</p>
+                </div>
+
+                @if (CurrentStage == CourseTrainingStage.Debug)
+                {
+                    <div class="arduino-compiler-note">
+                        <strong>Compiler clue</strong>
+                        <p>@CurrentLesson.DebugPrompt</p>
+                    </div>
+                }
+
+                @if (ShowTargetGuide)
+                {
+                    <div class="arduino-typing-guide">
+                        <div class="arduino-editor-bar">
+                            <span>@CurrentEditorFileName</span>
+                            <span>FOLLOW ALONG</span>
+                        </div>
+
+                        <div class="arduino-character-guide">
+                            @for (int index = 0;
+                                  index < CurrentExpectedCode.Length;
+                                  index++)
+                            {
+                                char character = CurrentExpectedCode[index];
+                                string cssClass = GetCharacterClass(index);
+
+                                if (character == '\n')
+                                {
+                                    <span class="@cssClass arduino-newline-mark">↵</span><br />
+                                }
+                                else if (character == ' ')
+                                {
+                                    <span class="@cssClass arduino-space-mark">&nbsp;</span>
+                                }
+                                else
+                                {
+                                    <span class="@cssClass">@character</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                else if (HintVisible)
+                {
+                    <div class="arduino-revealed-target">
+                        <span>Hint target</span>
+                        <pre><code>@CurrentExpectedCode</code></pre>
+                    </div>
+                }
+
+                <CourseCodeEditor
+                    FileName="@CurrentEditorFileName"
+                    LanguageLabel="Arduino"
+                    AriaLabel="Arduino practice editor"
+                    Value="@StudentCode"
+                    ValueChanged="UpdateStudentCode"
+                    TargetLength="@CurrentExpectedCode.Length"
+                    Accuracy="@Accuracy"
+                    ErrorCount="@ErrorCount" />
+
+                <div class="arduino-action-row">
+                    <button type="button"
+                            class="arduino-primary"
+                            @onclick="CheckCodeAsync">
+                        Check code
+                    </button>
+                    <button type="button"
+                            class="arduino-secondary"
+                            @onclick="ShowHint">
+                        Hint
+                    </button>
+                    <button type="button"
+                            class="arduino-secondary"
+                            @onclick="ResetStage">
+                        Reset
+                    </button>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Feedback))
+                {
+                    <div class="arduino-feedback @(StagePassed ? "success" : "error")">
+                        @Feedback
+                    </div>
+                }
+
+                @if (StagePassed)
+                {
+                    <button type="button"
+                            class="arduino-primary arduino-continue-button"
+                            @onclick="AdvanceStageAsync">
+                        Continue to @NextStageLabel() →
+                    </button>
+                }
+            }
+        </section>
+    </main>
+
+    <aside class="arduino-preview-panel">
+        <header class="arduino-preview-header">
+            <div>
+                <p class="eyebrow">LIVE MAKER LAB</p>
+                <h2>Maker Lab</h2>
+            </div>
+            <span class="arduino-live">LIVE</span>
+        </header>
+
+        <div class="arduino-lab-scene">
+            <div class="arduino-board @(Preview.BoardPowered ? "powered" : "")">
+                <div class="arduino-board-label">UNO-STYLE</div>
+                <div class="arduino-usb"></div>
+                <div class="arduino-pins">
+                    <span class="@(Preview.ActivePin == 13 ? "active" : "")">13</span>
+                    <span class="@(Preview.ActivePin == 8 ? "active" : "")">8</span>
+                    <span>7</span>
+                    <span>A0</span>
+                </div>
+                <div class="arduino-mcu">MCU</div>
+            </div>
+            <div class="arduino-breadboard">
+                <div class="arduino-led @(Preview.LedOn ? "on" : "") @(Preview.LedBlink ? "blink" : "")" title="LED"></div>
+                <div class="arduino-resistor"></div>
+                <div class="arduino-rail"></div>
+                <div class="arduino-sensor @(Preview.SensorOnline ? "active" : "")">
+                    <span>SNS</span>
+                    <strong>@Preview.SensorValue</strong>
+                </div>
+            </div>
+            <div class="arduino-readout">
+                <div><span>PIN</span><strong>@(Preview.ActivePin > 0 ? Preview.ActivePin.ToString() : "—")</strong></div>
+                <div><span>LED</span><strong>@(Preview.LedOn ? (Preview.LedBlink ? "BLINK" : "ON") : "OFF")</strong></div>
+                <div><span>MODE</span><strong>@Preview.PinModeLabel</strong></div>
+            </div>
+        </div>
+
+        <div class="arduino-preview-stats">
+            <div><span>Board</span><strong>@(Preview.BoardPowered ? "POWER ON" : "STANDBY")</strong></div>
+            <div><span>Pin</span><strong>@(Preview.ActivePin > 0 ? Preview.ActivePin.ToString() : "—")</strong></div>
+            <div><span>LED</span><strong>@(Preview.LedOn ? (Preview.LedBlink ? "BLINK" : "HIGH") : "LOW")</strong></div>
+            <div><span>Sketch</span><strong>@Preview.SketchLabel</strong></div>
+            <div><span>Completed</span><strong>@CompletedModuleCount / @PlayableModuleCount</strong></div>
+        </div>
+
+        <section class="arduino-terminal">
+            <div class="arduino-terminal-title">
+                <span>SERIAL MONITOR</span>
+                <span>READ ONLY</span>
+            </div>
+            <p>[ACADEMY] Module @(CurrentModuleIndex + 1) loaded.</p>
+            <p>[STAGE] @CourseStageCatalog.Label((int)CurrentStage) training active.</p>
+            <p>
+                [@(StagePassed ? "PASS" : "READY")]
+                @(StagePassed ? CurrentLesson.PreviewMessage : Preview.Status)
+            </p>
+        </section>
+    </aside>
+</div>
+
+@if (ShowXpAward && LastProgressAward is not null)
+{
+    <button type="button"
+            class="arduino-xp-award-toast"
+            @onclick="DismissXpAward">
+        <span>MODULE REWARD</span>
+        <strong>+@LastProgressAward.XpAwarded XP</strong>
+        <small>
+            Level @LastProgressAward.State.Level
+            · @LastProgressAward.State.TotalXp total XP
+        </small>
+    </button>
+}
+
+@if (ShowAchievementUnlock && ChapterAchievement is not null)
+{
+    <div class="arduino-achievement-overlay"
+         role="presentation"
+         @onclick="DismissAchievementUnlock">
+        <section class="arduino-achievement-dialog"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="arduino-achievement-title"
+                 @onclick:stopPropagation="true">
+            <span class="arduino-achievement-kicker">
+                Arduino CHAPTER @ChapterAchievement.Chapter COMPLETE
+            </span>
+            <div class="arduino-achievement-medal">Arduino</div>
+            <h2 id="arduino-achievement-title">@ChapterAchievement.Name</h2>
+            <p>@ChapterAchievement.Description</p>
+
+            <div class="arduino-achievement-rewards">
+                <div>
+                    <span>TITLE REWARD</span>
+                    <strong>@ChapterAchievement.TitleReward</strong>
+                </div>
+                <div>
+                    <span>CODE CRYSTALS</span>
+                    <strong>◆ @ChapterAchievement.Crystals</strong>
+                </div>
+            </div>
+
+            <small>Reward unlocked. Visit Achievements to claim it.</small>
+
+            <div class="arduino-achievement-actions">
+                <NavLink href="/achievements">View achievement</NavLink>
+                <button type="button"
+                        @onclick="DismissAchievementUnlock">
+                    Continue learning
+                </button>
+            </div>
+        </section>
+    </div>
+}
+
+@if (ShowChapterOneSignInPrompt)
+{
+    <div class="arduino-save-progress-overlay"
+         role="presentation"
+         @onclick="DismissSavePrompt">
+        <section class="arduino-save-progress-dialog"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="arduino-save-progress-title"
+                 @onclick:stopPropagation="true">
+            <span class="arduino-save-progress-kicker">Arduino CHAPTER 1 COMPLETE</span>
+            <h2 id="arduino-save-progress-title">Protect your CaveCode progress</h2>
+            <p>
+                You brought the first Maker Lab Lab dashboard online.
+                Sign in so CaveCode can keep your identity ready for future
+                cloud-progress support.
+            </p>
+            <AuthPanel />
+            <button type="button"
+                    class="arduino-continue-guest"
+                    @onclick="DismissSavePrompt">
+                Continue without signing in
+            </button>
+            <small>Your Arduino checkpoint is already preserved on this device.</small>
+        </section>
+    </div>
+}
+
+@code {
+    private const int PlayableModuleCount =
+        ArduinoCourseLessons.PlayableModuleCount;
+    private const int ChapterOneLastModuleIndex = 7;
+    private const int FinalModuleIndex =
+        ArduinoCourseLessons.PlayableModuleCount - 1;
+
+    private CourseManifest Manifest = null!;
+    private CourseProgressSnapshot Progress = new();
+
+    private int CurrentModuleIndex;
+    private CourseTrainingStage CurrentStage = CourseTrainingStage.Learn;
+    private int[] HighestCompletedStage = Enumerable.Repeat(-1, 40).ToArray();
+    private bool[] ModuleCompleted = new bool[40];
+
+    private string StudentCode = "";
+    private string Feedback = "";
+    private bool StagePassed;
+    private bool HintVisible;
+    private int? SelectedPrediction;
+    private bool ProgressRestored;
+
+    private ProgressionAwardResult? LastProgressAward;
+    private bool ShowXpAward;
+    private AchievementUnlockResult? ChapterAchievement;
+    private bool ShowAchievementUnlock;
+    private bool ShowChapterOneSignInPrompt;
+    private bool PendingChapterOneSignInPrompt;
+
+    private IReadOnlyList<CourseLesson> Lessons => ArduinoCourseLessons.All;
+    private IReadOnlyList<ArduinoRoadmapModule> Roadmap => ArduinoCourseRoadmap.Modules;
+    private CourseLesson CurrentLesson => Lessons[CurrentModuleIndex];
+
+    private int CompletedModuleCount =>
+        ModuleCompleted.Count(completed => completed);
+
+    private int UnlockedThroughStage =>
+        ModuleCompleted[CurrentModuleIndex]
+            ? CourseStageCatalog.StageCount - 1
+            : Math.Clamp(
+                HighestCompletedStage[CurrentModuleIndex] + 1,
+                0,
+                CourseStageCatalog.StageCount - 1);
+
+    private string CurrentEditorFileName =>
+        CurrentLesson.EditorFileNameOverride ?? Manifest.EditorFileName;
+
+    private string CurrentExpectedCode => CurrentStage switch
+    {
+        CourseTrainingStage.Guided => CurrentLesson.TargetCode,
+        CourseTrainingStage.Fill => CurrentLesson.TargetCode,
+        CourseTrainingStage.Debug => CurrentLesson.TargetCode,
+        CourseTrainingStage.Recall => CurrentLesson.TargetCode,
+        CourseTrainingStage.Transfer => CurrentLesson.TransferCode,
+        _ => ""
+    };
+
+    private bool ShowTargetGuide =>
+        CurrentStage is CourseTrainingStage.Guided or CourseTrainingStage.Fill;
+
+    private ArduinoPreviewState Preview => BuildPreview();
+
+    protected override void OnInitialized()
+    {
+        Manifest = CourseEngine.GetCourse(CourseIds.Arduino);
+        PrepareStage();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || ProgressRestored)
+        {
+            return;
+        }
+
+        ProgressRestored = true;
+
+        try
+        {
+            Progress = await CourseEngine.GetProgressAsync(CourseIds.Arduino);
+            HighestCompletedStage = Progress.HighestCompletedStage.ToArray();
+            ModuleCompleted = Progress.ModuleCompleted.ToArray();
+
+            CurrentModuleIndex = Math.Clamp(
+                Progress.CurrentModuleIndex,
+                0,
+                PlayableModuleCount - 1);
+
+            CurrentStage = (CourseTrainingStage)Math.Clamp(
+                Progress.CurrentStage,
+                0,
+                CourseStageCatalog.StageCount - 1);
+
+            if (!IsLessonUnlocked(CurrentModuleIndex))
+            {
+                CurrentModuleIndex = FirstIncompletePlayableModule();
+                CurrentStage = ModuleCompleted[CurrentModuleIndex]
+                    ? CourseTrainingStage.Complete
+                    : CourseTrainingStage.Learn;
+            }
+
+            PrepareStage();
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+            // Local course progress is optional.
+        }
+    }
+
+    private bool IsModuleAvailable(int index) =>
+        index >= 0 && index < PlayableModuleCount;
+
+    private bool IsLessonUnlocked(int index)
+    {
+        if (!IsModuleAvailable(index))
+        {
+            return false;
+        }
+
+        return index == 0 || ModuleCompleted[index - 1];
+    }
+
+    private int FirstIncompletePlayableModule()
+    {
+        for (int index = 0; index < PlayableModuleCount; index++)
+        {
+            if (!ModuleCompleted[index])
+            {
+                return index;
+            }
+        }
+
+        return PlayableModuleCount - 1;
+    }
+
+    private int ModuleMastery(int index)
+    {
+        if (index < 0 || index >= ModuleCompleted.Length)
+        {
+            return 0;
+        }
+
+        if (ModuleCompleted[index])
+        {
+            return 100;
+        }
+
+        int stages = HighestCompletedStage[index] + 1;
+
+        return Math.Clamp(
+            stages * 100 / CourseStageCatalog.StageCount,
+            0,
+            100);
+    }
+
+    private async Task SelectLessonAsync(int index)
+    {
+        if (!IsLessonUnlocked(index))
+        {
+            return;
+        }
+
+        CurrentModuleIndex = index;
+        CurrentStage = ModuleCompleted[index]
+            ? CourseTrainingStage.Complete
+            : (CourseTrainingStage)Math.Clamp(
+                HighestCompletedStage[index] + 1,
+                0,
+                CourseStageCatalog.StageCount - 1);
+
+        PrepareStage();
+        await SaveProgressAsync();
+    }
+
+    private async Task SelectStageAsync(int stageIndex)
+    {
+        if (stageIndex < 0 || stageIndex > UnlockedThroughStage)
+        {
+            return;
+        }
+
+        CurrentStage = (CourseTrainingStage)stageIndex;
+        PrepareStage();
+        await SaveProgressAsync();
+    }
+
+    private void PrepareStage()
+    {
+        Feedback = "";
+        HintVisible = false;
+        SelectedPrediction = null;
+
+        bool alreadyComplete =
+            ModuleCompleted[CurrentModuleIndex] ||
+            (int)CurrentStage <= HighestCompletedStage[CurrentModuleIndex];
+
+        StagePassed = alreadyComplete;
+
+        StudentCode = CurrentStage switch
+        {
+            CourseTrainingStage.Guided =>
+                alreadyComplete ? CurrentLesson.TargetCode : "",
+            CourseTrainingStage.Fill =>
+                alreadyComplete ? CurrentLesson.TargetCode : CurrentLesson.FillStarter,
+            CourseTrainingStage.Debug =>
+                alreadyComplete ? CurrentLesson.TargetCode : CurrentLesson.BrokenCode,
+            CourseTrainingStage.Recall =>
+                alreadyComplete ? CurrentLesson.TargetCode : "",
+            CourseTrainingStage.Transfer =>
+                alreadyComplete ? CurrentLesson.TransferCode : "",
+            _ => ""
+        };
+    }
+
+    private Task UpdateStudentCode(string value)
+    {
+        StudentCode = value;
+        return Task.CompletedTask;
+    }
+
+    private int ErrorCount
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(CurrentExpectedCode))
+            {
+                return 0;
+            }
+
+            int errors = 0;
+
+            for (int index = 0; index < StudentCode.Length; index++)
+            {
+                if (index >= CurrentExpectedCode.Length ||
+                    StudentCode[index] != CurrentExpectedCode[index])
+                {
+                    errors++;
+                }
+            }
+
+            return errors;
+        }
+    }
+
+    private int Accuracy
+    {
+        get
+        {
+            if (StudentCode.Length == 0)
+            {
+                return 0;
+            }
+
+            int correct = Math.Max(0, StudentCode.Length - ErrorCount);
+            return correct * 100 / StudentCode.Length;
+        }
+    }
+
+    private string GetCharacterClass(int index)
+    {
+        if (index >= StudentCode.Length)
+        {
+            return index == StudentCode.Length
+                ? "arduino-character-current"
+                : "arduino-character-pending";
+        }
+
+        return StudentCode[index] == CurrentExpectedCode[index]
+            ? "arduino-character-correct"
+            : "arduino-character-wrong";
+    }
+
+    private async Task CompleteLearnStageAsync()
+    {
+        MarkStageComplete();
+        await AdvanceStageAsync();
+    }
+
+    private async Task CheckCodeAsync()
+    {
+        HintVisible = false;
+
+        CourseCodeValidationResult result =
+            CourseEngine.ValidateCode(
+                new CourseCodeValidationRequest(
+                    CourseIds.Arduino,
+                    CurrentModuleIndex,
+                    CurrentStage,
+                    StudentCode,
+                    CurrentExpectedCode));
+
+        if (result.IsValid)
+        {
+            StagePassed = true;
+            Feedback = CurrentStage switch
+            {
+                CourseTrainingStage.Debug =>
+                    "Correct repair. The Arduino structure now matches the intended program.",
+                CourseTrainingStage.Recall =>
+                    "Correct recall. You rebuilt the Arduino pattern without the visible guide.",
+                CourseTrainingStage.Transfer =>
+                    "Correct transfer. You applied the concept to a new maker lab board.",
+                _ =>
+                    "Correct. Every required part of the Arduino code is present."
+            };
+
+            await ProgressionService.AwardStageAsync(
+                CourseIds.Arduino,
+                CurrentModuleIndex,
+                (int)CurrentStage,
+                StudentCode);
+        }
+        else
+        {
+            StagePassed = false;
+            Feedback = CurrentStage switch
+            {
+                CourseTrainingStage.Debug =>
+                    "The repair is not complete yet. Use the compiler clue and inspect each Arduino token.",
+                CourseTrainingStage.Recall =>
+                    "Not yet. Rebuild the same structure from memory, or reveal the hint.",
+                CourseTrainingStage.Transfer =>
+                    "The new scenario is close, but it does not match the requested Arduino result.",
+                _ =>
+                    "Not quite. Red characters differ from the target code."
+            };
+        }
+    }
+
+    private void SelectPrediction(int index)
+    {
+        SelectedPrediction = index;
+
+        if (index == CurrentLesson.PredictionCorrect)
+        {
+            StagePassed = true;
+            Feedback = "Correct. " + CurrentLesson.PredictionExplanation;
+        }
+        else
+        {
+            StagePassed = false;
+            Feedback =
+                "Not quite. Think about the exact Arduino rule shown in the example.";
+        }
+    }
+
+    private string PredictionClass(int index)
+    {
+        if (!SelectedPrediction.HasValue)
+        {
+            return "";
+        }
+
+        if (index == CurrentLesson.PredictionCorrect)
+        {
+            return "correct";
+        }
+
+        return index == SelectedPrediction.Value ? "wrong" : "";
+    }
+
+    private void ShowHint()
+    {
+        HintVisible = true;
+    }
+
+    private void ResetStage()
+    {
+        PrepareStage();
+    }
+
+    private async Task AdvanceStageAsync()
+    {
+        MarkStageComplete();
+
+        if ((int)CurrentStage < (int)CourseTrainingStage.Complete)
+        {
+            CurrentStage =
+                (CourseTrainingStage)((int)CurrentStage + 1);
+
+            PrepareStage();
+        }
+
+        await SaveProgressAsync();
+    }
+
+    private void MarkStageComplete()
+    {
+        HighestCompletedStage[CurrentModuleIndex] =
+            Math.Max(
+                HighestCompletedStage[CurrentModuleIndex],
+                (int)CurrentStage);
+    }
+
+    private async Task FinishModuleAsync()
+    {
+        int finishedModuleIndex = CurrentModuleIndex;
+
+        HighestCompletedStage[finishedModuleIndex] =
+            CourseStageCatalog.StageCount - 1;
+
+        ModuleCompleted[finishedModuleIndex] = true;
+
+        ProgressionAwardResult award =
+            await ProgressionService.AwardModuleAsync(
+                CourseIds.Arduino,
+                finishedModuleIndex);
+
+        if (award.NewlyAwarded)
+        {
+            LastProgressAward = award;
+            ShowXpAward = true;
+        }
+
+        if (finishedModuleIndex < PlayableModuleCount - 1)
+        {
+            CurrentModuleIndex++;
+            CurrentStage = CourseTrainingStage.Learn;
+            PrepareStage();
+        }
+        else
+        {
+            CurrentStage = CourseTrainingStage.Complete;
+            StagePassed = true;
+            Feedback =
+                "Arduino course complete. All five chapters of the Maker Lab Lab are finished.";
+        }
+
+        await SaveProgressAsync();
+
+        if (finishedModuleIndex == ChapterOneLastModuleIndex)
+        {
+            await HandleChapterCompletionAsync();
+            await QueueSignInPromptAsync();
+        }
+    }
+
+    private async Task HandleChapterCompletionAsync()
+    {
+        try
+        {
+            AchievementUnlockResult? result =
+                await AchievementService.UnlockChapterAsync(
+                    CourseIds.Arduino,
+                    1);
+
+            if (result is not null && result.NewlyUnlocked)
+            {
+                ChapterAchievement = result;
+                ShowAchievementUnlock = true;
+            }
+        }
+        catch
+        {
+            // Achievement errors never interrupt course progression.
+        }
+    }
+
+    private async Task QueueSignInPromptAsync()
+    {
+        bool signedIn = false;
+
+        try
+        {
+            signedIn = await JS.InvokeAsync<bool>(
+                "caveCodeAuth.isSignedIn");
+        }
+        catch
+        {
+            // Authentication is optional.
+        }
+
+        if (!signedIn)
+        {
+            if (ShowAchievementUnlock)
+            {
+                PendingChapterOneSignInPrompt = true;
+            }
+            else
+            {
+                ShowChapterOneSignInPrompt = true;
+            }
+        }
+    }
+
+    private async Task SaveProgressAsync()
+    {
+        Progress.CurrentModuleIndex = CurrentModuleIndex;
+        Progress.CurrentStage = (int)CurrentStage;
+        Progress.HighestCompletedStage = HighestCompletedStage.ToArray();
+        Progress.ModuleCompleted = ModuleCompleted.ToArray();
+
+        try
+        {
+            Progress = await CourseEngine.SaveProgressAsync(
+                CourseIds.Arduino,
+                Progress);
+        }
+        catch
+        {
+            // Never interrupt a lesson because browser storage failed.
+        }
+    }
+
+    private string StageHeading(CourseTrainingStage stage) => stage switch
+    {
+        CourseTrainingStage.Learn =>
+            "Understand the idea before typing it",
+        CourseTrainingStage.Guided =>
+            "Follow the Arduino code character by character",
+        CourseTrainingStage.Fill =>
+            "Complete the missing pieces",
+        CourseTrainingStage.Predict =>
+            "Decide what the Arduino code means",
+        CourseTrainingStage.Debug =>
+            "Repair code that would fail or behave incorrectly",
+        CourseTrainingStage.Recall =>
+            "Rebuild the core pattern from memory",
+        CourseTrainingStage.Transfer =>
+            "Apply the same rule to a new maker lab board",
+        CourseTrainingStage.Complete =>
+            "Confirm module mastery",
+        _ => ""
+    };
+
+    private string ExerciseTitle(CourseTrainingStage stage) => stage switch
+    {
+        CourseTrainingStage.Guided => "Type the complete target",
+        CourseTrainingStage.Fill => "Replace every blank",
+        CourseTrainingStage.Debug => "Repair the compiler problem",
+        CourseTrainingStage.Recall => "Write it without the guide",
+        CourseTrainingStage.Transfer => "Build the requested variation",
+        _ => "Practice"
+    };
+
+    private string ExercisePrompt(CourseTrainingStage stage) => stage switch
+    {
+        CourseTrainingStage.Guided =>
+            "Follow the visible character guide until your Arduino matches the target.",
+        CourseTrainingStage.Fill =>
+            "Replace each ___ marker with the missing Arduino while preserving the rest.",
+        CourseTrainingStage.Debug =>
+            CurrentLesson.DebugPrompt,
+        CourseTrainingStage.Recall =>
+            CurrentLesson.RecallPrompt,
+        CourseTrainingStage.Transfer =>
+            CurrentLesson.TransferPrompt,
+        _ => ""
+    };
+
+    private string NextStageLabel()
+    {
+        int next = Math.Min(
+            (int)CurrentStage + 1,
+            CourseStageCatalog.StageCount - 1);
+
+        return CourseStageCatalog.Label(next).ToLowerInvariant();
+    }
+
+    private void DismissXpAward()
+    {
+        ShowXpAward = false;
+        LastProgressAward = null;
+    }
+
+    private void DismissAchievementUnlock()
+    {
+        ShowAchievementUnlock = false;
+        ChapterAchievement = null;
+
+        if (PendingChapterOneSignInPrompt)
+        {
+            PendingChapterOneSignInPrompt = false;
+            ShowChapterOneSignInPrompt = true;
+        }
+    }
+
+    private void DismissSavePrompt()
+    {
+        ShowChapterOneSignInPrompt = false;
+    }
+
+    private ArduinoPreviewState BuildPreview()
+    {
+        var state = new ArduinoPreviewState();
+
+        for (int module = 0; module < PlayableModuleCount; module++)
+        {
+            if (ModuleCompleted[module])
+            {
+                ApplyPreviewEffect(state, module);
+            }
+        }
+
+        if (StagePassed && !ModuleCompleted[CurrentModuleIndex])
+        {
+            ApplyPreviewEffect(state, CurrentModuleIndex);
+        }
+
+        state.Status = ModuleCompleted[ChapterOneLastModuleIndex]
+            ? "Chapter 1 complete. Classic blink online."
+            : $"Awaiting {CurrentLesson.Topic.ToLowerInvariant()} validation.";
+
+        return state;
+    }
+
+    private static void ApplyPreviewEffect(
+        ArduinoPreviewState state,
+        int moduleIndex)
+    {
+        switch (moduleIndex)
+        {
+            case 0:
+                state.BoardPowered = true;
+                state.SketchLabel = "setup/loop";
+                break;
+            case 1:
+                state.BoardPowered = true;
+                state.ActivePin = 13;
+                state.PinModeLabel = "OUTPUT";
+                state.SketchLabel = "pinMode";
+                break;
+            case 2:
+                state.BoardPowered = true;
+                state.ActivePin = 13;
+                state.PinModeLabel = "OUTPUT";
+                state.LedOn = true;
+                state.SketchLabel = "digitalWrite";
+                break;
+            case 3:
+                state.BoardPowered = true;
+                state.ActivePin = 13;
+                state.PinModeLabel = "OUTPUT";
+                state.LedOn = true;
+                state.SketchLabel = "delay";
+                break;
+            case 4:
+                state.BoardPowered = true;
+                state.ActivePin = 13;
+                state.PinModeLabel = "OUTPUT";
+                state.LedOn = true;
+                state.LedBlink = true;
+                state.SketchLabel = "blink";
+                break;
+            case 5:
+                state.BoardPowered = true;
+                state.ActivePin = 13;
+                state.LedOn = true;
+                state.SketchLabel = "commented";
+                break;
+            case 6:
+                state.BoardPowered = true;
+                state.ActivePin = 13;
+                state.PinModeLabel = "OUTPUT";
+                state.LedOn = true;
+                state.SketchLabel = "ledPin";
+                break;
+            case 7:
+                state.BoardPowered = true;
+                state.ActivePin = 13;
+                state.PinModeLabel = "OUTPUT";
+                state.LedOn = true;
+                state.LedBlink = true;
+                state.SketchLabel = "chapter-1";
+                break;
+        }
+    }
+
+    private sealed class ArduinoPreviewState
+    {
+        public bool BoardPowered { get; set; }
+        public bool LedOn { get; set; }
+        public bool LedBlink { get; set; }
+        public bool SensorOnline { get; set; }
+        public int ActivePin { get; set; }
+        public int SensorValue { get; set; }
+        public string PinModeLabel { get; set; } = "—";
+        public string SketchLabel { get; set; } = "idle";
+        public string Status { get; set; } = "Board awaiting sketch.";
+    }
+}

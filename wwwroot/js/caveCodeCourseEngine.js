@@ -89,6 +89,23 @@
             courseVersion: 1,
             isAvailable: true,
             hasMinigame: true
+        }),
+        Object.freeze({
+            id: "arduino",
+            displayName: "Arduino C++",
+            shortMark: "INO",
+            languageName: "Arduino C++",
+            route: "/arduino",
+            projectName: "Maker Lab",
+            editorFileName: "Sketch.ino",
+            editorLanguageLabel: "ARDUINO",
+            previewKind: "arduino-lab",
+            moduleCount: 8,
+            chapterCount: 1,
+            modulesPerChapter: 8,
+            courseVersion: 1,
+            isAvailable: true,
+            hasMinigame: false
         })
     ]);
 
@@ -109,7 +126,10 @@
         "gcl+": "gcl",
         "cgl": "gcl",
         "cgline": "gcl",
-        "cgline+": "gcl"
+        "cgline+": "gcl",
+        "arduino": "arduino",
+        "arduino-cpp": "arduino",
+        "arduinocpp": "arduino"
     });
 
     function normalizeCourseId(value) {

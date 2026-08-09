@@ -83,7 +83,24 @@ public sealed class CourseCatalogService
                 PreviewKind = "control-line-lab",
                 IsAvailable = true,
                 HasMinigame = true
+            },
+
+            new CourseManifest
+            {
+                Id = CourseIds.Arduino,
+                DisplayName = "Arduino C++",
+                ShortMark = "INO",
+                LanguageName = "Arduino C++",
+                Route = "/arduino",
+                Description = "Applied C++ for Arduino-style boards: sketches, pins, LEDs, and sensors in a growing lab.",
+                ProjectName = "Maker Lab",
+                EditorFileName = "Sketch.ino",
+                EditorLanguageLabel = "ARDUINO",
+                PreviewKind = "arduino-lab",
+                IsAvailable = true,
+                HasMinigame = false
             }
+
         };
 
         byId = courses.ToDictionary(

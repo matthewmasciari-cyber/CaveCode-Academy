@@ -7,12 +7,14 @@
         cppXp: 0,
         htmlCssXp: 0,
         gclXp: 0,
+        arduinoXp: 0,
         totalLines: 0,
         cSharpLines: 0,
         pythonLines: 0,
         cppLines: 0,
         htmlCssLines: 0,
         gclLines: 0,
+        arduinoLines: 0,
         publicLeaderboard: false,
         awardedModules: {},
         awardedStages: {},
@@ -38,12 +40,14 @@
             cppXp: Number(profile.cpp_xp || 0),
             htmlCssXp: Number(profile.html_css_xp || 0),
             gclXp: Number(profile.gcl_xp || 0),
+            arduinoXp: Number(profile.arduino_xp || 0),
             totalLines: Number(profile.total_lines || 0),
             cSharpLines: Number(profile.csharp_lines || 0),
             pythonLines: Number(profile.python_lines || 0),
             cppLines: Number(profile.cpp_lines || 0),
             htmlCssLines: Number(profile.html_css_lines || 0),
             gclLines: Number(profile.gcl_lines || 0),
+            arduinoLines: Number(profile.arduino_lines || 0),
             publicLeaderboard: Boolean(
                 profile.public_leaderboard ?? profile.publicLeaderboard
             ),
@@ -61,12 +65,14 @@
             cpp_xp: current.cppXp,
             html_css_xp: current.htmlCssXp,
             gcl_xp: current.gclXp,
+            arduino_xp: current.arduinoXp,
             total_lines: current.totalLines,
             csharp_lines: current.cSharpLines,
             python_lines: current.pythonLines,
             cpp_lines: current.cppLines,
             html_css_lines: current.htmlCssLines,
             gcl_lines: current.gclLines,
+            arduino_lines: current.arduinoLines,
             public_leaderboard: current.publicLeaderboard,
             awarded_modules: current.awardedModules || {},
             awarded_stages: current.awardedStages || {},
@@ -79,7 +85,7 @@
             return;
         }
 
-        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl"];
+        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino"];
 
         for (const course of courses) {
             try {
@@ -127,6 +133,10 @@
                 Number(localState.gclXp || 0),
                 Number(cloud.gclXp || 0)
             ),
+            arduinoXp: Math.max(
+                Number(localState.arduinoXp || 0),
+                Number(cloud.arduinoXp || 0)
+            ),
             totalLines: Math.max(
                 Number(localState.totalLines || 0),
                 Number(cloud.totalLines || 0)
@@ -150,6 +160,10 @@
             gclLines: Math.max(
                 Number(localState.gclLines || 0),
                 Number(cloud.gclLines || 0)
+            ),
+            arduinoLines: Math.max(
+                Number(localState.arduinoLines || 0),
+                Number(cloud.arduinoLines || 0)
             ),
             publicLeaderboard: Boolean(
                 localState.publicLeaderboard || cloud.publicLeaderboard
@@ -329,7 +343,7 @@
             cloudPayloadFromCurrent()
         );
 
-        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl"];
+        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino"];
 
         for (const course of courses) {
             try {
@@ -475,6 +489,10 @@
             return "gcl";
         }
 
+        if (course === "arduino" || course === "arduino-cpp" || course === "arduinocpp") {
+            return "arduino";
+        }
+
         return "csharp";
     }
 
@@ -520,12 +538,14 @@
             cppXp: current.cppXp,
             htmlCssXp: current.htmlCssXp,
             gclXp: current.gclXp,
+            arduinoXp: current.arduinoXp,
             totalLines: current.totalLines,
             cSharpLines: current.cSharpLines,
             pythonLines: current.pythonLines,
             cppLines: current.cppLines,
             htmlCssLines: current.htmlCssLines,
             gclLines: current.gclLines,
+            arduinoLines: current.arduinoLines,
             publicLeaderboard: current.publicLeaderboard,
             ...levelView(current.totalXp)
         };
@@ -542,6 +562,8 @@
             current.htmlCssXp += amount;
         } else if (course === "gcl") {
             current.gclXp += amount;
+        } else if (course === "arduino") {
+            current.arduinoXp += amount;
         } else {
             current.cSharpXp += amount;
         }
@@ -558,6 +580,8 @@
             current.htmlCssLines += amount;
         } else if (course === "gcl") {
             current.gclLines += amount;
+        } else if (course === "arduino") {
+            current.arduinoLines += amount;
         } else {
             current.cSharpLines += amount;
         }
@@ -618,6 +642,7 @@
         reconcile("cpp");
         reconcile("htmlcss");
         reconcile("gcl");
+        reconcile("arduino");
 
         if (before !== JSON.stringify(current)) {
             save();
@@ -640,12 +665,14 @@
             cppXp: state.cppXp,
             htmlCssXp: state.htmlCssXp,
             gclXp: state.gclXp,
+            arduinoXp: state.arduinoXp,
             totalLines: state.totalLines,
             cSharpLines: state.cSharpLines,
             pythonLines: state.pythonLines,
             cppLines: state.cppLines,
             htmlCssLines: state.htmlCssLines,
             gclLines: state.gclLines,
+            arduinoLines: state.arduinoLines,
             level: state.level,
             isCurrentUser: true
         };
