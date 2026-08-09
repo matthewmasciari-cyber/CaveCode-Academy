@@ -1,0 +1,84 @@
+/* =========================================================
+   CaveCode — Dark-panel token contract (theme-proof)
+   New themes: optionally override these 5 vars. Defaults derive
+   from --code-bg / --accent-surface so hue follows the theme.
+   ========================================================= */
+
+:root {
+  /* Readable type on dark wells — independent of page --text */
+  --dark-panel-bg: var(--code-bg, #080d13);
+  --dark-panel-bg-raised: color-mix(in srgb, var(--code-bg, #080d13) 82%, var(--accent-surface, #193126));
+  --dark-panel-text: #eef4f8;
+  --dark-panel-muted: #aab7c4;
+  --dark-panel-strong: #ffffff;
+  --dark-panel-border: color-mix(in srgb, var(--dark-panel-text) 16%, transparent);
+  --dark-panel-accent: var(--accent-soft, #dffff0);
+}
+
+/* Light MODE must NOT flip dark-panel text to page --text.
+   Keep wells dark; keep type light. Theme accents still apply. */
+html[data-mode="light"] {
+  --dark-panel-bg: var(--code-bg, #111820);
+  --dark-panel-bg-raised: color-mix(in srgb, var(--code-bg, #111820) 78%, var(--accent-surface, #17304e));
+  --dark-panel-text: #eef4f8;
+  --dark-panel-muted: #aab7c4;
+  --dark-panel-strong: #ffffff;
+  --dark-panel-border: color-mix(in srgb, #eef4f8 16%, transparent);
+  --dark-panel-accent: var(--accent-soft, #e4efff);
+}
+
+/* Optional per-theme hue nudges (safe defaults; override freely) */
+html[data-theme="midnight-crystal"] {
+  --dark-panel-text: #eaf7fc;
+  --dark-panel-muted: #9ec4d4;
+}
+html[data-theme="ember-cave"] {
+  --dark-panel-text: #fff1e6;
+  --dark-panel-muted: #d2b09a;
+}
+html[data-theme="rose-quartz"] {
+  --dark-panel-text: #fdeef6;
+  --dark-panel-muted: #d2a8bc;
+}
+html[data-theme="teal-blossom"] {
+  --dark-panel-text: #e9fbf6;
+  --dark-panel-muted: #9fcfc4;
+}
+html[data-theme="salmon-sunset"] {
+  --dark-panel-text: #fff0ea;
+  --dark-panel-muted: #d4b0a6;
+}
+html[data-theme="orchid-glow"] {
+  --dark-panel-text: #f6efff;
+  --dark-panel-muted: #c4b0d9;
+}
+html[data-theme="blush-garden"] {
+  --dark-panel-text: #eef6ee;
+  --dark-panel-muted: #a9c0ad;
+}
+html[data-theme="high-contrast"] {
+  --dark-panel-bg: #000;
+  --dark-panel-text: #fff;
+  --dark-panel-muted: #ddd;
+  --dark-panel-strong: #fff;
+  --dark-panel-border: #fff;
+}
+
+/*
+  NEW THEME CHECKLIST (copy into themes.css):
+  html[data-theme="my-theme"] {
+    --bg: ...;
+    --text: ...;
+    --accent: ...;
+    --code-bg: ...;              // dark well base (required for insets)
+    --accent-surface: ...;       // optional mix into wells
+    // optional:
+    --dark-panel-text: #eef4f8;
+    --dark-panel-muted: #aab7c4;
+  }
+  html[data-mode="light"][data-theme="my-theme"] {
+    --bg: ...;
+    --text: ...;                 // page text (dark on light)
+    --code-bg: #111820;          // keep DARK — do not lighten code wells
+  }
+*/
