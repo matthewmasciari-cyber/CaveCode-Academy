@@ -22,7 +22,7 @@
             </span>
         </div>
         <div class="jsforge-brand">
-            <span class="jsforge-brand-mark">Arduino</span>
+            <span class="jsforge-brand-mark">JS</span>
             <div>
                 <h1>CaveCode</h1>
                     <!-- CAVECODE_OFFICIAL_BRANDING_PASS_3_V1 -->
@@ -36,7 +36,7 @@
         <AuthPanel />
 
         <CourseProgressPanel
-            Label="Arduino course progress"
+            Label="JavaScript course progress"
             CompletedModules="@CompletedModuleCount"
             TotalModules="@Manifest.ModuleCount" />
 
@@ -157,7 +157,7 @@
                     </div>
 
                     <div class="jsforge-memory-aid">
-                        <span class="jsforge-mini-label">Bench memory aid</span>
+                        <span class="jsforge-mini-label">Forge memory aid</span>
                         <div class="jsforge-flow">
                             <div>CODE</div><span>→</span>
                             <div>STATE</div><span>→</span>
@@ -306,8 +306,8 @@
 
                 <CourseCodeEditor
                     FileName="@CurrentEditorFileName"
-                    LanguageLabel="Arduino"
-                    AriaLabel="Arduino practice editor"
+                    LanguageLabel="JavaScript"
+                    AriaLabel="JavaScript practice editor"
                     Value="@StudentCode"
                     ValueChanged="UpdateStudentCode"
                     TargetLength="@CurrentExpectedCode.Length"
@@ -361,38 +361,26 @@
         </header>
 
         <div class="jsforge-lab-scene">
-            <div class="jsforge-board @(Preview.BoardPowered ? "powered" : "")">
-                <div class="jsforge-board-label">BROWSER</div>
-                <div class="jsforge-usb"></div>
-                <div class="jsforge-pins">
-                    <span class="@(Preview.ActivePin == 13 ? "active" : "")">13</span>
-                    <span class="@(Preview.ActivePin == 8 ? "active" : "")">8</span>
-                    <span>7</span>
-                    <span>A0</span>
+            <div class="jsforge-browser-frame @(Preview.BoardPowered ? "powered" : "")">
+                <div class="jsforge-browser-chrome">
+                    <span class="jsforge-dot"></span><span class="jsforge-dot"></span><span class="jsforge-dot"></span>
+                    <span class="jsforge-browser-url">web-forge.local</span>
                 </div>
-                <div class="jsforge-mcu">MCU</div>
-            </div>
-            <div class="jsforge-breadboard">
-                <div class="jsforge-led @(Preview.LedOn ? "on" : "") @(Preview.LedBlink ? "blink" : "")" title="LED"></div>
-                <div class="jsforge-resistor"></div>
-                <div class="jsforge-rail"></div>
-                <div class="jsforge-sensor @(Preview.SensorOnline ? "active" : "")">
-                    <span>SNS</span>
-                    <strong>@Preview.SensorValue</strong>
+                <div class="jsforge-browser-stage">
+                    <div class="jsforge-hud-title">@Preview.SketchLabel</div>
+                    <button type="button" class="jsforge-hud-btn @(Preview.LedOn ? "active" : "")">start</button>
+                    <div class="jsforge-hud-status @(Preview.LedOn ? "lit" : "")">@Preview.SerialLine</div>
                 </div>
             </div>
-            <div class="jsforge-readout">
-                <div><span>PIN</span><strong>@(Preview.ActivePin > 0 ? Preview.ActivePin.ToString() : "—")</strong></div>
-                <div><span>LED</span><strong>@(Preview.LedOn ? (Preview.LedBlink ? "BLINK" : "ON") : "OFF")</strong></div>
-                <div><span>MODE</span><strong>@Preview.PinModeLabel</strong></div>
+            <div class="jsforge-console-pane">
+                <div class="jsforge-console-label">CONSOLE</div>
+                <pre class="jsforge-console-out">@(string.IsNullOrWhiteSpace(Preview.SerialLine) ? "> ready" : $"> {Preview.SerialLine}")</pre>
             </div>
-        </div>
-
-        <div class="jsforge-preview-stats">
+            <div class="jsforge-preview-stats">
             <div><span>Board</span><strong>@(Preview.BoardPowered ? "POWER ON" : "STANDBY")</strong></div>
             <div><span>Pin</span><strong>@(Preview.ActivePin > 0 ? Preview.ActivePin.ToString() : "—")</strong></div>
-            <div><span>LED</span><strong>@(Preview.LedOn ? (Preview.LedBlink ? "BLINK" : "HIGH") : "LOW")</strong></div>
-            <div><span>Sketch</span><strong>@Preview.SketchLabel</strong></div>
+            <div><span>HUD</span><strong>@(Preview.LedOn ? (Preview.LedBlink ? "ACTIVE" : "HIGH") : "LOW")</strong></div>
+            <div><span>Script</span><strong>@Preview.SketchLabel</strong></div>
             <div><span>Completed</span><strong>@CompletedModuleCount / @PlayableModuleCount</strong></div>
         </div>
 
@@ -436,9 +424,9 @@
                  aria-labelledby="jsforge-achievement-title"
                  @onclick:stopPropagation="true">
             <span class="jsforge-achievement-kicker">
-                Arduino CHAPTER @ChapterAchievement.Chapter COMPLETE
+                JavaScript CHAPTER @ChapterAchievement.Chapter COMPLETE
             </span>
-            <div class="jsforge-achievement-medal">Arduino</div>
+            <div class="jsforge-achievement-medal">JS</div>
             <h2 id="jsforge-achievement-title">@ChapterAchievement.Name</h2>
             <p>@ChapterAchievement.Description</p>
 
@@ -476,10 +464,10 @@
                  aria-modal="true"
                  aria-labelledby="jsforge-save-progress-title"
                  @onclick:stopPropagation="true">
-            <span class="jsforge-save-progress-kicker">Arduino CHAPTER 1 COMPLETE</span>
+            <span class="jsforge-save-progress-kicker">JavaScript CHAPTER 1 COMPLETE</span>
             <h2 id="jsforge-save-progress-title">Protect your CaveCode progress</h2>
             <p>
-                You brought the first Web Forge Lab dashboard online.
+                You brought the first Web Forge dashboard online.
                 Sign in so CaveCode can keep your identity ready for future
                 cloud-progress support.
             </p>
@@ -489,7 +477,7 @@
                     @onclick="DismissSavePrompt">
                 Continue without signing in
             </button>
-            <small>Your Arduino checkpoint is already preserved on this device.</small>
+            <small>Your JavaScript checkpoint is already preserved on this device.</small>
         </section>
     </div>
 }
@@ -792,13 +780,13 @@
             Feedback = CurrentStage switch
             {
                 CourseTrainingStage.Debug =>
-                    "Correct repair. The Arduino structure now matches the intended program.",
+                    "Correct repair. The JavaScript structure now matches the intended program.",
                 CourseTrainingStage.Recall =>
-                    "Correct recall. You rebuilt the Arduino pattern without the visible guide.",
+                    "Correct recall. You rebuilt the JavaScript pattern without the visible guide.",
                 CourseTrainingStage.Transfer =>
-                    "Correct transfer. You applied the concept to a new maker lab board.",
+                    "Correct transfer. You applied the concept to a new browser scenario.",
                 _ =>
-                    "Correct. Every required part of the Arduino code is present."
+                    "Correct. Every required part of the JavaScript code is present."
             };
 
             await ProgressionService.AwardStageAsync(
@@ -813,11 +801,11 @@
             Feedback = CurrentStage switch
             {
                 CourseTrainingStage.Debug =>
-                    "The repair is not complete yet. Use the compiler clue and inspect each Arduino token.",
+                    "The repair is not complete yet. Use the compiler clue and inspect each JavaScript token.",
                 CourseTrainingStage.Recall =>
                     "Not yet. Rebuild the same structure from memory, or reveal the hint.",
                 CourseTrainingStage.Transfer =>
-                    "The new scenario is close, but it does not match the requested Arduino result.",
+                    "The new scenario is close, but it does not match the requested JavaScript result.",
                 _ =>
                     "Not quite. Red characters differ from the target code."
             };
@@ -837,7 +825,7 @@
         {
             StagePassed = false;
             Feedback =
-                "Not quite. Think about the exact Arduino rule shown in the example.";
+                "Not quite. Think about the exact JavaScript rule shown in the example.";
         }
     }
 
@@ -920,7 +908,7 @@
             CurrentStage = CourseTrainingStage.Complete;
             StagePassed = true;
             Feedback =
-                "Arduino course complete. All five chapters of the Web Forge Lab are finished.";
+                "JavaScript course complete. All five chapters of the Web Forge are finished.";
         }
 
         await SaveProgressAsync();
@@ -1004,17 +992,17 @@
         CourseTrainingStage.Learn =>
             "Understand the idea before typing it",
         CourseTrainingStage.Guided =>
-            "Follow the Arduino code character by character",
+            "Follow the JavaScript code character by character",
         CourseTrainingStage.Fill =>
             "Complete the missing pieces",
         CourseTrainingStage.Predict =>
-            "Decide what the Arduino code means",
+            "Decide what the JavaScript code means",
         CourseTrainingStage.Debug =>
             "Repair code that would fail or behave incorrectly",
         CourseTrainingStage.Recall =>
             "Rebuild the core pattern from memory",
         CourseTrainingStage.Transfer =>
-            "Apply the same rule to a new maker lab board",
+            "Apply the same rule to a new browser scenario",
         CourseTrainingStage.Complete =>
             "Confirm module mastery",
         _ => ""
@@ -1033,9 +1021,9 @@
     private string ExercisePrompt(CourseTrainingStage stage) => stage switch
     {
         CourseTrainingStage.Guided =>
-            "Follow the visible character guide until your Arduino matches the target.",
+            "Follow the visible character guide until your JavaScript matches the target.",
         CourseTrainingStage.Fill =>
-            "Replace each ___ marker with the missing Arduino while preserving the rest.",
+            "Replace each ___ marker with the missing JavaScript while preserving the rest.",
         CourseTrainingStage.Debug =>
             CurrentLesson.DebugPrompt,
         CourseTrainingStage.Recall =>

@@ -1087,3 +1087,102 @@
 @media (prefers-reduced-motion: reduce) {
     .jsforge-led.blink { animation: none; }
 }
+
+
+/* Web Forge browser/console preview (not Arduino board) */
+.jsforge-browser-frame {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+    min-height: 180px;
+}
+.jsforge-browser-frame.powered {
+    border-color: var(--accent-border);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.jsforge-browser-chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    background: var(--surface-strong);
+    border-bottom: 1px solid var(--border);
+}
+.jsforge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    opacity: 0.5;
+}
+.jsforge-browser-url {
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 11px;
+}
+.jsforge-browser-stage {
+    padding: 18px 14px;
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+}
+.jsforge-hud-title {
+    font-weight: 850;
+    font-size: 14px;
+}
+.jsforge-hud-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface-raised);
+    color: var(--text);
+    font-weight: 800;
+}
+.jsforge-hud-btn.active {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    border-color: var(--accent);
+}
+.jsforge-hud-status {
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    font-family: Consolas, Monaco, monospace;
+    font-size: 12px;
+    min-width: 120px;
+}
+.jsforge-hud-status.lit {
+    border-color: var(--accent-border);
+    color: var(--accent-soft);
+}
+.jsforge-console-pane {
+    margin-top: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--code-bg);
+    overflow: hidden;
+}
+.jsforge-console-label {
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+.jsforge-console-out {
+    margin: 0;
+    padding: 12px;
+    color: var(--accent-soft);
+    font: 12px/1.6 Consolas, Monaco, monospace;
+    white-space: pre-wrap;
+}
+/* hide leftover hardware pieces if any */
+.jsforge-board, .jsforge-breadboard, .jsforge-led, .jsforge-pins, .jsforge-usb {
+    display: none !important;
+}
