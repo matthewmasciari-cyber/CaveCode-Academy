@@ -617,6 +617,60 @@
                     .Where(item => item.Course == "python")
                     .OrderBy(item => item.Chapter)
                     .ToArray()
+            ),
+            new CourseGroup(
+                "C++",
+                "C++ PATH",
+                "C++ Engine Foundry",
+                State.Achievements
+                    .Where(item => item.Course == "cpp")
+                    .OrderBy(item => item.Chapter)
+                    .ToArray()
+            ),
+            new CourseGroup(
+                "Web",
+                "HTML & CSS PATH",
+                "HTML & CSS Workshop",
+                State.Achievements
+                    .Where(item => item.Course == "htmlcss")
+                    .OrderBy(item => item.Chapter)
+                    .ToArray()
+            ),
+            new CourseGroup(
+                "GCL",
+                "GCL+ PATH",
+                "GCL+ Control Line Lab",
+                State.Achievements
+                    .Where(item => item.Course == "gcl")
+                    .OrderBy(item => item.Chapter)
+                    .ToArray()
+            ),
+            new CourseGroup(
+                "INO",
+                "ARDUINO PATH",
+                "Arduino C++",
+                State.Achievements
+                    .Where(item => item.Course == "arduino")
+                    .OrderBy(item => item.Chapter)
+                    .ToArray()
+            ),
+            new CourseGroup(
+                "Pi",
+                "RASPBERRY PI PATH",
+                "Raspberry Pi Python",
+                State.Achievements
+                    .Where(item => item.Course == "raspi")
+                    .OrderBy(item => item.Chapter)
+                    .ToArray()
+            ),
+            new CourseGroup(
+                "JS",
+                "JAVASCRIPT PATH",
+                "JavaScript Web Forge",
+                State.Achievements
+                    .Where(item => item.Course == "javascript")
+                    .OrderBy(item => item.Chapter)
+                    .ToArray()
             )
         };
 
