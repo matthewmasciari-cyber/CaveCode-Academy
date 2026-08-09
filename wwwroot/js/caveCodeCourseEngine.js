@@ -123,6 +123,23 @@
             courseVersion: 1,
             isAvailable: true,
             hasMinigame: false
+        }),
+        Object.freeze({
+            id: "javascript",
+            displayName: "JavaScript Web Forge",
+            shortMark: "JS",
+            languageName: "JavaScript",
+            route: "/javascript",
+            projectName: "Web Forge",
+            editorFileName: "forge.js",
+            editorLanguageLabel: "JAVASCRIPT",
+            previewKind: "js-forge",
+            moduleCount: 40,
+            chapterCount: 5,
+            modulesPerChapter: 8,
+            courseVersion: 1,
+            isAvailable: true,
+            hasMinigame: false
         })
     ]);
 
@@ -151,7 +168,10 @@
         "raspberry": "raspi",
         "raspberrypi": "raspi",
         "raspberry-pi": "raspi",
-        "pi": "raspi"
+        "pi": "raspi",
+        "js": "javascript",
+        "javascript": "javascript",
+        "ecmascript": "javascript"
     });
 
     function normalizeCourseId(value) {

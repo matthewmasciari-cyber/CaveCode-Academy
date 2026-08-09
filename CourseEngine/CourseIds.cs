@@ -9,11 +9,12 @@ public static class CourseIds
     public const string Gcl = "gcl";
     public const string Arduino = "arduino";
     public const string Raspi = "raspi";
+    public const string JavaScript = "javascript";
 
     public static IReadOnlySet<string> Known { get; } =
         new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            CSharp, Python, Cpp, HtmlCss, Gcl, Arduino, Raspi
+            CSharp, Python, Cpp, HtmlCss, Gcl, Arduino, Raspi, JavaScript
         };
 
     public static bool IsKnown(string? courseId) =>
@@ -38,6 +39,7 @@ public static class CourseIds
             "gcl" or "gcl+" or "cgline" or "cgl" or "cgline+" => Gcl,
             "arduino" or "arduino-cpp" or "arduinocpp" => Arduino,
             "raspi" or "raspberry" or "raspberrypi" or "raspberry-pi" or "pi" => Raspi,
+            "js" or "javascript" or "ecmascript" => JavaScript,
             _ => source
         };
     }

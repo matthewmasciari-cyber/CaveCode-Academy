@@ -9,6 +9,7 @@
         gclXp: 0,
         arduinoXp: 0,
         raspiXp: 0,
+        javascriptXp: 0,
         totalLines: 0,
         cSharpLines: 0,
         pythonLines: 0,
@@ -17,6 +18,7 @@
         gclLines: 0,
         arduinoLines: 0,
         raspiLines: 0,
+        javascriptLines: 0,
         publicLeaderboard: false,
         awardedModules: {},
         awardedStages: {},
@@ -71,6 +73,7 @@
             gcl_xp: current.gclXp,
             arduino_xp: current.arduinoXp,
             raspi_xp: current.raspiXp,
+            javascript_xp: current.javascriptXp,
             total_lines: current.totalLines,
             csharp_lines: current.cSharpLines,
             python_lines: current.pythonLines,
@@ -79,6 +82,7 @@
             gcl_lines: current.gclLines,
             arduino_lines: current.arduinoLines,
             raspi_lines: current.raspiLines,
+            javascript_lines: current.javascriptLines,
             public_leaderboard: current.publicLeaderboard,
             awarded_modules: current.awardedModules || {},
             awarded_stages: current.awardedStages || {},
@@ -91,7 +95,7 @@
             return;
         }
 
-        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino", "raspi"];
+        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino", "raspi", "javascript"];
 
         for (const course of courses) {
             try {
@@ -357,7 +361,7 @@
             cloudPayloadFromCurrent()
         );
 
-        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino", "raspi"];
+        const courses = ["csharp", "python", "cpp", "htmlcss", "gcl", "arduino", "raspi", "javascript"];
 
         for (const course of courses) {
             try {
@@ -517,6 +521,10 @@
             return "raspi";
         }
 
+        if (course === "js" || course === "javascript" || course === "ecmascript") {
+            return "javascript";
+        }
+
         return "csharp";
     }
 
@@ -592,6 +600,8 @@
             current.arduinoXp += amount;
         } else if (course === "raspi") {
             current.raspiXp += amount;
+        } else if (course === "javascript") {
+            current.javascriptXp += amount;
         } else {
             current.cSharpXp += amount;
         }
@@ -612,6 +622,8 @@
             current.arduinoLines += amount;
         } else if (course === "raspi") {
             current.raspiLines += amount;
+        } else if (course === "javascript") {
+            current.javascriptLines += amount;
         } else {
             current.cSharpLines += amount;
         }
@@ -674,6 +686,7 @@
         reconcile("gcl");
         reconcile("arduino");
         reconcile("raspi");
+        reconcile("javascript");
 
         if (before !== JSON.stringify(current)) {
             save();

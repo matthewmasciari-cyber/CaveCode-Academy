@@ -116,6 +116,23 @@ public sealed class CourseCatalogService
                 IsAvailable = true,
                 HasMinigame = false
             }
+            ,
+            new CourseManifest
+            {
+                Id = CourseIds.JavaScript,
+                DisplayName = "JavaScript Web Forge",
+                ShortMark = "JS",
+                LanguageName = "JavaScript",
+                Route = "/javascript",
+                Description = "Build interactive browser experiences: console skills, decisions, functions, DOM, and tiny arcade patterns.",
+                ProjectName = "Web Forge",
+                EditorFileName = "forge.js",
+                EditorLanguageLabel = "JAVASCRIPT",
+                PreviewKind = "js-forge",
+                IsAvailable = true,
+                HasMinigame = false
+            }
+
 
 
         };
