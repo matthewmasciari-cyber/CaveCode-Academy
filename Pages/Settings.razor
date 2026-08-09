@@ -2,6 +2,7 @@
 @using CaveCode.Components
 @using System.Linq
 @inject ThemeService ThemeService
+@inject IJSRuntime JS
 @inject ProfileService ProfileService
 @inject AchievementService AchievementService
 
@@ -89,7 +90,7 @@
                                             class="emblem-choice @(Profile.Emblem == emblem.Id ? "selected" : "")"
                                             aria-pressed="@(Profile.Emblem == emblem.Id)"
                                             @onclick="() => SelectEmblem(emblem.Id)">
-                                        <strong>@emblem.Symbol</strong>
+                                        <strong class="emblem-glyph"><i data-lucide="@emblem.Symbol"></i></strong>
                                         <small>@emblem.Name</small>
                                     </button>
                                 }
@@ -103,7 +104,7 @@
 
                         <div class="preview-identity">
                             <span class="preview-emblem">
-                                @SelectedEmblem.Symbol
+                                <i data-lucide="@SelectedEmblem.Symbol"></i>
                             </span>
 
                             <div>
@@ -555,6 +556,8 @@
         border-color: var(--accent-border);
     }
 
+    .emblem-glyph { display: inline-flex; align-items: center; justify-content: center; }
+    .emblem-glyph i, .preview-emblem i { width: 1.15em; height: 1.15em; }
     .emblem-choice strong {
         font-size: 21px;
     }
@@ -950,7 +953,15 @@
         new("teal-blossom", "Teal Blossom", "Teal, seafoam, and blush highlights.", "#071716", "#15332f", "#58dcc8"),
         new("salmon-sunset", "Salmon Sunset", "Coral salmon with warm cream light.", "#1a0f12", "#382127", "#ff9b8a"),
         new("orchid-glow", "Orchid Glow", "Orchid purple, lavender, and pink.", "#130d1d", "#2c1e40", "#d8a4ff"),
-        new("blush-garden", "Blush Garden", "Dusty rose, sage, and soft mint.", "#111613", "#27332c", "#f2a7ba")
+        new("blush-garden", "Blush Garden", "Dusty rose, sage, and soft mint.", "#111613", "#27332c", "#f2a7ba"),
+        new("control-green", "Control Green", "GCL lab green and status lamps.", "#0b1410", "#163528", "#5ddea0"),
+        new("solder-amber", "Solder Amber", "Arduino bench warmth and flux glow.", "#120e08", "#3a2810", "#ffb347"),
+        new("pi-berry", "Pi Berry", "Raspberry-inspired magenta hardware.", "#12080e", "#3a1524", "#e35d8c"),
+        new("forge-cyan", "Forge Cyan", "Web Forge console and HUD cyan.", "#070f14", "#0f2f3c", "#3fd0ff"),
+        new("deep-dock", "Deep Dock", "Cool harbor blues for late-night coding.", "#070b12", "#172233", "#7aa2ff"),
+        new("neon-arcade", "Neon Arcade", "Hot pink neon and cabinet energy.", "#0a0612", "#241544", "#ff4fd8"),
+        new("snow-lab", "Snow Lab", "Icy lab glass and winter terminals.", "#0c1218", "#1c2a35", "#9ed8ff"),
+        new("volt-yard", "Volt Yard", "Electric lime on industrial green.", "#0c1008", "#232e18", "#c8f04a")
     };
 
     private static readonly ModeChoice[] Modes =
@@ -981,10 +992,32 @@
 
     private static readonly EmblemChoice[] Emblems =
     {
-        new("cave", "Cave", "△"),
-        new("crystal", "Crystal", "◆"),
-        new("terminal", "Terminal", ">_"),
-        new("gear", "Gear", "⚙")
+        new("crystal", "Crystal", "gem"),
+        new("cave", "Cave", "mountain"),
+        new("torch", "Torch", "flame"),
+        new("sparkles", "Sparkles", "sparkles"),
+        new("cpu", "CPU", "cpu"),
+        new("circuit", "Circuit", "circuit-board"),
+        new("plug", "Plug", "plug-zap"),
+        new("bot", "Bot", "bot"),
+        new("bulb", "Bulb", "lightbulb"),
+        new("gauge", "Gauge", "gauge"),
+        new("terminal", "Terminal", "terminal"),
+        new("code", "Code", "code-2"),
+        new("window", "Window", "app-window"),
+        new("pointer", "Pointer", "mouse-pointer-click"),
+        new("zap", "Zap", "zap"),
+        new("fan", "Fan", "fan"),
+        new("thermo", "Thermo", "thermometer"),
+        new("activity", "Activity", "activity"),
+        new("sliders", "Sliders", "sliders-horizontal"),
+        new("shield", "Shield", "shield-check"),
+        new("rocket", "Rocket", "rocket"),
+        new("ghost", "Ghost", "ghost"),
+        new("crown", "Crown", "crown"),
+        new("star", "Star", "star"),
+        new("cat", "Cat", "cat"),
+        new("pizza", "Pizza", "pizza")
     };
 
     private EmblemChoice SelectedEmblem =>
@@ -1014,6 +1047,7 @@
             await AchievementService.GetTitleOptionsAsync();
 
         Ready = true;
+        try { await JS.InvokeVoidAsync("eval", "window.lucide && window.lucide.createIcons && window.lucide.createIcons()"); } catch { }
 
         await InvokeAsync(StateHasChanged);
     }
