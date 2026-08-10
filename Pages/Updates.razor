@@ -11,16 +11,14 @@
     </div>
 
     <header class="updates-hero">
-        <div class="updates-brand">
-            <div class="cavecode-page-brandline"
-                 aria-label="CaveCode Academy branding">
-                <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
-                    <img class="cavecode-context-logo-image"
-                         src="branding/cavecode-academy-logo.svg?v=1"
-                         alt="" />
-                </span>
-                <span>CaveCode Academy</span>
-            </div>
+        <!-- Logo on its own row (never shares space with the title) -->
+        <div class="updates-logo-row" aria-label="CaveCode Academy branding">
+            <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page updates-logo-surface">
+                <img class="cavecode-context-logo-image"
+                     src="branding/cavecode-academy-logo.svg?v=1"
+                     alt="" />
+            </span>
+            <span class="updates-logo-caption">CaveCode Academy</span>
         </div>
 
         <div class="updates-hero-row">
@@ -133,18 +131,50 @@
         text-align: center;
     }
 
-    .updates-brand {
+    /* Logo completely above title/counters — defeat global absolute/float rules */
+    .updates-logo-row {
         display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
-        margin-bottom: 18px;
+        gap: 8px;
+        margin: 0 auto 22px;
+        position: relative;
+        z-index: 1;
+        width: 100%;
     }
 
-    .updates-brand .cavecode-page-brandline {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        margin: 0;
-        position: static;
+    .updates-page .updates-logo-surface,
+    .updates-page .updates-logo-row .cavecode-context-logo-surface {
+        position: static !important;
+        display: grid !important;
+        width: 72px !important;
+        height: 50px !important;
+        padding: 4px 6px !important;
+        border-radius: 10px !important;
+        flex: 0 0 auto !important;
+        float: none !important;
+        inset: auto !important;
+        transform: none !important;
+    }
+
+    .updates-page .updates-logo-row .cavecode-context-logo-image {
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        float: none !important;
+        inset: auto !important;
+        transform: none !important;
+    }
+
+    .updates-logo-caption {
+        color: var(--text-muted);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.9px;
+        text-transform: uppercase;
     }
 
     .updates-hero-row {
@@ -152,11 +182,18 @@
         grid-template-columns: minmax(140px, 1fr) minmax(220px, 1.4fr) minmax(140px, 1fr);
         gap: 16px;
         align-items: center;
+        position: relative;
+        z-index: 2;
+        margin-top: 0;
+        clear: both;
     }
 
     .updates-hero-center {
         text-align: center;
         min-width: 0;
+        position: relative;
+        z-index: 2;
+        padding-top: 4px;
     }
 
     .updates-hero-center .eyebrow {
@@ -165,6 +202,7 @@
         font-size: 11px;
         font-weight: 900;
         letter-spacing: 1.2px;
+        position: static !important;
     }
 
     .updates-hero-center h1 {
@@ -173,7 +211,10 @@
         letter-spacing: -1.6px;
         line-height: 1.05;
         color: var(--text);
-        position: static;
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
     }
 
     .updates-hero-center .cavecode-page-intro {
@@ -181,7 +222,10 @@
         margin: 12px auto 0;
         color: var(--text-muted);
         line-height: 1.55;
-        position: static;
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
     }
 
     .updates-stat {
