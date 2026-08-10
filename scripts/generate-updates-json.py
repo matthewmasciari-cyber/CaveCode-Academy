@@ -13,6 +13,47 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 
+from pathlib import Path
+
+CODE_EXTS = {
+    ".cs", ".razor", ".css", ".js", ".ts", ".json", ".yml", ".yaml",
+    ".md", ".html", ".py", ".sql", ".xml", ".scss",
+}
+
+SKIP_DIRS = {
+    ".git", "node_modules", "bin", "obj", "publish", ".vs",
+    "e2e/node_modules", "TestResults",
+}
+
+
+def count_repo_lines() -> tuple[int, int]:
+    root = Path(".").resolve()
+    total = 0
+    files = 0
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+        if any(part in SKIP_DIRS for part in path.parts):
+            continue
+        if path.suffix.lower() not in CODE_EXTS:
+            continue
+        try:
+            if path.stat().st_size > 2_000_000:
+                continue
+            text = path.read_text(encoding="utf-8", errors="ignore")
+        except Exception:
+            continue
+        n = text.count("
+")
+        if text and not text.endswith("
+"):
+            n += 1
+        total += n
+        files += 1
+    return total, files
+
+
+
 CONVENTIONAL = re.compile(
     r"^(?P<type>feat|fix|improve|polish|add|update|docs|chore|ci|refactor|perf|security|ui|ux)"
     r"(?:\([^)]+\))?!?\s*:\s*(?P<rest>.+)$",
@@ -165,11 +206,20 @@ def main() -> int:
         if len(entries) >= limit:
             break
 
+    try:
+        code_lines, file_count = count_repo_lines()
+    except Exception:
+        code_lines, file_count = 0, 0
+
     payload = {
         "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "deploySha": (sha[:12] if sha else None),
         "source": "git-log",
         "count": len(entries),
+        "repo": {
+            "codeLines": code_lines,
+            "fileCount": file_count,
+        },
         "updates": entries,
     }
     sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")

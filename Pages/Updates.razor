@@ -1,15 +1,17 @@
 @page "/updates"
 @inject HttpClient Http
 @inject NavigationManager Nav
+@inject IJSRuntime JS
 
 <PageTitle>Updates · CaveCode Academy</PageTitle>
 
 <div class="updates-page">
-    <header class="updates-header">
+    <div class="updates-home-slot">
         <AcademyHomeButton />
+    </div>
 
-        <div class="updates-header-copy">
-            <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
+    <header class="updates-hero">
+        <div class="updates-brand">
             <div class="cavecode-page-brandline"
                  aria-label="CaveCode Academy branding">
                 <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
@@ -19,16 +21,30 @@
                 </span>
                 <span>CaveCode Academy</span>
             </div>
+        </div>
 
-            <p class="eyebrow">SHIP LOG</p>
+        <div class="updates-hero-row">
+            <aside class="updates-stat updates-stat--left" aria-label="Community validated lines">
+                <span class="updates-stat-label">Community lines</span>
+                <strong class="updates-stat-value">@FormatCount(CommunityLines)</strong>
+                <small>Validated lines from the leaderboard</small>
+            </aside>
 
-            <h1 tabindex="-1">Updates</h1>
+            <div class="updates-hero-center">
+                <p class="eyebrow">SHIP LOG</p>
+                <h1 tabindex="-1">Updates</h1>
+                <p class="cavecode-page-intro"
+                   data-cavecode-contrast-pass="page-header-contrast-v1">
+                    Automatic list of recent improvements from successful deploys.
+                    Each tile is a commit that landed on the live site.
+                </p>
+            </div>
 
-            <p class="cavecode-page-intro"
-               data-cavecode-contrast-pass="page-header-contrast-v1">
-                Automatic list of recent improvements from successful deploys.
-                Each tile is a commit that landed on the live site.
-            </p>
+            <aside class="updates-stat updates-stat--right" aria-label="CaveCode codebase size">
+                <span class="updates-stat-label">CaveCode codebase</span>
+                <strong class="updates-stat-value">@FormatCount(RepoLines)</strong>
+                <small>Lines of code in this repo</small>
+            </aside>
         </div>
     </header>
 
@@ -55,6 +71,7 @@
             {
                 <span> · deploy @DeploySha</span>
             }
+            <span> · @Entries.Count updates</span>
         </p>
 
         <div class="updates-grid">
@@ -97,60 +114,110 @@
 <style>
     .updates-page {
         min-height: 100vh;
-        padding: 34px 18px 70px;
+        padding: 28px 18px 70px;
         color: var(--text);
         background:
-            radial-gradient(circle at 12% 0%, var(--accent-surface), transparent 34%),
+            radial-gradient(circle at 50% 0%, var(--accent-surface), transparent 42%),
             var(--bg);
         font-family: Inter, system-ui, sans-serif;
     }
 
-    .updates-header {
-        width: min(960px, 100%);
+    .updates-home-slot {
+        width: min(1100px, 100%);
+        margin: 0 auto 18px;
+    }
+
+    .updates-hero {
+        width: min(1100px, 100%);
         margin: 0 auto;
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        gap: 18px 22px;
-        align-items: start;
+        text-align: center;
     }
 
-    .updates-header-copy {
-        min-width: 0;
+    .updates-brand {
         display: flex;
-        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 18px;
     }
 
-    .updates-header-copy .cavecode-page-brandline {
+    .updates-brand .cavecode-page-brandline {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        margin: 0 0 10px;
+        margin: 0;
         position: static;
     }
 
-    .updates-header-copy .eyebrow {
-        margin: 0 0 6px;
+    .updates-hero-row {
+        display: grid;
+        grid-template-columns: minmax(140px, 1fr) minmax(220px, 1.4fr) minmax(140px, 1fr);
+        gap: 16px;
+        align-items: center;
+    }
+
+    .updates-hero-center {
+        text-align: center;
+        min-width: 0;
+    }
+
+    .updates-hero-center .eyebrow {
+        margin: 0 0 8px;
         color: var(--accent);
         font-size: 11px;
         font-weight: 900;
         letter-spacing: 1.2px;
     }
 
-    .updates-header-copy h1 {
+    .updates-hero-center h1 {
         margin: 0;
-        font-size: clamp(34px, 5vw, 56px);
-        letter-spacing: -1.5px;
+        font-size: clamp(36px, 5vw, 58px);
+        letter-spacing: -1.6px;
         line-height: 1.05;
         color: var(--text);
         position: static;
     }
 
-    .updates-header-copy .cavecode-page-intro {
-        max-width: 620px;
-        margin: 12px 0 0;
+    .updates-hero-center .cavecode-page-intro {
+        max-width: 520px;
+        margin: 12px auto 0;
         color: var(--text-muted);
         line-height: 1.55;
         position: static;
+    }
+
+    .updates-stat {
+        padding: 16px 14px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        box-shadow: 0 12px 40px var(--shadow);
+        text-align: center;
+    }
+
+    .updates-stat-label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--text-muted);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .updates-stat-value {
+        display: block;
+        font-size: clamp(22px, 3vw, 32px);
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .updates-stat small {
+        display: block;
+        margin-top: 6px;
+        color: var(--text-muted);
+        font-size: 11px;
+        line-height: 1.35;
     }
 
     .updates-meta {
@@ -158,6 +225,7 @@
         margin: 22px auto 0;
         color: var(--text-muted);
         font-size: 12px;
+        text-align: center;
     }
 
     .updates-message {
@@ -168,6 +236,7 @@
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 14px;
+        text-align: center;
     }
 
     .updates-grid {
@@ -183,6 +252,7 @@
         border: 1px solid var(--border);
         border-radius: 14px;
         box-shadow: 0 12px 40px var(--shadow);
+        text-align: left;
     }
 
     .update-tile-top {
@@ -198,6 +268,24 @@
         color: var(--text-muted);
         font-size: 12px;
         font-weight: 700;
+    }
+
+    .update-badges {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .update-kind {
+        padding: 3px 8px;
+        color: var(--text);
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
     }
 
     .update-sha {
@@ -218,6 +306,13 @@
         color: var(--text);
     }
 
+    .update-desc {
+        margin: 8px 0 0;
+        color: var(--text-muted);
+        font-size: 13px;
+        line-height: 1.45;
+    }
+
     .update-link {
         display: inline-block;
         margin-top: 10px;
@@ -231,10 +326,14 @@
         text-decoration: underline;
     }
 
-    @@media (max-width: 720px) {
-        .updates-header {
+    @@media (max-width: 820px) {
+        .updates-hero-row {
             grid-template-columns: 1fr;
         }
+
+        .updates-stat--left { order: 2; }
+        .updates-hero-center { order: 1; }
+        .updates-stat--right { order: 3; }
     }
 </style>
 
@@ -243,13 +342,14 @@
     private string? Error;
     private string? GeneratedAtLabel;
     private string? DeploySha;
+    private long CommunityLines;
+    private long RepoLines;
     private List<UpdateEntry> Entries = new();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            // Cache-bust so Chrome doesn't keep a stale seed feed
             var url = Nav.ToAbsoluteUri($"updates.json?v={DateTime.UtcNow.Ticks}").ToString();
             using var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue
@@ -274,6 +374,7 @@
 
             GeneratedAtLabel = FormatWhen(feed.GeneratedAt);
             DeploySha = feed.DeploySha;
+            RepoLines = feed.Repo?.CodeLines ?? 0;
             Entries = (feed.Updates ?? new List<UpdateEntry>())
                 .Where(u => !string.IsNullOrWhiteSpace(u.Title))
                 .ToList();
@@ -284,6 +385,39 @@
             Error = "Could not load updates yet. After the next successful deploy, this page fills in automatically.";
             Console.WriteLine(ex);
             Ready = true;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            await JS.InvokeAsync<object>("caveCodeProgression.ready");
+            var board = await JS.InvokeAsync<LeaderboardPayload>(
+                "caveCodeProgression.getLeaderboard",
+                "overall",
+                (object?)null);
+
+            long sum = 0;
+            if (board?.Entries != null)
+            {
+                foreach (var e in board.Entries)
+                {
+                    sum += Math.Max(0, e.TotalLines);
+                }
+            }
+
+            CommunityLines = sum;
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
         }
     }
 
@@ -302,11 +436,28 @@
         return iso;
     }
 
+    private static string FormatCount(long value)
+    {
+        if (value <= 0)
+        {
+            return "—";
+        }
+
+        return value.ToString("N0");
+    }
+
     private sealed class UpdatesFeed
     {
         public string? GeneratedAt { get; set; }
         public string? DeploySha { get; set; }
+        public RepoStats? Repo { get; set; }
         public List<UpdateEntry>? Updates { get; set; }
+    }
+
+    private sealed class RepoStats
+    {
+        public long CodeLines { get; set; }
+        public long FileCount { get; set; }
     }
 
     private sealed class UpdateEntry
@@ -318,5 +469,15 @@
         public string? Kind { get; set; }
         public string? At { get; set; }
         public string? Url { get; set; }
+    }
+
+    private sealed class LeaderboardPayload
+    {
+        public List<LeaderboardEntryDto>? Entries { get; set; }
+    }
+
+    private sealed class LeaderboardEntryDto
+    {
+        public long TotalLines { get; set; }
     }
 }
