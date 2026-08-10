@@ -1,4 +1,14 @@
-@page "/updates"
+# If you dropped the new Updates.razor somewhere:
+FOUND=$(find /workspaces /tmp /home -name 'Updates.razor' 2>/dev/null | grep -v node_modules | head -1)
+echo "FOUND=$FOUND"
+cp -f "$FOUND" Pages/Updates.razor
+
+# Still escape media queries for Blazor
+sed -i 's/@@media (max-width/@@@media (max-width/g' Pages/Updates.razor
+
+git add Pages/Home.razor Pages/Updates.razor
+git commit -m "Add Updates top nav link and fix page header stacking under logo"
+git push origin main@page "/updates"
 @inject HttpClient Http
 @inject NavigationManager Nav
 
@@ -8,8 +18,10 @@
     <header class="updates-header">
         <AcademyHomeButton />
 
-        <div>
-            <div class="cavecode-page-brandline" aria-label="CaveCode Academy branding">
+        <div class="updates-header-copy">
+            <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 -->
+            <div class="cavecode-page-brandline"
+                 aria-label="CaveCode Academy branding">
                 <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
                     <img class="cavecode-context-logo-image"
                          src="branding/cavecode-academy-logo.svg?v=1"
@@ -17,9 +29,13 @@
                 </span>
                 <span>CaveCode Academy</span>
             </div>
+
             <p class="eyebrow">SHIP LOG</p>
-            <h1>Updates</h1>
-            <p>
+
+            <h1 tabindex="-1">Updates</h1>
+
+            <p class="cavecode-page-intro"
+               data-cavecode-contrast-pass="page-header-contrast-v1">
                 Automatic list of recent improvements from successful deploys.
                 Each tile is a commit that landed on the live site.
             </p>
@@ -65,7 +81,10 @@
                     <h2>@item.Title</h2>
                     @if (!string.IsNullOrWhiteSpace(item.Url))
                     {
-                        <a class="update-link" href="@item.Url" target="_blank" rel="noopener noreferrer">
+                        <a class="update-link"
+                           href="@item.Url"
+                           target="_blank"
+                           rel="noopener noreferrer">
                             View commit →
                         </a>
                     }
@@ -90,18 +109,26 @@
         width: min(960px, 100%);
         margin: 0 auto;
         display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 22px;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 18px 22px;
         align-items: start;
     }
 
-    .updates-header h1 {
-        margin: 0;
-        font-size: clamp(34px, 5vw, 56px);
-        letter-spacing: -1.5px;
+    .updates-header-copy {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
     }
 
-    .updates-header .eyebrow {
+    .updates-header-copy .cavecode-page-brandline {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 10px;
+        position: static;
+    }
+
+    .updates-header-copy .eyebrow {
         margin: 0 0 6px;
         color: var(--accent);
         font-size: 11px;
@@ -109,11 +136,21 @@
         letter-spacing: 1.2px;
     }
 
-    .updates-header > div > p:last-child {
+    .updates-header-copy h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 56px);
+        letter-spacing: -1.5px;
+        line-height: 1.05;
+        color: var(--text);
+        position: static;
+    }
+
+    .updates-header-copy .cavecode-page-intro {
         max-width: 620px;
         margin: 12px 0 0;
         color: var(--text-muted);
         line-height: 1.55;
+        position: static;
     }
 
     .updates-meta {
@@ -194,7 +231,7 @@
         text-decoration: underline;
     }
 
-    @@media (max-width: 720px) {
+    @@@media (max-width: 720px) {
         .updates-header {
             grid-template-columns: 1fr;
         }
@@ -246,8 +283,7 @@
 
         if (DateTimeOffset.TryParse(iso, out var dto))
         {
-            var local = dto.ToLocalTime();
-            return local.ToString("MMM d, yyyy · h:mm tt");
+            return dto.ToLocalTime().ToString("MMM d, yyyy · h:mm tt");
         }
 
         return iso;
