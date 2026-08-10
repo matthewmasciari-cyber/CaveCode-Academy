@@ -1,14 +1,4 @@
-# If you dropped the new Updates.razor somewhere:
-FOUND=$(find /workspaces /tmp /home -name 'Updates.razor' 2>/dev/null | grep -v node_modules | head -1)
-echo "FOUND=$FOUND"
-cp -f "$FOUND" Pages/Updates.razor
-
-# Still escape media queries for Blazor
-sed -i 's/@@media (max-width/@@@media (max-width/g' Pages/Updates.razor
-
-git add Pages/Home.razor Pages/Updates.razor
-git commit -m "Add Updates top nav link and fix page header stacking under logo"
-git push origin main@page "/updates"
+@page "/updates"
 @inject HttpClient Http
 @inject NavigationManager Nav
 
@@ -73,12 +63,22 @@ git push origin main@page "/updates"
                 <article class="update-tile">
                     <div class="update-tile-top">
                         <time datetime="@item.At">@FormatWhen(item.At)</time>
-                        @if (!string.IsNullOrWhiteSpace(item.Sha))
-                        {
-                            <span class="update-sha">@item.Sha</span>
-                        }
+                        <span class="update-badges">
+                            @if (!string.IsNullOrWhiteSpace(item.Kind))
+                            {
+                                <span class="update-kind">@item.Kind</span>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(item.Sha))
+                            {
+                                <span class="update-sha">@item.Sha</span>
+                            }
+                        </span>
                     </div>
                     <h2>@item.Title</h2>
+                    @if (!string.IsNullOrWhiteSpace(item.Description))
+                    {
+                        <p class="update-desc">@item.Description</p>
+                    }
                     @if (!string.IsNullOrWhiteSpace(item.Url))
                     {
                         <a class="update-link"
@@ -231,7 +231,7 @@ git push origin main@page "/updates"
         text-decoration: underline;
     }
 
-    @@@media (max-width: 720px) {
+    @@media (max-width: 720px) {
         .updates-header {
             grid-template-columns: 1fr;
         }
@@ -301,6 +301,8 @@ git push origin main@page "/updates"
         public string? Id { get; set; }
         public string? Sha { get; set; }
         public string? Title { get; set; }
+        public string? Description { get; set; }
+        public string? Kind { get; set; }
         public string? At { get; set; }
         public string? Url { get; set; }
     }
