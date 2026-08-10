@@ -762,6 +762,44 @@
 
     progressionReadyPromise = initializeProgression();
 
+    // Android/mobile: OAuth session can arrive after initializeProgression
+    // already ran as guest (0 XP). Re-merge when auth becomes signed-in.
+    var authRefreshInFlight = null;
+    window.addEventListener("cavecode-auth-changed", function (ev) {
+        var detail = (ev && ev.detail) || {};
+        var eventName = String(detail.event || "");
+        var signedIn = Boolean(detail.signedIn);
+
+        if (!signedIn) {
+            return;
+        }
+
+        if (
+            eventName &&
+            eventName !== "SIGNED_IN" &&
+            eventName !== "INITIAL_SESSION" &&
+            eventName !== "TOKEN_REFRESHED"
+        ) {
+            return;
+        }
+
+        if (authRefreshInFlight) {
+            return;
+        }
+
+        authRefreshInFlight = (async function () {
+            try {
+                progressionReady = false;
+                progressionReadyPromise = initializeProgression();
+                await progressionReadyPromise;
+            } catch (e) {
+                console.error("Progression auth refresh failed:", e);
+            } finally {
+                authRefreshInFlight = null;
+            }
+        })();
+    });
+
     window.caveCodeProgression = {
         ready: function () {
             return progressionReadyPromise;

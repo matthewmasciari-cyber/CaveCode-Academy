@@ -200,22 +200,32 @@ async function waitForAuthReady(timeoutMs = 5000) {
         };
     }
 
-    try {
-        const {
-            data: { session },
-            error
-        } = await supabaseClient.auth.getSession();
+    // Poll briefly: mobile storage / URL session detection can lag.
+    let last = { ready: true, signedIn: false };
 
-        return {
-            ready: !error,
-            signedIn: Boolean(session?.user)
-        };
-    } catch {
-        return {
-            ready: false,
-            signedIn: false
-        };
+    while (Date.now() < deadline) {
+        try {
+            const {
+                data: { session },
+                error
+            } = await supabaseClient.auth.getSession();
+
+            last = {
+                ready: !error,
+                signedIn: Boolean(session && session.user)
+            };
+
+            if (last.signedIn) {
+                return last;
+            }
+        } catch {
+            last = { ready: false, signedIn: false };
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
+
+    return last;
 }
 
 window.caveCodeAuth = {
@@ -235,6 +245,35 @@ window.caveCodeAuth = {
                 }
             }
         );
+
+        // Mobile: session often restores after first page paint. Broadcast
+        // auth changes so progression can re-merge XP from cloud.
+        try {
+            supabaseClient.auth.onAuthStateChange(function (event, session) {
+                try {
+                    window.dispatchEvent(
+                        new CustomEvent("cavecode-auth-changed", {
+                            detail: {
+                                event: String(event || ""),
+                                signedIn: Boolean(session && session.user),
+                                userId:
+                                    session && session.user
+                                        ? session.user.id
+                                        : null,
+                                email:
+                                    session && session.user
+                                        ? session.user.email
+                                        : null
+                            }
+                        })
+                    );
+                } catch (e) {
+                    // Never break auth for UI listeners.
+                }
+            });
+        } catch (e) {
+            // Older clients — manual reload still works.
+        }
     },
 
     signInWithProvider: async function (provider) {
