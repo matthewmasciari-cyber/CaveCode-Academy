@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-08-10T02:00:00Z",
+  "deploySha": "local-seed",
+  "source": "seed",
+  "updates": [
+    {
+      "id": "seed-mobile-auth",
+      "sha": "e52a87e",
+      "title": "Re-merge progression from cloud when mobile auth session appears",
+      "at": "2026-08-10T01:30:00Z",
+      "url": "https://github.com/matthewmasciari-cyber/CaveCode-Academy/commit/e52a87e"
+    },
+    {
+      "id": "seed-progression-restore",
+      "sha": "8ad3765",
+      "title": "Restore missing caveCodeProgression.js (fix 404 and undefined interop)",
+      "at": "2026-08-10T01:13:00Z",
+      "url": "https://github.com/matthewmasciari-cyber/CaveCode-Academy/commit/8ad3765"
+    }
+  ]
+}

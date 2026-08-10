@@ -1,0 +1,271 @@
+@page "/updates"
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<PageTitle>Updates · CaveCode Academy</PageTitle>
+
+<div class="updates-page">
+    <header class="updates-header">
+        <AcademyHomeButton />
+
+        <div>
+            <div class="cavecode-page-brandline" aria-label="CaveCode Academy branding">
+                <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
+                    <img class="cavecode-context-logo-image"
+                         src="branding/cavecode-academy-logo.svg?v=1"
+                         alt="" />
+                </span>
+                <span>CaveCode Academy</span>
+            </div>
+            <p class="eyebrow">SHIP LOG</p>
+            <h1>Updates</h1>
+            <p>
+                Automatic list of recent improvements from successful deploys.
+                Each tile is a commit that landed on the live site.
+            </p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(Error))
+    {
+        <section class="updates-message">@Error</section>
+    }
+    else if (!Ready)
+    {
+        <section class="updates-message">Loading updates…</section>
+    }
+    else if (Entries.Count == 0)
+    {
+        <section class="updates-message">No updates published yet.</section>
+    }
+    else
+    {
+        <p class="updates-meta">
+            @if (!string.IsNullOrWhiteSpace(GeneratedAtLabel))
+            {
+                <span>Feed built @GeneratedAtLabel</span>
+            }
+            @if (!string.IsNullOrWhiteSpace(DeploySha))
+            {
+                <span> · deploy @DeploySha</span>
+            }
+        </p>
+
+        <div class="updates-grid">
+            @foreach (var item in Entries)
+            {
+                <article class="update-tile">
+                    <div class="update-tile-top">
+                        <time datetime="@item.At">@FormatWhen(item.At)</time>
+                        @if (!string.IsNullOrWhiteSpace(item.Sha))
+                        {
+                            <span class="update-sha">@item.Sha</span>
+                        }
+                    </div>
+                    <h2>@item.Title</h2>
+                    @if (!string.IsNullOrWhiteSpace(item.Url))
+                    {
+                        <a class="update-link" href="@item.Url" target="_blank" rel="noopener noreferrer">
+                            View commit →
+                        </a>
+                    }
+                </article>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .updates-page {
+        min-height: 100vh;
+        padding: 34px 18px 70px;
+        color: var(--text);
+        background:
+            radial-gradient(circle at 12% 0%, var(--accent-surface), transparent 34%),
+            var(--bg);
+        font-family: Inter, system-ui, sans-serif;
+    }
+
+    .updates-header {
+        width: min(960px, 100%);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 22px;
+        align-items: start;
+    }
+
+    .updates-header h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 56px);
+        letter-spacing: -1.5px;
+    }
+
+    .updates-header .eyebrow {
+        margin: 0 0 6px;
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 1.2px;
+    }
+
+    .updates-header > div > p:last-child {
+        max-width: 620px;
+        margin: 12px 0 0;
+        color: var(--text-muted);
+        line-height: 1.55;
+    }
+
+    .updates-meta {
+        width: min(960px, 100%);
+        margin: 22px auto 0;
+        color: var(--text-muted);
+        font-size: 12px;
+    }
+
+    .updates-message {
+        width: min(960px, 100%);
+        margin: 28px auto 0;
+        padding: 18px 20px;
+        color: var(--text-muted);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+    }
+
+    .updates-grid {
+        width: min(960px, 100%);
+        margin: 18px auto 0;
+        display: grid;
+        gap: 12px;
+    }
+
+    .update-tile {
+        padding: 16px 18px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 12px 40px var(--shadow);
+    }
+
+    .update-tile-top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .update-tile time {
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .update-sha {
+        padding: 3px 8px;
+        color: var(--accent-contrast);
+        background: var(--accent);
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .update-tile h2 {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.35;
+        font-weight: 800;
+        color: var(--text);
+    }
+
+    .update-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .update-link:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 720px) {
+        .updates-header {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+@code {
+    private bool Ready;
+    private string? Error;
+    private string? GeneratedAtLabel;
+    private string? DeploySha;
+    private List<UpdateEntry> Entries = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var url = Nav.ToAbsoluteUri("updates.json").ToString();
+            var feed = await Http.GetFromJsonAsync<UpdatesFeed>(url);
+
+            if (feed is null)
+            {
+                Error = "Updates feed was empty.";
+                Ready = true;
+                return;
+            }
+
+            GeneratedAtLabel = FormatWhen(feed.GeneratedAt);
+            DeploySha = feed.DeploySha;
+            Entries = (feed.Updates ?? new List<UpdateEntry>())
+                .Where(u => !string.IsNullOrWhiteSpace(u.Title))
+                .ToList();
+            Ready = true;
+        }
+        catch (Exception ex)
+        {
+            Error = "Could not load updates yet. After the next successful deploy, this page fills in automatically.";
+            Console.WriteLine(ex);
+            Ready = true;
+        }
+    }
+
+    private static string FormatWhen(string? iso)
+    {
+        if (string.IsNullOrWhiteSpace(iso))
+        {
+            return "";
+        }
+
+        if (DateTimeOffset.TryParse(iso, out var dto))
+        {
+            var local = dto.ToLocalTime();
+            return local.ToString("MMM d, yyyy · h:mm tt");
+        }
+
+        return iso;
+    }
+
+    private sealed class UpdatesFeed
+    {
+        public string? GeneratedAt { get; set; }
+        public string? DeploySha { get; set; }
+        public List<UpdateEntry>? Updates { get; set; }
+    }
+
+    private sealed class UpdateEntry
+    {
+        public string? Id { get; set; }
+        public string? Sha { get; set; }
+        public string? Title { get; set; }
+        public string? At { get; set; }
+        public string? Url { get; set; }
+    }
+}
