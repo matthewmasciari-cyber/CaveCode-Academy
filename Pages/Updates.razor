@@ -249,8 +249,21 @@
     {
         try
         {
-            var url = Nav.ToAbsoluteUri("updates.json").ToString();
-            var feed = await Http.GetFromJsonAsync<UpdatesFeed>(url);
+            // Cache-bust so Chrome doesn't keep a stale seed feed
+            var url = Nav.ToAbsoluteUri($"updates.json?v={DateTime.UtcNow.Ticks}").ToString();
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue
+            {
+                NoCache = true,
+                NoStore = true
+            };
+            using var response = await Http.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var feed = await response.Content.ReadFromJsonAsync<UpdatesFeed>(
+                new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
 
             if (feed is null)
             {
