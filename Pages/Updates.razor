@@ -12,11 +12,11 @@
 
     <header class="updates-hero">
         <div class="updates-logo-only">
-            <img class="cavecode-context-logo-image"
-                 src="branding/cavecode-academy-logo.svg?v=1"
-                 alt=""
-                 width="64"
-                 height="44" />
+            <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
+                <img class="cavecode-context-logo-image"
+                     src="branding/cavecode-academy-logo.svg?v=1"
+                     alt="" />
+            </span>
         </div>
 
         <div class="updates-hero-row">
@@ -138,6 +138,20 @@
         margin: 0 0 16px;
     }
 
+    /* Match Leaderboard brand mark size */
+    .updates-logo-only .cavecode-context-logo-surface {
+        width: 64px;
+        height: 44px;
+        padding: 3px 5px;
+        border-radius: 9px;
+    }
+
+    .updates-logo-only .cavecode-context-logo-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
 
     .updates-hero-row {
         display: grid;
