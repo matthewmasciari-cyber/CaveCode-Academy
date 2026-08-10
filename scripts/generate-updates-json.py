@@ -12,17 +12,33 @@ import re
 import subprocess
 import sys
 from datetime import datetime, timezone
-
 from pathlib import Path
 
 CODE_EXTS = {
-    ".cs", ".razor", ".css", ".js", ".ts", ".json", ".yml", ".yaml",
-    ".md", ".html", ".py", ".sql", ".xml", ".scss",
+    ".cs",
+    ".razor",
+    ".css",
+    ".js",
+    ".ts",
+    ".json",
+    ".yml",
+    ".yaml",
+    ".md",
+    ".html",
+    ".py",
+    ".sql",
+    ".xml",
+    ".scss",
 }
 
 SKIP_DIRS = {
-    ".git", "node_modules", "bin", "obj", "publish", ".vs",
-    "e2e/node_modules", "TestResults",
+    ".git",
+    "node_modules",
+    "bin",
+    "obj",
+    "publish",
+    ".vs",
+    "TestResults",
 }
 
 
@@ -43,19 +59,17 @@ def count_repo_lines() -> tuple[int, int]:
             text = path.read_text(encoding="utf-8", errors="ignore")
         except Exception:
             continue
-        n = text.count("
-")
-        if text and not text.endswith("
-"):
+        n = text.count("\n")
+        if text and not text.endswith("\n"):
             n += 1
         total += n
         files += 1
     return total, files
 
 
-
 CONVENTIONAL = re.compile(
-    r"^(?P<type>feat|fix|improve|polish|add|update|docs|chore|ci|refactor|perf|security|ui|ux)"
+    r"^(?P<type>feat|fix|improve|polish|add|update|docs|chore|ci|"
+    r"refactor|perf|security|ui|ux)"
     r"(?:\([^)]+\))?!?\s*:\s*(?P<rest>.+)$",
     re.I,
 )
@@ -153,7 +167,6 @@ def main() -> int:
         sha = os.environ.get("GITHUB_SHA", "unknown")
 
     try:
-        # One commit per block, easy to parse
         log = run(
             [
                 "git",
@@ -174,7 +187,9 @@ def main() -> int:
         lines = [ln.rstrip() for ln in block.strip("\n").split("\n")]
         if len(lines) < 3:
             continue
-        full_sha, when, subject = lines[0].strip(), lines[1].strip(), lines[2].strip()
+        full_sha = lines[0].strip()
+        when = lines[1].strip()
+        subject = lines[2].strip()
         body = "\n".join(lines[3:]).strip()
 
         if len(full_sha) < 7 or is_skipped(subject):
