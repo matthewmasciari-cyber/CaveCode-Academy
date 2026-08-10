@@ -11,14 +11,15 @@
     </div>
 
     <header class="updates-hero">
-        <!-- Logo on its own row (never shares space with the title) -->
+        <!-- Same branding mark as Leaderboard / Achievements (logo only, own row) -->
         <div class="updates-logo-row" aria-label="CaveCode Academy branding">
-            <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page updates-logo-surface">
-                <img class="cavecode-context-logo-image"
-                     src="branding/cavecode-academy-logo.svg?v=1"
-                     alt="" />
-            </span>
-            <span class="updates-logo-caption">CaveCode Academy</span>
+            <div class="cavecode-page-brandline updates-brandline">
+                <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
+                    <img class="cavecode-context-logo-image"
+                         src="branding/cavecode-academy-logo.svg?v=1"
+                         alt="" />
+                </span>
+            </div>
         </div>
 
         <div class="updates-hero-row">
@@ -131,50 +132,46 @@
         text-align: center;
     }
 
-    /* Logo completely above title/counters — defeat global absolute/float rules */
+    /* Logo row: same mark size as other academy pages, stacked above title */
     .updates-logo-row {
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
-        gap: 8px;
-        margin: 0 auto 22px;
+        width: 100%;
+        margin: 0 auto 20px;
         position: relative;
         z-index: 1;
-        width: 100%;
     }
 
-    .updates-page .updates-logo-surface,
-    .updates-page .updates-logo-row .cavecode-context-logo-surface {
+    .updates-page .updates-brandline.cavecode-page-brandline {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 10px;
+        margin: 0 !important;
         position: static !important;
-        display: grid !important;
-        width: 72px !important;
-        height: 50px !important;
-        padding: 4px 6px !important;
-        border-radius: 10px !important;
-        flex: 0 0 auto !important;
+        float: none !important;
+    }
+
+    /* Match Leaderboard / Achievements page brand mark (pass-2 defaults) */
+    .updates-page .updates-brandline .cavecode-context-logo-surface {
+        position: static !important;
         float: none !important;
         inset: auto !important;
         transform: none !important;
+        width: 64px !important;
+        height: 44px !important;
+        padding: 3px 5px !important;
+        border-radius: 9px !important;
     }
 
-    .updates-page .updates-logo-row .cavecode-context-logo-image {
+    .updates-page .updates-brandline .cavecode-context-logo-image {
         position: static !important;
+        float: none !important;
+        inset: auto !important;
+        transform: none !important;
         display: block !important;
         width: 100% !important;
         height: 100% !important;
         object-fit: contain !important;
-        float: none !important;
-        inset: auto !important;
-        transform: none !important;
-    }
-
-    .updates-logo-caption {
-        color: var(--text-muted);
-        font-size: 10px;
-        font-weight: 900;
-        letter-spacing: 0.9px;
-        text-transform: uppercase;
     }
 
     .updates-hero-row {
