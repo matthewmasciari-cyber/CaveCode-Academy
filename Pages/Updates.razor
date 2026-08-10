@@ -11,17 +11,6 @@
     </div>
 
     <header class="updates-hero">
-        <!-- Same branding mark as Leaderboard / Achievements (logo only, own row) -->
-        <div class="updates-logo-row" aria-label="CaveCode Academy branding">
-            <div class="cavecode-page-brandline updates-brandline">
-                <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
-                    <img class="cavecode-context-logo-image"
-                         src="branding/cavecode-academy-logo.svg?v=1"
-                         alt="" />
-                </span>
-            </div>
-        </div>
-
         <div class="updates-hero-row">
             <aside class="updates-stat updates-stat--left" aria-label="Community validated lines">
                 <span class="updates-stat-label">Community lines</span>
@@ -30,6 +19,16 @@
             </aside>
 
             <div class="updates-hero-center">
+                <!-- CAVECODE_OFFICIAL_BRANDING_PASS_2_V1 — same as Leaderboard -->
+                <div class="cavecode-page-brandline"
+                     aria-label="CaveCode Academy branding">
+                    <span class="cavecode-context-logo-surface cavecode-context-logo-surface--page">
+                        <img class="cavecode-context-logo-image"
+                             src="branding/cavecode-academy-logo.svg?v=1"
+                             alt="" />
+                    </span>
+                    <span>CaveCode Academy</span>
+                </div>
                 <p class="eyebrow">SHIP LOG</p>
                 <h1 tabindex="-1">Updates</h1>
                 <p class="cavecode-page-intro"
@@ -133,96 +132,53 @@
     }
 
     /* Logo row: same mark size as other academy pages, stacked above title */
-    .updates-logo-row {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin: 0 auto 20px;
-        position: relative;
-        z-index: 1;
-    }
-
-    .updates-page .updates-brandline.cavecode-page-brandline {
-        display: inline-flex !important;
-        align-items: center;
-        gap: 10px;
-        margin: 0 !important;
-        position: static !important;
-        float: none !important;
-    }
-
-    /* Match Leaderboard / Achievements page brand mark (pass-2 defaults) */
-    .updates-page .updates-brandline .cavecode-context-logo-surface {
-        position: static !important;
-        float: none !important;
-        inset: auto !important;
-        transform: none !important;
-        width: 64px !important;
-        height: 44px !important;
-        padding: 3px 5px !important;
-        border-radius: 9px !important;
-    }
-
-    .updates-page .updates-brandline .cavecode-context-logo-image {
-        position: static !important;
-        float: none !important;
-        inset: auto !important;
-        transform: none !important;
-        display: block !important;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: contain !important;
-    }
-
     .updates-hero-row {
         display: grid;
-        grid-template-columns: minmax(140px, 1fr) minmax(220px, 1.4fr) minmax(140px, 1fr);
+        grid-template-columns: minmax(140px, 1fr) minmax(240px, 1.5fr) minmax(140px, 1fr);
         gap: 16px;
-        align-items: center;
+        align-items: start;
         position: relative;
         z-index: 2;
-        margin-top: 0;
-        clear: both;
     }
 
     .updates-hero-center {
-        text-align: center;
+        text-align: left;
         min-width: 0;
         position: relative;
         z-index: 2;
-        padding-top: 4px;
+    }
+
+    /* Brandline uses global pass-2 sizes (64×44) — do not override */
+    .updates-hero-center .cavecode-page-brandline {
+        margin: 0 0 10px;
+        position: static;
     }
 
     .updates-hero-center .eyebrow {
-        margin: 0 0 8px;
+        margin: 0 0 6px;
         color: var(--accent);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 900;
-        letter-spacing: 1.2px;
-        position: static !important;
+        letter-spacing: 1.1px;
+        text-transform: uppercase;
+        position: static;
     }
 
     .updates-hero-center h1 {
         margin: 0;
-        font-size: clamp(36px, 5vw, 58px);
-        letter-spacing: -1.6px;
-        line-height: 1.05;
+        font-size: clamp(36px, 6vw, 66px);
+        letter-spacing: -2px;
+        line-height: 0.95;
         color: var(--text);
-        position: static !important;
-        top: auto !important;
-        left: auto !important;
-        transform: none !important;
+        position: static;
     }
 
     .updates-hero-center .cavecode-page-intro {
-        max-width: 520px;
-        margin: 12px auto 0;
+        max-width: 34rem;
+        margin: 12px 0 0;
         color: var(--text-muted);
         line-height: 1.55;
-        position: static !important;
-        top: auto !important;
-        left: auto !important;
-        transform: none !important;
+        position: static;
     }
 
     .updates-stat {
@@ -373,7 +329,8 @@
         }
 
         .updates-stat--left { order: 2; }
-        .updates-hero-center { order: 1; }
+        .updates-hero-center { order: 1; text-align: center; }
+        .updates-hero-center .cavecode-page-intro { margin-left: auto; margin-right: auto; }
         .updates-stat--right { order: 3; }
     }
 </style>
